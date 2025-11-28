@@ -1,0 +1,177 @@
+name: Filare CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  UV_CACHE_DIR: ./.uv-cache
+
+jobs:
+  lint:
+    name: "1) Lint (black, prettier)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install lint deps
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install .[dev] black
+          npm install --global prettier
+      - name: Run black
+        run: black --check src tests
+      - name: Run prettier
+        run: prettier --check "docs/**/*.{md,html}" "src/filare/templates/**/*.html"
+
+  test:
+    name: "2) Tests"
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+      - name: Install project
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install .[dev]
+      - name: Pytest
+        run: pytest
+
+  build_examples:
+    name: "3) Build examples/templates"
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+      - name: Install project
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install .
+      - name: Build examples
+        run: |
+          mkdir -p outputs/examples outputs/tutorial
+          filare -f hs -o outputs/examples examples/demo01.yml
+          filare -f h -o outputs/tutorial tutorial/tutorial01.yml
+      - name: Upload example artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: filare-examples
+          path: outputs/
+
+  docs:
+    name: "4) Build docs & publish gh-pages"
+    needs: build_examples
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare site
+        run: |
+          mkdir -p site
+          cp -r docs/* site/
+          mkdir -p site/examples
+          if [ -d outputs ]; then cp -r outputs/* site/examples/; fi
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+
+  release:
+    name: "5) Version bump (semantic-release)"
+    needs: docs
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install semantic-release
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install python-semantic-release
+      - name: Run semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          semantic-release version
+          semantic-release publish
+
+  publish:
+    name: "6) Build & publish to PyPI"
+    needs: release
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build dist
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+      - name: Upload to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: twine upload dist/*
+
+  verify_pypi:
+    name: "7) Verify package from PyPI"
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install from PyPI
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install filare
+      - name: Check CLI
+        run: filare --help
+
+  container:
+    name: "8) Build & push container"
+    needs: publish
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        run: |
+          IMAGE=ghcr.io/${{ github.repository }}:latest
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
