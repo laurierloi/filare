@@ -76,7 +76,7 @@ jobs:
       - name: Install project
         run: |
           uv venv
-          uv sync --frozen
+          uv sync --group dev --frozen
       - name: Build examples
         run: |
           mkdir -p outputs/examples outputs/tutorial
