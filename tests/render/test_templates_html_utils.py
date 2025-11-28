@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from wireviz.render.html_utils import Br, Table, Td, Tr
-from wireviz.render.templates import get_template
+from filare.render.html_utils import Br, Table, Td, Tr
+from filare.render.templates import get_template
 
 
 def test_get_template_loads_existing_template():

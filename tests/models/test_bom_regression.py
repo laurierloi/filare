@@ -1,6 +1,6 @@
-from wireviz.models.bom import BomContent, BomEntry, BomRenderOptions
-from wireviz.models.numbers import NumberAndUnit
-from wireviz.models.partnumber import PartNumberInfo
+from filare.models.bom import BomContent, BomEntry, BomRenderOptions
+from filare.models.numbers import NumberAndUnit
+from filare.models.partnumber import PartNumberInfo
 
 
 def test_bom_tsv_matches_expected_sample():

@@ -1,32 +1,32 @@
 Step 1 - Establish models package and move legacy modules (date: YYYY-MM-DD):
-- Created src/wireviz/models package with wrapper modules (component, connector, cable, types) and compatibility shims for wv_dataclasses, wv_bom, metadata, page_options.
+- Created src/filare/models package with wrapper modules (component, connector, cable, types) and compatibility shims for wv_dataclasses, wv_bom, metadata, page_options.
 - Moved wv_dataclasses.py, wv_bom.py, metadata.py, and page_options.py into models/, retaining backward-compatible import stubs.
 - Normalized connector loop parsing to accept list-based loop definitions and guarded Loop side parsing.
-- Test: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m wireviz.wv_cli -f hpst -o outputs_refactor_step1 -d examples/metadata.yml examples/demo01.yml (pass; outputs generated in outputs_refactor_step1/).
+- Test: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m filare.wv_cli -f hpst -o outputs_refactor_step1 -d examples/metadata.yml examples/demo01.yml (pass; outputs generated in outputs_refactor_step1/).
 
 Step 2 - Introduce parser package (date: YYYY-MM-DD):
-- Moved parse_yaml.py to src/wireviz/parser/yaml_loader.py with a shim for backward compatibility.
-- Added parser/__init__.py exports and new harness_parser.py helpers for harness/metadata parsing; updated wv_cli and wireviz to import from parser package.
-- Test: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m wireviz.wv_cli -f hpst -o outputs_refactor_step2 -d examples/metadata.yml examples/demo01.yml (pass).
+- Moved parse_yaml.py to src/filare/parser/yaml_loader.py with a shim for backward compatibility.
+- Added parser/__init__.py exports and new harness_parser.py helpers for harness/metadata parsing; updated wv_cli and filare to import from parser package.
+- Test: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m filare.wv_cli -f hpst -o outputs_refactor_step2 -d examples/metadata.yml examples/demo01.yml (pass).
 
 Step 3 - Add flows layer and delegate parsing (date: YYYY-MM-DD):
-- Created src/wireviz/flows/ with build_harness_from_files and render_harness_outputs; wireviz.parse now delegates to the flow.
+- Created src/filare/flows/ with build_harness_from_files and render_harness_outputs; filare.parse now delegates to the flow.
 - Preserved legacy harness-building logic while routing rendering through the flow.
-- Test: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m wireviz.wv_cli -f hpst -o outputs_refactor_step3 -d examples/metadata.yml examples/demo01.yml (pass).
+- Test: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m filare.wv_cli -f hpst -o outputs_refactor_step3 -d examples/metadata.yml examples/demo01.yml (pass).
 
 Step 4 - Separate rendering helpers (date: YYYY-MM-DD):
-- Moved wv_graphviz.py and wv_output.py into src/wireviz/render/ with backward-compatible shims.
+- Moved wv_graphviz.py and wv_output.py into src/filare/render/ with backward-compatible shims.
 - Added render/__init__.py to export the render surface.
-- Test: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m wireviz.wv_cli -f hpst -o outputs_refactor_step4 -d examples/metadata.yml examples/demo01.yml (pass).
+- Test: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m filare.wv_cli -f hpst -o outputs_refactor_step4 -d examples/metadata.yml examples/demo01.yml (pass).
 
 Step 4a - Model unit tests and coverage (date: YYYY-MM-DD):
 - Added pytest fixtures in tests/fixtures/models.py and model-focused tests under tests/models/* for connectors, cables, components, BOM, metadata/options.
-- Coverage command: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage run -m pytest tests && /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage html -d report/coverage
+- Coverage command: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage run -m pytest tests && /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage html -d report/coverage
 - Coverage summary: total 70%; key model coverages — models/bom.py 90%, models/metadata.py 92%, models/dataclasses.py 74%, models/options.py 98%. HTML report at report/coverage/index.html.
 
 Step 4b - Parser/flows tests and coverage (date: YYYY-MM-DD):
 - Added parser tests (yaml_loader merge/concat, harness_parser helpers) and flow tests (build_harness happy path and mismatch, render_harness_outputs smoke).
-- Coverage command: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage run -m pytest tests && /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage html -d report/coverage
+- Coverage command: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage run -m pytest tests && /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage html -d report/coverage
 - Coverage summary: total 72%; parser modules now >=73%, flows/build_harness at 74%. HTML report refreshed at report/coverage/index.html.
 
 Step 4c - Expanded flow coverage and overview support (date: YYYY-MM-DD):
@@ -37,17 +37,17 @@ Step 4c - Expanded flow coverage and overview support (date: YYYY-MM-DD):
 Step 4d - Move HTML/templates into render and add render tests (date: YYYY-MM-DD):
 - Moved wv_html.py into render/html_utils.py and wv_templates.py into render/templates.py with shims; updated imports across models/render/harness.
 - Added render tests for templates loader, HTML utilities, SVG embedding helpers, HTML generation, and harness render flow (tsv output).
-- Coverage command: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage run -m pytest tests && /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage html -d report/coverage
+- Coverage command: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage run -m pytest tests && /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage html -d report/coverage
 - Coverage summary: total 76%; render/output at 71%, render/html_utils 86%, templates 100%, flows/build_harness 81%. Report updated at report/coverage/index.html.
 
 Step 5 - Refactor flows into helpers (date: YYYY-MM-DD):
 - Extracted helper functions in flows/build_harness.py (_build_metadata, _collect_templates, _normalize_connection_set) to improve readability and separation; retained behavior.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage run -m pytest tests && html report regenerated.
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage run -m pytest tests && html report regenerated.
 - Coverage summary: total 77%; flows/build_harness 81%, core models/render unchanged. Report refreshed at report/coverage/index.html.
 
 Step 5a - High-coverage flow tests (date: YYYY-MM-DD):
 - Added extensive flow unit tests for helper functions and error branches (metadata TypeError, template resolution, alternating-type enforcement, auto-generated designators, additional BOM error path, return types, image resolution, cable-first connections).
-- Coverage command: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage run -m pytest tests && /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage html -d report/coverage
+- Coverage command: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage run -m pytest tests && /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage html -d report/coverage
 - Coverage summary: flows/build_harness now 99%, total 77%. Report updated at report/coverage/index.html.
 
 Step 6 - Shared BOM and index flows (date: YYYY-MM-DD):
@@ -58,7 +58,7 @@ Step 6 - Shared BOM and index flows (date: YYYY-MM-DD):
 
 Step 7 - Example/tutorial generation tests (date: YYYY-MM-DD):
 - Added tests/flows/test_examples_and_tutorial.py to exercise CLI generation of examples and tutorial YAMLs (marked skipped by default due to runtime); outputs verified under outputs/examples and outputs/tutorial in tmp paths.
-- Coverage command: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage run -m pytest tests && /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage html -d report/coverage
+- Coverage command: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage run -m pytest tests && /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage html -d report/coverage
 - Coverage summary: flows/build_harness 99%, total ~79% (skipped tests exclude example/tutorial runtime). HTML report at report/coverage/index.html.
 
 Step 7a - Stabilize example/tutorial generation and BOM render edge cases (date: YYYY-MM-DD):
@@ -73,77 +73,77 @@ Open refactor items to tackle next:
 
 Step 8 - Split render/output into assets/html/pdf (date: YYYY-MM-DD):
 - Extracted embed helpers to render/assets.py, HTML/shared BOM/titlepage to render/html.py, and PDF bundle to render/pdf.py; render/output.py now shims to new modules. Updated imports in flows and harness to use split modules.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage run -m pytest tests (pass).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage run -m pytest tests (pass).
 - Coverage summary: flows/build_harness 100%, overall ~89% (report updated at report/coverage/index.html).
 
 Step 9 - Move colors and quantity into models (date: YYYY-MM-DD):
 - Moved wv_colors.py to models/colors.py and wv_harness_quantity.py to models/harness_quantity.py with shims; updated imports (harness, render, options, dataclasses, index_table, image).
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/coverage run -m pytest tests (pass).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/coverage run -m pytest tests (pass).
 - Coverage summary: models/colors 76%, models/harness_quantity 35% (needs future hardening); overall ~89%. HTML report refreshed at report/coverage/index.html.
 
 Step 10 - Move Harness into models and remove internal shim imports (date: YYYY-MM-DD):
 - Introduced models/harness.py and turned wv_harness.py into a shim; flows/render/html/graphviz now import models.* modules directly instead of wv_* shims.
 - Updated CLI and tests to use models paths (dataclasses, colors, harness, numbers/partnumber/notes), eliminating remaining internal wv_* references.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass).
 - Coverage summary: total 91% (render/pdf still low by design), harness model at 83%. HTML report refreshed at report/coverage/index.html.
 
 Step 10a - Add CLI surface tests (date: YYYY-MM-DD):
 - Added click-based CLI tests for help, version, and a minimal harness invocation to ensure TSV generation; exercises CLI option parsing and output dir handling.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass).
 - Coverage summary: total 91%; wv_cli coverage up to 92%. HTML report refreshed at report/coverage/index.html.
 
 Step 11 - Remove legacy shims and point entrypoints to models (date: YYYY-MM-DD):
-- Deleted remaining shim modules (wv_*, metadata/notes/numbers/etc. wrappers) now that imports use models/parser/render directly; updated console entrypoint wireviz-qty to wireviz.models.harness_quantity.
+- Deleted remaining shim modules (wv_*, metadata/notes/numbers/etc. wrappers) now that imports use models/parser/render directly; updated console entrypoint filare-qty to filare.models.harness_quantity.
 - Adjusted tests to import models.notes directly. CLI still routed through wv_cli entrypoint.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass).
 - Coverage summary: total 91% (render/pdf remains low intentionally). HTML report refreshed at report/coverage/index.html.
 
 Step 12 - Migrate metadata/options to Pydantic BaseModel (date: YYYY-MM-DD):
 - Added pydantic<2 dependency; refactored models/metadata.py and models/options.py to BaseModel with validators for date coercion, path handling, and color conversion to SingleColor.
 - Updated validation helpers to accept pathlib Paths and datetime.date inputs; PageOptions now stores SingleColor instances for template rendering.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass, 2 warnings from pydantic about SingleColor private fields).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass, 2 warnings from pydantic about SingleColor private fields).
 - Coverage summary: total 91%; metadata 95%, options 96%. HTML report refreshed at report/coverage/index.html.
 
 Step 13 - Propagate Pydantic usage and tighten PageOptions config (date: YYYY-MM-DD):
 - Documented Pydantic propagation in RefactorPlan and added Config to PageOptions to support validation assignment/underscore attrs; functions now explicitly expect BaseModel instances.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass, known pydantic warnings remain).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass, known pydantic warnings remain).
 - Coverage summary: total 91% unchanged. HTML report refreshed at report/coverage/index.html.
 
 Step 14 - Introduce centralized WV_ settings (date: YYYY-MM-DD):
-- Added src/wireviz/settings.py with Pydantic BaseSettings (WV_GRAPHVIZ_ENGINE, WV_DEBUG); render.graphviz and Harness now honor an engine override via settings.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass).
+- Added src/filare/settings.py with Pydantic BaseSettings (WV_GRAPHVIZ_ENGINE, WV_DEBUG); render.graphviz and Harness now honor an engine override via settings.
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass).
 - Coverage summary: total 91%; settings.py covered 100%. HTML report refreshed at report/coverage/index.html.
 
 Step 14a - Settings tests (date: YYYY-MM-DD):
-- Added tests/test_settings.py to verify default and env-override behavior of WireVizSettings (WV_GRAPHVIZ_ENGINE).
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass; same pydantic warnings).
+- Added tests/test_settings.py to verify default and env-override behavior of FilareSettings (WV_GRAPHVIZ_ENGINE).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass; same pydantic warnings).
 - Coverage summary: total 91% unchanged. HTML report refreshed at report/coverage/index.html.
 
 Step 15 - Convert harness quantity to Pydantic (date: YYYY-MM-DD):
 - Refactored models/harness_quantity.py to Pydantic BaseModel with derived paths (folder/qty_multipliers) and retained CLI; added validator-based init while keeping existing call sites.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass; existing warnings unchanged).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass; existing warnings unchanged).
 - Coverage summary: total 91%; harness_quantity remains covered at 79%. HTML report refreshed at report/coverage/index.html.
 
 Step 16 - Convert numbers and partnumbers to Pydantic (date: YYYY-MM-DD):
 - Migrated NumberAndUnit and PartNumberInfo/PartnumberInfoList to Pydantic BaseModel while preserving arithmetic/helpers and cleaning logic; updated usages to keyword instantiation to avoid positional init errors.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass; existing Pydantic warnings unchanged).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass; existing Pydantic warnings unchanged).
 - Coverage summary: total 91%; numbers 91%, partnumber 83%. HTML report refreshed at report/coverage/index.html.
 
 Step 17 - Convert BOM to Pydantic and restore BOM rendering (date: YYYY-MM-DD):
 - Split BomEntry into BomEntryBase (id-less) and BomEntry; added robust handling in harness.populate_bom to assign IDs and update per_harness while using Pydantic models.
 - Added BOM render properties expected by templates (content, columns_class, options), kept per-harness column, and added regression test for BOM TSV output.
 - Updated shared BOM generation to keep entries without partnumbers, and adjusted HTML BOM rendering to pass BomRenderOptions explicitly.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass; 2 pydantic warnings remain).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass; 2 pydantic warnings remain).
 - Coverage summary: total 90%; bom.py at 85%. HTML report refreshed at report/coverage/index.html.
 
 Step 18 - Pydantic for colors and stabilization (date: YYYY-MM-DD):
 - Refactored SingleColor to a Pydantic BaseModel with positional-friendly __init__, kept MultiColor behavior and PageOptions validators; reran all tests.
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass; 2 warnings from Pydantic about underscores remain).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass; 2 warnings from Pydantic about underscores remain).
 - Coverage summary: total 90%; colors module now at 78%. HTML report refreshed at report/coverage/index.html.
 
 Step 19 - Colors Pydantic stabilization (date: YYYY-MM-DD):
 - Adjusted SingleColor to allow positional init and restore known/unknown color behavior; MultiColor and PageOptions defaults updated to use SingleColor(inp=...).
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass).
 - Coverage summary: total 90%; colors remains ~78%. HTML report refreshed at report/coverage/index.html.
 
 Step 19a - Agent guideline update (date: YYYY-MM-DD):
@@ -151,18 +151,18 @@ Step 19a - Agent guideline update (date: YYYY-MM-DD):
 
 Step 20 - Prep for core Pydantic migration (date: YYYY-MM-DD):
 - Kept dataclasses using BomEntryBase for BOM creation and aligned SingleColor defaults in PageOptions/tests with the Pydantic constructor signature (using inp=...).
-- Tests: PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/WireViz-laurierloi/venv-wireviz/bin/python -m coverage html -d report/coverage (pass).
+- Tests: PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage run -m pytest tests && PYTHONPATH=src /home/lal/devs/Filare-laurierloi/venv-filare/bin/python -m coverage html -d report/coverage (pass).
 - Coverage summary: total 90% (colors 78%, bom 85%). HTML report refreshed at report/coverage/index.html.
 
 Step 22 - Add config BaseModels, uv workflow, and coverage config (date: YYYY-MM-DD):
-- Introduced src/wireviz/models/configs.py with Pydantic BaseModels for YAML-facing configs (Connector/Cable/Wire/Connection/Metadata/PageOptions) and normalizers for lists/counts.
+- Introduced src/filare/models/configs.py with Pydantic BaseModels for YAML-facing configs (Connector/Cable/Wire/Connection/Metadata/PageOptions) and normalizers for lists/counts.
 - Added fixtures and tests/models/test_configs.py to round-trip config models; normalized numeric fields to keep types stable. Exported configs via models/__init__.
 - Switched to pyproject-only build with setuptools backend, added project metadata, scripts, optional dev deps, coverage/pytest settings, and uv dev-dependencies; removed legacy setup.py.
 - Updated AGENTS.md to prefer uv commands for env setup and test runs; added tests/__init__.py to avoid conflicts with site-packages.
 - Tests: .venv/bin/pytest (pass); coverage report generated at report/coverage/index.html (total ~83%).
 
 Step 23 - Add template-input models scaffolding (date: YYYY-MM-DD):
-- Added src/wireviz/models/template_inputs.py (TemplateConnector/Cable/Wire/Pin/Connection BaseModels) with helpers to build from config models.
+- Added src/filare/models/template_inputs.py (TemplateConnector/Cable/Wire/Pin/Connection BaseModels) with helpers to build from config models.
 - Added tests/models/test_template_inputs.py to validate mappings from configs and basic coercions; exported via models/__init__.
 - Tests: .venv/bin/pytest (pass); coverage refreshed at report/coverage/index.html (~83%).
 

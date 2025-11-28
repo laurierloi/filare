@@ -3,10 +3,10 @@
 # pip install -r devtools.txt
 
 # Code formatting
-black  # black src/wireviz/*.py
-isort  # isort src/wireviz/*py
+black  # black src/filare/*.py
+isort  # isort src/filare/*py
 
 # Development aids
 pudb       # import pudb; pudb.set_trace()
-autoflake  # autoflake -i --remove-all-unused-imports src/wireviz/*.py
-pyan       # pyan3 src/wireviz/*.py -uncge --html > temp/pyan.html
+autoflake  # autoflake -i --remove-all-unused-imports src/filare/*.py
+pyan       # pyan3 src/filare/*.py -uncge --html > temp/pyan.html

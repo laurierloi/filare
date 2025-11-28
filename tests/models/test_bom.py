@@ -1,7 +1,7 @@
-from wireviz.models.bom import BomContent, BomEntry, BomRenderOptions
-from wireviz.models.partnumber import PartNumberInfo
-from wireviz.models.numbers import NumberAndUnit
-from wireviz.models.dataclasses import BomCategory
+from filare.models.bom import BomContent, BomEntry, BomRenderOptions
+from filare.models.partnumber import PartNumberInfo
+from filare.models.numbers import NumberAndUnit
+from filare.models.dataclasses import BomCategory
 
 
 def test_bom_entry_scale_per_harness(bom_entry_sample):

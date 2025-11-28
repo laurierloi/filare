@@ -1,9 +1,9 @@
 # Filare (formerly WireViz)
 
 
-[![PyPI - Version](https://img.shields.io/pypi/v/wireviz.svg?colorB=blue)](https://pypi.org/project/wireviz/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/wireviz.svg?)](https://pypi.org/project/wireviz/)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/wireviz)](https://pypi.org/project/wireviz/)
+[![PyPI - Version](https://img.shields.io/pypi/v/filare.svg?colorB=blue)](https://pypi.org/project/filare/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/filare.svg?)](https://pypi.org/project/filare/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/filare)](https://pypi.org/project/filare/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Summary
@@ -116,12 +116,12 @@ See https://pango.gnome.org/
 
 ### Installing the latest release
 
-~~The latest Filare release can be downloaded from [PyPI](https://pypi.org/project/wireviz/) with the following command:~~
+~~The latest Filare release can be downloaded from [PyPI](https://pypi.org/project/filare/) with the following command:~~
 ```
-pip3 install wireviz
+pip3 install filare
 ```
 
-Note: The https://github.com/laurierloi/WireViz version sadly can't be downloaded from pypi at
+Note: The https://github.com/laurierloi/Filare version sadly can't be downloaded from pypi at
 this time. If you have this need, submit a MR and it could be added under a different name.
 
 ### Installing the development version
@@ -134,8 +134,8 @@ dependencies management.
 #### Installing Filare within a virtual env
 ```
 # Cloning the repository
-git clone git+https://github.com/laurierloi/WireViz
-cd WireViz
+git clone git+https://github.com/laurierloi/Filare
+cd Filare
 
 # Setup virtualenv
 python3 -m pip install --user virtualenv
@@ -154,7 +154,7 @@ If you would like to contribute to this project, make sure you read the [contrib
 ## Usage
 
 ### How to run
-The Filare CLI (legacy `wireviz` alias still available) creates harness documents.
+The Filare CLI (legacy `filare` alias still available) creates harness documents.
 To do so, a shared metadata file (or multiple) must be provided to the `filare` command.
 Then, a list of harnesses to include within the document should also be provided.
 In the simplest case, 1 harness can be provided.

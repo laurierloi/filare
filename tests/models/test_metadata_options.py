@@ -1,5 +1,5 @@
-from wireviz.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
-from wireviz.models.options import get_page_options
+from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
+from filare.models.options import get_page_options
 
 
 def test_metadata_builds_authors_and_revisions(basic_metadata):

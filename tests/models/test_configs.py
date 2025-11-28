@@ -1,6 +1,6 @@
 import yaml
 
-from wireviz.models.configs import (
+from filare.models.configs import (
     CableConfig,
     ConnectionConfig,
     ConnectorConfig,

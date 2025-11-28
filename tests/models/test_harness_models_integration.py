@@ -1,7 +1,7 @@
-from wireviz.models.cable import CableModel
-from wireviz.models.connector import ConnectorModel
-from wireviz.models.harness import Harness
-from wireviz.models.notes import Notes
+from filare.models.cable import CableModel
+from filare.models.connector import ConnectorModel
+from filare.models.harness import Harness
+from filare.models.notes import Notes
 
 
 def _build_harness(metadata, page_options):

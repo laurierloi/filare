@@ -1,10 +1,10 @@
 from pathlib import Path
 
-from wireviz.flows.render_outputs import render_harness_outputs
-from wireviz.models.harness import Harness
-from wireviz.models.metadata import Metadata, PageTemplateConfig
-from wireviz.models.options import PageOptions
-from wireviz.models.notes import Notes
+from filare.flows.render_outputs import render_harness_outputs
+from filare.models.harness import Harness
+from filare.models.metadata import Metadata, PageTemplateConfig
+from filare.models.options import PageOptions
+from filare.models.notes import Notes
 
 
 def test_render_harness_outputs_generates_files(tmp_path):

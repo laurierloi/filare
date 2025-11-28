@@ -2,7 +2,7 @@ import pytest
 
 import yaml
 
-from wireviz.parser.yaml_loader import (
+from filare.parser.yaml_loader import (
     merge_content,
     merge_item,
     parse_concat_merge_files,

@@ -1,6 +1,6 @@
 import pytest
 
-from wireviz.models.colors import (
+from filare.models.colors import (
     COLOR_CODES,
     ColorOutputMode,
     MultiColor,
@@ -23,7 +23,7 @@ def test_single_color_unknown_defaults_html():
 
 
 def test_multi_color_parses_colon_and_padding(monkeypatch):
-    monkeypatch.setattr("wireviz.models.colors.padding_amount", 3)
+    monkeypatch.setattr("filare.models.colors.padding_amount", 3)
     colors = MultiColor("RD:GN")
     assert len(colors) == 2
     padded = colors.html_padded_list
@@ -37,7 +37,7 @@ def test_get_color_by_colorcode_index_wraps():
 
 @pytest.mark.parametrize("mode", [ColorOutputMode.EN_UPPER, ColorOutputMode.EN_LOWER, ColorOutputMode.HTML_UPPER])
 def test_color_output_mode_changes(monkeypatch, mode):
-    monkeypatch.setattr("wireviz.models.colors.color_output_mode", mode)
+    monkeypatch.setattr("filare.models.colors.color_output_mode", mode)
     c = SingleColor(inp="RD")
     s = str(c)
     if "EN_" in mode.name:

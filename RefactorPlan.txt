@@ -1,10 +1,10 @@
 Refactor plan: modular models, parsers, flows, and comprehensive tests
 
-Rebranding note: WireViz is being renamed to Filare. As changes continue, prefer Filare naming for new docs/diagrams/code paths where feasible (while preserving current CLI/module names until the formal rename step). Track any lingering “WireViz” references to update alongside the rebrand.
+Rebranding note: WireViz is being renamed to Filare. As changes continue, prefer Filare naming for new docs/diagrams/code paths where feasible (while preserving current CLI/module names until the formal rename step). Track any lingering references to update alongside the rebrand.
 
 1) Establish models package
-- Create directory src/wireviz/models/.
-- Split current dataclasses from src/wireviz/wv_dataclasses.py into focused modules:
+- Create directory src/filare/models/.
+- Split current dataclasses from src/filare/wv_dataclasses.py into focused modules:
   - models/connector.py (Connector, PinClass, Loop, connector-specific helpers)
   - models/cable.py (Cable, WireClass/ShieldClass, Connection, cable-specific helpers)
   - models/component.py (Component, GraphicalComponent, BomCategory, qty multipliers)
@@ -14,37 +14,37 @@ Rebranding note: WireViz is being renamed to Filare. As changes continue, prefer
   - models/utils.py (color/number helpers that are model-level, e.g., awg/mm2)
 - Keep __init__.py files to export public API and maintain existing imports via compatibility re-exports during migration.
 - Git moves to preserve history:
-  - git mv src/wireviz/wv_dataclasses.py src/wireviz/models/component.py (then split content into new files)
-  - git mv src/wireviz/wv_bom.py src/wireviz/models/bom.py
-  - git mv src/wireviz/metadata.py src/wireviz/models/metadata.py
-  - git mv src/wireviz/page_options.py src/wireviz/models/options.py
+  - git mv src/filare/wv_dataclasses.py src/filare/models/component.py (then split content into new files)
+  - git mv src/filare/wv_bom.py src/filare/models/bom.py
+  - git mv src/filare/metadata.py src/filare/models/metadata.py
+  - git mv src/filare/page_options.py src/filare/models/options.py
 
 2) Introduce parser package
-- Create src/wireviz/parser/ with modules:
+- Create src/filare/parser/ with modules:
   - parser/yaml_loader.py (currently parse_yaml.py logic: merge_item, parse_merge_files, parse_concat_merge_files; add safe file handling).
-  - parser/harness_parser.py to transform YAML dicts into model instances (currently spread across wireviz.py).
+  - parser/harness_parser.py to transform YAML dicts into model instances (currently spread across filare.py).
   - parser/options_parser.py and parser/metadata_parser.py if needed to keep concerns isolated.
 - Gradually replace direct YAML dict accesses in flows with typed parse outputs. Keep temporary shims to map old functions to new module paths for backward compatibility.
 - Git moves:
-  - git mv src/wireviz/parse_yaml.py src/wireviz/parser/yaml_loader.py
+  - git mv src/filare/parse_yaml.py src/filare/parser/yaml_loader.py
 
 3) Define flows layer
-- Create src/wireviz/flows/ with:
+- Create src/filare/flows/ with:
   - flows/build_harness.py: orchestrates parsing components/options/metadata into models, connects harness, and returns a Harness model.
   - flows/render_outputs.py: takes Harness/Metadata/Options and calls rendering (graphviz, html, pdf).
   - flows/shared_bom.py: handles aggregation across multiple harness models, qty multipliers.
   - flows/index_pages.py: titlepage/index table generation.
-- Refactor wireviz.py into a thin wrapper that delegates to flows; keep CLI-facing API stable. Eventually split CLI responsibilities into flows/cli_runner.py and keep wv_cli.py as entrypoint wrapper.
+- Refactor filare.py into a thin wrapper that delegates to flows; keep CLI-facing API stable. Eventually split CLI responsibilities into flows/cli_runner.py and keep wv_cli.py as entrypoint wrapper.
 
 4) Rendering separation
-- Keep graphviz/html/pdf functions under src/wireviz/render/ (new) to isolate pure rendering from flows. Move:
+- Keep graphviz/html/pdf functions under src/filare/render/ (new) to isolate pure rendering from flows. Move:
   - gv_* functions from wv_graphviz.py to render/graphviz.py
   - HTML/PDF helpers from wv_output.py to render/html.py, render/pdf.py
   - move embed_svg_images into render/assets.py
 - Update imports accordingly; maintain re-export stubs to avoid breaking callers during transition.
 - Git moves:
-  - git mv src/wireviz/wv_graphviz.py src/wireviz/render/graphviz.py
-  - git mv src/wireviz/wv_output.py src/wireviz/render/output.py (split inside).
+  - git mv src/filare/wv_graphviz.py src/filare/render/graphviz.py
+  - git mv src/filare/wv_output.py src/filare/render/output.py (split inside).
 
 5) Wiring of connectors/cables in flows
 - In flows/build_harness.py, introduce small, testable functions:
@@ -56,7 +56,7 @@ Rebranding note: WireViz is being renamed to Filare. As changes continue, prefer
 - Each function should accept/return models only (no file I/O).
 
 6) CLI and backward compatibility
-- Keep wv_cli.py as a facade calling flows (parse inputs, call build_harness, then render). Add deprecation layers so existing import paths remain usable (e.g., from wireviz.wv_dataclasses import Connector).
+- Keep wv_cli.py as a facade calling flows (parse inputs, call build_harness, then render). Add deprecation layers so existing import paths remain usable (e.g., from filare.wv_dataclasses import Connector).
 - Ensure format code mapping stays in CLI, but move heavy logic into flows/render_outputs.py.
 
 7) Testing strategy expansion
@@ -69,23 +69,23 @@ Rebranding note: WireViz is being renamed to Filare. As changes continue, prefer
   - Parametrize over examples/ex*.yml with metadata to assert successful build and BOM non-empty.
   - Add tutorial coverage by building tutorial YAMLs where feasible (or distilled fixtures mirroring tutorial features).
   - Add regression tests for connector overview pages, background colors, loops, bundles, qty multipliers (existing tests/rendering YAMLs).
-- Add coverage config in pyproject.toml to include src/wireviz and exclude templates/assets.
+- Add coverage config in pyproject.toml to include src/filare and exclude templates/assets.
 
 8) Incremental migration steps
 - Phase 1: Move files (git mv) and add compatibility re-exports (__init__.py) so imports continue to work.
-- Phase 2: Refactor wireviz.py to rely on parser + flows; keep function signatures stable.
+- Phase 2: Refactor filare.py to rely on parser + flows; keep function signatures stable.
 - Phase 3: Migrate rendering helpers into render/ and adjust flows; deprecate old module paths with clear warnings.
 - Phase 4: Expand pytest suite and wire into CI (if available); generate coverage report to ensure model/parser/flow branches are exercised.
 
 9) Tooling/commands to execute moves
 - Example commands (run from repo root):
-  - git mv src/wireviz/wv_dataclasses.py src/wireviz/models/component.py
-  - git mv src/wireviz/wv_bom.py src/wireviz/models/bom.py
-  - git mv src/wireviz/metadata.py src/wireviz/models/metadata.py
-  - git mv src/wireviz/page_options.py src/wireviz/models/options.py
-  - git mv src/wireviz/parse_yaml.py src/wireviz/parser/yaml_loader.py
-  - git mv src/wireviz/wv_graphviz.py src/wireviz/render/graphviz.py
-- git mv src/wireviz/wv_output.py src/wireviz/render/output.py
+  - git mv src/filare/wv_dataclasses.py src/filare/models/component.py
+  - git mv src/filare/wv_bom.py src/filare/models/bom.py
+  - git mv src/filare/metadata.py src/filare/models/metadata.py
+  - git mv src/filare/page_options.py src/filare/models/options.py
+  - git mv src/filare/parse_yaml.py src/filare/parser/yaml_loader.py
+  - git mv src/filare/wv_graphviz.py src/filare/render/graphviz.py
+- git mv src/filare/wv_output.py src/filare/render/output.py
 - After moves, add __init__.py files exporting the old names, then progressively update imports across the codebase.
 
 11) Testing steps (per refactor stage)
@@ -169,6 +169,6 @@ Rebranding note: WireViz is being renamed to Filare. As changes continue, prefer
 - Allow flows.build_harness to accept ConnectorModel/CableModel/ComponentModel inputs directly and prefer them when provided.
 - Wire CLI/parser paths to optionally emit config models then convert through BaseModels before dataclass construction; add regression tests.
 
-23) Move remaining src/wireviz modules into packages
-- Inventory remaining files under src/wireviz/ that are not shims/entry points; plan moves to flows/models/parser/render/tools as appropriate.
-- Update imports to new locations; leave only shims and CLI entrypoints in src/wireviz root.
+23) Move remaining src/filare modules into packages
+- Inventory remaining files under src/filare/ that are not shims/entry points; plan moves to flows/models/parser/render/tools as appropriate.
+- Update imports to new locations; leave only shims and CLI entrypoints in src/filare root.

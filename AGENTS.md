@@ -1,24 +1,24 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- Core library and CLI live in `src/wireviz/`; `wv_cli.py` exposes `wireviz`/`wireviz-qty`, with rendering and BOM logic in `wv_graphviz.py`, `wv_output.py`, and helpers under `tools/`.
+- Core library and CLI live in `src/filare/`; `wv_cli.py` exposes `filare`/`filare-qty`, with rendering and BOM logic in `wv_graphviz.py`, `wv_output.py`, and helpers under `tools/`.
 - Documentation is under `docs/` (see `docs/README.md` and `docs/syntax.md`), with walkthroughs in `tutorial/` and ready-made YAML inputs in `examples/`.
 - Architecture/data-flow/model diagrams live in `docs/graphs/`; update the Mermaid sources and regenerate rendered outputs when code structure changes.
 - Regression YAMLs live in `tests/rendering/` and `tests/bom/`; write generated outputs to `outputs/` or a temp directory.
-- Harness definitions for XSC live next door in `../xsc-harnesses`; treat them as downstream consumers built with the same WireViz venv.
+- Harness definitions for XSC live next door in `../xsc-harnesses`; treat them as downstream consumers built with the same Filare venv.
 
 ## Build, Test, and Development Commands
 - Prefer uv for env and installs:
   - Create venv: `UV_CACHE_DIR=./.uv-cache uv venv .venv`
   - Install (incl. dev tools): `UV_CACHE_DIR=./.uv-cache uv pip install --python .venv/bin/python -e . --group dev`
   - Run tests/coverage: `UV_CACHE_DIR=./.uv-cache uv run --python .venv/bin/python pytest`
-- Quick sanity run: `UV_CACHE_DIR=./.uv-cache uv run --python .venv/bin/python wireviz examples/demo01.yml -f hpst -o outputs` (HTML/PNG/SVG/TSV). Add `-c examples/components.yml` or `-d metadata.yml` as needed.
-- Build downstream harnesses with the same venv: `cd ../xsc-harnesses && WIREVIZ=../WireViz-codex1/.venv/bin/wireviz make`; `make clean` removes generated SVG/PNG/PDF/TSV.
-- For manual BOM scaling checks: `UV_CACHE_DIR=./.uv-cache uv run --python .venv/bin/python wireviz-qty tests/bom/bomqty.yml --use-qty-multipliers`.
+- Quick sanity run: `UV_CACHE_DIR=./.uv-cache uv run --python .venv/bin/python filare examples/demo01.yml -f hpst -o outputs` (HTML/PNG/SVG/TSV). Add `-c examples/components.yml` or `-d metadata.yml` as needed.
+- Build downstream harnesses with the same venv: `cd ../xsc-harnesses && WIREVIZ=../Filare-codex1/.venv/bin/filare make`; `make clean` removes generated SVG/PNG/PDF/TSV.
+- For manual BOM scaling checks: `UV_CACHE_DIR=./.uv-cache uv run --python .venv/bin/python filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
 
 ## Coding Style & Naming Conventions
 - Python 3.8+; 4-space indentation; follow existing naming (`wv_*` modules, lowercase functions).
-- Format with Black and organize imports with isort. Run `./cleanup.sh` to apply autoflake + isort + black across `src/wireviz/`.
+- Format with Black and organize imports with isort. Run `./cleanup.sh` to apply autoflake + isort + black across `src/filare/`.
 - Docstrings follow Google style; keep CLI help strings succinct and user-facing.
 - Template and asset names stay lowercase with hyphens or underscores; keep YAML keys lowercase.
 - Keep docs coherent with code: when modifying metadata, flows, parser, or render behavior, update `docs/`, `docs/dev/`, and `docs/graphs/` accordingly (metadata guides, syntax, diagrams).
@@ -26,7 +26,7 @@
 ## Testing Guidelines
 - No full automated test harness is wired up; use YAMLs in `tests/` and `examples/` to spot rendering/BOM regressions.
 - Add a minimal YAML in `tests/rendering/` or `tests/bom/` for new behavior; keep file names numeric-prefixed (`04_newfeature.yml`).
-- Also build the XSC harness suite with the project venv (`cd ../xsc-harnesses && WIREVIZ=../WireViz-codex1/venv-wireviz/bin/wireviz make`) to catch downstream breakage.
+- Also build the XSC harness suite with the project venv (`cd ../xsc-harnesses && WIREVIZ=../Filare-codex1/venv-filare/bin/filare make`) to catch downstream breakage.
 - Ensure GraphViz (`dot -V`) and required fonts are available before debugging rendering differences.
 
 ## Commit & Pull Request Guidelines

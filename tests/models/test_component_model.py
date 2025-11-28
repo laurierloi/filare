@@ -1,6 +1,6 @@
-from wireviz.models.component import ComponentModel
-from wireviz.models.dataclasses import BomCategory, Component
-from wireviz.models.numbers import NumberAndUnit
+from filare.models.component import ComponentModel
+from filare.models.dataclasses import BomCategory, Component
+from filare.models.numbers import NumberAndUnit
 
 
 def test_component_model_to_from_dataclass():

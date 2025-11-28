@@ -1,4 +1,4 @@
-from wireviz.models.cable import CableModel
+from filare.models.cable import CableModel
 
 
 def test_cable_model_to_cable_with_colors(cable_config_data):

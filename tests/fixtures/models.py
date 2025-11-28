@@ -1,20 +1,20 @@
 import pytest
 
-from wireviz.models.bom import BomEntry
-from wireviz.models.cable import Cable
-from wireviz.models.connector import Connector, Loop, PinClass
-from wireviz.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
-from wireviz.models.options import PageOptions, get_page_options
-from wireviz.models.numbers import NumberAndUnit
-from wireviz.models.partnumber import PartNumberInfo
-from wireviz.models.colors import MultiColor
-from wireviz.models.dataclasses import (
+from filare.models.bom import BomEntry
+from filare.models.cable import Cable
+from filare.models.connector import Connector, Loop, PinClass
+from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
+from filare.models.options import PageOptions, get_page_options
+from filare.models.numbers import NumberAndUnit
+from filare.models.partnumber import PartNumberInfo
+from filare.models.colors import MultiColor
+from filare.models.dataclasses import (
     BomCategory,
     Component,
     QtyMultiplierCable,
     QtyMultiplierConnector,
 )
-from wireviz.models.configs import (
+from filare.models.configs import (
     CableConfig,
     ConnectionConfig,
     ConnectorConfig,

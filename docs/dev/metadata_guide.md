@@ -7,11 +7,11 @@
 - Authors/revisions are rendered in titleblocks; template config (sheetsize/orientation) affects layout direction and BOM ordering.
 
 ## Adding a new metadata field
-1. Update `src/wireviz/models/metadata.py` to include the field in the `Metadata` dataclass (and any supporting enums/structures).
+1. Update `src/filare/models/metadata.py` to include the field in the `Metadata` dataclass (and any supporting enums/structures).
 2. If the field is user-facing in HTML, add it to the appropriate template:
-   - Titleblock: `src/wireviz/templates/titleblock.html`
-   - Titlepage: `src/wireviz/templates/titlepage.html`
-   - BOM/index table if relevant: `src/wireviz/templates/bom.html` or `src/wireviz/templates/index_table.html`
+   - Titleblock: `src/filare/templates/titleblock.html`
+   - Titlepage: `src/filare/templates/titlepage.html`
+   - BOM/index table if relevant: `src/filare/templates/bom.html` or `src/filare/templates/index_table.html`
 3. Wire the field into the rendering context if not already propagated:
    - `render/output.py` prepares `metadata` for template rendering; ensure the new field is accessible (usually automatic via `Metadata`).
 4. Add or update documentation describing the field (e.g., docs/README.md metadata section).

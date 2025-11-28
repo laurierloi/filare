@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from wireviz.parser.harness_parser import parse_harness_files, parse_metadata_files
+from filare.parser.harness_parser import parse_harness_files, parse_metadata_files
 
 
 def test_parse_metadata_files(tmp_path):

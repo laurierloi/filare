@@ -3,8 +3,8 @@ requires = ["setuptools>=75"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "wireviz"
-version = "0.5.4"
+name = "filare"
+version = "0.1"
 description = "Easily document cables and wiring harnesses"
 readme = "docs/README.md"
 requires-python = ">=3.8"
@@ -22,10 +22,8 @@ dependencies = [
 ]
 
 [project.scripts]
-filare = "wireviz.wv_cli:cli"
-filare-qty = "wireviz.models.harness_quantity:qty_multipliers"
-wireviz = "wireviz.wv_cli:cli"
-wireviz-qty = "wireviz.models.harness_quantity:qty_multipliers"
+filare = "filare.wv_cli:cli"
+filare-qty = "filare.models.harness_quantity:qty_multipliers"
 
 [project.optional-dependencies]
 dev = [
@@ -53,7 +51,7 @@ dev-dependencies = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--maxfail=1 -ra --cov=wireviz --cov-report=term-missing --cov-report=html:report/coverage"
+addopts = "--maxfail=1 -ra --cov=filare --cov-report=term-missing --cov-report=html:report/coverage"
 markers = [
     "examples: slow example generation",
     "tutorial: slow tutorial generation",
@@ -61,9 +59,9 @@ markers = [
 
 [tool.coverage.run]
 branch = true
-source = ["src/wireviz"]
+source = ["src/filare"]
 omit = [
-    "src/wireviz/render/pdf.py",
+    "src/filare/render/pdf.py",
 ]
 
 [tool.coverage.report]

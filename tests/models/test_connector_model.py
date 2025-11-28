@@ -1,5 +1,5 @@
-from wireviz.models.connector import ConnectorModel
-from wireviz.models.types import BomCategory
+from filare.models.connector import ConnectorModel
+from filare.models.types import BomCategory
 
 
 def test_connector_model_to_dataclass(connector_config_data):

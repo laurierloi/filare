@@ -245,7 +245,7 @@ For connectors with `autogenerate: true`, a new instance, with auto-generated de
 ```yaml
   # Meta-information describing the harness
 
-  # Valus supported can be found in src/wireviz/metadata.py
+  # Valus supported can be found in src/filare/metadata.py
 
 ```
 

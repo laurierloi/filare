@@ -1,13 +1,13 @@
 from pathlib import Path
 
-from wireviz.models.metadata import Metadata, PageTemplateConfig
-from wireviz.models.options import PageOptions
-from wireviz.models.notes import Notes
-from wireviz.render.output import generate_html_output
-from wireviz.models.bom import BomRenderOptions, BomEntry, BomContent
-from wireviz.models.numbers import NumberAndUnit
-from wireviz.models.partnumber import PartNumberInfo
-from wireviz.models.dataclasses import BomCategory
+from filare.models.metadata import Metadata, PageTemplateConfig
+from filare.models.options import PageOptions
+from filare.models.notes import Notes
+from filare.render.output import generate_html_output
+from filare.models.bom import BomRenderOptions, BomEntry, BomContent
+from filare.models.numbers import NumberAndUnit
+from filare.models.partnumber import PartNumberInfo
+from filare.models.dataclasses import BomCategory
 
 
 def test_generate_html_output_creates_file(tmp_path):
