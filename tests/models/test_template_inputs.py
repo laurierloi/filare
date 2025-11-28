@@ -1,6 +1,11 @@
 import pytest
 
-from filare.models.configs import CableConfig, ConnectorConfig, ConnectionConfig, WireConfig
+from filare.models.configs import (
+    CableConfig,
+    ConnectorConfig,
+    ConnectionConfig,
+    WireConfig,
+)
 from filare.models.template_inputs import (
     TemplateCable,
     TemplateConnection,

@@ -3,7 +3,9 @@ from filare.models.types import BomCategory
 
 
 def test_connector_model_to_dataclass(connector_config_data):
-    connector_model = ConnectorModel(**connector_config_data, category=BomCategory.CONNECTOR)
+    connector_model = ConnectorModel(
+        **connector_config_data, category=BomCategory.CONNECTOR
+    )
     assert connector_model.pincount == 2
     connector = connector_model.to_connector()
     assert connector.designator == "J1"
@@ -12,7 +14,9 @@ def test_connector_model_to_dataclass(connector_config_data):
 
 
 def test_connector_model_defaults():
-    model = ConnectorModel(designator="X1", pinlabels=["1", "2"], pincolors=["RD", "GN"])
+    model = ConnectorModel(
+        designator="X1", pinlabels=["1", "2"], pincolors=["RD", "GN"]
+    )
     connector = model.to_connector()
     assert connector.pinlabels == ["1", "2"]
     assert connector.pincount == 2

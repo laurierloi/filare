@@ -247,7 +247,7 @@ class Harness:
             return pinlabel, pinnumber
 
         # check from and to connectors
-        for (name, (pinlabel, pinnumber)) in zip(
+        for name, (pinlabel, pinnumber) in zip(
             [from_name, to_name], [clean_pin(from_pin), clean_pin(to_pin)]
         ):
             if name is None or name not in self.connectors:

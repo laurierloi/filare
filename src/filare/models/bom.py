@@ -70,9 +70,7 @@ class BomEntryBase(BaseModel):
 
     def scale_per_harness(self, multipliers):
         if self.scaled_per_harness:
-            logging.warning(
-                "scale_per_harness() was called twice for item with no ID"
-            )
+            logging.warning("scale_per_harness() was called twice for item with no ID")
             return
         for k, v in self.per_harness.items():
             if k in multipliers:
@@ -130,7 +128,9 @@ class BomEntryBase(BaseModel):
 
 class BomEntry(BomEntryBase):
     id: str = ""
-    BOM_KEY_TO_COLUMNS: ClassVar[Dict[str, str]] = BomEntryBase.BOM_KEY_TO_COLUMNS.copy()
+    BOM_KEY_TO_COLUMNS: ClassVar[
+        Dict[str, str]
+    ] = BomEntryBase.BOM_KEY_TO_COLUMNS.copy()
 
     def __repr__(self):
         return f"{self.id}: {self.partnumbers}, {self.qty}"
@@ -138,6 +138,7 @@ class BomEntry(BomEntryBase):
     class Config:
         arbitrary_types_allowed = True
         allow_mutation = True
+
 
 class BomRender:
     def __init__(self, header, rows, strip_empty_columns=False, columns_class=None):

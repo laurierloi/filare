@@ -15,7 +15,13 @@ class HarnessQuantity(BaseModel):
     folder: Path
     qty_multipliers: Path
 
-    def __init__(self, harnesses, multiplier_file_name="quantity_multipliers.txt", output_dir=None, **data):
+    def __init__(
+        self,
+        harnesses,
+        multiplier_file_name="quantity_multipliers.txt",
+        output_dir=None,
+        **data,
+    ):
         super().__init__(
             harnesses=list(harnesses),
             multiplier_file_name=multiplier_file_name,

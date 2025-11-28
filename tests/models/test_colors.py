@@ -32,10 +32,16 @@ def test_multi_color_parses_colon_and_padding(monkeypatch):
 
 
 def test_get_color_by_colorcode_index_wraps():
-    assert get_color_by_colorcode_index("TEL", 60) == COLOR_CODES["TEL"][60 % len(COLOR_CODES["TEL"])]
+    assert (
+        get_color_by_colorcode_index("TEL", 60)
+        == COLOR_CODES["TEL"][60 % len(COLOR_CODES["TEL"])]
+    )
 
 
-@pytest.mark.parametrize("mode", [ColorOutputMode.EN_UPPER, ColorOutputMode.EN_LOWER, ColorOutputMode.HTML_UPPER])
+@pytest.mark.parametrize(
+    "mode",
+    [ColorOutputMode.EN_UPPER, ColorOutputMode.EN_LOWER, ColorOutputMode.HTML_UPPER],
+)
 def test_color_output_mode_changes(monkeypatch, mode):
     monkeypatch.setattr("filare.models.colors.color_output_mode", mode)
     c = SingleColor(inp="RD")

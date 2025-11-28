@@ -7,7 +7,9 @@ from filare.parser.yaml_loader import parse_concat_merge_files, parse_merge_file
 
 
 def parse_harness_files(
-    component_files: Tuple[Path, ...], harness_files: Tuple[Path, ...], metadata_files: Tuple[Path, ...]
+    component_files: Tuple[Path, ...],
+    harness_files: Tuple[Path, ...],
+    metadata_files: Tuple[Path, ...],
 ):
     """Parse component + harness YAML into a merged dict."""
     return parse_concat_merge_files(component_files + harness_files, metadata_files)

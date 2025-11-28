@@ -75,7 +75,9 @@ def generate_html_output(
 
     bom_render = BomContent(bom).get_bom_render(options=bom_render_options)
     options.bom_rows = len(bom_render.rows)
-    rendered["bom"] = bom_render.render(page_options=options, bom_options=bom_render_options)
+    rendered["bom"] = bom_render.render(
+        page_options=options, bom_options=bom_render_options
+    )
 
     # TODO: instead provide a PageOption to generate or not the svg
     svgdata = None
@@ -95,9 +97,9 @@ def generate_html_output(
     else:
         harness_number = int(match[0])
 
-    partno = f'{metadata.pn}-{metadata.revision}'
+    partno = f"{metadata.pn}-{metadata.revision}"
     if template_name != "titlepage":
-        partno +=  f'-{harness_number}'
+        partno += f"-{harness_number}"
 
     replacements = {
         "options": options,

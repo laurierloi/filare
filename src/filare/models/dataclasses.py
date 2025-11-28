@@ -81,7 +81,7 @@ class PinClass:
 
     @property
     def pin(self):
-        return self.index+1
+        return self.index + 1
 
     @property
     def category(self):
@@ -213,8 +213,9 @@ class GraphicalComponent(Component):  # abstract class
 
         self.designator = remove_links(self.designator)
 
+
 @dataclass
-class Loop():
+class Loop:
     first: PinClass = None
     second: PinClass = None
     side: Side = None
@@ -240,9 +241,9 @@ class Loop():
     @property
     def label(self):
         if self.show_label:
-            return f'{self.first}⇿{self.second}'
+            return f"{self.first}⇿{self.second}"
         else:
-            return ''
+            return ""
 
     def html_color(self):
         return self.color[0].html
@@ -343,8 +344,8 @@ class Connector(GraphicalComponent):
                 return int(pin)
             except ValueError:
                 return pin
-        self.pins = [to_int_pin(p) for p in self.pins]
 
+        self.pins = [to_int_pin(p) for p in self.pins]
 
         # all checks have passed
         pin_tuples = zip_longest(
@@ -375,16 +376,16 @@ class Connector(GraphicalComponent):
             pin_match_label = [p for p in self.pin_objects.values() if p.label == value]
             if pin_match_label:
                 return pin_match_label[0]
-            err = f'{value} not found in {self.pinlabels}'
+            err = f"{value} not found in {self.pinlabels}"
 
             try:
                 value = int(value)
             except ValueError as exc:
-                raise ValueError(f'{err} and is not an int')
+                raise ValueError(f"{err} and is not an int")
 
             pin_match_id = [p for p in self.pin_objects.values() if p.id == value]
             if not pin_match_id:
-                raise ValueError(f'{err} and is not one of the pins {self.pins}')
+                raise ValueError(f"{err} and is not one of the pins {self.pins}")
             return pin_match_id[0]
 
         normalized_loops = []
@@ -414,7 +415,6 @@ class Connector(GraphicalComponent):
             )
             for loop in normalized_loops
         ]
-
 
         for loop in self.loops:
             self.activate_pin(loop.first.id, side=loop.side, is_connection=True)
@@ -868,9 +868,11 @@ class Cable(WireClass):
                 index=index_offset,
                 id=id,
                 label="Shield",
-                color=MultiColor(self.shield)
-                if isinstance(self.shield, str)
-                else MultiColor(None),
+                color=(
+                    MultiColor(self.shield)
+                    if isinstance(self.shield, str)
+                    else MultiColor(None)
+                ),
                 parent=self.designator,
             )
 

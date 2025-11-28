@@ -345,7 +345,9 @@ def test_additional_bom_items_error_branch(monkeypatch, tmp_path, extra_metadata
     def raise_type_error(self, item):
         raise TypeError("boom")
 
-    monkeypatch.setattr("filare.models.harness.Harness.add_additional_bom_item", raise_type_error)
+    monkeypatch.setattr(
+        "filare.models.harness.Harness.add_additional_bom_item", raise_type_error
+    )
     with pytest.raises(TypeError):
         build_harness_from_files(
             inp=[harness],
@@ -376,8 +378,12 @@ connections:
         png = b"p"
         svg = "<svg/>"
 
-    monkeypatch.setattr("filare.models.harness.Harness.png", property(lambda self: DummyHarness.png))
-    monkeypatch.setattr("filare.models.harness.Harness.svg", property(lambda self: DummyHarness.svg))
+    monkeypatch.setattr(
+        "filare.models.harness.Harness.png", property(lambda self: DummyHarness.png)
+    )
+    monkeypatch.setattr(
+        "filare.models.harness.Harness.svg", property(lambda self: DummyHarness.svg)
+    )
 
     ret = build_harness_from_files(
         inp=[harness],

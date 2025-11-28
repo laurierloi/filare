@@ -1,6 +1,10 @@
 from pathlib import Path
 
-from filare.render.output import embed_svg_images, embed_svg_images_file, get_mime_subtype
+from filare.render.output import (
+    embed_svg_images,
+    embed_svg_images_file,
+    get_mime_subtype,
+)
 
 
 def test_embed_svg_images_inlines_data(tmp_path):

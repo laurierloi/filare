@@ -8,7 +8,11 @@ Functions are implemented in:
 - render.html: generate_html_output, generate_shared_bom, generate_titlepage
 """
 
-from filare.render.assets import embed_svg_images, embed_svg_images_file, get_mime_subtype
+from filare.render.assets import (
+    embed_svg_images,
+    embed_svg_images_file,
+    get_mime_subtype,
+)
 from filare.render.html import (
     generate_html_output,
     generate_shared_bom,

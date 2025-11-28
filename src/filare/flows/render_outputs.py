@@ -13,4 +13,6 @@ def render_harness_outputs(
     output_formats: Iterable[str],
 ) -> None:
     """Render harness outputs using the harness model."""
-    harness.output(filename=output_dir / output_name, fmt=tuple(output_formats), view=False)
+    harness.output(
+        filename=output_dir / output_name, fmt=tuple(output_formats), view=False
+    )

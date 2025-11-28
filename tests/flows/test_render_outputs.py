@@ -27,7 +27,9 @@ def test_render_harness_outputs_generates_files(tmp_path):
         revisions={"a": {"name": "r", "date": "2020-01-01", "changelog": "init"}},
         template=PageTemplateConfig(),
     )
-    harness = Harness(metadata=metadata, options=PageOptions(), notes=Notes(), shared_bom={})
+    harness = Harness(
+        metadata=metadata, options=PageOptions(), notes=Notes(), shared_bom={}
+    )
     # minimal connector/cable to allow output rendering
     harness.add_connector("X1", pincount=1)
     harness.add_connector("X2", pincount=1)

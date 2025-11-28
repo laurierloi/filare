@@ -11,7 +11,9 @@ def _build_harness(metadata, page_options):
 def test_harness_accepts_connector_and_cable_models(basic_metadata, basic_page_options):
     harness = _build_harness(basic_metadata, basic_page_options)
     harness.add_connector_model(ConnectorModel(designator="J1", pinlabels=["1", "2"]))
-    harness.add_cable_model(CableModel(designator="C1", wirecount=2, colors=["RD", "BK"], length="1 m"))
+    harness.add_cable_model(
+        CableModel(designator="C1", wirecount=2, colors=["RD", "BK"], length="1 m")
+    )
     assert "J1" in harness.connectors
     assert "C1" in harness.cables
     harness.populate_bom()

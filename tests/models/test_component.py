@@ -5,7 +5,9 @@ from filare.models.dataclasses import BomCategory, QtyMultiplierConnector
 
 def test_component_additional_components_infer_category():
     sub = {"type": "Screw"}
-    comp = Component(type="Shell", category=BomCategory.CONNECTOR, additional_components=[sub])
+    comp = Component(
+        type="Shell", category=BomCategory.CONNECTOR, additional_components=[sub]
+    )
     assert len(comp.additional_components) == 1
     assert comp.additional_components[0].category == BomCategory.ADDITIONAL
 

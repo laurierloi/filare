@@ -93,7 +93,7 @@ See the [tutorial page](../tutorial/readme.md) for sample code, as well as the [
 ## Installation
 ### Requirements
 
-Filare requires Python 3.7 or later (3.8 to support pdf).
+Filare requires Python 3.9 or later.
 
 Filare requires GraphViz to be installed in order to work. See the [GraphViz download page](https://graphviz.org/download/) for OS-specific instructions.
 

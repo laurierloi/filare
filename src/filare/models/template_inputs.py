@@ -4,7 +4,12 @@ from typing import List, Optional, Sequence, Union
 
 from pydantic import BaseModel, Extra, Field, validator
 
-from filare.models.configs import CableConfig, ConnectorConfig, ConnectionConfig, WireConfig
+from filare.models.configs import (
+    CableConfig,
+    ConnectorConfig,
+    ConnectionConfig,
+    WireConfig,
+)
 from filare.models.numbers import NumberAndUnit
 
 
@@ -41,7 +46,10 @@ class TemplateConnector(TemplateBaseModel):
     def from_config(cls, cfg: ConnectorConfig) -> "TemplateConnector":
         pins: List[TemplatePin] = []
         if cfg.pins:
-            pins = [TemplatePin(label=p.label, color=p.color or [], id=p.id) for p in cfg.pins]
+            pins = [
+                TemplatePin(label=p.label, color=p.color or [], id=p.id)
+                for p in cfg.pins
+            ]
         elif cfg.pinlabels:
             colors = cfg.pincolors or []
             for idx, label in enumerate(cfg.pinlabels):
@@ -70,7 +78,9 @@ class TemplateWire(TemplateBaseModel):
         return list(value)
 
     @validator("length", pre=True)
-    def _coerce_length(cls, value: Union[str, NumberAndUnit, None]) -> Optional[NumberAndUnit]:
+    def _coerce_length(
+        cls, value: Union[str, NumberAndUnit, None]
+    ) -> Optional[NumberAndUnit]:
         if value is None:
             return None
         return NumberAndUnit.to_number_and_unit(value)

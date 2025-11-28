@@ -6,7 +6,14 @@ from typing import Any, List, Optional, Union
 from filare import APP_NAME, APP_URL, __version__
 from filare.settings import settings
 from filare.models.colors import MultiColor, SingleColor
-from filare.models.dataclasses import Cable, Component, Connector, ShieldClass, WireClass, Side
+from filare.models.dataclasses import (
+    Cable,
+    Component,
+    Connector,
+    ShieldClass,
+    WireClass,
+    Side,
+)
 from filare.render.html_utils import Img, Table, Td, Tr
 from filare.render.templates import get_template
 from filare.models.utils import html_line_breaks, remove_links
@@ -49,14 +56,18 @@ def gv_connector_loops(connector: Connector) -> List:
         this_loop_side = loop_side
         this_loop_dir = loop_dir
         if loop.side == Side.RIGHT:
-            this_loop_side = 'r'
-            this_loop_dir = 'e'
+            this_loop_side = "r"
+            this_loop_dir = "e"
         elif loop.side == Side.LEFT:
-            this_loop_side = 'l'
-            this_loop_dir = 'w'
+            this_loop_side = "l"
+            this_loop_dir = "w"
 
-        head = f"{connector.designator}:p{loop.first.pin}{this_loop_side}:{this_loop_dir}"
-        tail = f"{connector.designator}:p{loop.second.pin}{this_loop_side}:{this_loop_dir}"
+        head = (
+            f"{connector.designator}:p{loop.first.pin}{this_loop_side}:{this_loop_dir}"
+        )
+        tail = (
+            f"{connector.designator}:p{loop.second.pin}{this_loop_side}:{this_loop_dir}"
+        )
         loop_edges.append((loop, head, tail))
     return loop_edges
 

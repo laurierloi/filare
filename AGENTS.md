@@ -21,7 +21,7 @@
 - For manual BOM scaling checks: `uv venv; uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
 
 ## Coding Style & Naming Conventions
-- Python 3.8+; 4-space indentation; follow existing naming (modules, lowercase functions).
+- Python 3.9+; 4-space indentation; follow existing naming (modules, lowercase functions).
 - Format with Black and organize imports with isort. Run `./cleanup.sh` to apply autoflake + isort + black across `src/filare/`.
 - Docstrings follow Google style; keep CLI help strings succinct and user-facing.
 - Template and asset names stay lowercase with hyphens or underscores; keep YAML keys lowercase.

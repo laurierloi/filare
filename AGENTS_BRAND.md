@@ -8,16 +8,20 @@
 - Harness definitions for XSC live next door in `../xsc-harnesses`; treat them as downstream consumers built with the same Filare virtualenv.
 
 ## Build, Test, and Development Commands
-- Prefer uv for env and installs:
-  - Create venv: `UV_CACHE_DIR=./.uv-cache uv venv .venv`
-  - Install (incl. dev tools): `UV_CACHE_DIR=./.uv-cache uv pip install --python .venv/bin/python -e . --group dev`
-  - Run tests/coverage: `UV_CACHE_DIR=./.uv-cache uv run --python .venv/bin/python pytest`
-- Quick sanity run: `UV_CACHE_DIR=./.uv-cache uv run --python .venv/bin/python filare examples/demo01.yml -f hpst -o outputs` (HTML/PNG/SVG/TSV). Add `-c examples/components.yml` or `-d metadata.yml` as needed.
+- Always use the uv package manager for Python (env, installs, and command execution):
+  - First-time bootstrap (or when deps change): `uv venv; uv sync`
+  - Create venv: `uv venv` # Create venv before running any other command
+  - Add a package: `uv add <package>`
+  - Install all packages `uv venv; uv sync`
+  - Run a Python entrypoint or script: `uv venv; uv run <command>`
+  - Run tests/coverage: `uv run pytest`
+  - Avoid `pip`, `python -m venv`, or direct `python`/`pytest` calls; route everything through `uv venv`/`uv run`.
+- Quick sanity run: `uv venv; uv sync; uv run filare examples/demo01.yml -f hpst -o outputs` (HTML/PNG/SVG/TSV). Add `-c examples/components.yml` or `-d metadata.yml` as needed.
 - Build downstream harnesses with the same venv: `cd ../xsc-harnesses && FILARE=../Filare-codex1/.venv/bin/filare make` (use `WIREVIZ=` if the harness makefile still expects the legacy variable); `make clean` removes generated SVG/PNG/PDF/TSV.
-- For manual BOM scaling checks: `UV_CACHE_DIR=./.uv-cache uv run --python .venv/bin/python filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
+- For manual BOM scaling checks: `uv venv; uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
 
 ## Coding Style & Naming Conventions
-- Python 3.8+; 4-space indentation; follow existing naming (`wv_*` modules, lowercase functions).
+- Python 3.9+; 4-space indentation; follow existing naming (`wv_*` modules, lowercase functions).
 - Format with Black and organize imports with isort. Run `./cleanup.sh` to apply autoflake + isort + black across `src/filare/`.
 - Docstrings follow Google style; keep CLI help strings succinct and user-facing.
 - Template and asset names stay lowercase with hyphens or underscores; keep YAML keys lowercase.

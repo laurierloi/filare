@@ -15,4 +15,3 @@ from filare.models.dataclasses import (  # noqa: F401
     Side,
     Wire,
 )
-

@@ -42,7 +42,9 @@ def test_examples_generate_outputs(tmp_path):
 def test_tutorial_generates_outputs(tmp_path):
     tutorial_dir = Path("tutorial")
     metadata_file = tutorial_dir / "metadata.yml"
-    yaml_inputs = sorted(Path(p) for p in glob.glob(str(tutorial_dir / "tutorial*.yml")))
+    yaml_inputs = sorted(
+        Path(p) for p in glob.glob(str(tutorial_dir / "tutorial*.yml"))
+    )
     assert yaml_inputs, "No tutorial YAMLs found"
     output_dir = Path("outputs") / "tutorial"
     output_dir.mkdir(parents=True, exist_ok=True)

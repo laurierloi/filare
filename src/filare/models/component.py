@@ -38,7 +38,9 @@ class ComponentModel(BaseModel):
     designators: List[str] = Field(default_factory=list)
     parent: Optional[str] = None
     additional_components: List[Any] = Field(default_factory=list)
-    qty_multiplier: Union[QtyMultiplierConnector, QtyMultiplierCable, int, float, str] = 1
+    qty_multiplier: Union[
+        QtyMultiplierConnector, QtyMultiplierCable, int, float, str
+    ] = 1
     bgcolor: Optional[SingleColor] = None
 
     class Config:

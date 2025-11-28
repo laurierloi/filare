@@ -134,7 +134,9 @@ class PageTemplateConfig(BaseModel):
         if values.get("orientation") is None:
             size = values.get("sheetsize")
             values["orientation"] = (
-                Orientations.portrait if size == SheetSizes.A4 else Orientations.landscape
+                Orientations.portrait
+                if size == SheetSizes.A4
+                else Orientations.landscape
             )
         return values
 
