@@ -5,10 +5,6 @@ on:
     branches: [main]
   pull_request:
 
-env:
-  PIP_DISABLE_PIP_VERSION_CHECK: "1"
-  UV_CACHE_DIR: ./.uv-cache
-
 jobs:
   lint:
     name: "1) Lint (black, prettier)"
@@ -18,16 +14,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Create venv and install deps
+        run: |
+          uv venv
+          uv sync --group dev --frozen
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Install lint deps
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install .[dev]
-          npm install --global prettier
+      - name: Install prettier
+        run: npm install --global prettier
       - name: Run black
-        run: black --check src tests
+        run: uv run --no-sync black --check src tests
       - name: Run prettier
         run: prettier --check "docs/**/*.{md,html}" "src/filare/templates/**/*.html"
 
@@ -40,16 +41,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Install system deps
         run: |
           sudo apt-get update
           sudo apt-get install -y graphviz
       - name: Install project
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install .[dev]
+          uv venv
+          uv sync --group dev --frozen
       - name: Pytest
-        run: pytest
+        run: uv run --no-sync pytest
 
   build_examples:
     name: "3) Build examples/templates"
@@ -60,19 +65,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Install system deps
         run: |
           sudo apt-get update
           sudo apt-get install -y graphviz
       - name: Install project
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install .
+          uv venv
+          uv sync --frozen
       - name: Build examples
         run: |
           mkdir -p outputs/examples outputs/tutorial
-          filare -f hs -o outputs/examples examples/demo01.yml
-          filare -f h -o outputs/tutorial tutorial/tutorial01.yml
+          uv run --no-sync filare -f hs -o outputs/examples examples/demo01.yml
+          uv run --no-sync filare -f h -o outputs/tutorial tutorial/tutorial01.yml
       - name: Upload example artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -110,17 +119,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install semantic-release
+      - name: Install uv
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install python-semantic-release
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Prepare env
+        run: |
+          uv venv
+          uv pip install --python .venv/bin/python python-semantic-release
       - name: Run semantic-release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: |
-          semantic-release version
-          semantic-release publish
+          uv run --no-sync semantic-release version
+          uv run --no-sync semantic-release publish
 
   publish:
     name: "6) Build & publish to PyPI"
@@ -132,15 +145,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Build dist
         run: |
-          python -m pip install --upgrade pip build twine
-          python -m build
+          uv venv
+          uv pip install --python .venv/bin/python build twine
+          uv run --no-sync python -m build
       - name: Upload to PyPI
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-        run: twine upload dist/*
+        run: uv run --no-sync twine upload dist/*
 
   verify_pypi:
     name: "7) Verify package from PyPI"
@@ -150,12 +168,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Install from PyPI
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install filare
+          uv venv
+          uv pip install --python .venv/bin/python filare
       - name: Check CLI
-        run: filare --help
+        run: uv run --no-sync filare --help
 
   container:
     name: "8) Build & push container"
