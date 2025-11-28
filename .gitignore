@@ -1,0 +1,31 @@
+# OS-specific files
+.DS_Store
+desktop.ini
+Thumbs.db
+
+# Development aids
+.idea/
+temp/
+venv/
+.venv/
+tags
+.coverage
+
+# Build/compile/release artifacts
+build/
+dist/
+*.egg-info
+*.pyc
+
+# Other temporary files
+__pycache__
+.*.swp
+
+# Built examples
+examples/*
+tutorial/*
+outputs/*
+!examples/*.yml
+!tutorial/*.yml
+!tutorial/*.md
+

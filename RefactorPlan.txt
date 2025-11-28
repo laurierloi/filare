@@ -1,0 +1,174 @@
+Refactor plan: modular models, parsers, flows, and comprehensive tests
+
+Rebranding note: WireViz is being renamed to Filare. As changes continue, prefer Filare naming for new docs/diagrams/code paths where feasible (while preserving current CLI/module names until the formal rename step). Track any lingering “WireViz” references to update alongside the rebrand.
+
+1) Establish models package
+- Create directory src/wireviz/models/.
+- Split current dataclasses from src/wireviz/wv_dataclasses.py into focused modules:
+  - models/connector.py (Connector, PinClass, Loop, connector-specific helpers)
+  - models/cable.py (Cable, WireClass/ShieldClass, Connection, cable-specific helpers)
+  - models/component.py (Component, GraphicalComponent, BomCategory, qty multipliers)
+  - models/bom.py (BomEntry and related BOM helpers currently in wv_bom.py)
+  - models/metadata.py (Metadata, Revision/Author classes currently in metadata.py)
+  - models/options.py (PageOptions, page-related config currently in page_options.py)
+  - models/utils.py (color/number helpers that are model-level, e.g., awg/mm2)
+- Keep __init__.py files to export public API and maintain existing imports via compatibility re-exports during migration.
+- Git moves to preserve history:
+  - git mv src/wireviz/wv_dataclasses.py src/wireviz/models/component.py (then split content into new files)
+  - git mv src/wireviz/wv_bom.py src/wireviz/models/bom.py
+  - git mv src/wireviz/metadata.py src/wireviz/models/metadata.py
+  - git mv src/wireviz/page_options.py src/wireviz/models/options.py
+
+2) Introduce parser package
+- Create src/wireviz/parser/ with modules:
+  - parser/yaml_loader.py (currently parse_yaml.py logic: merge_item, parse_merge_files, parse_concat_merge_files; add safe file handling).
+  - parser/harness_parser.py to transform YAML dicts into model instances (currently spread across wireviz.py).
+  - parser/options_parser.py and parser/metadata_parser.py if needed to keep concerns isolated.
+- Gradually replace direct YAML dict accesses in flows with typed parse outputs. Keep temporary shims to map old functions to new module paths for backward compatibility.
+- Git moves:
+  - git mv src/wireviz/parse_yaml.py src/wireviz/parser/yaml_loader.py
+
+3) Define flows layer
+- Create src/wireviz/flows/ with:
+  - flows/build_harness.py: orchestrates parsing components/options/metadata into models, connects harness, and returns a Harness model.
+  - flows/render_outputs.py: takes Harness/Metadata/Options and calls rendering (graphviz, html, pdf).
+  - flows/shared_bom.py: handles aggregation across multiple harness models, qty multipliers.
+  - flows/index_pages.py: titlepage/index table generation.
+- Refactor wireviz.py into a thin wrapper that delegates to flows; keep CLI-facing API stable. Eventually split CLI responsibilities into flows/cli_runner.py and keep wv_cli.py as entrypoint wrapper.
+
+4) Rendering separation
+- Keep graphviz/html/pdf functions under src/wireviz/render/ (new) to isolate pure rendering from flows. Move:
+  - gv_* functions from wv_graphviz.py to render/graphviz.py
+  - HTML/PDF helpers from wv_output.py to render/html.py, render/pdf.py
+  - move embed_svg_images into render/assets.py
+- Update imports accordingly; maintain re-export stubs to avoid breaking callers during transition.
+- Git moves:
+  - git mv src/wireviz/wv_graphviz.py src/wireviz/render/graphviz.py
+  - git mv src/wireviz/wv_output.py src/wireviz/render/output.py (split inside).
+
+5) Wiring of connectors/cables in flows
+- In flows/build_harness.py, introduce small, testable functions:
+  - resolve_templates(yaml_data) -> template dicts
+  - add_connectors(harness, connector_defs)
+  - add_cables(harness, cable_defs)
+  - connect_links(harness, connection_sets)
+  - apply_additional_bom(harness, extras)
+- Each function should accept/return models only (no file I/O).
+
+6) CLI and backward compatibility
+- Keep wv_cli.py as a facade calling flows (parse inputs, call build_harness, then render). Add deprecation layers so existing import paths remain usable (e.g., from wireviz.wv_dataclasses import Connector).
+- Ensure format code mapping stays in CLI, but move heavy logic into flows/render_outputs.py.
+
+7) Testing strategy expansion
+- Add pytest suites covering:
+  - Model creation/validation: connectors, cables, qty multipliers, metadata, options.
+  - Parser unit tests: yaml_loader functions (merge precedence, concat), harness_parser building models from YAML snippets (including edge cases from examples/tutorials).
+  - Flow integration tests: building single and multi-harness docs, shared BOM scaling, connector overview pages, quantity multipliers, template selection.
+  - Rendering smoke tests: ensure graphviz/html outputs are produced for examples (use tmp paths; do not assert pixel-perfect, only existence/structure).
+- Derive test fixtures from examples/ and tutorial/:
+  - Parametrize over examples/ex*.yml with metadata to assert successful build and BOM non-empty.
+  - Add tutorial coverage by building tutorial YAMLs where feasible (or distilled fixtures mirroring tutorial features).
+  - Add regression tests for connector overview pages, background colors, loops, bundles, qty multipliers (existing tests/rendering YAMLs).
+- Add coverage config in pyproject.toml to include src/wireviz and exclude templates/assets.
+
+8) Incremental migration steps
+- Phase 1: Move files (git mv) and add compatibility re-exports (__init__.py) so imports continue to work.
+- Phase 2: Refactor wireviz.py to rely on parser + flows; keep function signatures stable.
+- Phase 3: Migrate rendering helpers into render/ and adjust flows; deprecate old module paths with clear warnings.
+- Phase 4: Expand pytest suite and wire into CI (if available); generate coverage report to ensure model/parser/flow branches are exercised.
+
+9) Tooling/commands to execute moves
+- Example commands (run from repo root):
+  - git mv src/wireviz/wv_dataclasses.py src/wireviz/models/component.py
+  - git mv src/wireviz/wv_bom.py src/wireviz/models/bom.py
+  - git mv src/wireviz/metadata.py src/wireviz/models/metadata.py
+  - git mv src/wireviz/page_options.py src/wireviz/models/options.py
+  - git mv src/wireviz/parse_yaml.py src/wireviz/parser/yaml_loader.py
+  - git mv src/wireviz/wv_graphviz.py src/wireviz/render/graphviz.py
+- git mv src/wireviz/wv_output.py src/wireviz/render/output.py
+- After moves, add __init__.py files exporting the old names, then progressively update imports across the codebase.
+
+11) Testing steps (per refactor stage)
+- Step 1 models tests: add pytest fixtures under tests/fixtures/models.py and tests/models/* for connectors, cables, components, metadata/options, BOM interactions. Generate coverage and record in Refactor.log.
+- Step 2 parser tests: add tests/parser/* to cover yaml_loader merge/concat logic and harness_parser helpers; target >70% coverage.
+- Step 3 flows tests: add tests/flows/* to validate build_harness_from_files wiring happy-path and failure paths (odd connections, template resolution).
+- Step 4 render tests: add lightweight smoke tests for render/graphviz and render/output to ensure SVG/HTML generation runs on minimal harness; avoid pixel-perfect asserts.
+- Update Refactor.log with per-step coverage totals and commands.
+
+12) Flows & overview handling
+- Add tests covering happy-path harness build, mismatched connection counts, overview style toggling, additional BOM items, and missing output format errors. Patch Harness to include orient_connectors_overview helper used in overview flows.
+
+13) Rendering utilities
+- Move HTML helpers and templates into render/ (with shims for legacy imports); adjust imports accordingly.
+- Add render tests for template loading, HTML utilities, SVG embedding helpers, HTML generation, and render_harness_outputs on a minimal harness.
+
+10) Test coverage goals
+- Aim for >90% on parser and flows modules; >80% on models; rendering smoke tests for coverage lines without asserting images.
+- Include a full examples sweep test: iterate examples/ex*.yml + metadata and assert outputs exist; skip known heavyweight PDFs unless needed.
+
+14) CLI/shared BOM/index flows
+- Add flows/shared_bom.py and flows/index_pages.py as thin facades over rendering helpers; update CLI to consume them.
+- Add pytest coverage for shared BOM/titlepage/pdf bundle wrappers with monkeypatches for error-free execution.
+
+15) Rendering module split and templating audit
+- Split render/output.py into render/html.py (HTML generation), render/pdf.py (PDF bundle), and render/assets.py (embed helpers). Keep shims for backward compatibility and update imports.
+- Audit rendered elements still built in code instead of Jinja (e.g., Graphviz node labels, BOM table strings) and note candidates for template migration.
+
+16) Shim cleanup and import updates
+- Remove backward-compatibility shims (wv_* proxies) once all references are updated; search for imports of legacy paths and replace with models/parser/flows/render equivalents. Update Refactor.log when shims are removed.
+
+17) Coverage hardening for low-coverage modules
+- Add parser edge-case tests to lift parser/yaml_loader to >90%.
+- Add coverage for wv_harness_quantity, wv_colors, wv_utils, and render/graphviz paths (e.g., node/edge rendering, padding logic).
+- Extend example/tutorial sweeps to include png/svg (optionally marked slow) and shared BOM generation.
+
+18) Architecture diagrams (Mermaid)
+- Create Mermaid graph describing overall architecture (models, parser, flows, render) and save to docs/graphs/architecture.md (with rendered output).
+- Create Mermaid graph for data flow from YAML + metadata through parser/flows/render to SVG/HTML outputs, saved to docs/graphs/data_flow.md.
+- Create Mermaid graphs documenting key models and their relationships (connectors, cables, harness, BOM), saved to docs/graphs/models.md.
+
+19) Documentation refresh
+- Review each doc under docs/ for coherence with current code; update where mismatched.
+- Add/update docs explaining metadata roles and how to update/add fields; include render impact.
+- Add development guide under docs/dev/ on adding metadata fields, where they render, and other useful guides (e.g., adding models, extending parser/flows/render, adding tests/coverage steps). Create tasks for future dev guides as needed.
+
+20) Shim cleanup
+- Remove legacy compatibility shims (wv_* proxies) once all imports are updated; track completion in Refactor.log.
+
+21) Consolidate remaining modules
+- Move wv_colors and wv_harness_quantity into the models package (e.g., models/colors.py, models/harness_quantity.py); adjust imports to use models paths.
+- If wv_harness_quantity workflows need orchestration, add corresponding flows (e.g., flows/harness_quantity.py) to encapsulate quantity multiplier logic.
+
+22) Migrate dataclasses to Pydantic models (multi-step)
+- Convert models/metadata.py to Pydantic BaseModel (preserve validation); adapt usages and tests.
+- Convert models/options.py to Pydantic (page options).
+- Convert models/colors.py, models/bom.py, models/dataclasses.py (connector/cable/component) incrementally; adjust hash/eq semantics and validation.
+- Update downstream code/tests to use BaseModel behaviors; keep compatibility shims where needed.
+- Propagate Pydantic model types into function signatures/usages (e.g., Metadata, PageOptions) so call sites are explicit about expecting BaseModel instances rather than plain dicts/objects.
+- Introduce centralized settings module: add settings.py to hold environment-driven configuration with WV_ prefix via settings configuration (no direct field renaming); plan migration of all env vars into this module and expand as more settings are needed.
+- Plan BOM staging: first populate BOM with unique IDs per instance (itemized), then generate a condensed BOM with merged parts for summary contexts. Add tasks to implement staged BOM generation without losing per-instance traceability.
+- Migrate remaining core classes to Pydantic incrementally (one class per step with tests): Component -> BaseModel, then GraphicalComponent/Connector, then Cable.
+- Capture future modeling and graph work in NEXT_FEATURES.md (config BaseModels, template-input models, graph representation/mapping); implement in small steps as outlined there.
+
+22a) Config models and graph groundwork (see NEXT_FEATURES.md)
+- Add ConnectorConfig/CableConfig/WireConfig/ConnectionConfig/MetadataConfig/PageOptionsConfig as Pydantic BaseModels for YAML-facing configuration.
+- Add round-trip YAML tests for each config model (load minimal/example/tutorial snippets, validate, dump back).
+- Add template-input models and conversions (TemplateConnector/TemplateCable/TemplateBOMItem, etc.) and tests.
+- Introduce initial graph representation linking config models (pins→interfaces, bundles→cables, segments); add tests for small graphs.
+- Map graphs to template-input models with tests.
+- Migrate dataclasses incrementally to construct from config models (Component first, then Connector, Cable), with regression tests.
+
+22b) Component Pydantic model
+- Add ComponentModel BaseModel with conversion helpers to/from dataclass Component; ensure qty/color/hypertext normalization and tests for round-trip.
+
+22c) Connector/Cable Pydantic models
+- Add GraphicalComponentModel/ConnectorModel and CableModel to normalize inputs and convert to dataclasses; add unit tests.
+- Propagate models into flows/harness construction when stable.
+
+22d) Flow propagation of BaseModels
+- Allow flows.build_harness to accept ConnectorModel/CableModel/ComponentModel inputs directly and prefer them when provided.
+- Wire CLI/parser paths to optionally emit config models then convert through BaseModels before dataclass construction; add regression tests.
+
+23) Move remaining src/wireviz modules into packages
+- Inventory remaining files under src/wireviz/ that are not shims/entry points; plan moves to flows/models/parser/render/tools as appropriate.
+- Update imports to new locations; leave only shims and CLI entrypoints in src/wireviz root.

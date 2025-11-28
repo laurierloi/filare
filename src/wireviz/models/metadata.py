@@ -1,0 +1,232 @@
+from datetime import date, datetime
+from enum import Enum
+from pathlib import Path
+from typing import Dict, List, Optional, Union
+
+from pydantic import BaseModel, Field, root_validator, validator
+
+import wireviz  # for doing wireviz.__file__
+
+from wireviz.models.types import PlainText
+
+# Metadata can contain whatever is needed by the HTML generation/template.
+MetadataKeys = PlainText  # Literal['title', 'description', 'notes', ...]
+
+
+class DocumentInfo(BaseModel):
+    title: str
+    pn: str
+
+    class Config:
+        frozen = True
+
+
+class CompanyInfo(BaseModel):
+    company: str
+    address: str
+
+    class Config:
+        frozen = True
+
+
+class AuthorSignature(BaseModel):
+    name: str = ""
+    date: Optional[object] = None
+
+    @validator("date", pre=True)
+    def _coerce_date(cls, value):
+        if value is None:
+            return None
+        if isinstance(value, (datetime, date)):
+            return value
+        if isinstance(value, str):
+            if value.lower() == "n/a":
+                return "n/a"
+            if value == "TBD":
+                return "TBD"
+            date_format = "%Y-%m-%d"
+            try:
+                return datetime.strptime(value, date_format)
+            except Exception as err:
+                raise ValueError(
+                    f'date ({value}) should be parsable with format ({date_format}) or set to "n/a" or "TBD"'
+                ) from err
+        return value
+
+    class Config:
+        frozen = True
+
+
+class AuthorRole(AuthorSignature):
+    role: str = ""
+
+
+class RevisionSignature(AuthorSignature):
+    changelog: str = ""
+
+
+class RevisionInfo(RevisionSignature):
+    revision: str = ""
+
+
+class OutputMetadata(BaseModel):
+    output_dir: Path
+    output_name: str
+
+    class Config:
+        frozen = True
+
+
+class SheetMetadata(BaseModel):
+    sheet_total: int
+    sheet_current: int
+    sheet_name: str
+
+    class Config:
+        frozen = True
+
+
+class PagesMetadata(BaseModel):
+    titlepage: Path
+    output_names: List[str]
+    files: List[Union[str, Path]]
+    use_qty_multipliers: bool
+    multiplier_file_name: str
+    pages_notes: Dict[str, str] = Field(default_factory=dict)
+    output_dir: Path
+
+    class Config:
+        frozen = True
+
+
+class PageTemplateTypes(str, Enum):
+    simple = "simple"
+    din_6771 = "din-6771"
+    titlepage = "titlepage"
+
+
+class SheetSizes(str, Enum):
+    A2 = "A2"
+    A3 = "A3"
+    A4 = "A4"
+
+
+class Orientations(str, Enum):
+    landscape = "landscape"
+    portrait = "portrait"
+
+
+class PageTemplateConfig(BaseModel):
+    name: PageTemplateTypes = PageTemplateTypes.din_6771
+    sheetsize: SheetSizes = SheetSizes.A3
+    orientation: Optional[Orientations] = None
+
+    @validator("name", pre=True)
+    def _coerce_name(cls, value):
+        return PageTemplateTypes(value)
+
+    @validator("sheetsize", pre=True)
+    def _coerce_size(cls, value):
+        return SheetSizes(value)
+
+    @root_validator
+    def _default_orientation(cls, values):
+        if values.get("orientation") is None:
+            size = values.get("sheetsize")
+            values["orientation"] = (
+                Orientations.portrait if size == SheetSizes.A4 else Orientations.landscape
+            )
+        return values
+
+    def has_bom_reversed(self):
+        return self.name == PageTemplateTypes.din_6771
+
+    class Config:
+        frozen = True
+
+
+# TODO: Metadata is a 'fourre-tout' of metadata right now.
+#       Is this the best way to keep it or we should have more segmentation?
+#       Maybe we could avoid inheritance, and instead have everything as an arg
+#       Then we create a 'from_dict' options, which fills the args even if they
+#       are not at the proper depth (if there's no conflict in names)
+class Metadata(
+    PagesMetadata, OutputMetadata, CompanyInfo, SheetMetadata, DocumentInfo
+):  # type: ignore[misc]
+    authors: Dict[str, AuthorSignature] = Field(default_factory=dict)
+    revisions: Dict[str, RevisionSignature] = Field(default_factory=dict)
+    template: PageTemplateConfig = Field(default_factory=PageTemplateConfig)
+    git_status: str = ""
+    logo: Optional[str] = None
+
+    @property
+    def name(self):
+        if self.pn and self.pn not in self.output_name:
+            return f"{self.pn}-{self.output_name}"
+        else:
+            return self.output_name
+
+    @validator("authors", pre=True)
+    def _coerce_authors(cls, value):
+        if not value:
+            return {}
+        return {
+            key: val if isinstance(val, AuthorSignature) else AuthorSignature(**val)
+            for key, val in value.items()
+        }
+
+    @validator("revisions", pre=True)
+    def _coerce_revisions(cls, value):
+        if not value:
+            return {}
+        return {
+            key: val if isinstance(val, RevisionSignature) else RevisionSignature(**val)
+            for key, val in value.items()
+        }
+
+    @property
+    def generator(self):
+        return f"{wireviz.APP_NAME} {wireviz.__version__} - {wireviz.APP_URL}"
+
+    @property
+    def authors_list(self):
+        _authors_list = []
+        for role, author in self.authors.items():
+            _authors_list.append(
+                AuthorRole(name=author.name, date=author.date, role=role)
+            )
+        return _authors_list
+
+    @property
+    def revisions_list(self):
+        _revisions_list = []
+        for revision, sig in self.revisions.items():
+            _revisions_list.append(
+                RevisionInfo(
+                    revision=revision,
+                    name=sig.name,
+                    date=sig.date,
+                    changelog=sig.changelog,
+                )
+            )
+        return _revisions_list
+
+    @property
+    def revision(self):
+        return self.revisions_list[-1].revision
+
+    @property
+    def pages_metadata(self):
+        return PagesMetadata(
+            titlepage=self.titlepage,
+            output_names=self.output_names,
+            files=self.files,
+            use_qty_multipliers=self.use_qty_multipliers,
+            multiplier_file_name=self.multiplier_file_name,
+            pages_notes=self.pages_notes,
+            output_dir=self.output_dir,
+        )
+
+    class Config:
+        frozen = True
+        arbitrary_types_allowed = True

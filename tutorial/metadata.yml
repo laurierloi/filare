@@ -1,0 +1,31 @@
+metadata:
+
+  title: test
+  pn: test-01
+  company: some company
+  address: 8888 fancy street west
+
+  authors:
+    created:
+      name: bob ross
+      date: 2023-03-29
+    reviewed:
+      name: n/a
+      date: n/a
+
+  revisions:
+    a:
+      name: bob ross
+      date: 2023-03-29
+      changelog: initial release
+
+  template:
+    name: din-6771
+    sheetsize: A4
+
+notes:
+  - Wire color is a recommendation
+  - Label harnesses with text given in diagram
+  - Label every connector to match the designation in the drawing
+  - Zip tie entire harness at 1ft increments where required.
+  - Cover all cables with 1/2" or 1/8" black sleeving as required.

@@ -1,0 +1,75 @@
+<style>
+  .A4 #bom { /* BOM on top of title block */
+    position: absolute;
+    bottom: {{ (options.titleblock_rows + 1)  * options.titleblock_row_height }}mm;
+    right: 0;
+    width:180mm;
+  }
+
+  .A3 #bom, .A2 #bom { /* BOM to the left of title block */
+    position: absolute;
+    {% if options.bom_updated_position %}
+    {{ options.bom_updated_position }}
+    {% else %}
+    bottom: 0mm;
+    left: 0mm;
+    {% endif %}
+  }
+
+  #bom tr {
+    height: {{ options.bom_row_height }}mm;
+  }
+
+  #bom tr:nth-child(odd) {
+    background-color: #EEEEEE
+  }
+
+  #bom table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  #bom .bom_col_id {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  #bom .bom_col_qty {
+    text-align: right;
+  }
+
+</style>
+
+
+<!-- BOM HEADER GENERATION MACRO --!>
+{% macro bom_header_gen() -%}
+    <tr>
+      {% for item in bom.headers %}
+      <td class="{{bom.columns_class[loop.index0]}}"><b> {{ item }} </b></td>
+      {% endfor %}
+    </tr>
+{%- endmacro %}
+
+<!-- BOM TEMPLATE --!>
+<div id="bom">
+  <b> BOM </b>
+  <table>
+  {% if not bom.options.reverse %}
+    {{ bom_header_gen() }}
+  {% endif %}
+
+  {% for row in bom.content %}
+    <tr>
+    {% for item in row %}
+      <td class="{{bom.columns_class[loop.index0]}}"> {{ item }} </td>
+    {% endfor %}
+    </tr>
+  {% endfor %}
+
+  {% if bom.options.reverse %}
+    {{ bom_header_gen() }}
+  {% endif %}
+
+  </table >
+</div>

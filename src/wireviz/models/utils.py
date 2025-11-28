@@ -1,0 +1,128 @@
+# -*- coding: utf-8 -*-
+
+import re
+from pathlib import Path
+from typing import List
+
+awg_equiv_table = {
+    "0.09": "28",
+    "0.14": "26",
+    "0.25": "24",
+    "0.34": "22",
+    "0.5": "21",
+    "0.75": "20",
+    "1": "18",
+    "1.5": "16",
+    "2.5": "14",
+    "4": "12",
+    "6": "10",
+    "10": "8",
+    "16": "6",
+    "25": "4",
+    "35": "2",
+    "50": "1",
+}
+
+mm2_equiv_table = {v: k for k, v in awg_equiv_table.items()}
+
+
+def awg_equiv(mm2):
+    return awg_equiv_table.get(str(mm2), "Unknown")
+
+
+def mm2_equiv(awg):
+    return mm2_equiv_table.get(str(awg), "Unknown")
+
+
+def expand(yaml_data):
+    # yaml_data can be:
+    # - a singleton (normally str or int)
+    # - a list of str or int
+    # if str is of the format '#-#', it is treated as a range (inclusive) and expanded
+    output = []
+    if not isinstance(yaml_data, list):
+        yaml_data = [yaml_data]
+    for e in yaml_data:
+        e = str(e)
+        if "-" in e:
+            a, b = e.split("-", 1)
+            try:
+                a = int(a)
+                b = int(b)
+                if a < b:
+                    for x in range(a, b + 1):
+                        output.append(x)  # ascending range
+                elif a > b:
+                    for x in range(a, b - 1, -1):
+                        output.append(x)  # descending range
+                else:  # a == b
+                    output.append(a)  # range of length 1
+            except:
+                # '-' was not a delimiter between two ints, pass e through unchanged
+                output.append(e)
+        else:
+            try:
+                x = int(e)  # single int
+            except Exception:
+                x = e  # string
+            output.append(x)
+    return output
+
+
+def get_single_key_and_value(d: dict):
+    # used for defining a line in a harness' connection set
+    # E.g. for the YAML input `- X1: 1`
+    # this function returns a tuple in the form ("X1", "1")
+    return next(iter(d.items()))
+
+
+def int2tuple(inp):
+    if isinstance(inp, tuple):
+        output = inp
+    else:
+        output = (inp,)
+    return output
+
+
+def flatten2d(inp):
+    return [
+        [str(item) if not isinstance(item, List) else ", ".join(item) for item in row]
+        for row in inp
+    ]
+
+
+# TODO: move to hyperlink
+def html_line_breaks(inp):
+    return remove_links(inp).replace("\n", "<br />") if isinstance(inp, str) else inp
+
+
+# TODO: move to hyperlink
+def remove_links(inp):
+    return (
+        re.sub(r"<[aA] [^>]*>([^<]*)</[aA]>", r"\1", inp)
+        if isinstance(inp, str)
+        else inp
+    )
+
+
+def clean_whitespace(inp):
+    return " ".join(inp.split()).replace(" ,", ",") if isinstance(inp, str) else inp
+
+
+def smart_file_resolve(filename: Path, possible_paths: (Path, List[Path])) -> Path:
+    if isinstance(possible_paths, Path) or isinstance(possible_paths, str):
+        possible_paths = [possible_paths]
+    if filename.is_absolute():
+        if filename.exists():
+            return filename
+        else:
+            raise Exception(f"{filename} does not exist.")
+    else:  # search all possible paths in decreasing order of precedence
+        for path in possible_paths:
+            combined_path = (path / filename).resolve()
+            if combined_path.exists():
+                return combined_path
+        raise Exception(
+            f"{filename} was not found in any of the following locations: \n"
+            + "\n".join(str(p) for p in possible_paths)
+        )

@@ -1,0 +1,55 @@
+{% extends "page.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block extra_head_style %}
+<style>
+
+    /* custom count of rows depending on the sheetsize */
+    {% if not options.show_bom %}
+      {% set bottom_rows = (options.titleblock_rows + 1) * options.titleblock_row_height %}
+    {% elif metadata.template.sheetsize == 'A4' %}
+      {% set bottom_rows = options.bom_rows * options.bom_row_height + (options.titleblock_rows + 1) * options.titleblock_row_height %}
+    {% else %}
+      {% set bottom_rows = [((options.bom_rows + 1) * options.bom_row_height), ((options.titleblock_rows + 1) * options.titleblock_row_height)]|max %}
+    {% endif %}
+
+    .A4 #diagram, .A3 #diagram {
+        height: {{ 277 - bottom_rows }}mm;
+    }
+
+    .A2 #diagram {
+        height: {{ 400 - bottom_rows }}mm;
+    }
+
+    #diagram {
+      position: relative;
+      top: 0;
+      left: 0;
+      max-width: 100%;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    #diagram svg, #diagram img {
+      max-width: 95%;
+      max-height: 100%;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+</style>
+
+{% endblock %}
+
+{% block frame_content %}
+    <div id="diagram">
+      {{ diagram }}
+    </div>
+
+    {% if options.show_notes %}
+    {{ notes }}
+    {% endif %}
+
+    {% if options.show_bom %}
+    {{ bom }}
+    {% endif %}
+{% endblock %}

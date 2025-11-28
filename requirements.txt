@@ -1,0 +1,10 @@
+# need to install pango > 1.44.0
+click
+graphviz
+pillow
+pyyaml
+setuptools
+tabulate
+jinja2
+weasyprint
+pydantic<2

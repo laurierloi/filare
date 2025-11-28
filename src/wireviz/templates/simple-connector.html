@@ -1,0 +1,21 @@
+{% import 'colors_macro.html' as colors %}
+{% set pin = component.pins_to_show()[0] %}
+<!-- Connector definition Table !-->
+<table border="0" cellborder="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+  <!-- Header !-->
+  <tr>
+    <td>
+      <table border="0" cellborder="1" cellpadding="3" cellspacing="0">
+        <tr>
+          <td port="p1l"> {{ component.type }} </td>
+          {% if not component.subtype.is_empty() %} <td > {{ component.subtype.clean }} </td> {% endif %}
+          {% if component.show_pincount %} <td> {{ component.pincount }}-pin </td> {% endif %}
+          {% if component.color %}
+            <td > {{ component.color }} </td>
+            {{ colors.colorbar_cells(component.color, component.color.len, "p1r") }}
+          {% endif %}
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
