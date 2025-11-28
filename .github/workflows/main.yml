@@ -24,7 +24,7 @@ jobs:
     - name: Install dependencies
       run: |
         uv venv
-        uv sync --group dev --frozen
+        uv sync --group dev
     - name: Create Examples
       run: PYTHONPATH=$(pwd)/src:$PYTHONPATH uv run --no-sync python src/wireviz/tools/build_examples.py
     - name: Upload examples, demos, and tutorials

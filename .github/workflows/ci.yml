@@ -21,7 +21,7 @@ jobs:
       - name: Create venv and install deps
         run: |
           uv venv
-          uv sync --group dev --frozen
+          uv sync --group dev
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -52,7 +52,7 @@ jobs:
       - name: Install project
         run: |
           uv venv
-          uv sync --group dev --frozen
+          uv sync --group dev
       - name: Pytest
         run: uv run --no-sync pytest
 
@@ -76,7 +76,7 @@ jobs:
       - name: Install project
         run: |
           uv venv
-          uv sync --group dev --frozen
+          uv sync --group dev
       - name: Build examples
         run: |
           mkdir -p outputs/examples outputs/tutorial
