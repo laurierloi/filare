@@ -19,6 +19,7 @@
 - Quick sanity run: `uv venv; uv sync; uv run filare examples/demo01.yml -f hpst -o outputs` (HTML/PNG/SVG/TSV). Add `-c examples/components.yml` or `-d metadata.yml` as needed.
 - Build downstream harnesses with the same venv: `cd ../xsc-harnesses && WIREVIZ=../Filare-codex1/.venv/bin/filare make`; `make clean` removes generated SVG/PNG/PDF/TSV.
 - For manual BOM scaling checks: `uv venv; uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
+- Keep `scripts/pre-commit.sh` aligned with CI: it must build a fresh uv venv, install deps, run black, prettier, pytest, and the example builds before you commit.
 
 ## Coding Style & Naming Conventions
 - Python 3.9+; 4-space indentation; follow existing naming (modules, lowercase functions).
