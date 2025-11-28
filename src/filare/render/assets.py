@@ -22,7 +22,7 @@ def embed_svg_images(svg_in: str, base_path: Union[str, Path] = Path.cwd()) -> s
         return f'<image{pre} xlink:href="{url}"{post}>'
 
     def replace(match: re.Match) -> str:
-        imgurl = match["URL"]
+        imgurl = (match["URL"] or "").strip()
         if not imgurl in images_b64:  # only encode/cache every unique URL once
             imgurl_abs = (Path(base_path) / imgurl).resolve()
             image = imgurl_abs.read_bytes()

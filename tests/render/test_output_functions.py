@@ -6,7 +6,7 @@ from filare.render.output import embed_svg_images, embed_svg_images_file, get_mi
 def test_embed_svg_images_inlines_data(tmp_path):
     img = tmp_path / "img.png"
     img.write_bytes(b"pngdata")
-    svg = f'<svg><image xlink:href="{img.name}"></image></svg>'
+    svg = f'<svg><image xlink:href="  {img.name}  "></image></svg>'
     result = embed_svg_images(svg, tmp_path)
     assert "data:image/png;base64" in result
 
