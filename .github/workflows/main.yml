@@ -10,9 +10,9 @@ jobs:
       matrix:
         python-version: ["3.8", "3.10"]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Setup Graphviz
@@ -24,7 +24,7 @@ jobs:
     - name: Create Examples
       run: PYTHONPATH=$(pwd)/src:$PYTHONPATH && python src/wireviz/tools/build_examples.py
     - name: Upload examples, demos, and tutorials
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: examples-and-tutorials
         path: |
