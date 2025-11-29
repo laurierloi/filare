@@ -193,3 +193,8 @@ Step 29 - Flow builder accepts BaseModels (date: YYYY-MM-DD):
 - Added build_harness_from_models in flows/build_harness to assemble Harness from ConnectorModel/CableModel/ComponentModel inputs.
 - Added tests/flows/test_build_harness_models.py to cover model-based harness construction and BOM population.
 - Tests: .venv/bin/pytest (95 passed); coverage refreshed at report/coverage/index.html (~83%).
+
+Step 30 - Align example builds with CI tooling (date: YYYY-MM-DD):
+- Standardized example/tutorial generation to use src/filare/tools/build_examples.py in both workflows and local pre-commit script; artifacts now uploaded and pulled into gh-pages during docs deploy.
+- Added AGENTS note to run the build_examples script before commits; pre-commit script now builds all examples/tutorials after deps install.
+- Tests/examples run: `uv run --no-sync python src/filare/tools/build_examples.py` (pass locally); no additional tests added.
