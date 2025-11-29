@@ -128,9 +128,9 @@ class BomEntryBase(BaseModel):
 
 class BomEntry(BomEntryBase):
     id: str = ""
-    BOM_KEY_TO_COLUMNS: ClassVar[
-        Dict[str, str]
-    ] = BomEntryBase.BOM_KEY_TO_COLUMNS.copy()
+    BOM_KEY_TO_COLUMNS: ClassVar[Dict[str, str]] = (
+        BomEntryBase.BOM_KEY_TO_COLUMNS.copy()
+    )
 
     def __repr__(self):
         return f"{self.id}: {self.partnumbers}, {self.qty}"
