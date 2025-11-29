@@ -14,6 +14,8 @@ from filare.models.dataclasses import (
     WireClass,
     Side,
 )
+from pathlib import Path
+
 from filare.models.image import Image
 from filare.render.html_utils import Img, Table, Td, Tr
 from filare.render.templates import get_template
@@ -46,7 +48,10 @@ def gv_node_cable(cable: Cable) -> Table:
 def _node_image_attrs(image: Optional[Image]) -> dict:
     if not image:
         return {}
-    attrs = {"image": str(image.src)}
+    src_path = Path(image.src)
+    if not src_path.is_absolute():
+        src_path = (Path.cwd() / src_path).resolve()
+    attrs = {"image": str(src_path)}
     # Graphviz imagescale accepts: true, width, height, both, none
     if image.scale:
         attrs["imagescale"] = str(image.scale).lower()
