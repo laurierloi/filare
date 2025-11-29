@@ -21,6 +21,7 @@
 - For manual BOM scaling checks: `uv venv; uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
 - Keep `scripts/pre-commit.sh` aligned with CI: it must build a fresh uv venv, install deps, run black, prettier, pytest, and the example builds before you commit.
 - Before committing, generate all examples/tutorials via the script used in CI: `uv venv; uv sync --group dev; uv run --no-sync python src/filare/tools/build_examples.py` (then stage the regenerated outputs if needed).
+- Always run lint locally before committing; use the CI-equivalent commands: `uv venv; uv sync --group dev; uv run --no-sync black --check src tests` and `prettier --check "docs/**/*.{md,html}" "src/filare/templates/**/*.html"`.
 
 ## Coding Style & Naming Conventions
 - Python 3.9+; 4-space indentation; follow existing naming (modules, lowercase functions).
