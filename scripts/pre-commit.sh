@@ -25,9 +25,10 @@ rm -rf "$env_dir"
 uv venv "$env_dir"
 uv sync --group dev --python "$env_dir/bin/python"
 
-UV_PROJECT_ENVIRONMENT="$env_dir" UV_PYTHON="$env_dir/bin/python" ./scripts/lint.sh
+uv run --python "$env_dir/bin/python" --no-sync black --check src tests
 uv run --python "$env_dir/bin/python" --no-sync pytest
 uv run --python "$env_dir/bin/python" --no-sync python src/filare/tools/build_examples.py
 mkdir -p outputs
 cp -r examples outputs/examples
 cp -r tutorial outputs/tutorial
+prettier --check "docs/**/*.{md,html}"
