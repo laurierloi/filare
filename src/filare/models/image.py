@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple, Union
+from urllib.parse import quote
 
 from filare.models.hypertext import MultilineHypertext
 from filare.models.colors import SingleColor
@@ -23,6 +24,7 @@ def aspect_ratio(image_src):
 class Image:
     # Attributes of the image object <img>:
     src: str
+    escaped_src: str = ""
     scale: str = ""
     # Attributes of the image cell <td> containing the image:
     width: int = 0
@@ -34,6 +36,8 @@ class Image:
     # See also HTML doc at https://graphviz.org/doc/info/shapes.html#html
 
     def __post_init__(self):
+        # Precompute a safe string form for HTML contexts; keep raw path for Graphviz image attrs.
+        self.escaped_src = str(self.src)
 
         self.width = int(self.width)
         self.height = int(self.height)

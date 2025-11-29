@@ -14,6 +14,7 @@ from filare.models.dataclasses import (
     WireClass,
     Side,
 )
+from filare.models.image import Image
 from filare.render.html_utils import Img, Table, Td, Tr
 from filare.render.templates import get_template
 from filare.models.utils import html_line_breaks, remove_links
@@ -21,7 +22,7 @@ from filare.models.utils import html_line_breaks, remove_links
 
 def gv_node_connector(connector: Connector) -> Table:
     # TODO: extend connector style support
-    params = {"component": connector}
+    params = {"component": connector, "suppress_images": True}
     is_simple_connector = connector.style == "simple"
     template_name = "connector.html"
     if is_simple_connector:
@@ -35,11 +36,23 @@ def gv_node_connector(connector: Connector) -> Table:
 def gv_node_cable(cable: Cable) -> Table:
     # TODO: support multicolor cables
     # TODO: extend cable style support
-    params = {"component": cable}
+    params = {"component": cable, "suppress_images": True}
     template_name = "cable.html"
     rendered = get_template(template_name).render(params)
     cleaned_render = "\n".join([l.rstrip() for l in rendered.split("\n") if l.strip()])
     return cleaned_render
+
+
+def _node_image_attrs(image: Optional[Image]) -> dict:
+    if not image:
+        return {}
+    attrs = {"image": str(image.src)}
+    # Graphviz imagescale accepts: true, width, height, both, none
+    if image.scale:
+        attrs["imagescale"] = str(image.scale).lower()
+    if image.fixedsize:
+        attrs["fixedsize"] = "true"
+    return attrs
 
 
 def gv_connector_loops(connector: Connector) -> List:

@@ -24,6 +24,7 @@ from filare.render.graphviz import (
     gv_edge_wire,
     gv_node_cable,
     gv_node_connector,
+    _node_image_attrs,
     set_dot_basics,
 )
 from filare.render.html import generate_html_output
@@ -362,12 +363,13 @@ class Harness:
 
         for connector in self.connectors.values():
             template_html = gv_node_connector(connector)
-            dot.node(
-                connector.designator,
-                label=f"<\n{template_html}\n>",
-                shape="box",
-                style="filled",
-            )
+            attrs = {
+                "label": f"<\n{template_html}\n>",
+                "shape": "box",
+                "style": "filled",
+            }
+            attrs.update(_node_image_attrs(getattr(connector, "image", None)))
+            dot.node(connector.designator, **attrs)
             if len(connector.loops) > 0:
                 loops = gv_connector_loops(connector)
                 for loop, head, tail in loops:
@@ -386,12 +388,13 @@ class Harness:
         for cable in self.cables.values():
             template_html = gv_node_cable(cable)
             style = "filled,dashed" if cable.category == "bundle" else "filled"
-            dot.node(
-                cable.designator,
-                label=f"<\n{template_html}\n>",
-                shape="box",
-                style=style,
-            )
+            attrs = {
+                "label": f"<\n{template_html}\n>",
+                "shape": "box",
+                "style": style,
+            }
+            attrs.update(_node_image_attrs(getattr(cable, "image", None)))
+            dot.node(cable.designator, **attrs)
 
             for connection in cable._connections:
                 color, l1, l2, r1, r2 = gv_edge_wire(self, cable, connection)
