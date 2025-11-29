@@ -103,7 +103,9 @@ class Component:
     spn: str = None
 
     # BOM info
-    qty: NumberAndUnit = NumberAndUnit(number=1, unit=None)
+    qty: NumberAndUnit = field(
+        default_factory=lambda: NumberAndUnit(number=1, unit=None)
+    )
     amount: Optional[NumberAndUnit] = None
     ignore_in_bom: bool = False
     id: Optional[str] = None  # to be filled after harness is built
