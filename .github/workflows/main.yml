@@ -26,11 +26,13 @@ jobs:
         uv venv
         uv sync --group dev
     - name: Create Examples
-      run: PYTHONPATH=$(pwd)/src:$PYTHONPATH uv run --no-sync python src/wireviz/tools/build_examples.py
+      run: |
+        mkdir -p outputs/examples outputs/tutorial
+        uv run --no-sync filare -f hs -o outputs/examples examples/demo01.yml
+        uv run --no-sync filare -f h -o outputs/tutorial tutorial/tutorial01.yml
     - name: Upload examples, demos, and tutorials
       uses: actions/upload-artifact@v4
       with:
         name: examples-and-tutorials
         path: |
-          examples/
-          tutorial/
+          outputs/
