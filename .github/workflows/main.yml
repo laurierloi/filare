@@ -27,9 +27,10 @@ jobs:
         uv sync --group dev
     - name: Create Examples
       run: |
-        mkdir -p outputs/examples outputs/tutorial
-        uv run --no-sync filare -f hs -o outputs/examples examples/demo01.yml
-        uv run --no-sync filare -f h -o outputs/tutorial tutorial/tutorial01.yml
+        uv run --no-sync python src/filare/tools/build_examples.py
+        mkdir -p outputs
+        cp -r examples outputs/examples
+        cp -r tutorial outputs/tutorial
     - name: Upload examples, demos, and tutorials
       uses: actions/upload-artifact@v4
       with:
