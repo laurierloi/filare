@@ -31,7 +31,6 @@
 - Add support for background colors for cables and connectors, as well as for some individual cells ([#210](https://github.com/formatc1702/Filare/issues/210), [#219](https://github.com/formatc1702/Filare/pull/219))
 - Add optional tweaking of the .gv output ([#215](https://github.com/formatc1702/Filare/pull/215)) (experimental)
 
-
 ## Misc. fixes
 
 - Remove case-sensitivity issues with pin names and labels ([#160](https://github.com/formatc1702/Filare/issues/160), [#229](https://github.com/formatc1702/Filare/pull/229))
@@ -60,7 +59,6 @@
 
 See the [syntax description](syntax.md) for details.
 
-
 ### New features
 
 - Add bidirectional AWG/mm2 conversion ([#40](https://github.com/formatc1702/Filare/issues/40), [#41](https://github.com/formatc1702/Filare/pull/41))
@@ -76,7 +74,6 @@ See the [syntax description](syntax.md) for details.
 - Add new colors ([#103](https://github.com/formatc1702/Filare/pull/103), [#113](https://github.com/formatc1702/Filare/pull/113), [#144](https://github.com/formatc1702/Filare/issues/144), [#145](https://github.com/formatc1702/Filare/pull/145))
 - Improve documentation ([#107](https://github.com/formatc1702/Filare/issues/107), [#111](https://github.com/formatc1702/Filare/pull/111))
 
-
 ### Misc. fixes
 
 - Improve BOM generation
@@ -85,7 +82,6 @@ See the [syntax description](syntax.md) for details.
 - Fix node rendering bug ([#69](https://github.com/formatc1702/Filare/issues/69), [#104](https://github.com/formatc1702/Filare/pull/104))
 - Improve shield rendering ([#125](https://github.com/formatc1702/Filare/issues/125), [#126](https://github.com/formatc1702/Filare/pull/126))
 - Add GitHub Linguist overrides ([#146](https://github.com/formatc1702/Filare/issues/146), [#154](https://github.com/formatc1702/Filare/pull/154))
-
 
 ## [0.1](https://github.com/formatc1702/Filare/tree/v0.1) (2020-06-29)
 

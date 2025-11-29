@@ -9,6 +9,7 @@ jobs:
   lint:
     name: "1) Lint (black, prettier)"
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

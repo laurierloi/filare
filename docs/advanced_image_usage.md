@@ -1,6 +1,7 @@
 # Advanced Image Usage
 
 In rare cases when the [ordinary image scaling functionality](syntax.md#images) is insufficient, a couple of extra optional image attributes can be set to offer extra image cell space and scaling functionality when combined with the image dimension attributes `width` and `height`, but in most cases their default values below are sufficient:
+
 - `scale: <str>` (how an image will use the available cell space) is default `false` if no dimension is set, or `true` if only one dimension is set, or `both` if both dimensions are set.
 - `fixedsize: <bool>` (scale to fixed size or expand to minimum size) is default `false` when no dimension is set or if a `scale` value is set, and `true` otherwise.
 - When `fixedsize` is true and only one dimension is set, then the other dimension is calculated using the image aspect ratio. If reading the aspect ratio fails, then 1:1 ratio is assumed.
@@ -29,31 +30,35 @@ In Filare diagrams there are no other space demanding cells in the same row, and
 All examples of `image` attribute combinations below also require the mandatory `src` attribute to be set.
 
 - Expand the image proportionally to fit within a minimum height and the node width:
+
 ```yaml
-  height: 100      # Expand image cell to this minimum height
-  fixedsize: false # Avoid scaling to a fixed size
-  # scale default value is true in this case
+height: 100 # Expand image cell to this minimum height
+fixedsize: false # Avoid scaling to a fixed size
+# scale default value is true in this case
 ```
 
 - Increase the space around the image by expanding the image cell space (width and/or height) to a larger value without scaling the image:
+
 ```yaml
-  width:  200  # Expand image cell to this minimum width
-  height: 100  # Expand image cell to this minimum height
-  scale: false # Avoid scaling the image
-  # fixedsize default value is false in this case
+width: 200 # Expand image cell to this minimum width
+height: 100 # Expand image cell to this minimum height
+scale: false # Avoid scaling the image
+# fixedsize default value is false in this case
 ```
 
 - Stretch the image width to fill the available space in the node:
+
 ```yaml
-  scale: width # Expand image width to fill the available image cell space
-  # fixedsize default value is false in this case
+scale: width # Expand image width to fill the available image cell space
+# fixedsize default value is false in this case
 ```
 
 - Stretch the image height to a minimum value:
+
 ```yaml
-  height: 100   # Expand image cell to this minimum height
-  scale: height # Expand image height to fill the available image cell space
-  # fixedsize default value is false in this case
+height: 100 # Expand image cell to this minimum height
+scale: height # Expand image height to fill the available image cell space
+# fixedsize default value is false in this case
 ```
 
 ## How Graphviz support this image scaling

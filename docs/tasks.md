@@ -13,7 +13,6 @@ CreationDate(YYMMDD);Github;{Task,Bug,Doc};Filare;Count_description
 ex:
 230328GTW1_try_to_use_pupeteer
 
-
 # Tasks List
 
 List of tasks according to system's concept.
@@ -21,12 +20,10 @@ List of tasks according to system's concept.
 Normally the tasks are sorted from most important to less important.
 That ordering is somewhat arbitrary
 
-
 ## Documentation
 
 - 230327GTW3_create_an_architecture_of_filare
 - 230329GTW2_list_features_of_perfect_harness_diagram
-
 
 ## Tooling
 
@@ -34,11 +31,9 @@ That ordering is somewhat arbitrary
 - 230328GTW1_try_to_use_pupeteer
 - 230727GTW1_setup_ruff_pre_commit
 
-
 ## Outputs
 
 - 230329GTW2_bom_class_generate_excel_see_MR
-
 
 ## Views
 
@@ -55,13 +50,11 @@ That ordering is somewhat arbitrary
 - 230330GTW3_splice_option_for_start/end_of_harness
 - 230330GTW5_cable_displayed_differently_according_to_layer
 
-
 ## Configuration
 
 - 230331GTW1_central_shared_configuration_file_for_all_filare
 - 230629GTW2_support_default_in_connection_to_do_a_pin_by_pin_match_directly
 - 230330GTW2_template_styles_fully_configured_using_external_configuration
-
 
 ## Data Structure
 
@@ -76,8 +69,6 @@ That ordering is somewhat arbitrary
 - 230327GTW6_cable_from_a_part_library; depends:230327GTW4
 - 230330GTW4_cable_are_recursive_aka_a_group_of_cable_or_wire
 - 230330GTW6_outer_cable_is_just_a_bundle_of_bundle/cable/wire
-
-
 
 # Extended descriptions
 

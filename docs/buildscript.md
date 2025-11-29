@@ -15,19 +15,17 @@ TODO: write a better explaination -->
 - `python build_examples.py -V` or `--version` to display the Filare version.
 - `python build_examples.py -h` or `--help` to see a summary of the usage help text.
 
-
 ## Options
 
 - Append `-b` or `--branch` followed by a specified branch or commit to compare with or restore from (default: The last commit in the current branch).
 - Append `-c` or `--compare-graphviz-output` to the `compare` command above to also compare the Graphviz output (default: False).
 - Append `-g` or `--groups` followed by space separated group names to any command above, and the set of generated files affected by the command will be limited to the selected groups.
-Possible group names:
+  Possible group names:
   - `examples` to process `examples/{readme.md,ex*.*}`
   - `tutorial` to process`tutorial/{readme.md,tutorial*.*}`
   - `demos` to process`examples/demo*.*`
 
   Affected filetypes: `.gv`, `.tsv`, `.png`, `.svg`, `.html`
-
 
 ## Usage hints
 

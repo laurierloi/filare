@@ -38,6 +38,7 @@ options:  # dictionary of common attributes for the whole harness
   ...
 
 ```
+
 ## Connector attributes
 
 ```yaml
@@ -94,41 +95,46 @@ options:  # dictionary of common attributes for the whole harness
 ## Cable attributes
 
 ```yaml
-<str>   :  # unique cable designator/name
+<str>: # unique cable designator/name
   # general information about a connector (all optional)
-  category: <category>  # may be set to bundle;
-                        # generates one BOM item for every wire in the bundle
-                        # instead of a single item for the entire cable;
-                        # renders with a dashed outline
+  category:
+    <category> # may be set to bundle;
+    # generates one BOM item for every wire in the bundle
+    # instead of a single item for the entire cable;
+    # renders with a dashed outline
   type: <str>
-  gauge: <int/float/str>  # allowed formats:
-                          # <int/float> mm2  is understood
-                          # <int> AWG        is understood
-                          # <int/float>      is assumed to be mm2
-                          # <str>            custom units and formats are allowed
-                          #                  but unavailable for auto-conversion
-  show_equiv: <bool>      # defaults to false; can auto-convert between mm2 and AWG
-                          # and display the result when set to true
-  length: <int/float>[ <unit>]  # <int/float> is assumed to be in meters unless <unit> is specified
-                                # e.g. length: 2.5 -> assumed to be 2.5 m
-                                # or   length: 2.5 ft -> "ft" is used as the unit
-                                # Units are not converted during BOM generation;
-                                # different units result in separate BOM entries.
-  shield: <bool/color>  # defaults to false
-                        # setting to true will display the shield as a thin black line
-                        # using a color (see below) will render the shield in that color
-                        # A shield can be accessed by using 's' as the wire ID
-  color: <color>  # see below
-  image: <image>  # see below
+  gauge:
+    <int/float/str> # allowed formats:
+    # <int/float> mm2  is understood
+    # <int> AWG        is understood
+    # <int/float>      is assumed to be mm2
+    # <str>            custom units and formats are allowed
+    #                  but unavailable for auto-conversion
+  show_equiv:
+    <bool> # defaults to false; can auto-convert between mm2 and AWG
+    # and display the result when set to true
+  length:
+    <int/float>[ <unit>] # <int/float> is assumed to be in meters unless <unit> is specified
+    # e.g. length: 2.5 -> assumed to be 2.5 m
+    # or   length: 2.5 ft -> "ft" is used as the unit
+    # Units are not converted during BOM generation;
+    # different units result in separate BOM entries.
+  shield:
+    <bool/color> # defaults to false
+    # setting to true will display the shield as a thin black line
+    # using a color (see below) will render the shield in that color
+    # A shield can be accessed by using 's' as the wire ID
+  color: <color> # see below
+  image: <image> # see below
   notes: <str>
 
   # product information (all optional)
-  ignore_in_bom: <bool>  # if set to true the cable or wires are not added to the BOM
-  pn: <str>              # [internal] part number
-  manufacturer: <str>    # manufacturer name
-  mpn: <str>             # manufacturer part number
-  supplier: <str>        # supplier name
-  spn: <str>             # supplier part number
+  ignore_in_bom: <bool> # if set to true the cable or wires are not added to the BOM
+  pn: <str> # [internal] part number
+  manufacturer: <str> # manufacturer name
+  mpn: <str> # manufacturer part number
+  supplier: <str> # supplier name
+  spn: <str> # supplier part number
   additional_components: # additional components
     - <additional-component> # additional component (see below)
 
@@ -140,17 +146,16 @@ options:  # dictionary of common attributes for the whole harness
   #                         color code (see below) to match the wirecount
   # wirecount + colors      colors list is trimmed or repeated to match the wirecount
   wirecount: <int>
-  colors: <List>     # list of colors (see below)
-  color_code: <str>  # one of the supported cable color codes (see below)
+  colors: <List> # list of colors (see below)
+  color_code: <str> # one of the supported cable color codes (see below)
 
-  wirelabels: <List>  # optional; one label for each wire
+  wirelabels: <List> # optional; one label for each wire
 
   # rendering information (all optional)
-  bgcolor: <color>          # Background color of diagram cable box
-  bgcolor_title: <color>    # Background color of title in diagram cable box
-  show_name: <bool>         # defaults to true
-  show_wirecount: <bool>    # defaults to true
-
+  bgcolor: <color> # Background color of diagram cable box
+  bgcolor_title: <color> # Background color of title in diagram cable box
+  show_name: <bool> # defaults to true
+  show_wirecount: <bool> # defaults to true
 ```
 
 ## Connection sets
@@ -195,7 +200,7 @@ connections:
 - `- <designator>: <int/str>, <str>__<int>` attaches a pin of the connector, referring to a pin number (from the connector's `pins` attribute) or a pin label (from its `pinlabels` attribute), provided the label is unique.
 
 - `- <designator>` is allowed for simple connectors, since they have only one pin to connect.
-For connectors with `autogenerate: true`, a new instance, with auto-generated designator, is created.
+  For connectors with `autogenerate: true`, a new instance, with auto-generated designator, is created.
 
 #### Cables
 
@@ -208,12 +213,11 @@ For connectors with `autogenerate: true`, a new instance, with auto-generated de
 - `- <designator>: [<pin>, ..., <pin>]`
 
   Each `<pin>` may be:
-
   - `<int/str>` to refer to a specific pin, using its number (from its `pins` attribute) or its label (from its `pinlabels` attribute, provided the label is unique for this connector)
 
   - `<int>-<int>` auto-expands to a range, e.g. `1-4` auto-expands to `1,2,3,4`; `9-7` will auto-expand to `9,8,7`.
-  - <str>__<int> where str is the name of the pin and int is it's number. This can be used to
-	  differentiate pins which have the same label (i.e. GND)
+  - <str>\_\_<int> where str is the name of the pin and int is it's number. This can be used to
+    differentiate pins which have the same label (i.e. GND)
 
   - Mixing types is allowed, e.g. `[<pin>, <pinlabel>, <pin>-<pin>, <pin>]`
 
@@ -234,12 +238,11 @@ For connectors with `autogenerate: true`, a new instance, with auto-generated de
 - `<designator>: [<wire>, ..., <wire>]`
 
   Each `<wire>` may be:
-
   - `<int>` to refer to a specific wire, using its number.
   - `<int>-<int>` auto-expands to a range.
   - `<str>` to refer to a wire's label or color, if unambiguous.
 
-```
+````
 ## Metadata entries
 
 ```yaml
@@ -247,43 +250,42 @@ For connectors with `autogenerate: true`, a new instance, with auto-generated de
 
   # Valus supported can be found in src/filare/metadata.py
 
-```
+````
 
 ## Options
 
 ```yaml
-  # Common attributes for the whole harness.
-  # All entries are optional and have default values.
+# Common attributes for the whole harness.
+# All entries are optional and have default values.
 
-  # Background color of diagram and HTML output
-  bgcolor: <color>             # Default = 'WH'
+# Background color of diagram and HTML output
+bgcolor: <color> # Default = 'WH'
 
-  # Background color of other diagram elements
-  bgcolor_node: <color>        # Default = 'WH'
-  bgcolor_connector: <color>   # Default = bgcolor_node
-  bgcolor_cable: <color>       # Default = bgcolor_node
-  bgcolor_bundle: <color>      # Default = bgcolor_cable
+# Background color of other diagram elements
+bgcolor_node: <color> # Default = 'WH'
+bgcolor_connector: <color> # Default = bgcolor_node
+bgcolor_cable: <color> # Default = bgcolor_node
+bgcolor_bundle: <color> # Default = bgcolor_cable
 
-  # How to display colors as text in the diagram
-  # 'full' : Lowercase full color name
-  # 'FULL' : Uppercase full color name
-  # 'hex'  : Lowercase hexadecimal values
-  # 'HEX'  : Uppercase hexadecimal values
-  # 'short': Lowercase short color name
-  # 'SHORT': Uppercase short color name
-  # 'ger'  : Lowercase short German color name
-  # 'GER'  : Uppercase short German color name
-  color_mode: <str>            # Default = 'SHORT'
+# How to display colors as text in the diagram
+# 'full' : Lowercase full color name
+# 'FULL' : Uppercase full color name
+# 'hex'  : Lowercase hexadecimal values
+# 'HEX'  : Uppercase hexadecimal values
+# 'short': Lowercase short color name
+# 'SHORT': Uppercase short color name
+# 'ger'  : Lowercase short German color name
+# 'GER'  : Uppercase short German color name
+color_mode: <str> # Default = 'SHORT'
 
-  # Fontname to use in diagram and HTML output
-  fontname: <str>              # Default = 'arial'
+# Fontname to use in diagram and HTML output
+fontname: <str> # Default = 'arial'
 
-  # If True, show only a BOM entry reference together with basic info
-  # about additional components inside the diagram node (connector/cable box).
-  # If False, show all info about additional components inside the diagram node.
-  mini_bom_mode: <bool>        # Default = True
+# If True, show only a BOM entry reference together with basic info
+# about additional components inside the diagram node (connector/cable box).
+# If False, show all info about additional components inside the diagram node.
+mini_bom_mode: <bool> # Default = True
 ```
-
 
 ## BOM items and additional components
 
@@ -294,43 +296,42 @@ Additional items can be added to the BOM as either part of a connector or cable 
 Parts can be added to a connector or cable in the section `<additional-component>` which will also list them in the graph.
 
 ```yaml
--
-  type: <str>  # type of additional component
+- type: <str> # type of additional component
   # all the following are optional:
-  subtype: <str>  # additional description (only shown in bom)
-  qty: <int/float>  # qty to add to the bom (defaults to 1)
-  qty_multiplier: <str>  # multiplies qty by a feature of the parent component
-                  # when used in a connector:
-                  # pincount         number of pins of connector
-                  # populated        number of populated positions in a connector
-                  # when used in a cable:
-                  # wirecount        number of wires of cable/bundle
-                  # terminations     number of terminations on a cable/bundle
-                  # length           length of cable/bundle
-                  # total_length     sum of lengths of each wire in the bundle
+  subtype: <str> # additional description (only shown in bom)
+  qty: <int/float> # qty to add to the bom (defaults to 1)
+  qty_multiplier:
+    <str> # multiplies qty by a feature of the parent component
+    # when used in a connector:
+    # pincount         number of pins of connector
+    # populated        number of populated positions in a connector
+    # when used in a cable:
+    # wirecount        number of wires of cable/bundle
+    # terminations     number of terminations on a cable/bundle
+    # length           length of cable/bundle
+    # total_length     sum of lengths of each wire in the bundle
   unit: <str>
-  pn: <str>            # [internal] part number
-  manufacturer: <str>  # manufacturer name
-  mpn: <str>           # manufacturer part number
-  supplier: <str>      # supplier name
-  spn: <str>           # supplier part number
-  bgcolor: <color>     # Background color of entry in diagram component box
+  pn: <str> # [internal] part number
+  manufacturer: <str> # manufacturer name
+  mpn: <str> # manufacturer part number
+  supplier: <str> # supplier name
+  spn: <str> # supplier part number
+  bgcolor: <color> # Background color of entry in diagram component box
 ```
 
 Alternatively items can be added to just the BOM by putting them in the section `<bom-item>` above.
 
 ```yaml
--
-  description: <str>
+- description: <str>
   # all the following are optional:
-  qty: <int/float>  # qty to add to the bom (defaults to 1)
+  qty: <int/float> # qty to add to the bom (defaults to 1)
   unit: <str>
   designators: <List>
-  pn: <str>            # [internal] part number
-  manufacturer: <str>  # manufacturer name
-  mpn: <str>           # manufacturer part number
-  supplier: <str>      # supplier name
-  spn: <str>           # supplier part number
+  pn: <str> # [internal] part number
+  manufacturer: <str> # manufacturer name
+  mpn: <str> # manufacturer part number
+  supplier: <str> # supplier name
+  spn: <str> # supplier part number
 ```
 
 ## Colors
@@ -380,10 +381,9 @@ Supported color codes:
 
   ![##895956](https://via.placeholder.com/15/895956/000000?text=+) ![##ff0000](https://via.placeholder.com/15/ff0000/000000?text=+) ![##ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) ![##ffff00](https://via.placeholder.com/15/ffff00/000000?text=+) ![##00ff00](https://via.placeholder.com/15/00ff00/000000?text=+) ![##0066ff](https://via.placeholder.com/15/0066ff/000000?text=+) ![##8000ff](https://via.placeholder.com/15/8000ff/000000?text=+) ![##999999](https://via.placeholder.com/15/999999/000000?text=+) ![##ffffff](https://via.placeholder.com/15/ffffff/000000?text=+) ![##000000](https://via.placeholder.com/15/000000/000000?text=+) ...
 
-- `TEL` and `TELALT`  for [25-pair color code](https://en.wikipedia.org/wiki/25-pair_color_code)
+- `TEL` and `TELALT` for [25-pair color code](https://en.wikipedia.org/wiki/25-pair_color_code)
 - `T568A` and `T568B` for [TIA/EIA-568](https://en.wikipedia.org/wiki/TIA/EIA-568#Wiring) (e.g. Ethernet)
 - `BW` for alternating black and white
-
 
 ## Images
 
@@ -391,22 +391,22 @@ Both connectors and cables accept including an image with a caption within their
 
 ```yaml
 image:
-  src: <path>        # path to the image file
+  src: <path> # path to the image file
   # optional parameters:
-  caption: <str>     # text to display below the image
-  bgcolor: <color>   # Background color of entry in diagram component box
-  width: <int>       # range: 1~65535; unit: points
-  height: <int>      # range: 1~65535; unit: points
+  caption: <str> # text to display below the image
+  bgcolor: <color> # Background color of entry in diagram component box
+  width: <int> # range: 1~65535; unit: points
+  height: <int> # range: 1~65535; unit: points
   # if only one dimension (width/height) is specified, the image is scaled proportionally.
   # if both width and height are specified, the image is stretched to fit.
 ```
 
 For more fine grained control over the image parameters, please see [`advanced_image_usage.md`](advanced_image_usage.md).
 
-
 ## Multiline strings
 
 The following attributes accept multiline strings:
+
 - `type`
 - `subtype` (connectors only)
 - `notes`

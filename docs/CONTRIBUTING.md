@@ -27,7 +27,9 @@ When contributing to this repository, please submit a new issue first to discuss
 1. Push the changes to your fork.
 1. Please format your code using [`isort`](https://pycqa.github.io/isort/) and [`black`](https://black.readthedocs.io) before submitting.
 1. Submit a new pull request, using `dev` as the base branch.
-  - If your code changes or extends the Filare YAML syntax, be sure to update the [syntax description document](syntax.md) in your PR.
+
+- If your code changes or extends the Filare YAML syntax, be sure to update the [syntax description document](syntax.md) in your PR.
+
 1. Please include in the PR description (and optionally also in the commit message body) a reference (# followed by issue number) to the issue where the suggested changes are discussed.
 
 ### Hints
@@ -38,7 +40,6 @@ When contributing to this repository, please submit a new issue first to discuss
 - Avoid committing changes to generated files in PRs (examples, tutorials, etc.) to reduce merging conflicts. The owner will rebuild them.
 - For complex PRs, consider [interactively rebasing](https://thoughtbot.com/blog/git-interactive-rebase-squash-amend-rewriting-history) your contribution to remove intermediate commits and clean up the commit history.
 - Feel free to submit a [draft PR](https://github.blog/2019-02-14-introducing-draft-pull-requests/) for your work-in-progress. This lets other contributors comment on and review your code, while clearly marking it as not ready for merging.
-
 
 ## Documentation Strings
 
