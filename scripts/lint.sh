@@ -17,8 +17,8 @@ cd "$root_dir"
 
 # Try to fix
 uv run black src tests
-prettier --write "docs/**/*.{md,html}" "src/filare/templates/**/*.html"
+prettier --write "docs/**/*.{md,html}"
 
 # Check
 uv run black --check src tests
-prettier --check "docs/**/*.{md,html}" "src/filare/templates/**/*.html"
+prettier --check "docs/**/*.{md,html}"

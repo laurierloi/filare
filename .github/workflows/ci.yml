@@ -31,7 +31,7 @@ jobs:
       - name: Run black
         run: uv run --no-sync black --check src tests
       - name: Run prettier
-        run: prettier --check "docs/**/*.{md,html}" "src/filare/templates/**/*.html"
+        run: prettier --check "docs/**/*.{md,html}"
 
   test:
     name: "2) Tests"

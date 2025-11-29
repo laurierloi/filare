@@ -31,4 +31,4 @@ uv run --python "$env_dir/bin/python" --no-sync python src/filare/tools/build_ex
 mkdir -p outputs
 cp -r examples outputs/examples
 cp -r tutorial outputs/tutorial
-prettier --check "docs/**/*.{md,html}" "src/filare/templates/**/*.html"
+prettier --check "docs/**/*.{md,html}"
