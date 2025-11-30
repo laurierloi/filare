@@ -93,6 +93,37 @@ Filare requires GraphViz to be installed in order to work. See the [GraphViz dow
 
 _Note_: Ubuntu 18.04 LTS users in particular may need to separately install Python 3.7 or above, as that comes with Python 3.6 as the included system Python install. The option to generate pdf is not supported for python 3.7, so it might not be possible to use with this version of Ubuntu. If you are forced to use Ubuntu 18.04 for some reason, fill up an issue/MR and I can provide a Docker image to perform the generation.
 
+### Container (Ubuntu 24.04, uv, graphviz, prettier)
+
+A Docker image is provided to avoid local dependency setup:
+
+```
+docker build -t filare:latest .
+```
+
+Run common tasks (mount your working tree so outputs land on the host):
+
+- Build all examples/tutorials/demos:
+  ```
+  docker run --rm -v "$PWD":/app filare uv run --no-sync python src/filare/tools/build_examples.py
+  ```
+- Build examples only:
+  ```
+  docker run --rm -v "$PWD":/app filare uv run --no-sync filare examples/ex*.yml -d examples/metadata.yml -f hs -o outputs/examples
+  ```
+- Build tutorials only:
+  ```
+  docker run --rm -v "$PWD":/app filare uv run --no-sync filare tutorial/tutorial*.yml -d tutorial/metadata.yml -f hs -o outputs/tutorial
+  ```
+- Lint (black + prettier):
+  ```
+  docker run --rm -v "$PWD":/app filare ./scripts/lint.sh
+  ```
+- Run tests:
+  ```
+  docker run --rm -v "$PWD":/app filare uv run --no-sync pytest
+  ```
+
 #### Debian Dependencies
 
 ```
