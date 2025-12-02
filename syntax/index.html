@@ -1,0 +1,1644 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://laurierloi.github.io/Filare/syntax/">
+      
+      
+        <link rel="prev" href="../architecture/">
+      
+      
+        <link rel="next" href="../tutorial/readme/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Syntax - Filare Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#filare-syntax" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Filare Docs" class="md-header__button md-logo" aria-label="Filare Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Filare Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Syntax
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/laurierloi/Filare" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    laurierloi/Filare
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Filare Docs" class="md-nav__button md-logo" aria-label="Filare Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Filare Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/laurierloi/Filare" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    laurierloi/Filare
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#main-sections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Main sections
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connector-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connector attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cable-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cable attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connection-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection sets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connection sets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single connections
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Single connections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connectors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-parallel-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple parallel connections
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiple parallel connections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connectors_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connectors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cables_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bom-items-and-additional-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BOM items and additional components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#colors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Colors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cable-color-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cable color codes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Images
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiline-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiline strings
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiline strings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inheritance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inheritance
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/readme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/readme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced_image_usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced Images
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../buildscript/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Script
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ci/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dev
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dev
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev/metadata_guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metadata Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHANGELOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../brand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#main-sections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Main sections
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connector-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connector attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cable-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cable attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connection-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection sets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connection sets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single connections
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Single connections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connectors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-parallel-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple parallel connections
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiple parallel connections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connectors_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connectors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cables_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bom-items-and-additional-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BOM items and additional components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#colors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Colors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cable-color-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cable color codes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Images
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiline-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiline strings
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiline strings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inheritance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inheritance
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="filare-syntax">Filare Syntax<a class="headerlink" href="#filare-syntax" title="Permanent link">&para;</a></h1>
+<h2 id="main-sections">Main sections<a class="headerlink" href="#main-sections" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">connectors</span><span class="p">:</span><span class="w">  </span><span class="c1"># dictionary of all used connectors</span>
+<span class="w">  </span><span class="nt">&lt;str&gt;   </span><span class="p">:</span><span class="w">    </span><span class="c1"># unique connector designator/name</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w">          </span><span class="c1"># connector attributes (see below)</span>
+<span class="w">  </span><span class="nt">&lt;str&gt;   </span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+
+<span class="nt">cables</span><span class="p">:</span><span class="w">      </span><span class="c1"># dictionary of all used cables and wires</span>
+<span class="w">  </span><span class="nt">&lt;str&gt;   </span><span class="p">:</span><span class="w">    </span><span class="c1"># unique cable designator/name</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w">          </span><span class="c1"># cable attributes (see below)</span>
+<span class="w">  </span><span class="nt">&lt;str&gt;   </span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+
+<span class="nt">connections</span><span class="p">:</span><span class="w">  </span><span class="c1"># list of all connections to be made</span>
+<span class="w">              </span><span class="c1"># between cables and connectors</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w">         </span><span class="c1"># connection set (see below)</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+
+<span class="nt">additional_bom_items</span><span class="p">:</span><span class="w">  </span><span class="c1"># custom items to add to BOM</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bom-item&gt;</span><span class="w">           </span><span class="c1"># BOM item (see below)</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+
+<span class="nt">metadata</span><span class="p">:</span><span class="w">  </span><span class="c1"># dictionary of meta-information describing the harness</span>
+<span class="w">  </span><span class="nt">&lt;key&gt;   </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;value&gt;</span><span class="w">  </span><span class="c1"># any number of key value pairs (see below)</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+
+<span class="nt">options</span><span class="p">:</span><span class="w">  </span><span class="c1"># dictionary of common attributes for the whole harness</span>
+<span class="w">  </span><span class="nt">&lt;str&gt;   </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;value&gt;</span><span class="w">  </span><span class="c1"># optional harness attributes (see below)</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</code></pre></div>
+<h2 id="connector-attributes">Connector attributes<a class="headerlink" href="#connector-attributes" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;str&gt;   </span><span class="p">:</span><span class="w">  </span><span class="c1"># unique connector designator/name</span>
+<span class="w">  </span><span class="c1"># general information about a connector (all optional)</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span>
+<span class="w">  </span><span class="nt">subtype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span>
+<span class="w">  </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w">  </span><span class="c1"># see below</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;image&gt;</span><span class="w">  </span><span class="c1"># see below</span>
+<span class="w">  </span><span class="nt">notes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span>
+
+<span class="w">  </span><span class="c1"># product information (all optional)</span>
+<span class="w">  </span><span class="nt">ignore_in_bom</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w">  </span><span class="c1"># if set to true the connector is not added to the BOM</span>
+<span class="w">  </span><span class="nt">pn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w">              </span><span class="c1"># [internal] part number</span>
+<span class="w">  </span><span class="nt">manufacturer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w">    </span><span class="c1"># manufacturer name</span>
+<span class="w">  </span><span class="nt">mpn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w">             </span><span class="c1"># manufacturer part number</span>
+<span class="w">  </span><span class="nt">supplier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w">        </span><span class="c1"># supplier name</span>
+<span class="w">  </span><span class="nt">spn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w">             </span><span class="c1"># supplier part number</span>
+<span class="w">  </span><span class="nt">additional_components</span><span class="p">:</span><span class="w"> </span><span class="c1"># additional components</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;additional-component&gt;</span><span class="w"> </span><span class="c1"># additional component (see below)</span>
+
+<span class="w">  </span><span class="c1"># pinout information</span>
+<span class="w">  </span><span class="c1"># at least one of the following must be specified</span>
+<span class="w">  </span><span class="nt">pincount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;int&gt;</span><span class="w">    </span><span class="c1"># if omitted, is set to length of specified list(s)</span>
+<span class="w">  </span><span class="nt">pins</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span><span class="w">       </span><span class="c1"># if omitted, is autofilled with [1, 2, ..., pincount]</span>
+<span class="w">  </span><span class="nt">pinlabels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span><span class="w">  </span><span class="c1"># if omitted, is autofilled with blanks</span>
+
+<span class="w">  </span><span class="c1"># pin color marks (optional)</span>
+<span class="w">  </span><span class="nt">pincolors</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span><span class="w">  </span><span class="c1"># list of colors to be assigned to the respective pins;</span>
+<span class="w">                     </span><span class="c1"># if list length is lower than connector pinout,</span>
+<span class="w">                     </span><span class="c1"># no color marks will be added to remaining pins</span>
+
+<span class="w">  </span><span class="c1"># rendering information (all optional)</span>
+<span class="w">  </span><span class="nt">bgcolor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w">       </span><span class="c1"># Background color of diagram connector box</span>
+<span class="w">  </span><span class="nt">bgcolor_title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Background color of title in diagram connector box</span>
+<span class="w">  </span><span class="nt">style</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;style&gt;</span><span class="w">         </span><span class="c1"># may be set to simple for single pin connectors</span>
+<span class="w">  </span><span class="nt">show_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w">      </span><span class="c1"># defaults to true for regular connectors,</span>
+<span class="w">                         </span><span class="c1"># false for simple connectors</span>
+<span class="w">  </span><span class="nt">show_pincount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w">  </span><span class="c1"># defaults to true for regular connectors</span>
+<span class="w">                         </span><span class="c1"># false for simple connectors</span>
+<span class="w">  </span><span class="nt">hide_disconnected_pins</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w">  </span><span class="c1"># defaults to false</span>
+
+<span class="w">  </span><span class="c1"># loops</span>
+<span class="w">  </span><span class="nt">loops</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List[loop]&gt;</span><span class="w">  </span><span class="c1"># every list item is a loop object representing two pins</span>
+<span class="w">                 </span><span class="c1"># on the connector that are to be shorted</span>
+<span class="w">      </span><span class="nt">loop</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;first&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the first &lt;pin&gt; of the loop</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;second&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the second &lt;pin&gt; of the loop</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;side&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">either &quot;LEFT&quot; or &quot;RIGHT&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">show_label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt; defaults to true, will show the loop label</span>
+</code></pre></div>
+<h2 id="cable-attributes">Cable attributes<a class="headerlink" href="#cable-attributes" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;str&gt;</span><span class="p">:</span><span class="w"> </span><span class="c1"># unique cable designator/name</span>
+<span class="w">  </span><span class="c1"># general information about a connector (all optional)</span>
+<span class="w">  </span><span class="nt">category</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&lt;category&gt;</span><span class="w"> </span><span class="c1"># may be set to bundle;</span>
+<span class="w">    </span><span class="c1"># generates one BOM item for every wire in the bundle</span>
+<span class="w">    </span><span class="c1"># instead of a single item for the entire cable;</span>
+<span class="w">    </span><span class="c1"># renders with a dashed outline</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span>
+<span class="w">  </span><span class="nt">gauge</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&lt;int/float/str&gt;</span><span class="w"> </span><span class="c1"># allowed formats:</span>
+<span class="w">    </span><span class="c1"># &lt;int/float&gt; mm2  is understood</span>
+<span class="w">    </span><span class="c1"># &lt;int&gt; AWG        is understood</span>
+<span class="w">    </span><span class="c1"># &lt;int/float&gt;      is assumed to be mm2</span>
+<span class="w">    </span><span class="c1"># &lt;str&gt;            custom units and formats are allowed</span>
+<span class="w">    </span><span class="c1">#                  but unavailable for auto-conversion</span>
+<span class="w">  </span><span class="nt">show_equiv</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># defaults to false; can auto-convert between mm2 and AWG</span>
+<span class="w">    </span><span class="c1"># and display the result when set to true</span>
+<span class="w">  </span><span class="nt">length</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&lt;int/float&gt;[ &lt;unit&gt;]</span><span class="w"> </span><span class="c1"># &lt;int/float&gt; is assumed to be in meters unless &lt;unit&gt; is specified</span>
+<span class="w">    </span><span class="c1"># e.g. length: 2.5 -&gt; assumed to be 2.5 m</span>
+<span class="w">    </span><span class="c1"># or   length: 2.5 ft -&gt; &quot;ft&quot; is used as the unit</span>
+<span class="w">    </span><span class="c1"># Units are not converted during BOM generation;</span>
+<span class="w">    </span><span class="c1"># different units result in separate BOM entries.</span>
+<span class="w">  </span><span class="nt">shield</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool/color&gt;</span><span class="w"> </span><span class="c1"># defaults to false</span>
+<span class="w">    </span><span class="c1"># setting to true will display the shield as a thin black line</span>
+<span class="w">    </span><span class="c1"># using a color (see below) will render the shield in that color</span>
+<span class="w">    </span><span class="c1"># A shield can be accessed by using &#39;s&#39; as the wire ID</span>
+<span class="w">  </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># see below</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;image&gt;</span><span class="w"> </span><span class="c1"># see below</span>
+<span class="w">  </span><span class="nt">notes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span>
+
+<span class="w">  </span><span class="c1"># product information (all optional)</span>
+<span class="w">  </span><span class="nt">ignore_in_bom</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># if set to true the cable or wires are not added to the BOM</span>
+<span class="w">  </span><span class="nt">pn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># [internal] part number</span>
+<span class="w">  </span><span class="nt">manufacturer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># manufacturer name</span>
+<span class="w">  </span><span class="nt">mpn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># manufacturer part number</span>
+<span class="w">  </span><span class="nt">supplier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># supplier name</span>
+<span class="w">  </span><span class="nt">spn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># supplier part number</span>
+<span class="w">  </span><span class="nt">additional_components</span><span class="p">:</span><span class="w"> </span><span class="c1"># additional components</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;additional-component&gt;</span><span class="w"> </span><span class="c1"># additional component (see below)</span>
+
+<span class="w">  </span><span class="c1"># conductor information</span>
+<span class="w">  </span><span class="c1"># the following combinations are permitted:</span>
+<span class="w">  </span><span class="c1"># wirecount only          no color information is specified</span>
+<span class="w">  </span><span class="c1"># colors only             wirecount is inferred from list length</span>
+<span class="w">  </span><span class="c1"># wirecount + color_code  colors are auto-generated based on the specified</span>
+<span class="w">  </span><span class="c1">#                         color code (see below) to match the wirecount</span>
+<span class="w">  </span><span class="c1"># wirecount + colors      colors list is trimmed or repeated to match the wirecount</span>
+<span class="w">  </span><span class="nt">wirecount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;int&gt;</span>
+<span class="w">  </span><span class="nt">colors</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span><span class="w"> </span><span class="c1"># list of colors (see below)</span>
+<span class="w">  </span><span class="nt">color_code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># one of the supported cable color codes (see below)</span>
+
+<span class="w">  </span><span class="nt">wirelabels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span><span class="w"> </span><span class="c1"># optional; one label for each wire</span>
+
+<span class="w">  </span><span class="c1"># rendering information (all optional)</span>
+<span class="w">  </span><span class="nt">bgcolor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Background color of diagram cable box</span>
+<span class="w">  </span><span class="nt">bgcolor_title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Background color of title in diagram cable box</span>
+<span class="w">  </span><span class="nt">show_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># defaults to true</span>
+<span class="w">  </span><span class="nt">show_wirecount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># defaults to true</span>
+</code></pre></div>
+<h2 id="connection-sets">Connection sets<a class="headerlink" href="#connection-sets" title="Permanent link">&para;</a></h2>
+<p>A connection set is used to connect multiple components together. Multiple connections can be easily created in parallel within one connection set, by specifying a list of individual pins (for <code>connectors</code>) or wires (for <code>cables</code>) for every component along the way.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">connections</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w">                </span><span class="c1"># Each list entry is a connection set</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;component&gt;</span><span class="w">    </span><span class="c1"># Each connection set is itself a list of items</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;component&gt;</span><span class="w">    </span><span class="c1"># Items must alternatingly belong to the connectors and cables sections</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">-...</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="c1"># example (single connection)</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;connector&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;pin&gt;</span><span class="w">   </span><span class="c1"># attach one pin of the connector</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;cable&gt;</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">&lt;wire&gt;</span><span class="w">  </span><span class="c1"># attach one wire of the cable</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;connector&gt;</span><span class="w">          </span><span class="c1"># for simple connectors, pin 1 is implicit</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;cable&gt;</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">s</span><span class="w">       </span><span class="c1"># for shielded wires, s attaches to the shield</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="c1"># example (multiple parallel connections)</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;connector&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">&lt;pin&gt;</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">...</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">&lt;pin&gt;</span><span class="w"> </span><span class="p p-Indicator">]</span><span class="w">  </span><span class="c1"># attach multiple pins in parallel</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;cable&gt;</span><span class="p">:</span><span class="w">     </span><span class="p p-Indicator">[</span><span class="nv">&lt;wire&gt;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">...</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">&lt;wire&gt;</span><span class="p p-Indicator">]</span><span class="w">  </span><span class="c1"># attach multiple wires in parallel</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;connector&gt;</span><span class="w">                         </span><span class="c1"># auto-generate a new connector for every parallel connection</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;cable&gt;</span><span class="p">:</span><span class="w">     </span><span class="p p-Indicator">[</span><span class="nv">&lt;wire&gt;-&lt;wire&gt;</span><span class="p p-Indicator">]</span><span class="w">        </span><span class="c1"># specify a range of wires to attach in parallel</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">&lt;connector&gt;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">...</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">&lt;connector&gt;</span><span class="p p-Indicator">]</span><span class="w">     </span><span class="c1"># specify multiple simple connectors to attach in parallel</span>
+<span class="w">                                          </span><span class="c1"># these may be unique, auto-generated, or a mix of both</span>
+</code></pre></div>
+<ul>
+<li>Each connection set is a list of components.</li>
+<li>The minimum number of items is two.</li>
+<li>The maximum number of items is unlimited.</li>
+<li>Items must alternatingly belong to the <code>connectors</code> and the <code>cables</code> sections.</li>
+<li>When a connection set defines multiple parallel connections, the number of specified <code>&lt;pin&gt;</code>s and <code>&lt;wire&gt;</code>s for each component in the set must match. When specifying only one designator, one is auto-generated for each connection of the set.</li>
+<li><code>&lt;pin&gt;</code> may reference a pin's unique ID (as per the connector's <code>pins</code> attribute, auto-numbered from 1 by default) or its label (as per <code>pinlabels</code>).</li>
+<li><code>&lt;wire&gt;</code> may reference a wire's number within a cable/bundle, its label (as per <code>wirelabels</code>) or, if unambiguous, its color.</li>
+</ul>
+<h3 id="single-connections">Single connections<a class="headerlink" href="#single-connections" title="Permanent link">&para;</a></h3>
+<h4 id="connectors">Connectors<a class="headerlink" href="#connectors" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><code>- &lt;designator&gt;: &lt;int/str&gt;, &lt;str&gt;__&lt;int&gt;</code> attaches a pin of the connector, referring to a pin number (from the connector's <code>pins</code> attribute) or a pin label (from its <code>pinlabels</code> attribute), provided the label is unique.</p>
+</li>
+<li>
+<p><code>- &lt;designator&gt;</code> is allowed for simple connectors, since they have only one pin to connect.
+  For connectors with <code>autogenerate: true</code>, a new instance, with auto-generated designator, is created.</p>
+</li>
+</ul>
+<h4 id="cables">Cables<a class="headerlink" href="#cables" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>&lt;designator&gt;: &lt;wire&gt;</code> attaches a specific wire of a cable, using its number.</li>
+</ul>
+<h3 id="multiple-parallel-connections">Multiple parallel connections<a class="headerlink" href="#multiple-parallel-connections" title="Permanent link">&para;</a></h3>
+<h4 id="connectors_1">Connectors<a class="headerlink" href="#connectors_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>- &lt;designator&gt;: [&lt;pin&gt;, ..., &lt;pin&gt;]</code></li>
+</ul>
+<p>Each <code>&lt;pin&gt;</code> may be:
+  - <code>&lt;int/str&gt;</code> to refer to a specific pin, using its number (from its <code>pins</code> attribute) or its label (from its <code>pinlabels</code> attribute, provided the label is unique for this connector)</p>
+<ul>
+<li><code>&lt;int&gt;-&lt;int&gt;</code> auto-expands to a range, e.g. <code>1-4</code> auto-expands to <code>1,2,3,4</code>; <code>9-7</code> will auto-expand to <code>9,8,7</code>.</li>
+<li>
+<p><str>__<int> where str is the name of the pin and int is it's number. This can be used to
+    differentiate pins which have the same label (i.e. GND)</p>
+</li>
+<li>
+<p>Mixing types is allowed, e.g. <code>[&lt;pin&gt;, &lt;pinlabel&gt;, &lt;pin&gt;-&lt;pin&gt;, &lt;pin&gt;]</code></p>
+</li>
+<li>
+<p><code>- [&lt;designator&gt;, ..., &lt;designator&gt;]</code></p>
+</li>
+</ul>
+<p>Attaches multiple different single pin connectors, one per connection in the set.
+  For connectors with <code>autogenerate: true</code>, a new instance, with auto-generated designator, is created with every mention.
+  Auto-generated and non-autogenerated connectors may be mixed.</p>
+<ul>
+<li><code>- &lt;designator&gt;</code></li>
+</ul>
+<p>Attaches multiple instances of the same single pin connector, one per connectioin in the set.
+  For connectors with <code>autogenerate: true</code>, a new instance, with auto-generated designator, is created for every connection in the set.
+  Since only connectors with <code>pincount: 1</code> can be auto-generated, pin number 1 is implicit.</p>
+<h4 id="cables_1">Cables<a class="headerlink" href="#cables_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>&lt;designator&gt;: [&lt;wire&gt;, ..., &lt;wire&gt;]</code></li>
+</ul>
+<p>Each <code>&lt;wire&gt;</code> may be:
+  - <code>&lt;int&gt;</code> to refer to a specific wire, using its number.
+  - <code>&lt;int&gt;-&lt;int&gt;</code> auto-expands to a range.
+  - <code>&lt;str&gt;</code> to refer to a wire's label or color, if unambiguous.</p>
+<div class="highlight"><pre><span></span><code>## Metadata entries
+
+```yaml
+  # Meta-information describing the harness
+
+  # Valus supported can be found in src/filare/metadata.py
+</code></pre></div>
+<h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Common attributes for the whole harness.</span>
+<span class="c1"># All entries are optional and have default values.</span>
+
+<span class="c1"># Background color of diagram and HTML output</span>
+<span class="nt">bgcolor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Default = &#39;WH&#39;</span>
+
+<span class="c1"># Background color of other diagram elements</span>
+<span class="nt">bgcolor_node</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Default = &#39;WH&#39;</span>
+<span class="nt">bgcolor_connector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Default = bgcolor_node</span>
+<span class="nt">bgcolor_cable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Default = bgcolor_node</span>
+<span class="nt">bgcolor_bundle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Default = bgcolor_cable</span>
+
+<span class="c1"># How to display colors as text in the diagram</span>
+<span class="c1"># &#39;full&#39; : Lowercase full color name</span>
+<span class="c1"># &#39;FULL&#39; : Uppercase full color name</span>
+<span class="c1"># &#39;hex&#39;  : Lowercase hexadecimal values</span>
+<span class="c1"># &#39;HEX&#39;  : Uppercase hexadecimal values</span>
+<span class="c1"># &#39;short&#39;: Lowercase short color name</span>
+<span class="c1"># &#39;SHORT&#39;: Uppercase short color name</span>
+<span class="c1"># &#39;ger&#39;  : Lowercase short German color name</span>
+<span class="c1"># &#39;GER&#39;  : Uppercase short German color name</span>
+<span class="nt">color_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># Default = &#39;SHORT&#39;</span>
+
+<span class="c1"># Fontname to use in diagram and HTML output</span>
+<span class="nt">fontname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># Default = &#39;arial&#39;</span>
+
+<span class="c1"># If True, show only a BOM entry reference together with basic info</span>
+<span class="c1"># about additional components inside the diagram node (connector/cable box).</span>
+<span class="c1"># If False, show all info about additional components inside the diagram node.</span>
+<span class="nt">mini_bom_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># Default = True</span>
+</code></pre></div>
+<h2 id="bom-items-and-additional-components">BOM items and additional components<a class="headerlink" href="#bom-items-and-additional-components" title="Permanent link">&para;</a></h2>
+<p>Connectors (both regular, and auto-generated), cables, and wires of a bundle are automatically added to the BOM,
+unless the <code>ignore_in_bom</code> attribute is set to <code>true</code>.
+Additional items can be added to the BOM as either part of a connector or cable or on their own.</p>
+<p>Parts can be added to a connector or cable in the section <code>&lt;additional-component&gt;</code> which will also list them in the graph.</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># type of additional component</span>
+<span class="w">  </span><span class="c1"># all the following are optional:</span>
+<span class="w">  </span><span class="nt">subtype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># additional description (only shown in bom)</span>
+<span class="w">  </span><span class="nt">qty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;int/float&gt;</span><span class="w"> </span><span class="c1"># qty to add to the bom (defaults to 1)</span>
+<span class="w">  </span><span class="nt">qty_multiplier</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># multiplies qty by a feature of the parent component</span>
+<span class="w">    </span><span class="c1"># when used in a connector:</span>
+<span class="w">    </span><span class="c1"># pincount         number of pins of connector</span>
+<span class="w">    </span><span class="c1"># populated        number of populated positions in a connector</span>
+<span class="w">    </span><span class="c1"># when used in a cable:</span>
+<span class="w">    </span><span class="c1"># wirecount        number of wires of cable/bundle</span>
+<span class="w">    </span><span class="c1"># terminations     number of terminations on a cable/bundle</span>
+<span class="w">    </span><span class="c1"># length           length of cable/bundle</span>
+<span class="w">    </span><span class="c1"># total_length     sum of lengths of each wire in the bundle</span>
+<span class="w">  </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span>
+<span class="w">  </span><span class="nt">pn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># [internal] part number</span>
+<span class="w">  </span><span class="nt">manufacturer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># manufacturer name</span>
+<span class="w">  </span><span class="nt">mpn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># manufacturer part number</span>
+<span class="w">  </span><span class="nt">supplier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># supplier name</span>
+<span class="w">  </span><span class="nt">spn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># supplier part number</span>
+<span class="w">  </span><span class="nt">bgcolor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Background color of entry in diagram component box</span>
+</code></pre></div>
+<p>Alternatively items can be added to just the BOM by putting them in the section <code>&lt;bom-item&gt;</code> above.</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span>
+<span class="w">  </span><span class="c1"># all the following are optional:</span>
+<span class="w">  </span><span class="nt">qty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;int/float&gt;</span><span class="w"> </span><span class="c1"># qty to add to the bom (defaults to 1)</span>
+<span class="w">  </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span>
+<span class="w">  </span><span class="nt">designators</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span>
+<span class="w">  </span><span class="nt">pn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># [internal] part number</span>
+<span class="w">  </span><span class="nt">manufacturer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># manufacturer name</span>
+<span class="w">  </span><span class="nt">mpn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># manufacturer part number</span>
+<span class="w">  </span><span class="nt">supplier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># supplier name</span>
+<span class="w">  </span><span class="nt">spn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># supplier part number</span>
+</code></pre></div>
+<h2 id="colors">Colors<a class="headerlink" href="#colors" title="Permanent link">&para;</a></h2>
+<p>Colors are defined via uppercase, two character strings.
+Striped/banded wires can be specified by simply concatenating multiple colors, with no space inbetween, eg. <code>GNYE</code> for green-yellow.</p>
+<p>The following colors are understood:</p>
+<ul>
+<li><code>BK</code> <img alt="##000000" src="https://via.placeholder.com/15/000000/000000?text=+" /> (black)</li>
+<li><code>WH</code> <img alt="##ffffff" src="https://via.placeholder.com/15/ffffff/000000?text=+" /> (white)</li>
+<li><code>GY</code> <img alt="##999999" src="https://via.placeholder.com/15/999999/000000?text=+" /> (grey)</li>
+<li><code>PK</code> <img alt="##ff66cc" src="https://via.placeholder.com/15/ff66cc/000000?text=+" /> (pink)</li>
+<li><code>RD</code> <img alt="##ff0000" src="https://via.placeholder.com/15/ff0000/000000?text=+" /> (red)</li>
+<li><code>OG</code> <img alt="##ff8000" src="https://via.placeholder.com/15/ff8000/000000?text=+" /> (orange)</li>
+<li><code>YE</code> <img alt="##ffff00" src="https://via.placeholder.com/15/ffff00/000000?text=+" /> (yellow)</li>
+<li><code>OL</code> <img alt="##708000" src="https://via.placeholder.com/15/708000/000000?text=+" /> (olive green)</li>
+<li><code>GN</code> <img alt="##00ff00" src="https://via.placeholder.com/15/00ff00/000000?text=+" /> (green)</li>
+<li><code>TQ</code> <img alt="##00ffff" src="https://via.placeholder.com/15/00ffff/000000?text=+" /> (turquoise)</li>
+<li><code>LB</code> <img alt="##a0dfff" src="https://via.placeholder.com/15/a0dfff/000000?text=+" /> (light blue)</li>
+<li><code>BU</code> <img alt="##0066ff" src="https://via.placeholder.com/15/0066ff/000000?text=+" /> (blue)</li>
+<li><code>VT</code> <img alt="##8000ff" src="https://via.placeholder.com/15/8000ff/000000?text=+" /> (violet)</li>
+<li><code>BN</code> <img alt="##895956" src="https://via.placeholder.com/15/895956/000000?text=+" /> (brown)</li>
+<li><code>BG</code> <img alt="##ceb673" src="https://via.placeholder.com/15/ceb673/000000?text=+" /> (beige)</li>
+<li><code>IV</code> <img alt="##f5f0d0" src="https://via.placeholder.com/15/f5f0d0/000000?text=+" /> (ivory)</li>
+<li><code>SL</code> <img alt="##708090" src="https://via.placeholder.com/15/708090/000000?text=+" /> (slate)</li>
+<li><code>CU</code> <img alt="##d6775e" src="https://via.placeholder.com/15/d6775e/000000?text=+" /> (copper)</li>
+<li><code>SN</code> <img alt="##aaaaaa" src="https://via.placeholder.com/15/aaaaaa/000000?text=+" /> (tin)</li>
+<li><code>SR</code> <img alt="##84878c" src="https://via.placeholder.com/15/84878c/000000?text=+" /> (silver)</li>
+<li><code>GD</code> <img alt="##ffcf80" src="https://via.placeholder.com/15/ffcf80/000000?text=+" /> (gold)</li>
+</ul>
+<!-- color list generated with a helper script: -->
+<!-- https://gist.github.com/formatc1702/3c93fb4c5e392364899283f78672b952 -->
+
+<p>It is also possible to specify colors as hexadecimal RGB values, e.g. <code>#112233</code> or <code>#FFFF00:#009900</code>.
+Remember quoting strings containing a <code>#</code> in the YAML file.</p>
+<h2 id="cable-color-codes">Cable color codes<a class="headerlink" href="#cable-color-codes" title="Permanent link">&para;</a></h2>
+<p>Supported color codes:</p>
+<ul>
+<li><code>DIN</code> for <a href="https://en.wikipedia.org/wiki/DIN_47100">DIN 47100</a></li>
+</ul>
+<p><img alt="##ffffff" src="https://via.placeholder.com/15/ffffff/000000?text=+" /> <img alt="##895956" src="https://via.placeholder.com/15/895956/000000?text=+" /> <img alt="##00ff00" src="https://via.placeholder.com/15/00ff00/000000?text=+" /> <img alt="##ffff00" src="https://via.placeholder.com/15/ffff00/000000?text=+" /> <img alt="##999999" src="https://via.placeholder.com/15/999999/000000?text=+" /> <img alt="##ff66cc" src="https://via.placeholder.com/15/ff66cc/000000?text=+" /> <img alt="##0066ff" src="https://via.placeholder.com/15/0066ff/000000?text=+" /> <img alt="##ff0000" src="https://via.placeholder.com/15/ff0000/000000?text=+" /> <img alt="##000000" src="https://via.placeholder.com/15/000000/000000?text=+" /> <img alt="##8000ff" src="https://via.placeholder.com/15/8000ff/000000?text=+" /> ...</p>
+<ul>
+<li><code>IEC</code> for <a href="https://en.wikipedia.org/wiki/Electronic_color_code#Color_band_system">IEC 60757</a> ("ROY G BIV")</li>
+</ul>
+<p><img alt="##895956" src="https://via.placeholder.com/15/895956/000000?text=+" /> <img alt="##ff0000" src="https://via.placeholder.com/15/ff0000/000000?text=+" /> <img alt="##ff8000" src="https://via.placeholder.com/15/ff8000/000000?text=+" /> <img alt="##ffff00" src="https://via.placeholder.com/15/ffff00/000000?text=+" /> <img alt="##00ff00" src="https://via.placeholder.com/15/00ff00/000000?text=+" /> <img alt="##0066ff" src="https://via.placeholder.com/15/0066ff/000000?text=+" /> <img alt="##8000ff" src="https://via.placeholder.com/15/8000ff/000000?text=+" /> <img alt="##999999" src="https://via.placeholder.com/15/999999/000000?text=+" /> <img alt="##ffffff" src="https://via.placeholder.com/15/ffffff/000000?text=+" /> <img alt="##000000" src="https://via.placeholder.com/15/000000/000000?text=+" /> ...</p>
+<ul>
+<li><code>TEL</code> and <code>TELALT</code> for <a href="https://en.wikipedia.org/wiki/25-pair_color_code">25-pair color code</a></li>
+<li><code>T568A</code> and <code>T568B</code> for <a href="https://en.wikipedia.org/wiki/TIA/EIA-568#Wiring">TIA/EIA-568</a> (e.g. Ethernet)</li>
+<li><code>BW</code> for alternating black and white</li>
+</ul>
+<h2 id="images">Images<a class="headerlink" href="#images" title="Permanent link">&para;</a></h2>
+<p>Both connectors and cables accept including an image with a caption within their respective nodes.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">image</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">src</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;path&gt;</span><span class="w"> </span><span class="c1"># path to the image file</span>
+<span class="w">  </span><span class="c1"># optional parameters:</span>
+<span class="w">  </span><span class="nt">caption</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># text to display below the image</span>
+<span class="w">  </span><span class="nt">bgcolor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Background color of entry in diagram component box</span>
+<span class="w">  </span><span class="nt">width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;int&gt;</span><span class="w"> </span><span class="c1"># range: 1~65535; unit: points</span>
+<span class="w">  </span><span class="nt">height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;int&gt;</span><span class="w"> </span><span class="c1"># range: 1~65535; unit: points</span>
+<span class="w">  </span><span class="c1"># if only one dimension (width/height) is specified, the image is scaled proportionally.</span>
+<span class="w">  </span><span class="c1"># if both width and height are specified, the image is stretched to fit.</span>
+</code></pre></div>
+<p>For more fine grained control over the image parameters, please see <a href="../advanced_image_usage/"><code>advanced_image_usage.md</code></a>.</p>
+<h2 id="multiline-strings">Multiline strings<a class="headerlink" href="#multiline-strings" title="Permanent link">&para;</a></h2>
+<p>The following attributes accept multiline strings:</p>
+<ul>
+<li><code>type</code></li>
+<li><code>subtype</code> (connectors only)</li>
+<li><code>notes</code></li>
+<li><code>manufacturer</code></li>
+<li><code>mpn</code></li>
+<li><code>supplier</code></li>
+<li><code>spn</code></li>
+<li><code>image.caption</code></li>
+</ul>
+<h3 id="method-1">Method 1<a class="headerlink" href="#method-1" title="Permanent link">&para;</a></h3>
+<p>By using <code>|</code>, every following indented line is treated as a new line.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">attribute</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">This is line 1.</span>
+<span class="w">  </span><span class="no">This is line 2.</span>
+</code></pre></div>
+<h3 id="method-2">Method 2<a class="headerlink" href="#method-2" title="Permanent link">&para;</a></h3>
+<p>By using double quoted strings, <code>\n</code> within the string is converted to a new line.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">attribute</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">line</span><span class="nv"> </span><span class="s">1.\nThis</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">line</span><span class="nv"> </span><span class="s">2.&quot;</span>
+</code></pre></div>
+<p>Plain (no quotes) or single quoted strings do not convert <code>\n</code>.</p>
+<p>See <a href="https://yaml-multiline.info/">yaml-multiline.info</a> for more information.</p>
+<h2 id="inheritance">Inheritance<a class="headerlink" href="#inheritance" title="Permanent link">&para;</a></h2>
+<p><a href="https://blog.daemonl.com/2016/02/yaml.html">YAML anchors and references</a> are useful for defining and referencing information that is used more than once in a file, e.g. when using defining multiple connectors of the same type or family. See <a href="../examples/demo02.yml">Demo 02</a> for an example.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.instant", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../javascripts/mermaid.js"></script>
+      
+    
+  </body>
+</html>
