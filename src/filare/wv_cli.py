@@ -9,7 +9,7 @@ import click
 if __name__ == "__main__":
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-import filare.wireviz as wv
+import filare.filare as wv
 from filare import APP_NAME, __version__
 from filare.models.metadata import Metadata
 from filare.models.options import PageOptions
