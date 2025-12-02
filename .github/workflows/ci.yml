@@ -137,7 +137,7 @@ jobs:
     name: "5) Version bump (semantic-release)"
     needs: docs
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
         with:
