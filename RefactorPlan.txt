@@ -189,3 +189,23 @@ Rebranding note: WireViz is being renamed to Filare. As changes continue, prefer
 
 28) Feature extension planning
 - Document feature extension ideas and capture in NEXT_FEATURES.md with actionable next steps.
+
+29) Docs build pipeline + artifacts
+- Stop duplicating example/tutorial assets by sourcing them from build_examples output during docs build (docs job already syncs into docs/examples and docs/tutorial).
+- Clean nav warnings in MkDocs (replace ../LICENSE and missing links, ensure tutorial/example pages are reachable from nav or excluded).
+- Add a minimal “Mermaid sanity” page to confirm diagrams render post-build.
+
+30) Mermaid validation and tooling
+- Keep scripts/check-mermaid.sh as part of lint/pre-commit/CI; ensure it uses the current mermaid-cli version and fails on parse errors.
+- Add a lightweight test fixture (static .mmd) to guard against regressions in mkdocs/mermaid config.
+- Consider caching mermaid-cli in CI or pinning via package-lock to reduce install time.
+
+31) Release/publish hygiene follow-up
+- Verify release/publish/container jobs are tag-gated end-to-end and document the tagging process in docs/ci.md.
+- Add a dry-run path (semantic-release –noop) for PRs if needed; otherwise ensure non-tag pushes skip publish steps quickly.
+- Confirm gh-pages deployment consumes built docs (including examples/tutorials) and retains mermaid assets.
+
+32) Shim removal and import convergence
+- After flow/render/model moves stabilize, remove legacy wv_* shims and update imports; track completion in Refactor.log.
+- Replace any remaining direct file-path assumptions with the new package structure; add regression tests around CLI entrypoints.
+- Audit tooling scripts (pre-commit, CI, build_examples) for legacy paths and update to new modules.
