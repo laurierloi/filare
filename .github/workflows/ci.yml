@@ -29,12 +29,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Install prettier
-        run: npm install --global prettier
+      - name: Install prettier + mermaid-cli
+        run: npm install --global prettier @mermaid-js/mermaid-cli@11.12.0
       - name: Run black
         run: uv run --no-sync black --check src tests
       - name: Run prettier
         run: prettier --check "docs/**/*.{md,html}"
+      - name: Check mermaid diagrams
+        run: ./scripts/check-mermaid.sh
 
   test:
     name: "2) Tests"

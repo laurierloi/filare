@@ -10,19 +10,20 @@ theme:
     - toc.follow
     - content.code.copy
 nav:
-  - Home: docs/README.md
-  - Syntax: docs/syntax.md
-  - Tutorial: docs/readme.md
-  - Examples: docs/README.md
-  - Advanced Images: docs/advanced_image_usage.md
-  - Build Script: docs/buildscript.md
-  - CI: docs/ci.md
+  - Home: README.md
+  - Architecture: architecture.md
+  - Syntax: syntax.md
+  - Tutorial: tutorial/readme.md
+  - Examples: examples/readme.md
+  - Advanced Images: advanced_image_usage.md
+  - Build Script: buildscript.md
+  - CI: ci.md
   - Dev:
-      - Metadata Guide: docs/dev/metadata_guide.md
-      - Tasks: docs/tasks.md
-  - Changelog: docs/CHANGELOG.md
-  - Contributing: docs/CONTRIBUTING.md
-  - Branding: docs/brand.md
+      - Metadata Guide: dev/metadata_guide.md
+      - Tasks: tasks.md
+  - Changelog: CHANGELOG.md
+  - Contributing: CONTRIBUTING.md
+  - Branding: brand.md
 plugins:
   - search
 markdown_extensions:
@@ -33,3 +34,14 @@ markdown_extensions:
   - footnotes
   - attr_list
   - def_list
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.details
+  - pymdownx.inlinehilite
+
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+  - javascripts/mermaid.js

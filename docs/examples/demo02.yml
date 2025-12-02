@@ -1,0 +1,106 @@
+metadata:
+
+  title: Filare Demo 2
+  pn: WV-DEMO-02
+  company: some company
+  address: 8989 fancy street east
+
+  authors:
+    Created:
+      name: D. Rojas
+      date: 2020-05-20
+    Approved:
+      name: D. Rojas
+      date: 2020-05-20
+
+  revisions:
+    A:
+      name: D. Rojas
+      date: 2020-10-17
+      changelog: Filare 0.2 release
+
+  template:
+    name: din-6771
+    sheetsize: A3
+
+notes:
+  - <b> NO BOM by config! WOW! </b>
+  - Wire color is a recommendation
+  - Label harnesses with text given in diagram
+  - Label every connector to match the designation in the drawing
+  - Zip tie entire harness at 1ft increments where required.
+  - Cover all cables with 1/2" or 1/8" black sleeving as required. Make it very long for wrapping test
+
+options:
+  show_bom: False
+  notes_on_right: False
+
+
+templates: # defining templates to be used later on
+  - &molex_f
+    type: Molex KK 254
+    subtype: female
+  - &con_i2c
+    pinlabels: [GND, +5V, SCL, SDA]
+  - &wire_i2c
+    category: bundle
+    gauge: 0.14 mm2
+    colors: [BK, RD, YE, GN]
+
+connectors:
+  X1:
+    <<: *molex_f # copying items from the template
+    pinlabels: [GND, +5V, SCL, SDA, MISO, MOSI, SCK, N/C]
+  X2:
+    <<: *molex_f
+    <<: *con_i2c # it is possible to copy from more than one template
+  X3:
+    <<: *molex_f
+    <<: *con_i2c
+  X4:
+    <<: *molex_f
+    pinlabels: [GND, +12V, MISO, MOSI, SCK]
+  F:
+    style: simple
+    type: Crimp ferrule
+    subtype: 0.25 mm²
+    color: YE
+
+cables:
+  W1:
+    <<: *wire_i2c
+    length: 0.2
+    show_equiv: true
+  W2:
+    <<: *wire_i2c
+    length: 0.4
+    show_equiv: true
+  W3:
+    category: bundle
+    gauge: 0.14 mm2
+    length: 0.3
+    colors: [BK, BU, OG, VT]
+    show_equiv: true
+  W4:
+    gauge: 0.25 mm2
+    length: 0.3
+    colors: [BK, RD]
+    show_equiv: true
+
+connections:
+  -
+    - X1: [1-4]
+    - W1: [1-4]
+    - X2: [1-4]
+  -
+    - X1: [1-4]
+    - W2: [1-4]
+    - X3: [1-4]
+  -
+    - X1: [1,5-7]
+    - W3: [1-4]
+    - X4: [1,3-5]
+  -
+    - F.
+    - W4: [1,2]
+    - X4: [1,2]

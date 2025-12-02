@@ -51,6 +51,8 @@ dev = [
     "isort>=5.12.0",
     "black>=24.0.0",
     "pre-commit>=3.7.0",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.5.34",
 ]
 
 [dependency-groups]
@@ -61,6 +63,8 @@ dev = [
     "isort>=5.12.0",
     "black>=24.0.0",
     "pre-commit>=3.7.0",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.5.34",
 ]
 
 [tool.setuptools]

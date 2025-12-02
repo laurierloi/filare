@@ -1,0 +1,23 @@
+connectors:
+  X1:
+    pinlabels: [+12V, GND, GND, +5V]
+    type: Molex 8981
+    subtype: female
+  F1:
+    style: simple
+    type: Crimp ferrule
+    subtype: 0.5 mm²
+    color: OG # optional color
+
+cables:
+  W1:
+    category: bundle # bundle
+    length: 0.3
+    gauge: 0.5 mm2
+    colors: [YE, BK, BK, RD] # custom colors, wirecount is implicit
+
+connections:
+  -
+    - F1. # a new ferrule is auto-generated for each of the four wires
+    - W1: [1-4]
+    - X1: [1-4]

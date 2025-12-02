@@ -9,7 +9,7 @@ RUN apt-get update && \
       curl \
       git \
       npm && \
-    npm install --global prettier@3 && \
+    npm install --global prettier@3 @mermaid-js/mermaid-cli@11.12.0 && \
     rm -rf /var/lib/apt/lists/*
 
 # Install uv
@@ -21,10 +21,12 @@ ENV PATH="/opt/filare/.venv/bin:/root/.local/bin:${PATH}"
 WORKDIR /app
 
 COPY pyproject.toml uv.lock ./
+COPY mkdocs.yml ./
 COPY src ./src
 COPY tests ./tests
 COPY examples ./examples
 COPY tutorial ./tutorial
+COPY docs ./docs
 
 # Create a project venv with dev deps so lint/tests work in the image
 RUN /root/.local/bin/uv venv "$UV_PROJECT_ENVIRONMENT" && \

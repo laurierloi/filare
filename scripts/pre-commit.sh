@@ -32,3 +32,4 @@ mkdir -p outputs
 cp -r examples outputs/examples
 cp -r tutorial outputs/tutorial
 prettier --check "docs/**/*.{md,html}"
+"$root_dir/scripts/check-mermaid.sh"
