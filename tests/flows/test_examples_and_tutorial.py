@@ -5,7 +5,7 @@ import pytest
 
 import pytest
 
-from filare.fil_cli import cli
+from filare.cli import cli
 
 
 def run_filare_cli(output_dir: Path, metadata: Path, inputs, formats="h"):

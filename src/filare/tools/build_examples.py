@@ -12,7 +12,7 @@ script_path = Path(__file__).absolute()
 sys.path.insert(0, str(script_path.parent.parent.parent))  # to find filare module
 
 from filare import APP_NAME, __version__
-from filare.fil_cli import cli
+from filare.cli import cli
 
 base_dir = script_path.parent.parent.parent.parent
 readme = "readme.md"

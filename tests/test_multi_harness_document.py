@@ -2,7 +2,7 @@ import textwrap
 
 import pytest
 
-from filare.fil_cli import cli
+from filare.cli import cli
 
 
 @pytest.mark.parametrize("formats", ["tb"])

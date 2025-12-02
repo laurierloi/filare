@@ -40,7 +40,7 @@ dependencies = [
 ]
 
 [project.scripts]
-filare = "filare.fil_cli:cli"
+filare = "filare.cli:cli"
 filare-qty = "filare.models.harness_quantity:qty_multipliers"
 
 [project.optional-dependencies]
