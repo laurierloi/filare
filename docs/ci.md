@@ -25,6 +25,7 @@ This repository uses a GitHub Actions workflow (`.github/workflows/ci.yml`) that
 
 5. **Release (semantic-release, main only)**
    - Uses `python-semantic-release` to bump the version and publish release assets.
+   - Generates/updates `CHANGELOG.md` automatically and commits it with the release bump.
    - Needs `GH_TOKEN` (GitHub token) and `PYPI_TOKEN` (if publishing to PyPI through semantic-release).
 
 6. **Publish to PyPI (main only)**
