@@ -1662,10 +1662,12 @@
 <div class="highlight"><pre><span></span><code>uv run --no-sync mkdocs build
 python3 -m http.server 9000 --directory site
 </code></pre></div>
-<p>Then open http://localhost:9000.
-- Run tests:
+<p>Then open http://localhost:9000.</p>
+<ul>
+<li>Run tests:
   <div class="highlight"><pre><span></span><code>docker run --rm -v &quot;$PWD&quot;:/app filare uv run --no-sync pytest
-</code></pre></div></p>
+</code></pre></div></li>
+</ul>
 <h3 id="documentation-mkdocs-optional-sphinx">Documentation (MkDocs + optional Sphinx)<a class="headerlink" href="#documentation-mkdocs-optional-sphinx" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Build MkDocs site locally:
