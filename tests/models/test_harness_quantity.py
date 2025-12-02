@@ -42,3 +42,12 @@ def test_harness_quantity_missing_multiplier_asserts(tmp_path):
     hq = HarnessQuantity([tmp_path / "H1.yml"], output_dir=tmp_path)
     with pytest.raises(AssertionError):
         hq.fetch_qty_multipliers_from_file()
+
+
+def test_harness_quantity_handles_missing_file_gracefully(tmp_path):
+    hq = HarnessQuantity([tmp_path / "H1.yml"], output_dir=tmp_path)
+    # No file present; should prompt and write default zero when user enters blank
+    hq.qty = {"H1": 0}
+    hq.save_qty_multipliers()
+    data = json.loads((tmp_path / "quantity_multipliers.txt").read_text())
+    assert data["H1"] == 0
