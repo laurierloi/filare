@@ -3,6 +3,8 @@ name: Filare CI
 on:
   push:
     branches: [main]
+    tags:
+      - "v*"
   pull_request:
 
 permissions:
@@ -102,17 +104,29 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Download example artifacts
         uses: actions/download-artifact@v4
         with:
           name: filare-examples
           path: outputs
-      - name: Prepare site
+      - name: Sync docs dependencies
         run: |
-          mkdir -p site
-          cp -r docs/* site/
-          mkdir -p site/examples
-          if [ -d outputs ]; then cp -r outputs/* site/examples/; fi
+          uv venv
+          uv sync --group dev
+      - name: Prepare site content
+        run: |
+          mkdir -p docs/examples docs/tutorial
+          if [ -d outputs/examples ]; then rsync -a outputs/examples/ docs/examples/; fi
+          if [ -d outputs/tutorial ]; then rsync -a outputs/tutorial/ docs/tutorial/; fi
+      - name: Build docs (MkDocs)
+        run: uv run --no-sync mkdocs build
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -123,7 +137,7 @@ jobs:
     name: "5) Version bump (semantic-release)"
     needs: docs
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v4
         with:
@@ -151,7 +165,7 @@ jobs:
     name: "6) Build & publish to PyPI"
     needs: release
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -176,6 +190,7 @@ jobs:
     name: "7) Verify package from PyPI"
     needs: publish
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - uses: actions/setup-python@v5
         with:
@@ -195,7 +210,7 @@ jobs:
     name: "8) Build & push container"
     needs: publish
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v4
       - name: Log in to GHCR
