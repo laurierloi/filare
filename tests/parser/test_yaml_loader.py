@@ -66,3 +66,14 @@ def test_parse_concat_merge_files_concats_then_merges(tmp_path):
 
 def test_parse_merge_yaml_handles_empty_list():
     assert parse_merge_yaml([]) == {}
+
+
+def test_merge_item_handles_none_and_type_mismatch():
+    assert merge_item({"a": 1}, None) == {"a": 1}
+    assert merge_item(None, {"a": 2}) == {"a": 2}
+    # when types differ, y wins
+    assert merge_item({"a": 1}, ["b"]) == ["b"]
+
+
+def test_merge_item_lists_are_concatenated():
+    assert merge_item([1, 2], [3, 4]) == [1, 2, 3, 4]
