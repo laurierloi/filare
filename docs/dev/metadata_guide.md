@@ -32,4 +32,4 @@
 - Adding a new component or connector attribute and surfacing it in Graphviz/HTML.
 - Extending parser to support new YAML schema keys (with validation).
 - Adding a new output format (e.g., CSV) to flows/render and CLI.
-- Improving quantity multiplier handling (wv_harness_quantity) with tests.
+- Improving quantity multiplier handling (fil_harness_quantity) with tests.

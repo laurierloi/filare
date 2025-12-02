@@ -1,7 +1,7 @@
 Outstanding refactor tasks (completed items removed)
 
 1) Shim cleanup and import convergence
-- Remove remaining legacy wv_* shims once all imports are migrated to models/parser/flows/render.
+- Remove remaining legacy wv_* shims once all imports are migrated to models/parser/flows/render (verify no references remain).
 - Update tooling scripts (pre-commit, build_examples, CI) to avoid legacy paths.
 - Track removal in Refactor.log.
 
