@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "filare"
-version = { file = "VERSION" }
+dynamic = ["version"]
 description = "Easily document cables and wiring harnesses"
 readme = "docs/README.md"
 requires-python = ">=3.9"
@@ -71,6 +71,9 @@ dev = [
 package-dir = { "" = "src" }
 include-package-data = true
 
+[tool.setuptools.dynamic]
+version = { file = "VERSION" }
+
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = false
@@ -98,16 +101,15 @@ skip_covered = false
 directory = "report/coverage"
 
 [tool.semantic_release]
-version_toml = ["pyproject.toml:project.version"]
+version_toml = []
 branch = "main"
 changelog_file = "CHANGELOG.md"
 commit_message = "chore(release): v{version}"
 commit_author = "semantic-release <semantic-release@users.noreply.github.com>"
-upload_to_pypi = false
-upload_to_release = false
+upload_to_pypi = true
+upload_to_release = true
 build_command = "uv build"
 version_variable = ["VERSION"]
-# Match a plain version string in the VERSION file
 version_pattern = "^(?P<version>.*)$"
 changelog_sections = [
     { type = "feat", section = "Features", hidden = false },
