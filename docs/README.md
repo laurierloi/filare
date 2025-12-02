@@ -3,6 +3,7 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/filare.svg?colorB=blue)](https://pypi.org/project/filare/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/filare.svg?)](https://pypi.org/project/filare/)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/filare)](https://pypi.org/project/filare/)
+[![Docs](https://img.shields.io/badge/docs-github%20pages-blueviolet)](https://laurierloi.github.io/filare/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Summary
