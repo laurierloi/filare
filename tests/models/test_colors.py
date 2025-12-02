@@ -29,6 +29,9 @@ def test_multi_color_parses_colon_and_padding(monkeypatch):
     padded = colors.html_padded_list
     assert len(padded) == 3
     assert all(p.startswith("#") or p for p in padded)
+    # indexing wraps
+    assert colors[3].code_en == colors[1].code_en
+    assert colors.all_known
 
 
 def test_get_color_by_colorcode_index_wraps():
