@@ -3,6 +3,8 @@ set -euo pipefail
 
 root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 env_dir="$root_dir/.venv-ci"
+export UV_CACHE_DIR="$root_dir/.cache/uv"
+mkdir -p "$UV_CACHE_DIR"
 
 if ! command -v uv >/dev/null 2>&1; then
   echo "uv is required (install via https://astral.sh/uv/)" >&2
@@ -27,9 +29,6 @@ uv sync --group dev --python "$env_dir/bin/python"
 
 uv run --python "$env_dir/bin/python" --no-sync black --check src tests
 uv run --python "$env_dir/bin/python" --no-sync pytest
-uv run --python "$env_dir/bin/python" --no-sync python src/filare/tools/build_examples.py
-mkdir -p outputs
-cp -r examples outputs/examples
-cp -r tutorial outputs/tutorial
+uv run --python "$env_dir/bin/python" --no-sync python src/filare/tools/build_examples.py --output-dir "$root_dir/outputs"
 prettier --check "docs/**/*.{md,html}"
 "$root_dir/scripts/check-mermaid.sh"

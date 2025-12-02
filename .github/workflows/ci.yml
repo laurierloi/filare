@@ -87,10 +87,7 @@ jobs:
           uv sync --group dev
       - name: Build examples
         run: |
-          uv run --no-sync python src/filare/tools/build_examples.py
-          mkdir -p outputs
-          cp -r examples outputs/examples
-          cp -r tutorial outputs/tutorial
+          uv run --no-sync python src/filare/tools/build_examples.py --output-dir outputs
       - name: Upload example artifacts
         uses: actions/upload-artifact@v4
         with:

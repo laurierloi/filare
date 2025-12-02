@@ -48,19 +48,22 @@ def collect_filenames(description, groupkey, ext_list):
     patterns = [f"{groups[groupkey]['prefix']}*{ext}" for ext in ext_list]
     if ext_list != input_extensions and readme in groups[groupkey]:
         patterns.append(readme)
-    print(f'{description} {groupkey} in "{path}"')
+    print(f'{description} {groupkey} from "{path}"')
     return sorted([filename for pattern in patterns for filename in path.glob(pattern)])
 
 
-def build_generated(groupkeys):
+def build_generated(groupkeys, output_base=None):
+    output_base = Path(output_base) if output_base else None
     for key in groupkeys:
         # preparation
-        path = groups[key]["path"]
+        src_path = groups[key]["path"]
+        dest_path = src_path if output_base is None else output_base / key
+        dest_path.mkdir(parents=True, exist_ok=True)
         build_readme = readme in groups[key]
         if build_readme:
             include_readme = "md" in groups[key][readme]
             include_source = "yml" in groups[key][readme]
-            with (path / readme).open("w") as out:
+            with (dest_path / readme).open("w") as out:
                 out.write(f'# {groups[key]["title"]}\n\n')
         # collect and iterate input YAML files
         yaml_files = [f for f in collect_filenames("Building", key, input_extensions)]
@@ -71,6 +74,8 @@ def build_generated(groupkeys):
                     "ghpstb",  # no pdf for now
                     "--metadata",
                     yaml_files[0].parent / "metadata.yml",
+                    "--output-dir",
+                    dest_path,
                     *[str(f) for f in yaml_files],
                 ]
             )
@@ -82,7 +87,7 @@ def build_generated(groupkeys):
             for yaml_file in yaml_files:
                 i = "".join(filter(str.isdigit, yaml_file.stem))
 
-                with (path / readme).open("a") as out:
+                with (dest_path / readme).open("a") as out:
                     if include_readme:
                         with yaml_file.with_suffix(".md").open("r") as info:
                             for line in info:
@@ -140,13 +145,20 @@ def parse_args():
         default=groups.keys(),
         help="the groups of generated files (default: all)",
     )
+    parser.add_argument(
+        "-o",
+        "--output-dir",
+        default=None,
+        type=Path,
+        help="Optional base directory for generated outputs (defaults to in-place).",
+    )
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
     if args.action == "build":
-        build_generated(args.groups)
+        build_generated(args.groups, output_base=args.output_dir)
     elif args.action == "clean":
         clean_generated(args.groups)
 
