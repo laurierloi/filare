@@ -1,211 +1,27 @@
-Refactor plan: modular models, parsers, flows, and comprehensive tests
+Outstanding refactor tasks (completed items removed)
 
-Rebranding note: WireViz is being renamed to Filare. As changes continue, prefer Filare naming for new docs/diagrams/code paths where feasible (while preserving current CLI/module names until the formal rename step). Track any lingering references to update alongside the rebrand.
+1) Shim cleanup and import convergence
+- Remove remaining legacy wv_* shims once all imports are migrated to models/parser/flows/render.
+- Update tooling scripts (pre-commit, build_examples, CI) to avoid legacy paths.
+- Track removal in Refactor.log.
 
-1) Establish models package
-- Create directory src/filare/models/.
-- Split current dataclasses from src/filare/wv_dataclasses.py into focused modules:
-  - models/connector.py (Connector, PinClass, Loop, connector-specific helpers)
-  - models/cable.py (Cable, WireClass/ShieldClass, Connection, cable-specific helpers)
-  - models/component.py (Component, GraphicalComponent, BomCategory, qty multipliers)
-  - models/bom.py (BomEntry and related BOM helpers currently in wv_bom.py)
-  - models/metadata.py (Metadata, Revision/Author classes currently in metadata.py)
-  - models/options.py (PageOptions, page-related config currently in page_options.py)
-  - models/utils.py (color/number helpers that are model-level, e.g., awg/mm2)
-- Keep __init__.py files to export public API and maintain existing imports via compatibility re-exports during migration.
-- Git moves to preserve history:
-  - git mv src/filare/wv_dataclasses.py src/filare/models/component.py (then split content into new files)
-  - git mv src/filare/wv_bom.py src/filare/models/bom.py
-  - git mv src/filare/metadata.py src/filare/models/metadata.py
-  - git mv src/filare/page_options.py src/filare/models/options.py
+2) Coverage hardening
+- Raise coverage for lower modules: models/colors, models/cable, models/bom, models/dataclasses, models/utils, render/graphviz, parser/yaml_loader (edge cases).
+- Add parser edge-case tests and render smoke tests as needed.
 
-2) Introduce parser package
-- Create src/filare/parser/ with modules:
-  - parser/yaml_loader.py (currently parse_yaml.py logic: merge_item, parse_merge_files, parse_concat_merge_files; add safe file handling).
-  - parser/harness_parser.py to transform YAML dicts into model instances (currently spread across filare.py).
-  - parser/options_parser.py and parser/metadata_parser.py if needed to keep concerns isolated.
-- Gradually replace direct YAML dict accesses in flows with typed parse outputs. Keep temporary shims to map old functions to new module paths for backward compatibility.
-- Git moves:
-  - git mv src/filare/parse_yaml.py src/filare/parser/yaml_loader.py
+3) Pydantic migration (remaining classes)
+- Migrate dataclasses (Component/Connector/Cable/BOM/color helpers) to Pydantic BaseModels stepwise, keeping compatibility until imports are updated.
+- Propagate BaseModels into flows/build_harness and CLI once stable; add regression tests.
 
-3) Define flows layer
-- Create src/filare/flows/ with:
-  - flows/build_harness.py: orchestrates parsing components/options/metadata into models, connects harness, and returns a Harness model.
-  - flows/render_outputs.py: takes Harness/Metadata/Options and calls rendering (graphviz, html, pdf).
-  - flows/shared_bom.py: handles aggregation across multiple harness models, qty multipliers.
-  - flows/index_pages.py: titlepage/index table generation.
-- Refactor filare.py into a thin wrapper that delegates to flows; keep CLI-facing API stable. Eventually split CLI responsibilities into flows/cli_runner.py and keep wv_cli.py as entrypoint wrapper.
+4) Config/graph modeling (config and template inputs)
+- Add/configure ConnectorConfig/CableConfig/... models for YAML-facing config with round-trip tests.
+- Add template-input models and mappings; build small graph representation and mapping to template inputs.
+- Wire flows to accept config models then convert to BaseModels/dataclasses.
 
-4) Rendering separation
-- Keep graphviz/html/pdf functions under src/filare/render/ (new) to isolate pure rendering from flows. Move:
-  - gv_* functions from wv_graphviz.py to render/graphviz.py
-  - HTML/PDF helpers from wv_output.py to render/html.py, render/pdf.py
-  - move embed_svg_images into render/assets.py
-- Update imports accordingly; maintain re-export stubs to avoid breaking callers during transition.
-- Git moves:
-  - git mv src/filare/wv_graphviz.py src/filare/render/graphviz.py
-  - git mv src/filare/wv_output.py src/filare/render/output.py (split inside).
+5) Rendering module split and templating audit
+- Finish splitting render/output responsibilities (html/pdf/assets) and audit templating vs. code-built strings.
+- Add lightweight render tests to exercise template loading and HTML helpers.
 
-5) Wiring of connectors/cables in flows
-- In flows/build_harness.py, introduce small, testable functions:
-  - resolve_templates(yaml_data) -> template dicts
-  - add_connectors(harness, connector_defs)
-  - add_cables(harness, cable_defs)
-  - connect_links(harness, connection_sets)
-  - apply_additional_bom(harness, extras)
-- Each function should accept/return models only (no file I/O).
-
-6) CLI and backward compatibility
-- Keep wv_cli.py as a facade calling flows (parse inputs, call build_harness, then render). Add deprecation layers so existing import paths remain usable (e.g., from filare.wv_dataclasses import Connector).
-- Ensure format code mapping stays in CLI, but move heavy logic into flows/render_outputs.py.
-
-7) Testing strategy expansion
-- Add pytest suites covering:
-  - Model creation/validation: connectors, cables, qty multipliers, metadata, options.
-  - Parser unit tests: yaml_loader functions (merge precedence, concat), harness_parser building models from YAML snippets (including edge cases from examples/tutorials).
-  - Flow integration tests: building single and multi-harness docs, shared BOM scaling, connector overview pages, quantity multipliers, template selection.
-  - Rendering smoke tests: ensure graphviz/html outputs are produced for examples (use tmp paths; do not assert pixel-perfect, only existence/structure).
-- Derive test fixtures from examples/ and tutorial/:
-  - Parametrize over examples/ex*.yml with metadata to assert successful build and BOM non-empty.
-  - Add tutorial coverage by building tutorial YAMLs where feasible (or distilled fixtures mirroring tutorial features).
-  - Add regression tests for connector overview pages, background colors, loops, bundles, qty multipliers (existing tests/rendering YAMLs).
-- Add coverage config in pyproject.toml to include src/filare and exclude templates/assets.
-
-8) Incremental migration steps
-- Phase 1: Move files (git mv) and add compatibility re-exports (__init__.py) so imports continue to work.
-- Phase 2: Refactor filare.py to rely on parser + flows; keep function signatures stable.
-- Phase 3: Migrate rendering helpers into render/ and adjust flows; deprecate old module paths with clear warnings.
-- Phase 4: Expand pytest suite and wire into CI (if available); generate coverage report to ensure model/parser/flow branches are exercised.
-
-9) Tooling/commands to execute moves
-- Example commands (run from repo root):
-  - git mv src/filare/wv_dataclasses.py src/filare/models/component.py
-  - git mv src/filare/wv_bom.py src/filare/models/bom.py
-  - git mv src/filare/metadata.py src/filare/models/metadata.py
-  - git mv src/filare/page_options.py src/filare/models/options.py
-  - git mv src/filare/parse_yaml.py src/filare/parser/yaml_loader.py
-  - git mv src/filare/wv_graphviz.py src/filare/render/graphviz.py
-- git mv src/filare/wv_output.py src/filare/render/output.py
-- After moves, add __init__.py files exporting the old names, then progressively update imports across the codebase.
-
-11) Testing steps (per refactor stage)
-- Step 1 models tests: add pytest fixtures under tests/fixtures/models.py and tests/models/* for connectors, cables, components, metadata/options, BOM interactions. Generate coverage and record in Refactor.log.
-- Step 2 parser tests: add tests/parser/* to cover yaml_loader merge/concat logic and harness_parser helpers; target >70% coverage.
-- Step 3 flows tests: add tests/flows/* to validate build_harness_from_files wiring happy-path and failure paths (odd connections, template resolution).
-- Step 4 render tests: add lightweight smoke tests for render/graphviz and render/output to ensure SVG/HTML generation runs on minimal harness; avoid pixel-perfect asserts.
-- Update Refactor.log with per-step coverage totals and commands.
-
-12) Flows & overview handling
-- Add tests covering happy-path harness build, mismatched connection counts, overview style toggling, additional BOM items, and missing output format errors. Patch Harness to include orient_connectors_overview helper used in overview flows.
-
-13) Rendering utilities
-- Move HTML helpers and templates into render/ (with shims for legacy imports); adjust imports accordingly.
-- Add render tests for template loading, HTML utilities, SVG embedding helpers, HTML generation, and render_harness_outputs on a minimal harness.
-
-10) Test coverage goals
-- Aim for >90% on parser and flows modules; >80% on models; rendering smoke tests for coverage lines without asserting images.
-- Include a full examples sweep test: iterate examples/ex*.yml + metadata and assert outputs exist; skip known heavyweight PDFs unless needed.
-
-14) CLI/shared BOM/index flows
-- Add flows/shared_bom.py and flows/index_pages.py as thin facades over rendering helpers; update CLI to consume them.
-- Add pytest coverage for shared BOM/titlepage/pdf bundle wrappers with monkeypatches for error-free execution.
-
-15) Rendering module split and templating audit
-- Split render/output.py into render/html.py (HTML generation), render/pdf.py (PDF bundle), and render/assets.py (embed helpers). Keep shims for backward compatibility and update imports.
-- Audit rendered elements still built in code instead of Jinja (e.g., Graphviz node labels, BOM table strings) and note candidates for template migration.
-
-16) Shim cleanup and import updates
-- Remove backward-compatibility shims (wv_* proxies) once all references are updated; search for imports of legacy paths and replace with models/parser/flows/render equivalents. Update Refactor.log when shims are removed.
-
-17) Coverage hardening for low-coverage modules
-- Add parser edge-case tests to lift parser/yaml_loader to >90%.
-- Add coverage for wv_harness_quantity, wv_colors, wv_utils, and render/graphviz paths (e.g., node/edge rendering, padding logic).
-- Extend example/tutorial sweeps to include png/svg (optionally marked slow) and shared BOM generation.
-
-18) Architecture diagrams (Mermaid)
-- Create Mermaid graph describing overall architecture (models, parser, flows, render) and save to docs/graphs/architecture.md (with rendered output).
-- Create Mermaid graph for data flow from YAML + metadata through parser/flows/render to SVG/HTML outputs, saved to docs/graphs/data_flow.md.
-- Create Mermaid graphs documenting key models and their relationships (connectors, cables, harness, BOM), saved to docs/graphs/models.md.
-
-19) Documentation refresh
-- Review each doc under docs/ for coherence with current code; update where mismatched.
-- Add/update docs explaining metadata roles and how to update/add fields; include render impact.
-- Add development guide under docs/dev/ on adding metadata fields, where they render, and other useful guides (e.g., adding models, extending parser/flows/render, adding tests/coverage steps). Create tasks for future dev guides as needed.
-
-20) Shim cleanup
-- Remove legacy compatibility shims (wv_* proxies) once all imports are updated; track completion in Refactor.log.
-
-21) Consolidate remaining modules
-- Move wv_colors and wv_harness_quantity into the models package (e.g., models/colors.py, models/harness_quantity.py); adjust imports to use models paths.
-- If wv_harness_quantity workflows need orchestration, add corresponding flows (e.g., flows/harness_quantity.py) to encapsulate quantity multiplier logic.
-
-22) Migrate dataclasses to Pydantic models (multi-step)
-- Convert models/metadata.py to Pydantic BaseModel (preserve validation); adapt usages and tests.
-- Convert models/options.py to Pydantic (page options).
-- Convert models/colors.py, models/bom.py, models/dataclasses.py (connector/cable/component) incrementally; adjust hash/eq semantics and validation.
-- Update downstream code/tests to use BaseModel behaviors; keep compatibility shims where needed.
-- Propagate Pydantic model types into function signatures/usages (e.g., Metadata, PageOptions) so call sites are explicit about expecting BaseModel instances rather than plain dicts/objects.
-- Introduce centralized settings module: add settings.py to hold environment-driven configuration with WV_ prefix via settings configuration (no direct field renaming); plan migration of all env vars into this module and expand as more settings are needed.
-- Plan BOM staging: first populate BOM with unique IDs per instance (itemized), then generate a condensed BOM with merged parts for summary contexts. Add tasks to implement staged BOM generation without losing per-instance traceability.
-- Migrate remaining core classes to Pydantic incrementally (one class per step with tests): Component -> BaseModel, then GraphicalComponent/Connector, then Cable.
-- Capture future modeling and graph work in NEXT_FEATURES.md (config BaseModels, template-input models, graph representation/mapping); implement in small steps as outlined there.
-
-22a) Config models and graph groundwork (see NEXT_FEATURES.md)
-- Add ConnectorConfig/CableConfig/WireConfig/ConnectionConfig/MetadataConfig/PageOptionsConfig as Pydantic BaseModels for YAML-facing configuration.
-- Add round-trip YAML tests for each config model (load minimal/example/tutorial snippets, validate, dump back).
-- Add template-input models and conversions (TemplateConnector/TemplateCable/TemplateBOMItem, etc.) and tests.
-- Introduce initial graph representation linking config models (pins→interfaces, bundles→cables, segments); add tests for small graphs.
-- Map graphs to template-input models with tests.
-- Migrate dataclasses incrementally to construct from config models (Component first, then Connector, Cable), with regression tests.
-
-22b) Component Pydantic model
-- Add ComponentModel BaseModel with conversion helpers to/from dataclass Component; ensure qty/color/hypertext normalization and tests for round-trip.
-
-22c) Connector/Cable Pydantic models
-- Add GraphicalComponentModel/ConnectorModel and CableModel to normalize inputs and convert to dataclasses; add unit tests.
-- Propagate models into flows/harness construction when stable.
-
-22d) Flow propagation of BaseModels
-- Allow flows.build_harness to accept ConnectorModel/CableModel/ComponentModel inputs directly and prefer them when provided.
-- Wire CLI/parser paths to optionally emit config models then convert through BaseModels before dataclass construction; add regression tests.
-
-23) Move remaining src/filare modules into packages
-- Inventory remaining files under src/filare/ that are not shims/entry points; plan moves to flows/models/parser/render/tools as appropriate.
-- Update imports to new locations; leave only shims and CLI entrypoints in src/filare root.
-
-24) PyPI metadata
-- Ensure PyPI project metadata is complete (long description, homepage, repo URLs, classifiers, license); verify upload with twine check.
-- Confirm releases publish to both PyPI and GitHub releases.
-
-25) Branding assets
-- Add app icon/style assets (SVG/PNG) and reference them in docs/gh-pages; wire into site and README badges if appropriate.
-
-26) Publishing hygiene
-- Make release publishing run only on version tags; gate PyPI upload and gh-pages push accordingly.
-- Validate GitHub Pages site is operational and pulling example/tutorial artifacts; document steps in CI or README.
-
-27) Docs generation
-- Consider adding an automated docs generator (e.g., mkdocs or Sphinx) to publish to gh-pages; scope and plan initial setup.
-
-28) Feature extension planning
-- Document feature extension ideas and capture in NEXT_FEATURES.md with actionable next steps.
-
-29) Docs build pipeline + artifacts
-- Stop duplicating example/tutorial assets by sourcing them from build_examples output during docs build (docs job already syncs into docs/examples and docs/tutorial).
-- Clean nav warnings in MkDocs (replace ../LICENSE and missing links, ensure tutorial/example pages are reachable from nav or excluded).
-- Add a minimal “Mermaid sanity” page to confirm diagrams render post-build.
-
-30) Mermaid validation and tooling
-- Keep scripts/check-mermaid.sh as part of lint/pre-commit/CI; ensure it uses the current mermaid-cli version and fails on parse errors.
-- Add a lightweight test fixture (static .mmd) to guard against regressions in mkdocs/mermaid config.
-- Consider caching mermaid-cli in CI or pinning via package-lock to reduce install time.
-
-31) Release/publish hygiene follow-up
-- Verify release/publish/container jobs are tag-gated end-to-end and document the tagging process in docs/ci.md.
-- Add a dry-run path (semantic-release –noop) for PRs if needed; otherwise ensure non-tag pushes skip publish steps quickly.
-- Confirm gh-pages deployment consumes built docs (including examples/tutorials) and retains mermaid assets.
-
-32) Shim removal and import convergence
-- After flow/render/model moves stabilize, remove legacy wv_* shims and update imports; track completion in Refactor.log.
-- Replace any remaining direct file-path assumptions with the new package structure; add regression tests around CLI entrypoints.
-- Audit tooling scripts (pre-commit, CI, build_examples) for legacy paths and update to new modules.
+6) Release/publish documentation and hygiene
+- Document tag-triggered release workflow and how semantic-release feeds it.
+- Ensure changelog generation remains tied to semantic-release runs; keep GH token/PyPI token notes current.
