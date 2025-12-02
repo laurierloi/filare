@@ -98,7 +98,7 @@ skip_covered = false
 directory = "report/coverage"
 
 [tool.semantic_release]
-version_toml = "pyproject.toml:project.version"
+version_toml = ["pyproject.toml:project.version"]
 branch = "main"
 changelog_file = "CHANGELOG.md"
 commit_message = "chore(release): v{version}"
