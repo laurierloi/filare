@@ -4,7 +4,7 @@ This page gives a high-level map of how Filare fits together. For visual cheatsh
 
 ## Main entry points
 
-- CLI: `src/filare/wv_cli.py` (exposed as `filare` via `uv run --no-sync filare ...`).
+- CLI: `src/filare/fil_cli.py` (exposed as `filare` via `uv run --no-sync filare ...`).
 - Example/tutorial builder: `src/filare/tools/build_examples.py` drives the CLI over the example and tutorial sets.
 
 ## Visual map
@@ -36,7 +36,7 @@ flowchart TD
   end
 
   subgraph CLI
-    C1[wv_cli]
+    C1[fil_cli]
   end
 
   Parser --> Flows

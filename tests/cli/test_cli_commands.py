@@ -3,7 +3,7 @@ import textwrap
 from click.testing import CliRunner
 
 from filare import APP_NAME, __version__
-from filare.wv_cli import cli
+from filare.fil_cli import cli
 
 
 def _write_minimal_files(tmp_path):

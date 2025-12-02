@@ -27,7 +27,7 @@ flowchart TD
   end
 
   subgraph CLI
-    C1[wv_cli]
+    C1[fil_cli]
   end
 
   Parser --> Flows

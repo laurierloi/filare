@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- Core library and CLI live in `src/filare/`; `wv_cli.py` exposes `filare`/`filare-qty`, with rendering and BOM logic in `wv_graphviz.py`, `wv_output.py`, and helpers under `tools/`.
+- Core library and CLI live in `src/filare/`; `fil_cli.py` exposes `filare`/`filare-qty`, with rendering and BOM logic in `render/graphviz.py`, `render/html.py`, `render/output.py`, and helpers under `tools/`.
 - Documentation is under `docs/` (see `docs/README.md` and `docs/syntax.md`), with walkthroughs in `tutorial/` and ready-made YAML inputs in `examples/`.
 - Architecture/data-flow/model diagrams live in `docs/graphs/`; update the Mermaid sources and regenerate rendered outputs when code structure changes.
 - Regression YAMLs live in `tests/rendering/` and `tests/bom/`; write generated outputs to `outputs/` or a temp directory.
