@@ -1,0 +1,35 @@
+site_name: Filare Docs
+site_url: https://laurierloi.github.io/Filare/
+repo_url: https://github.com/laurierloi/Filare
+repo_name: laurierloi/Filare
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.instant
+    - toc.follow
+    - content.code.copy
+nav:
+  - Home: docs/README.md
+  - Syntax: docs/syntax.md
+  - Tutorial: docs/readme.md
+  - Examples: docs/README.md
+  - Advanced Images: docs/advanced_image_usage.md
+  - Build Script: docs/buildscript.md
+  - CI: docs/ci.md
+  - Dev:
+      - Metadata Guide: docs/dev/metadata_guide.md
+      - Tasks: docs/tasks.md
+  - Changelog: docs/CHANGELOG.md
+  - Contributing: docs/CONTRIBUTING.md
+  - Branding: docs/brand.md
+plugins:
+  - search
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - codehilite
+  - footnotes
+  - attr_list
+  - def_list

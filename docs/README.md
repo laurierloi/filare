@@ -124,6 +124,18 @@ Run common tasks (mount your working tree so outputs land on the host):
   docker run --rm -v "$PWD":/app filare uv run --no-sync pytest
   ```
 
+### Documentation (MkDocs + optional Sphinx)
+
+- Build MkDocs site locally:
+  ```
+  uv run --no-sync mkdocs build
+  ```
+- Serve for preview:
+  ```
+  uv run --no-sync mkdocs serve -a 0.0.0.0:8000
+  ```
+- (Optional) Generate API docs with Sphinx: see `docs/mkdocs.md` for suggested setup.
+
 #### Debian Dependencies
 
 ```
