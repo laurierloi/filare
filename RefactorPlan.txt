@@ -25,3 +25,9 @@ Outstanding refactor tasks (completed items removed)
 6) Release/publish documentation and hygiene
 - Document tag-triggered release workflow and how semantic-release feeds it.
 - Ensure changelog generation remains tied to semantic-release runs; keep GH token/PyPI token notes current.
+
+7) Config and graph features (from NEXT_FEATURES)
+- Introduce Config BaseModels (ConnectorConfig, CableConfig, WireConfig, ConnectionConfig, MetadataConfig, PageOptionsConfig, PinConfig) with round-trip YAML tests.
+- Add template-input models (TemplateConnector/TemplateCable/TemplateBOMItem, etc.) and conversions from config/dataclasses.
+- Build a small graph representation (nodes/edges for pins/interfaces/bundles/segments) and map to template-input models with tests.
+- Incrementally wire dataclasses/flows to accept config models while keeping legacy behavior; add regression tests for BOM/HTML/TSV parity.
