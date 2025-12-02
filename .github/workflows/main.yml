@@ -5,6 +5,7 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: false # Lets not run this for now, ci is already building examples and tutorials
     strategy:
       max-parallel: 4
       matrix:
@@ -28,7 +29,7 @@ jobs:
     - name: Create Examples
       run: |
         uv run --no-sync python src/filare/tools/build_examples.py
-        mkdir -p outputs
+        mkdir -p outputs-examples
         cp -r examples outputs/examples
         cp -r tutorial outputs/tutorial
     - name: Upload examples, demos, and tutorials
