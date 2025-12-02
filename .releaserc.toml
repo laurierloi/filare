@@ -1,0 +1,21 @@
+[semantic_release]
+version_variable = ["VERSION"]
+version_pattern = "^(?P<version>.*)$"
+version_toml = ["pyproject.toml:project.version"]
+branch = "main"
+changelog_file = "CHANGELOG.md"
+commit_message = "chore(release): v{version}"
+commit_author = "semantic-release <semantic-release@users.noreply.github.com>"
+upload_to_pypi = false
+upload_to_release = false
+build_command = "uv build"
+changelog_sections = [
+  { type = "feat", section = "Features", hidden = false },
+  { type = "fix", section = "Fixes", hidden = false },
+  { type = "perf", section = "Performance", hidden = false },
+  { type = "refactor", section = "Refactor", hidden = false },
+  { type = "docs", section = "Documentation", hidden = false },
+  { type = "build", section = "Build", hidden = false },
+  { type = "ci", section = "CI", hidden = false },
+  { type = "chore", section = "Chores", hidden = false },
+]
