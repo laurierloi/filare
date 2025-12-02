@@ -106,6 +106,9 @@ commit_author = "semantic-release <semantic-release@users.noreply.github.com>"
 upload_to_pypi = false
 upload_to_release = false
 build_command = "uv build"
+version_variable = ["VERSION"]
+# Match a plain version string in the VERSION file
+version_pattern = "^(?P<version>.*)$"
 changelog_sections = [
     { type = "feat", section = "Features", hidden = false },
     { type = "fix", section = "Fixes", hidden = false },
