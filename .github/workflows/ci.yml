@@ -91,8 +91,9 @@ jobs:
       - name: Upload example artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: filare-examples
+          name: filare-examples-${{ github.run_attempt }}
           path: outputs/
+          overwrite: true
 
   docs:
     name: "4) Build docs & publish gh-pages"
@@ -111,7 +112,7 @@ jobs:
       - name: Download example artifacts
         uses: actions/download-artifact@v4
         with:
-          name: filare-examples
+          name: filare-examples-${{ github.run_attempt }}
           path: outputs
       - name: Sync docs dependencies
         run: |
