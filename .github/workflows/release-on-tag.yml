@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -24,6 +26,8 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Build dist
         run: |
+          VERSION=$(git describe --tags --abbrev=0)
+          echo "${VERSION#v}" > VERSION
           uv venv
           uv pip install --python .venv/bin/python build twine
           uv run --no-sync python -m build

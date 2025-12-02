@@ -158,6 +158,15 @@ jobs:
         run: |
           uv run --no-sync semantic-release version
           uv run --no-sync semantic-release publish
+      - name: Commit VERSION bump
+        run: |
+          if git status --porcelain VERSION | grep -q .; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add VERSION
+            git commit -m "chore: bump VERSION to match release"
+            git push origin HEAD:main
+          fi
 
   publish:
     name: "6) Build & publish to PyPI"
