@@ -9,6 +9,7 @@ def test_build_generated_writes_readme_and_uses_output_dir(tmp_path, monkeypatch
     examples_dir.mkdir()
     (examples_dir / "metadata.yml").write_text("title: demo\n")
     (examples_dir / "ex01.yml").write_text("connectors: {}\n")
+    (examples_dir / "ex01.md").write_text("## Example 01\n\nDescription\n")
 
     captured = []
 
