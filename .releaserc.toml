@@ -6,8 +6,8 @@ branch = "main"
 changelog_file = "CHANGELOG.md"
 commit_message = "chore(release): v{version}"
 commit_author = "semantic-release <semantic-release@users.noreply.github.com>"
-upload_to_pypi = false
-upload_to_release = false
+upload_to_pypi = true
+upload_to_release = true
 build_command = "uv build"
 changelog_sections = [
   { type = "feat", section = "Features", hidden = false },
