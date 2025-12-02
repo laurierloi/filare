@@ -3,6 +3,7 @@
 This page gives a high-level map of how Filare fits together. For visual cheatsheets, see the Mermaid diagrams in `docs/graphs/architecture.md`, `docs/graphs/data_flow.md`, and `docs/graphs/models.md`.
 
 ## Main entry points
+
 - CLI: `src/filare/wv_cli.py` (exposed as `filare` via `uv run --no-sync filare ...`).
 - Example/tutorial builder: `src/filare/tools/build_examples.py` drives the CLI over the example and tutorial sets.
 
@@ -47,6 +48,7 @@ flowchart TD
 ```
 
 ## End-to-end flow
+
 1. **Input ingestion**  
    YAML harness files (plus optional metadata) are loaded and merged via `parser/yaml_loader.py` and parsed into Python structures by `parser/harness_parser.py`.
 2. **Model construction**  
@@ -55,13 +57,14 @@ flowchart TD
    `flows/render_outputs.py` hands the assembled `Harness` to renderers:
    - Graph output: `render/graphviz.py` builds DOT nodes/edges (including node images) and invokes GraphViz for SVG/PNG.
    - Tabular/text output: `render/output.py` writes BOM/TSV and HTML wrappers; `render/templates.py` provides the Jinja templates and HTML helpers.
-4. **Aggregate artifacts**  
+4. **Aggregate artifacts**
    - `flows/shared_bom.py` emits a combined `shared_bom.tsv`.
    - `flows/index_pages.py` builds title pages and PDF bundles.
 5. **Outputs**  
    SVG/PNG diagrams, HTML pages (diagram + title block), TSV BOMs, shared BOM, and optional PDF bundles end up under the requested output directory.
 
 ## Extending/operating
+
 - Update metadata/templates: tweak `examples/metadata.yml` or the templates under `src/filare/templates/`.
 - Add formats or post-processing: extend `render/output.py` and, if needed, `flows/render_outputs.py`.
 - Batch generation: call `uv run --no-sync python src/filare/tools/build_examples.py` (uses the same pipeline as the CLI).

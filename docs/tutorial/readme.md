@@ -2,9 +2,8 @@
 
 ## 01 - Bare-bones example
 
-* Minimum working example
-* Only 1-to-1 sequential wiring
-
+- Minimum working example
+- Only 1-to-1 sequential wiring
 
 ```yaml
 connectors:
@@ -19,8 +18,7 @@ cables:
     length: 1
 
 connections:
-  -
-    - X1: [1-4]
+  - - X1: [1-4]
     - W1: [1-4]
     - X2: [1-4]
 ```
@@ -29,13 +27,11 @@ connections:
 
 [Source](tutorial01.yml) - [Bill of Materials](tutorial01.tsv)
 
-
 ## 02 - Adding parameters and colors
 
-* Parameters for connectors and cables
-* Auto-calculate equivalent AWG from mm2
-* Non-sequential wiring
-
+- Parameters for connectors and cables
+- Auto-calculate equivalent AWG from mm2
+- Non-sequential wiring
 
 ```yaml
 connectors:
@@ -59,26 +55,23 @@ cables:
     colors: [WH, BN, GN, YE]
 
 connections:
-  -
-    - X1: [1-4]
+  - - X1: [1-4]
     - W1: [1-4]
     # non-sequential wiring:
-    - X2: [1,2,4,3]
+    - X2: [1, 2, 4, 3]
 ```
 
 ![](tutorial02.png)
 
 [Source](tutorial02.yml) - [Bill of Materials](tutorial02.tsv)
 
-
 ## 03 - Pinouts, shielding, templates (I)
 
-* Connector pinouts
-  * Pincount implicit in pinout
-* Cable color codes
-* Cable shielding, shield wiring
-* Templates
-
+- Connector pinouts
+  - Pincount implicit in pinout
+- Cable color codes
+- Cable shielding, shield wiring
+- Templates
 
 ```yaml
 connectors:
@@ -99,10 +92,9 @@ cables:
     shield: true # add cable shielding
 
 connections:
-  -
-    - X1: [1-4]
+  - - X1: [1-4]
     - W1: [1-4]
-    - X2: [1,2,4,3]
+    - X2: [1, 2, 4, 3]
   - # connect the shielding to a pin
     - X1: 1
     - W1: s
@@ -112,15 +104,13 @@ connections:
 
 [Source](tutorial03.yml) - [Bill of Materials](tutorial03.tsv)
 
-
 ## 04 - Templates (II), notes, American standards, daisy chaining (I)
 
-* Overriding template parameters
-* Add nodes to connectors and cables
-* American standards: AWG gauge and IEC colors
-* Linear daisy-chain
-  * Convenient for shorter chains
-
+- Overriding template parameters
+- Add nodes to connectors and cables
+- American standards: AWG gauge and IEC colors
+- Linear daisy-chain
+  - Convenient for shorter chains
 
 ```yaml
 connectors:
@@ -131,7 +121,7 @@ connectors:
     notes: to microcontroller # add notes
   X2:
     <<: *template_con # use template
-    subtype: female   # but override certain parameters
+    subtype: female # but override certain parameters
     notes: to accelerometer
   X3:
     <<: *template_con
@@ -151,8 +141,7 @@ cables:
     notes: This cable is a bit shorter
 
 connections:
-  -
-    - X1: [1-4]
+  - - X1: [1-4]
     - W1: [1-4]
     - X2: [1-4]
   - # daisy chain connectors (in line)
@@ -165,21 +154,19 @@ connections:
 
 [Source](tutorial04.yml) - [Bill of Materials](tutorial04.tsv)
 
-
 ## 05 - Ferrules, wire bundles, custom wire colors
 
-* Ferrules
-  * Simpler than connectors
-  * Compact graphical representation
-  * Only one pin, only one connection, no designator
-  * Define once, auto-generate where needed
-* Wire bundles
-  * Internally treated as cables
-  * Different treatment in BOM: Each wire is listed individually
-  * Represented with dashed outline
-* Custom wire colors
-  * Wirecount can be implicit in color list
-
+- Ferrules
+  - Simpler than connectors
+  - Compact graphical representation
+  - Only one pin, only one connection, no designator
+  - Define once, auto-generate where needed
+- Wire bundles
+  - Internally treated as cables
+  - Different treatment in BOM: Each wire is listed individually
+  - Represented with dashed outline
+- Custom wire colors
+  - Wirecount can be implicit in color list
 
 ```yaml
 connectors:
@@ -201,8 +188,7 @@ cables:
     colors: [YE, BK, BK, RD] # custom colors, wirecount is implicit
 
 connections:
-  -
-    - F1. # a new ferrule is auto-generated for each of the four wires
+  - - F1. # a new ferrule is auto-generated for each of the four wires
     - W1: [1-4]
     - X1: [1-4]
 ```
@@ -211,13 +197,11 @@ connections:
 
 [Source](tutorial05.yml) - [Bill of Materials](tutorial05.tsv)
 
-
 ## 06 - Custom ferrules
 
-* Custom ferrules
-  * Allows attaching more than one wire to a ferrule
-  * Requires defining them as regular connectors with unique designators, adding `category: ferrule` parameter
-
+- Custom ferrules
+  - Allows attaching more than one wire to a ferrule
+  - Requires defining them as regular connectors with unique designators, adding `category: ferrule` parameter
 
 ```yaml
 connectors:
@@ -244,22 +228,19 @@ cables:
     colors: [YE, BK, BK, RD] # custom colors, wirecount is implicit
 
 connections:
-    -
-      - [F_05., F_10.F1, F_10.F1, F_05.]
-      - W1: [1-4]
-      - X1: [1-4]
+  - - [F_05., F_10.F1, F_10.F1, F_05.]
+    - W1: [1-4]
+    - X1: [1-4]
 ```
 
 ![](tutorial06.png)
 
 [Source](tutorial06.yml) - [Bill of Materials](tutorial06.tsv)
 
-
 ## 07 - Daisy chaining (II)
 
-* Zig-zag daisy chain
-  * Convenient for longer chains
-
+- Zig-zag daisy chain
+  - Convenient for longer chains
 
 ```yaml
 connectors:
@@ -294,24 +275,19 @@ cables:
     <<: *template_wire
 
 connections:
-  -
-    - X1: [1-4]
+  - - X1: [1-4]
     - W1: [1-4]
     - X2: [1-4]
-  -
-    - X3: [1-4]
+  - - X3: [1-4]
     - W2: [1-4]
     - X2: [1-4]
-  -
-    - X3: [1-4]
+  - - X3: [1-4]
     - W3: [1-4]
     - X4: [1-4]
-  -
-    - X5: [1-4]
+  - - X5: [1-4]
     - W4: [1-4]
     - X4: [1-4]
-  -
-    - X5: [1-4]
+  - - X5: [1-4]
     - W5: [1-4]
     - X6: [1-4]
 ```
@@ -320,15 +296,13 @@ connections:
 
 [Source](tutorial07.yml) - [Bill of Materials](tutorial07.tsv)
 
-
 ## 08 - Part numbers and additional components
 
-* Part number information can be added to parts
-  * Only provided fields will be added to the diagram and bom
-* Bundles can have part information specified by wire
-* Additional parts can be added to components or just to the bom
-  * quantities of additional components can be multiplied by features from parent connector or cable
-
+- Part number information can be added to parts
+  - Only provided fields will be added to the diagram and bom
+- Bundles can have part information specified by wire
+- Additional parts can be added to components or just to the bom
+  - quantities of additional components can be multiplied by features from parent connector or cable
 
 ```yaml
 options:
@@ -345,14 +319,12 @@ connectors:
     spn: 1234
     # add a list of additional components to a part (shown in graph)
     additional_components:
-      -
-        type: Crimp # short identifier used in graph
+      - type: Crimp # short identifier used in graph
         subtype: Molex KK 254, 22-30 AWG # extra information added to type in bom
         qty_multiplier: populated # multipier for quantity (number of populated pins)
         manufacturer: Molex # set manufacter name
         mpn: 08500030 # set manufacturer part number
-      -
-        type: Test
+      - type: Test
         qty: 1
         pn: ABC
         manufacturer: Molex
@@ -381,27 +353,23 @@ cables:
     length: 1
     gauge: 0.25 mm2
     colors: [YE, BK, BK, RD]
-    manufacturer: [WiresCo,WiresCo,WiresCo,WiresCo] # set a manufacter per wire
-    mpn: [W1-YE,W1-BK,W1-BK,W1-RD]
-    supplier: [WireShack,WireShack,WireShack,WireShack]
-    spn: [1001,1002,1002,1009]
-    pn: [WIRE1,WIRE2,WIRE2,WIRE3]
+    manufacturer: [WiresCo, WiresCo, WiresCo, WiresCo] # set a manufacter per wire
+    mpn: [W1-YE, W1-BK, W1-BK, W1-RD]
+    supplier: [WireShack, WireShack, WireShack, WireShack]
+    spn: [1001, 1002, 1002, 1009]
+    pn: [WIRE1, WIRE2, WIRE2, WIRE3]
     # add a list of additional components to a part (shown in graph)
     additional_components:
-      -
-        type: Sleeve # short identifier used in graph
+      - type: Sleeve # short identifier used in graph
         subtype: Braided nylon, black, 3mm # extra information added to type in bom
         qty_multiplier: length # multipier for quantity (length of cable)
         pn: SLV-1
 
-
 connections:
-  -
-    - X1: [1-4]
+  - - X1: [1-4]
     - W1: [1-4]
     - X2: [1-4]
-  -
-    - X1: [1-4]
+  - - X1: [1-4]
     - W2: [1-4]
     - X3: [1-4]
 
@@ -420,5 +388,3 @@ additional_bom_items:
 ![](tutorial08.png)
 
 [Source](tutorial08.yml) - [Bill of Materials](tutorial08.tsv)
-
-

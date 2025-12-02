@@ -134,6 +134,7 @@ python3 -m http.server 9000 --directory site
 ```
 
 Then open http://localhost:9000.
+
 - Run tests:
   ```
   docker run --rm -v "$PWD":/app filare uv run --no-sync pytest

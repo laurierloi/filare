@@ -1,0 +1,9 @@
+# Generated assets copied into docs for publishing
+docs/examples/**/*.html
+docs/examples/**/*.svg
+docs/examples/**/*.png
+docs/tutorial/**/*.html
+docs/tutorial/**/*.svg
+docs/tutorial/**/*.png
+outputs/**
+site/**
