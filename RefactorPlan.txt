@@ -172,3 +172,20 @@ Rebranding note: WireViz is being renamed to Filare. As changes continue, prefer
 23) Move remaining src/filare modules into packages
 - Inventory remaining files under src/filare/ that are not shims/entry points; plan moves to flows/models/parser/render/tools as appropriate.
 - Update imports to new locations; leave only shims and CLI entrypoints in src/filare root.
+
+24) PyPI metadata
+- Ensure PyPI project metadata is complete (long description, homepage, repo URLs, classifiers, license); verify upload with twine check.
+- Confirm releases publish to both PyPI and GitHub releases.
+
+25) Branding assets
+- Add app icon/style assets (SVG/PNG) and reference them in docs/gh-pages; wire into site and README badges if appropriate.
+
+26) Publishing hygiene
+- Make release publishing run only on version tags; gate PyPI upload and gh-pages push accordingly.
+- Validate GitHub Pages site is operational and pulling example/tutorial artifacts; document steps in CI or README.
+
+27) Docs generation
+- Consider adding an automated docs generator (e.g., mkdocs or Sphinx) to publish to gh-pages; scope and plan initial setup.
+
+28) Feature extension planning
+- Document feature extension ideas and capture in NEXT_FEATURES.md with actionable next steps.
