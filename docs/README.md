@@ -265,4 +265,4 @@ This is very much a work in progress. Source code, API, syntax and functionality
 
 ## License
 
-[GPL-3.0](../LICENSE)
+[GPL-3.0](https://github.com/laurierloi/Filare/blob/main/LICENSE)

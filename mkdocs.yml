@@ -12,12 +12,18 @@ theme:
 nav:
   - Home: README.md
   - Architecture: architecture.md
+  - Graphs:
+      - Overview: graphs/architecture.md
+      - Data Flow: graphs/data_flow.md
+      - Models: graphs/models.md
   - Syntax: syntax.md
   - Tutorial: tutorial/readme.md
   - Examples: examples/readme.md
   - Advanced Images: advanced_image_usage.md
   - Build Script: buildscript.md
   - CI: ci.md
+  - Docs:
+      - Mermaid Check: mermaid.md
   - Dev:
       - Metadata Guide: dev/metadata_guide.md
       - Tasks: tasks.md
@@ -45,3 +51,8 @@ markdown_extensions:
 extra_javascript:
   - https://unpkg.com/mermaid@10/dist/mermaid.min.js
   - javascripts/mermaid.js
+
+exclude_docs: |
+  mkdocs.md
+  tutorial/todo.md
+  tutorial/tutorial0*.md
