@@ -106,7 +106,7 @@ def build_generated(groupkeys, output_base=None):
 
                     out.write(f"![]({yaml_file.stem}.png)\n\n")
                     out.write(
-                        f"[Source]({yaml_file.name}) - [Bill of Materials]({yaml_file.stem}.bom.tsv)\n\n\n"
+                        f"[Source]({yaml_file.name}) - [Bill of Materials]({yaml_file.stem}.tsv)\n\n\n"
                     )
 
 
