@@ -3,13 +3,14 @@ from pathlib import Path
 from filare.models.document import DocumentHashRegistry, DocumentRepresentation
 from filare.models.harness import Harness
 from filare.models.notes import Notes
+from filare.models.page import BOMPage, CutPage, HarnessPage, PageBase, TerminationPage
 from filare.filare import _build_document_representation
 
 
 def test_document_representation_round_trip(tmp_path: Path):
     doc = DocumentRepresentation(
         metadata={"title": "Harness", "pn": "PN-1"},
-        pages=[{"type": "diagram", "name": "main"}],
+        pages=[PageBase(type="diagram", name="main")],
         notes="remember to torque",
         bom={"items": [{"id": "1", "desc": "wire"}]},
     )
@@ -18,7 +19,7 @@ def test_document_representation_round_trip(tmp_path: Path):
 
     loaded = DocumentRepresentation.from_yaml(path)
     assert loaded.metadata["title"] == "Harness"
-    assert loaded.pages[0]["name"] == "main"
+    assert loaded.pages[0].name == "main"
     assert loaded.notes == "remember to torque"
     assert loaded.bom["items"][0]["id"] == "1"
 
@@ -44,3 +45,35 @@ def test_build_document_from_harness(basic_metadata, basic_page_options):
     assert isinstance(doc, DocumentRepresentation)
     assert doc.metadata.get("pn") == basic_metadata.pn
     assert "options" in doc.extras
+    assert isinstance(doc.pages[0], HarnessPage)
+
+
+def test_document_pages_are_models(tmp_path: Path):
+    doc = DocumentRepresentation(
+        metadata={"title": "Harness"},
+        pages=[HarnessPage(type="harness", name="H1", formats=["svg"])],
+    )
+    path = tmp_path / "doc.yaml"
+    doc.to_yaml(path)
+
+    loaded = DocumentRepresentation.from_yaml(path)
+    assert isinstance(loaded.pages[0], HarnessPage)
+    assert loaded.pages[0].name == "H1"
+
+
+def test_document_recognizes_page_types(tmp_path: Path):
+    pages = [
+        HarnessPage(type="harness", name="H1"),
+        BOMPage(type="bom", name="BOM"),
+        CutPage(type="cut", name="CUT"),
+        TerminationPage(type="termination", name="TERM"),
+    ]
+    doc = DocumentRepresentation(metadata={}, pages=pages)
+    path = tmp_path / "doc.yaml"
+    doc.to_yaml(path)
+
+    loaded = DocumentRepresentation.from_yaml(path)
+    assert isinstance(loaded.pages[0], HarnessPage)
+    assert isinstance(loaded.pages[1], BOMPage)
+    assert isinstance(loaded.pages[2], CutPage)
+    assert isinstance(loaded.pages[3], TerminationPage)

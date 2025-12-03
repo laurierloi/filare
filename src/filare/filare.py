@@ -8,6 +8,7 @@ from enum import Enum
 
 from filare.flows import build_harness_from_files
 from filare.models.document import DocumentRepresentation
+from filare.models.page import BOMPage, CutPage, HarnessPage, TerminationPage
 
 
 def parse(
@@ -66,12 +67,18 @@ def _build_document_representation(harness) -> DocumentRepresentation:
             options_dict = harness.options.dict()
         options_dict = _make_jsonable(options_dict)
     pages = [
-        {
-            "type": "harness",
-            "name": getattr(getattr(harness, "metadata", None), "name", ""),
-            "formats": options_dict.get("formats", []),
-        }
+        HarnessPage(
+            type="harness",
+            name=getattr(getattr(harness, "metadata", None), "name", ""),
+            formats=options_dict.get("formats", []),
+        )
     ]
+    if getattr(harness.options, "include_bom", True):
+        pages.append(BOMPage(type="bom", name="bom", formats=["tsv"]))
+    if getattr(harness.options, "include_cut_diagram", False):
+        pages.append(CutPage(type="cut", name="cut"))
+    if getattr(harness.options, "include_termination_diagram", False):
+        pages.append(TerminationPage(type="termination", name="termination"))
     bom_data = {} if not getattr(harness.options, "include_bom", True) else {}
     return DocumentRepresentation(
         metadata=metadata_dict,
