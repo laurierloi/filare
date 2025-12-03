@@ -25,3 +25,17 @@ def test_additional_bom_accepts_component_model(basic_metadata, basic_page_optio
     harness.add_additional_bom_item({"type": "Sleeve", "qty": 1})
     harness.populate_bom()
     assert harness.additional_bom_items
+
+
+def test_harness_respects_include_bom_flag(tmp_path, basic_metadata, basic_page_options):
+    basic_page_options.include_bom = False
+    harness = _build_harness(basic_metadata, basic_page_options)
+    harness.add_connector_model(ConnectorModel(designator="J1", pinlabels=["1", "2"]))
+    harness.add_cable_model(
+        CableModel(designator="C1", wirecount=2, colors=["RD", "BK"], length="1 m")
+    )
+    harness.populate_bom()
+
+    out = tmp_path / "harness"
+    harness.output(out, fmt=("tsv",))
+    assert not out.with_suffix(".tsv").exists()

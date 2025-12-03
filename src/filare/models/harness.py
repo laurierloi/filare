@@ -455,7 +455,7 @@ class Harness:
             embed_svg_images_file(filename.with_suffix(".svg"))
         if "gv" in fmt:
             graph.save(filename=filename.with_suffix(".gv"))
-        if "tsv" in fmt:
+        if "tsv" in fmt and self.options.include_bom:
             bom_render = BomContent(self.bom).get_bom_render(
                 options=BomRenderOptions(
                     restrict_printed_lengths=False,
@@ -465,8 +465,9 @@ class Harness:
         if "csv" in fmt:
             print("CSV output is not yet supported")
         if "html" in fmt:
+            bom_for_html = self.bom if self.options.include_bom else {}
             generate_html_output(
-                filename, self.bom, self.metadata, self.options, self.notes
+                filename, bom_for_html, self.metadata, self.options, self.notes
             )
         if "pdf" in fmt:
             generate_pdf_output(filename)
