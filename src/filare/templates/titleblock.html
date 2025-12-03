@@ -44,6 +44,7 @@
     font-size: {{ options.titleblock_row_height }};
     text-align: center;
     white-space: normal;
+    font-weight: 700;
   }
 
   #titleblock .company {
@@ -160,7 +161,14 @@
       <!-- AUTHOR INFO + LOGO   Column 5 to 7 --!>
       {{ author(5) }}
       <!-- HARNESS INFO         Column 8 to 10 --!>
-      <td class="title" colspan="4" rowspan="2"> {{ metadata.title }}</td>
+      <td class="title" colspan="4" rowspan="2">
+        {{ metadata.title }}
+        {% if metadata.name and metadata.name != metadata.title %}
+        <div style="font-size: {{ options.titleblock_row_height * 0.8 }}mm; font-weight: 500;">
+          {{ metadata.name }}
+        </div>
+        {% endif %}
+      </td>
     </tr>
 
     <tr> <!-- ROW 6 --!>
