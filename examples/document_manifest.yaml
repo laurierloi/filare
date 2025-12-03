@@ -21,3 +21,64 @@ documents:
   path: ex10.document.yaml
 - name: ex11.document
   path: ex11.document.yaml
+shared_bom: shared_bom.tsv
+split_combined_bom: false
+split_index: false
+split_notes: false
+title_metadata:
+  address: 8888 fancy street west
+  authors:
+    created:
+      date: '2023-03-29'
+      name: bob ross
+    reviewed:
+      date: n/a
+      name: n/a
+  company: some company
+  files:
+  - /home/runner/work/filare/filare/examples/ex01.yml
+  - /home/runner/work/filare/filare/examples/ex02.yml
+  - /home/runner/work/filare/filare/examples/ex03.yml
+  - /home/runner/work/filare/filare/examples/ex04.yml
+  - /home/runner/work/filare/filare/examples/ex05.yml
+  - /home/runner/work/filare/filare/examples/ex06.yml
+  - /home/runner/work/filare/filare/examples/ex07.yml
+  - /home/runner/work/filare/filare/examples/ex08.yml
+  - /home/runner/work/filare/filare/examples/ex09.yml
+  - /home/runner/work/filare/filare/examples/ex10.yml
+  - /home/runner/work/filare/filare/examples/ex11.yml
+  git_status: ''
+  logo: null
+  multiplier_file_name: quantity_multipliers.txt
+  output_dir: outputs/examples
+  output_name: ex01
+  output_names:
+  - titlepage
+  - ex01
+  - ex02
+  - ex03
+  - ex04
+  - ex05
+  - ex06
+  - ex07
+  - ex08
+  - ex09
+  - ex10
+  - ex11
+  pages_notes: {}
+  pn: test-01
+  revisions:
+    a:
+      changelog: initial release
+      date: '2023-03-29'
+      name: bob ross
+  sheet_current: '2'
+  sheet_name: EX01
+  sheet_total: '12'
+  template:
+    name: din-6771
+    orientation: landscape
+    sheetsize: A3
+  title: test
+  titlepage: titlepage
+  use_qty_multipliers: false

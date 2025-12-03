@@ -108,12 +108,12 @@ pages:
   name: titlepage
   type: title
 - formats:
-  - png
-  - gv
-  - shared_bom
-  - tsv
-  - html
   - svg
+  - png
+  - html
+  - tsv
+  - shared_bom
+  - gv
   name: test-01-ex10
   type: harness
 - formats:
