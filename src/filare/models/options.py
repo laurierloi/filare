@@ -40,6 +40,9 @@ class PageOptions(BaseModel):
     pad: int = 0
     template_paths: List = Field(default_factory=list)
     image_paths: List = Field(default_factory=list)
+    include_bom: bool = True
+    include_cut_diagram: bool = False
+    include_termination_diagram: bool = False
 
     @field_validator(
         "bgcolor",
