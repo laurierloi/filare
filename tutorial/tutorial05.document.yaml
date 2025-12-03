@@ -102,11 +102,11 @@ pages:
   type: title
 - formats:
   - png
-  - tsv
-  - svg
-  - html
-  - shared_bom
   - gv
+  - shared_bom
+  - tsv
+  - html
+  - svg
   name: test-01-tutorial05
   type: harness
 - formats:

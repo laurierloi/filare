@@ -1,0 +1,23 @@
+documents:
+- name: ex01.document
+  path: ex01.document.yaml
+- name: ex02.document
+  path: ex02.document.yaml
+- name: ex03.document
+  path: ex03.document.yaml
+- name: ex04.document
+  path: ex04.document.yaml
+- name: ex05.document
+  path: ex05.document.yaml
+- name: ex06.document
+  path: ex06.document.yaml
+- name: ex07.document
+  path: ex07.document.yaml
+- name: ex08.document
+  path: ex08.document.yaml
+- name: ex09.document
+  path: ex09.document.yaml
+- name: ex10.document
+  path: ex10.document.yaml
+- name: ex11.document
+  path: ex11.document.yaml

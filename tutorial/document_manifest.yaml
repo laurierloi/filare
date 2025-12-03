@@ -1,0 +1,17 @@
+documents:
+- name: tutorial01.document
+  path: tutorial01.document.yaml
+- name: tutorial02.document
+  path: tutorial02.document.yaml
+- name: tutorial03.document
+  path: tutorial03.document.yaml
+- name: tutorial04.document
+  path: tutorial04.document.yaml
+- name: tutorial05.document
+  path: tutorial05.document.yaml
+- name: tutorial06.document
+  path: tutorial06.document.yaml
+- name: tutorial07.document
+  path: tutorial07.document.yaml
+- name: tutorial08.document
+  path: tutorial08.document.yaml

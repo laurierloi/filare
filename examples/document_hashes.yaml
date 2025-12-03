@@ -1,11 +1,33 @@
-ex01.document.yaml: a90c4bf35eaaf2cced92caaf0924655741a1465862f2a3856e31802fc1a1b73a
-ex02.document.yaml: 98f169e70ccae6b9330ff0030254435ae53131dc2867c47d4e365223f07e0dcc
-ex03.document.yaml: 8c2a86cdba230e24030055881ec93b170d26565a93296608087df90f06fffecd
-ex04.document.yaml: c0055975ae2e12324f276f42065c85a4ba1dcc01b200f62220d2c7652a749561
-ex05.document.yaml: 423c841f0724459798e822b5a17ee092524b47e7b372d9bb327132bda3223554
-ex06.document.yaml: f1d96630986f336c0029fc7a99558f02fcf3d1248d5a66e920f5065edd2ea193
-ex07.document.yaml: 6c5e58b9bab825c28ae6e48773b00229312abb6899afe7be49d853d90f8b42cf
-ex08.document.yaml: 5ce4efdbcae3aa196cfe1564c7f696d5c02d205aa8cc21a4f195256ddcf6e48a
-ex09.document.yaml: 3ddea2818496f0cbe75e4f3e2c756125bdccebd67b7fb242300b0b415d51bd84
-ex10.document.yaml: f7651a2a1e97261b235606acd3ad5aceac3cbd418f1c4b0f1f784249ec78e609
-ex11.document.yaml: bde0222d4aaa9621a3b201fa86a85f535fc04be726299b38dbeebf88bbe8ffe0
+ex01.document.yaml:
+  allow_override: false
+  hash: b4af6f68aa974347a17e2c1f26b4c673f8f5b458fffb0d13621679dc272ed6c7
+ex02.document.yaml:
+  allow_override: false
+  hash: fb2863df62a37990ca0e237704a45510529a23c5690bc8f34ce01bc90b94f9a6
+ex03.document.yaml:
+  allow_override: false
+  hash: 9126a55f2e4417b1c70def5594559fed884f1277d0787eff6f226354de7426d1
+ex04.document.yaml:
+  allow_override: false
+  hash: 61d38f76c981e31ffa8f4209a5b29ce8e45e9ea18311bc76e40699c422c85a6e
+ex05.document.yaml:
+  allow_override: false
+  hash: 4cd59621739224eb6383a706d8677d35d7265f9ff436d79a91f204844c4dabcc
+ex06.document.yaml:
+  allow_override: false
+  hash: af51b07ce28da8c05e8c774e60645027c348eba0ffcbc647073236d5bb1a08d8
+ex07.document.yaml:
+  allow_override: false
+  hash: 12ca64e76bfa51b6aef8300778c72250026d712c7bbc6d4ad9dd1155dba9c985
+ex08.document.yaml:
+  allow_override: false
+  hash: b169cf498bd7462c02dc4fb6f3434e67a173cf3b03b67ede129c39f6946d2c92
+ex09.document.yaml:
+  allow_override: false
+  hash: 52c24f0525e6c279f8bd2d446b58f23ebe37bd6bd87f6475b4f805b99504747c
+ex10.document.yaml:
+  allow_override: false
+  hash: 2648ffa993285f4e59affbd966083de3e0877b900e98e1a4389f8631490a24fe
+ex11.document.yaml:
+  allow_override: false
+  hash: 0d1cd03231a104444fe10cae3f16223325c1d5d35fdf81e5f2c8ec1101a768c5

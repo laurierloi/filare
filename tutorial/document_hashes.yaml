@@ -1,8 +1,24 @@
-tutorial01.document.yaml: 4b85ce3a330ea0b897dd92f74995390d63c8a79497e9cb15505d93ef2cdadedc
-tutorial02.document.yaml: dcd2fab128a6e9c1f9a7e686dafcd0fd43dee8564c57a3d5876c78775ad0776f
-tutorial03.document.yaml: 7b065e9b7cde4669ca8322e92df40e8706684eebf4ca83c33fdee668c750481b
-tutorial04.document.yaml: 70e5bebbdbfd7e15570da343fe24271d530485777cc937d6d700409bf13bf160
-tutorial05.document.yaml: c0a1c1b71202d46cde427a0b1a0c30400401b578170b322309fe9e483c9d66ac
-tutorial06.document.yaml: 8f823d75e9da16f4d46fa7f05b6c981263679209f8b33ccb45eae6d363334add
-tutorial07.document.yaml: 17d79265b36bec6681fa3a3ff87284a47d638ceeba27bfad704258c8af713fd4
-tutorial08.document.yaml: db91124bb2eecad6a39fca9ac22854903c98d1e13a107316779f9e55efc00137
+tutorial01.document.yaml:
+  allow_override: false
+  hash: 72dfbc6d317e1a1af4ad71ec5babb432838aaf9f19762681a7d24fbac9b57738
+tutorial02.document.yaml:
+  allow_override: false
+  hash: e897b3cabd3e2f53514c56bb5d91ec2907e4f5b123c9a541f6adeeefe0425f07
+tutorial03.document.yaml:
+  allow_override: false
+  hash: 6b4756e1bb3d52bcd142fffa4e24f9b119d8a538fa4eea2ed9350e4683039ca6
+tutorial04.document.yaml:
+  allow_override: false
+  hash: 405f4140a583b1c5c29a171dd0af26fa7005e169ab773b04029f40045828ed35
+tutorial05.document.yaml:
+  allow_override: false
+  hash: 6f2673d158c55f180a9a4cb64c704fe1d16bc39276a79d8088f7c0cdb5c68f50
+tutorial06.document.yaml:
+  allow_override: false
+  hash: e36ef2c86de1e76df60b41aa58c50f7e502cea3eeef33cc4948c96566c74f0c2
+tutorial07.document.yaml:
+  allow_override: false
+  hash: 99a8e8ecbce0bcb9edef3e4bdace36139a97bb7b08bddc661f1a3c246ea05ea0
+tutorial08.document.yaml:
+  allow_override: false
+  hash: cb30a76c4ee86c8fd625ab6028291fbc28c1e77afdc94771446003ca97973650
