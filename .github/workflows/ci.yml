@@ -137,6 +137,9 @@ jobs:
     needs: docs
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    outputs:
+      version_changed: ${{ steps.version_check.outputs.changed }}
+      new_version: ${{ steps.version_check.outputs.new_version }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -144,6 +147,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Capture previous version
+        id: prev_version
+        run: |
+          echo "prev=$(cat VERSION 2>/dev/null || echo '')" >> "$GITHUB_OUTPUT"
       - name: Install uv
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -159,12 +166,23 @@ jobs:
         run: |
           uv run --no-sync semantic-release version
           uv run --no-sync semantic-release publish
+      - name: Compare versions
+        id: version_check
+        run: |
+          prev="${{ steps.prev_version.outputs.prev }}"
+          new=$(cat VERSION 2>/dev/null || echo "")
+          if [ "$prev" != "$new" ] && [ -n "$new" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "new_version=$new" >> "$GITHUB_OUTPUT"
 
   publish:
     name: "6) Build & publish to PyPI"
     needs: release
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: needs.release.outputs.version_changed == 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -189,7 +207,7 @@ jobs:
     name: "7) Verify package from PyPI"
     needs: publish
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: needs.release.outputs.version_changed == 'true'
     steps:
       - uses: actions/setup-python@v5
         with:
@@ -209,7 +227,7 @@ jobs:
     name: "8) Build & push container"
     needs: publish
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: needs.release.outputs.version_changed == 'true'
     steps:
       - uses: actions/checkout@v4
       - name: Log in to GHCR
