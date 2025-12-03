@@ -1072,9 +1072,17 @@
 <p>Publishes <code>site/</code> to GitHub Pages via <code>peaceiris/actions-gh-pages</code>.</p>
 </li>
 <li>
+<p><strong>Document representation build (planned)</strong></p>
+</li>
+<li>Build up to <code>DocumentRepresentation</code> YAML (with hashes) without rendering final assets, to validate graph/document assembly.</li>
+<li>
+<p>Useful for faster CI checks before full render/publish steps.</p>
+</li>
+<li>
 <p><strong>Release (semantic-release, main only)</strong></p>
 </li>
-<li>Uses <code>python-semantic-release</code> to bump the version and publish release assets.</li>
+<li>Uses <code>python-semantic-release</code> to bump the version, update <code>VERSION</code>, and publish release assets.</li>
+<li>Gating: downstream publish/verify/container steps run only if either the <code>VERSION</code> file changed or a new tag was created during the run (prevents double-publishing).</li>
 <li>Generates/updates <code>CHANGELOG.md</code> automatically and commits it with the release bump.</li>
 <li>
 <p>Needs <code>GH_TOKEN</code> (GitHub token) and <code>PYPI_TOKEN</code> (if publishing to PyPI through semantic-release).</p>
@@ -1103,6 +1111,7 @@
 <li><code>PYPI_TOKEN</code>: PyPI API token for publishing.</li>
 <li><code>GH_TOKEN</code>: (optional) used by semantic-release for tagging; <code>GITHUB_TOKEN</code> provided by Actions is usually sufficient.</li>
 <li>GitHub Pages and GHCR steps use the built-in <code>GITHUB_TOKEN</code>.</li>
+<li>Tag-triggered release workflow (<code>release-on-tag.yml</code>) relies on <code>PYPI_TOKEN</code> and <code>GITHUB_TOKEN</code>; ensure <code>VERSION</code> matches the tag when releasing manually.</li>
 </ul>
 <h2 id="local-reproduction">Local Reproduction<a class="headerlink" href="#local-reproduction" title="Permanent link">&para;</a></h2>
 <ul>

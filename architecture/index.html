@@ -1051,6 +1051,7 @@
     A1[models: metadata/options]
     A2[models: connector/cable/component]
     A3[models: bom/types]
+    A4[models: document representation]
   end
 
   subgraph Parser
@@ -1063,6 +1064,7 @@
     F2[render_outputs]
     F3[shared_bom]
     F4[index_pages]
+    F5[document representation yaml]
   end
 
   subgraph Render
@@ -1077,10 +1079,12 @@
 
   Parser --&gt; Flows
   Models --&gt; Flows
-  Flows --&gt; Render
+  Flows --&gt; F5
+  F5 --&gt; Render
   Render --&gt; Outputs["SVG, HTML, TSV, PDF"]
   CLI --&gt; Parser
-  CLI --&gt; Flows</code></pre>
+  CLI --&gt; Flows
+  CLI --&gt; F5</code></pre>
 <h2 id="end-to-end-flow">End-to-end flow<a class="headerlink" href="#end-to-end-flow" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>Input ingestion</strong><br />
@@ -1091,6 +1095,8 @@
 <code>flows/render_outputs.py</code> hands the assembled <code>Harness</code> to renderers:</li>
 <li>Graph output: <code>render/graphviz.py</code> builds DOT nodes/edges (including node images) and invokes GraphViz for SVG/PNG.</li>
 <li>Tabular/text output: <code>render/output.py</code> writes BOM/TSV and HTML wrappers; <code>render/templates.py</code> provides the Jinja templates and HTML helpers.</li>
+<li><strong>Document representation</strong><br />
+<code>flows/build_harness.py</code> now emits a pre-render <code>DocumentRepresentation</code> (YAML) capturing metadata, page stubs, notes, and BOM (if enabled). Hash tracking prevents overwriting user-edited documents.</li>
 <li><strong>Aggregate artifacts</strong></li>
 <li><code>flows/shared_bom.py</code> emits a combined <code>shared_bom.tsv</code>.</li>
 <li><code>flows/index_pages.py</code> builds title pages and PDF bundles.</li>
@@ -1102,6 +1108,9 @@
 <li>Update metadata/templates: tweak <code>examples/metadata.yml</code> or the templates under <code>src/filare/templates/</code>.</li>
 <li>Add formats or post-processing: extend <code>render/output.py</code> and, if needed, <code>flows/render_outputs.py</code>.</li>
 <li>Batch generation: call <code>uv run --no-sync python src/filare/tools/build_examples.py</code> (uses the same pipeline as the CLI).</li>
+<li>Build document YAML only (no render): <code>uv run --no-sync filare examples/ex01.yml -d examples/metadata.yml -f "" -o outputs</code> (document YAML and hashes are emitted alongside outputs).</li>
+<li>Force a document YAML refresh: remove <code>*.document.yaml</code> and <code>document_hashes.yaml</code> before rerun, or edit the YAML to keep your changes (hash guard prevents overwrite).</li>
+<li>Page types: see <code>docs/pages.md</code> for the list of page types (title, harness, bom, cut, termination) and their roles; enable cut/termination via <code>options.include_cut_diagram</code> / <code>options.include_termination_diagram</code>.</li>
 </ul>
 
 

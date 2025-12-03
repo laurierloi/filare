@@ -8,13 +8,9 @@
       
       
       
-        <link rel="canonical" href="https://laurierloi.github.io/Filare/graphs/data_flow/">
+        <link rel="canonical" href="https://laurierloi.github.io/Filare/graphs/document_flow/">
       
       
-        <link rel="prev" href="../architecture/">
-      
-      
-        <link rel="next" href="../models/">
       
       
         
@@ -25,7 +21,7 @@
     
     
       
-        <title>Data Flow - Filare Docs</title>
+        <title>Document Representation Flow (Mermaid) - Filare Docs</title>
       
     
     
@@ -66,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#data-flow-mermaid" class="md-skip">
+        <a href="#document-representation-flow-mermaid" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Data Flow
+              Document Representation Flow (Mermaid)
             
           </span>
         </div>
@@ -273,8 +269,6 @@
       
   
   
-    
-  
   
   
     
@@ -287,11 +281,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -312,7 +306,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -355,19 +349,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../data_flow/" class="md-nav__link">
         
   
   
@@ -383,7 +368,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -907,29 +891,36 @@
   
 
 
-<h1 id="data-flow-mermaid">Data Flow (Mermaid)<a class="headerlink" href="#data-flow-mermaid" title="Permanent link">&para;</a></h1>
-<pre class="mermaid"><code>flowchart LR
-  Y[YAML harness files] --&gt; P1[parser.yamlloader\nparse_concat_merge_files]
-  M[Metadata YAML] --&gt; P1
-  P1 --&gt; F1[flows.build_harness\n(metadata, options, notes)]
-  F1 --&gt;|Harness model| H[Harness]
-  F1 --&gt;|DocumentRepresentation YAML| D1[document.yaml + hashes]
-  H --&gt;|Graph| R1[render.graphviz\n(node/edge templates)]
-  H --&gt;|BOM| R2[render.output\nBOM render]
-  R1 --&gt; SVG[SVG]
-  R1 --&gt; PNG[PNG]
-  R2 --&gt; TSV[BOM TSV]
-  R2 --&gt; HTML[HTML\n(titleblock + diagram embed)]
-  subgraph Shared BOM
-    F3[flows.shared_bom] --&gt; S1[render.output.generate_shared_bom]
-    S1 --&gt; SharedTSV[shared_bom.tsv]
+<h1 id="document-representation-flow-mermaid">Document Representation Flow (Mermaid)<a class="headerlink" href="#document-representation-flow-mermaid" title="Permanent link">&para;</a></h1>
+<pre class="mermaid"><code>flowchart TD
+  subgraph Input
+    Y[YAML harness files]
+    M[Metadata YAML]
   end
-  subgraph Titlepage/PDF
-    F4[flows.index_pages] --&gt; T1[render.output.generate_titlepage]
-    T1 --&gt; TitleHTML[titlepage.html]
-    F4 --&gt; PDF[pdf bundle]
+
+  subgraph Build
+    P1[parser.parse_concat_merge_files]
+    F1[flows.build_harness]
+    DR[DocumentRepresentation]
+    DH[document_hashes.yaml]
   end
-  HTML -.-&gt; PDF</code></pre>
+
+  subgraph Render
+    R1[render_outputs]
+    OUT[SVG/PNG/HTML/TSV/PDF]
+  end
+
+  Y --&gt; P1
+  M --&gt; P1
+  P1 --&gt; F1
+  F1 --&gt;|Harness| R1
+  F1 --&gt; DR
+  DR --&gt; DH
+  R1 --&gt; OUT</code></pre>
+<p>Key points:
+- <code>DocumentRepresentation</code> captures metadata, page stubs, notes, BOM (if enabled), and options.
+- Written to <code>*.document.yaml</code> with hash tracking in <code>document_hashes.yaml</code>; user edits are preserved (no overwrite if hash changes).
+- Rendering still operates on the harness; the document YAML is a pre-render view for inspection or manual tweaking.</p>
 
 
 

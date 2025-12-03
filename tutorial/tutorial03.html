@@ -338,11 +338,11 @@
   }
 
   .A4 #notes {
-    width:180mm;
+    width: 180mm;
   }
 
   .A3 #notes, .A2 #notes {
-    width: 100mm;
+    width: 180mm;
     word-wrap: break-word;
     white-space: normal;
   }
@@ -398,6 +398,10 @@
     border: 1px solid black;
     border-collapse: collapse;
     text-align: left;
+    table-layout: fixed;
+    width: 100%;
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   #bom .bom_col_id {
@@ -489,6 +493,7 @@
     font-size: 4.25;
     text-align: center;
     white-space: normal;
+    font-weight: 700;
   }
 
   #titleblock .company {
@@ -627,7 +632,14 @@
     <td></td>
   
       <!-- HARNESS INFO         Column 8 to 10 --!>
-      <td class="title" colspan="4" rowspan="2"> test</td>
+      <td class="title" colspan="4" rowspan="2">
+        test
+        
+        <div style="font-size: 3.4000000000000004mm; font-weight: 500;">
+          test-01-tutorial03
+        </div>
+        
+      </td>
     </tr>
 
     <tr> <!-- ROW 6 --!>
