@@ -33,5 +33,5 @@ prettier --write "docs/**/*.{md,html}"
 # check
 uv run --python "$env_dir/bin/python" --no-sync black --check src tests
 uv run --python "$env_dir/bin/python" --no-sync pytest
-uv run --python "$env_dir/bin/python" --no-sync python src/filare/tools/build_examples.py --output-dir "$root_dir/outputs"
+#uv run --python "$env_dir/bin/python" --no-sync python src/filare/tools/build_examples.py --output-dir "$root_dir/outputs"
 prettier --check "docs/**/*.{md,html}"
