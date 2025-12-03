@@ -6,6 +6,7 @@ flowchart LR
   M[Metadata YAML] --> P1
   P1 --> F1[flows.build_harness\n(metadata, options, notes)]
   F1 -->|Harness model| H[Harness]
+  F1 -->|DocumentRepresentation YAML| D1[document.yaml + hashes]
   H -->|Graph| R1[render.graphviz\n(node/edge templates)]
   H -->|BOM| R2[render.output\nBOM render]
   R1 --> SVG[SVG]

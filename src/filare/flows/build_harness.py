@@ -33,6 +33,32 @@ def _make_jsonable(value):
     return value
 
 
+def _maybe_write_document(
+    doc_path: Path,
+    hash_registry_path: Path,
+    document: DocumentRepresentation,
+) -> DocumentRepresentation:
+    registry = DocumentHashRegistry(hash_registry_path)
+    registry.load()
+
+    if doc_path.exists():
+        existing = DocumentRepresentation.from_yaml(doc_path)
+        existing_hash = existing.compute_hash()
+        if not registry.contains(existing_hash):
+            logging.warning(
+                "Document representation appears user-edited; skipping overwrite: %s",
+                doc_path,
+            )
+            return existing
+
+    doc_hash = document.compute_hash()
+    if not registry.contains(doc_hash):
+        document.to_yaml(doc_path)
+        registry.add(doc_hash)
+        registry.save()
+    return document
+
+
 def _build_metadata(yaml_file, yaml_data, extra_metadata, metadata_output_name):
     return Metadata(
         **{
@@ -350,12 +376,9 @@ def build_harness_from_files(
             },
         )
         doc_hash = document_representation.compute_hash()
-        registry = DocumentHashRegistry(hash_registry_path)
-        registry.load()
-        if not registry.contains(doc_hash):
-            document_representation.to_yaml(doc_yaml_path)
-            registry.add(doc_hash)
-            registry.save()
+        document_representation = _maybe_write_document(
+            doc_yaml_path, hash_registry_path, document_representation
+        )
 
     if output_formats:
         render_harness_outputs(harness, output_dir, output_name, output_formats)

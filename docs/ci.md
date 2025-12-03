@@ -23,6 +23,10 @@ This repository uses a GitHub Actions workflow (`.github/workflows/ci.yml`) that
    - Copies `docs/` into `site/` and includes built example artifacts if present.
    - Publishes `site/` to GitHub Pages via `peaceiris/actions-gh-pages`.
 
+5. **Document representation build (planned)**
+   - Build up to `DocumentRepresentation` YAML (with hashes) without rendering final assets, to validate graph/document assembly.
+   - Useful for faster CI checks before full render/publish steps.
+
 5. **Release (semantic-release, main only)**
    - Uses `python-semantic-release` to bump the version, update `VERSION`, and publish release assets.
    - Gating: downstream publish/verify/container steps run only if either the `VERSION` file changed or a new tag was created during the run (prevents double-publishing).

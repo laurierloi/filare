@@ -61,3 +61,4 @@ Outstanding refactor tasks (completed items removed)
 - Create a document representation model (pre-render) containing all pages/diagrams/notes/BOMs.
 - Save the document representation to YAML and accept it as input to drive document generation; generate it automatically by default.
 - Track user edits by hashing the YAML and maintaining a hash list file; only overwrite when unchanged or after prompting if user edits exist.
+- Add Page BaseModel(s) for pages with necessary info (components, harnesses, metadata, notes, etc.) and have `DocumentRepresentation.pages` use these typed page models per page type/content.
