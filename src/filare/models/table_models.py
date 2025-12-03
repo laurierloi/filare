@@ -2,7 +2,7 @@
 
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 
 class TableCell(BaseModel):
@@ -11,17 +11,12 @@ class TableCell(BaseModel):
     value: str = ""
     css_class: Optional[str] = None
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
 
 class TableRow(BaseModel):
     """A row of table cells."""
 
     cells: List[TableCell] = Field(default_factory=list)
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
     @property
     def values(self) -> List[str]:
         return [cell.value for cell in self.cells]
-

@@ -53,3 +53,11 @@ Outstanding refactor tasks (completed items removed)
 - Add per-harness wire cut diagram (HTML table) with optional multi-page splitting (configurable rows/page) and lettered suffixes in page numbering.
 - Add per-harness termination diagram (HTML table) capturing splices/crimps and lengths; support multi-page splitting and lettered suffixes.
 - Add a BaseModel for termination details, allowing per-wire-end/connection definitions into connectors.
+- Extend examples/tutorials to generate the new schematics so usage is explicit to users.
+- Update documentation with example outputs of the new schematics.
+- Add configuration knobs so users can choose whether to include the new schematics in the engineering document.
+
+12) Document representation and change tracking
+- Create a document representation model (pre-render) containing all pages/diagrams/notes/BOMs.
+- Save the document representation to YAML and accept it as input to drive document generation; generate it automatically by default.
+- Track user edits by hashing the YAML and maintaining a hash list file; only overwrite when unchanged or after prompting if user edits exist.

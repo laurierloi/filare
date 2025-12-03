@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 from filare.models.numbers import NumberAndUnit
 
@@ -18,8 +18,6 @@ class TerminationEnd(BaseModel):
     length: Optional[NumberAndUnit] = None
     notes: Optional[str] = None
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
 
 class TerminationRow(BaseModel):
     """Both ends of a wire for termination diagrams."""
@@ -29,6 +27,3 @@ class TerminationRow(BaseModel):
     wire_id: Optional[str] = None
     gauge: Optional[NumberAndUnit] = None
     color: Optional[str] = None
-
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
