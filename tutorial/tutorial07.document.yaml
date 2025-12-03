@@ -36,6 +36,9 @@ extras:
     show_bom: true
     show_index_table: true
     show_notes: true
+    split_bom_page: false
+    split_index_page: false
+    split_notes_page: false
     template_paths: []
     template_separator: .
     titleblock_row_height: 4.25
@@ -101,12 +104,12 @@ pages:
   name: titlepage
   type: title
 - formats:
-  - svg
-  - png
-  - html
-  - tsv
-  - shared_bom
   - gv
+  - png
+  - shared_bom
+  - html
+  - svg
+  - tsv
   name: test-01-tutorial07
   type: harness
 - formats:
