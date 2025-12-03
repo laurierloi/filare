@@ -172,6 +172,26 @@ jobs:
         run: |
           uv run --no-sync semantic-release version
           uv run --no-sync semantic-release publish
+      - name: Ensure VERSION updated and pushed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          new_tag=$(git describe --tags --abbrev=0 2>/dev/null || true)
+          if [ -z "$new_tag" ]; then
+            echo "semantic-release did not create a tag; refusing to continue" >&2
+            exit 1
+          fi
+          new_version=${new_tag#v}
+          echo "$new_version" > VERSION
+          git add VERSION
+          if git diff --cached --quiet; then
+            echo "VERSION already up to date ($new_version)"
+          else
+            git commit -m "chore: align VERSION to ${new_version}"
+            git push --follow-tags
+          fi
       - name: Compare versions
         id: version_check
         run: |
