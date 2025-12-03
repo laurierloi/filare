@@ -48,6 +48,15 @@ def _build_doc(tmp_path: Path, opts: str):
 
 def test_document_pages_default(tmp_path: Path):
     doc = _build_doc(tmp_path, "")
+    # harness should carry document for downstream flows
+    harness = build_harness_from_files(
+        [_write_minimal(tmp_path)[0]],
+        [_write_minimal(tmp_path)[1]],
+        output_formats=(),
+        output_dir=tmp_path,
+        return_types=("harness",),
+    )["harness"]
+    assert harness.document is not None
     types = [type(p) for p in doc.pages]
     assert any(isinstance(p, TitlePage) for p in doc.pages)
     assert any(isinstance(p, HarnessPage) for p in doc.pages)

@@ -4,13 +4,14 @@ import logging
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from graphviz import Graph
 
 from filare import APP_NAME, APP_URL, __version__
 from filare.models import colors
 from filare.models.bom import BomContent, BomEntry, BomEntryBase, BomRenderOptions
+from filare.models.document import DocumentRepresentation
 from filare.models.dataclasses import BomCategory, Cable, Component, Connector, Side
 from filare.models.connector import ConnectorModel
 from filare.models.cable import CableModel
@@ -39,6 +40,7 @@ class Harness:
     notes: Notes
     additional_bom_items: List[Component] = field(default_factory=list)
     shared_bom: Dict = field(default_factory=dict)
+    document: Optional[DocumentRepresentation] = None
 
     def __post_init__(self):
         self.connectors = {}

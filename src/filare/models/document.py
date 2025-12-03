@@ -86,28 +86,42 @@ class DocumentHashRegistry:
 
     def __init__(self, path: Path):
         self.path = path
-        self._hashes: Dict[str, str] = {}
+        self._entries: Dict[str, Dict[str, Any]] = {}
 
     def load(self) -> None:
         if not self.path.exists():
-            self._hashes = {}
+            self._entries = {}
             return
         data = yaml.safe_load(self.path.read_text(encoding="utf-8")) or {}
-        if isinstance(data, list):
-            # legacy list support: treat as unknown filename entries
-            self._hashes = {f"unknown_{i}": h for i, h in enumerate(data)}
-        else:
-            self._hashes = dict(data)
+        entries: Dict[str, Dict[str, Any]] = {}
+        for fname, payload in data.items():
+            if isinstance(payload, dict):
+                entries[fname] = {
+                    "hash": payload.get("hash"),
+                    "allow_override": bool(payload.get("allow_override", False)),
+                }
+            else:
+                entries[fname] = {"hash": payload, "allow_override": False}
+        self._entries = entries
 
     def contains(self, filename: str, value: str) -> bool:
-        return self._hashes.get(filename) == value
+        entry = self._entries.get(filename)
+        if not entry:
+            return False
+        if entry.get("allow_override"):
+            return False
+        return entry.get("hash") == value
 
-    def add(self, filename: str, value: str) -> None:
-        self._hashes[filename] = value
+    def allow_override(self, filename: str) -> bool:
+        entry = self._entries.get(filename)
+        return bool(entry and entry.get("allow_override"))
+
+    def add(self, filename: str, value: str, allow_override: bool = False) -> None:
+        self._entries[filename] = {"hash": value, "allow_override": allow_override}
 
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.write_text(_yaml_dumps(self._hashes), encoding="utf-8")
+        self.path.write_text(_yaml_dumps(self._entries), encoding="utf-8")
 
 
 def _coerce_for_yaml(value: Any) -> Any:

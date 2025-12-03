@@ -42,20 +42,30 @@ def _maybe_write_document(
 ) -> DocumentRepresentation:
     registry = DocumentHashRegistry(hash_registry_path)
     registry.load()
+    allow_override = registry.allow_override(doc_path.name)
 
     if doc_path.exists():
         existing = DocumentRepresentation.from_yaml(doc_path)
         existing_hash = existing.compute_hash()
-        if not registry.contains(doc_path.name, existing_hash):
+        if (not allow_override) and (not registry.contains(doc_path.name, existing_hash)):
+            old = existing.as_dict()
+            new = document.as_dict()
+            changed_keys = [
+                key
+                for key in set(old.keys()).union(new.keys())
+                if old.get(key) != new.get(key)
+            ]
             logging.warning(
-                "Document representation appears user-edited; skipping overwrite: %s",
+                "Document representation appears user-edited; skipping overwrite: %s (allow_override=%s, changed=%s)",
                 doc_path,
+                allow_override,
+                ",".join(changed_keys) if changed_keys else "unknown",
             )
             return existing
 
-    if not registry.contains(doc_path.name, doc_hash):
+    if allow_override or not registry.contains(doc_path.name, doc_hash):
         document.to_yaml(doc_path)
-        registry.add(doc_path.name, doc_hash)
+        registry.add(doc_path.name, doc_hash, allow_override=allow_override)
         registry.save()
     return document
 
@@ -395,6 +405,7 @@ def build_harness_from_files(
         document_representation = _maybe_write_document(
             doc_yaml_path, hash_registry_path, document_representation, doc_hash
         )
+        harness.document = document_representation
 
     if output_formats:
         render_harness_outputs(harness, output_dir, output_name, output_formats)

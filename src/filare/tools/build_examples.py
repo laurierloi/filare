@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 import click
+import yaml
 
 script_path = Path(__file__).absolute()
 sys.path.insert(0, str(script_path.parent.parent.parent))  # to find filare module
@@ -54,11 +55,13 @@ def collect_filenames(description, groupkey, ext_list):
 
 def build_generated(groupkeys, output_base=None):
     output_base = Path(output_base) if output_base else None
+    all_dest_paths = []
     for key in groupkeys:
         # preparation
         src_path = groups[key]["path"]
         dest_path = src_path if output_base is None else output_base / key
         dest_path.mkdir(parents=True, exist_ok=True)
+        all_dest_paths.append(dest_path)
         build_readme = readme in groups[key]
         if build_readme:
             include_readme = "md" in groups[key][readme]
@@ -109,6 +112,10 @@ def build_generated(groupkeys, output_base=None):
                         f"[Source]({yaml_file.name}) - [Bill of Materials]({yaml_file.stem}.tsv)\n\n\n"
                     )
 
+    # Write a manifest of all document representations for each destination
+    for dest in all_dest_paths:
+        _write_document_manifest(dest)
+
 
 def clean_generated(groupkeys):
     for key in groupkeys:
@@ -117,6 +124,21 @@ def clean_generated(groupkeys):
             if filename.is_file():
                 print(f'  rm "{filename}"')
                 filename.unlink()
+
+        manifest = groups[key]["path"] / "document_manifest.yaml"
+        if manifest.exists():
+            manifest.unlink()
+
+
+def _write_document_manifest(output_dir: Path) -> None:
+    """Collect all document representations and emit a manifest."""
+    docs = []
+    for doc_file in sorted(output_dir.rglob("*.document.yaml")):
+        docs.append({"path": str(doc_file.relative_to(output_dir)), "name": doc_file.stem})
+    manifest = {"documents": docs}
+    manifest_path = output_dir / "document_manifest.yaml"
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=True), encoding="utf-8")
+    print(f'Wrote document manifest to {manifest_path}')
 
 
 def parse_args():
