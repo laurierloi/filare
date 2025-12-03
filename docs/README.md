@@ -1,4 +1,4 @@
-# Filare (formerly WireViz)
+# filare (formerly WireViz)
 
 [![PyPI - Version](https://img.shields.io/pypi/v/filare.svg?colorB=blue)](https://pypi.org/project/filare/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/filare.svg?)](https://pypi.org/project/filare/)
