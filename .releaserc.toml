@@ -9,6 +9,7 @@ commit_author = "semantic-release <semantic-release@users.noreply.github.com>"
 upload_to_pypi = true
 upload_to_release = true
 build_command = "uv build"
+commit_version_number = true
 changelog_sections = [
   { type = "feat", section = "Features", hidden = false },
   { type = "fix", section = "Fixes", hidden = false },
