@@ -1,5 +1,22 @@
 Outstanding refactor tasks (completed items removed)
 
+1) Coverage gaps (>90% target)
+- 1.1 src/filare/filare.py >90% (80.9%)
+- 1.2 src/filare/models/cable.py >90% (76.2%)
+- 1.3 src/filare/models/colors.py >90% (77.4%)
+- 1.4 src/filare/models/configs.py >90% (87.7%)
+- 1.5 src/filare/models/connector.py >90% (80.4%)
+- 1.6 src/filare/models/dataclasses.py >90% (89.4%)
+- 1.7 src/filare/models/harness.py >90% (81.9%)
+- 1.8 src/filare/models/harness_quantity.py >90% (83.8%)
+- 1.9 src/filare/models/image.py >90% (85.4%)
+- 1.10 src/filare/models/metadata.py >90% (83.9%)
+- 1.11 src/filare/models/partnumber.py >90% (78.2%)
+- 1.12 src/filare/models/template_inputs.py >90% (83.9%)
+- 1.13 src/filare/render/graphviz.py >90% (89.2%)
+- 1.14 src/filare/settings.py >90% (58.8%)
+- 1.15 src/filare/tools/build_examples.py >90% (66.1%)
+
 2) Coverage hardening
 - Raise coverage for lower modules: models/colors, models/cable, models/bom, models/dataclasses, models/utils, render/graphviz, parser/yaml_loader (edge cases).
 - Add parser edge-case tests and render smoke tests as needed.
