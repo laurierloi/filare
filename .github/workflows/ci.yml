@@ -148,6 +148,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Capture previous tag
+        id: prev_tag
+        run: |
+          prev_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          echo "tag=$prev_tag" >> "$GITHUB_OUTPUT"
       - name: Capture previous version
         id: prev_version
         run: |
@@ -171,8 +176,19 @@ jobs:
         id: version_check
         run: |
           prev="${{ steps.prev_version.outputs.prev }}"
+          prev_tag="${{ steps.prev_tag.outputs.tag }}"
           new=$(cat VERSION 2>/dev/null || echo "")
+          new_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          tag_changed=false
+          if [ -n "$new_tag" ] && [ "$new_tag" != "$prev_tag" ]; then
+            tag_changed=true
+          fi
           if [ "$prev" != "$new" ] && [ -n "$new" ]; then
+            version_bumped=true
+          else
+            version_bumped=false
+          fi
+          if [ "$version_bumped" = true ] || [ "$tag_changed" = true ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
