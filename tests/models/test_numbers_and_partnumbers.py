@@ -28,9 +28,11 @@ def test_partnumberinfo_str_list_and_eq():
 def test_partnumbers2list_with_parent_filter():
     child = PartNumberInfo(pn="C1", manufacturer="ACME", mpn="M1")
     parent = PartNumberInfo(pn="P1", manufacturer="ACME", mpn="M1")
-    lst = partnumbers2list(child, parent)
     # When identical, child fields matching parent are cleared
-    assert "P1" not in "".join(lst)
+    lst = partnumbers2list(child, PartnumberInfoList(pn_list=[parent]))
+    # The returned list is list-of-lists when parents are provided; flatten for assertion
+    flat = [item for sub in lst for item in sub]
+    assert "P1" not in "".join(flat)
 
 
 def test_partnumberinfo_list_keep_only_shared():
