@@ -1,7 +1,11 @@
 import pytest
 
 from filare.models.numbers import NumberAndUnit
-from filare.models.partnumber import PartNumberInfo, PartnumberInfoList, partnumbers2list
+from filare.models.partnumber import (
+    PartNumberInfo,
+    PartnumberInfoList,
+    partnumbers2list,
+)
 
 
 def test_number_and_unit_add_mul_and_to_number():
@@ -16,7 +20,9 @@ def test_number_and_unit_add_mul_and_to_number():
 
 
 def test_partnumberinfo_str_list_and_eq():
-    pn = PartNumberInfo(pn="PN1", manufacturer="ACME", mpn="M1", supplier="S", spn="SPN")
+    pn = PartNumberInfo(
+        pn="PN1", manufacturer="ACME", mpn="M1", supplier="S", spn="SPN"
+    )
     assert pn
     assert "PN1" in pn.str_list[0]
     pn2 = pn.copy()

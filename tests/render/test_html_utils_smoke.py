@@ -9,15 +9,15 @@ def test_table_tr_td_render():
     rendered = str(table)
     assert "<table" in rendered
     assert "cell" in rendered
-    assert "port=\"p1\"" in rendered
+    assert 'port="p1"' in rendered
 
 
 def test_img_render_and_defaults():
     img = html_utils.Img(src="pic.png", scale="true", fixedsize=True)
     rendered = str(img)
     assert "pic.png" in rendered
-    assert "scale=\"true\"" in rendered
-    assert "fixedsize=\"True\"" in rendered or "fixedsize=\"true\"" in rendered
+    assert 'scale="true"' in rendered
+    assert 'fixedsize="True"' in rendered or 'fixedsize="true"' in rendered
 
 
 def test_table_adds_multiple_rows():
