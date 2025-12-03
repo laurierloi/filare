@@ -23,6 +23,7 @@
 - Before committing, generate all examples/tutorials via the script used in CI: `uv venv; uv sync --group dev; uv run --no-sync python src/filare/tools/build_examples.py` (then stage the regenerated outputs if needed).
 - Always run lint locally before committing; use `scripts/lint.sh` (black + prettier) so changes are applied, not just checked.
 - When you change tests, rerun the relevant pytest suite before committing to keep coverage green.
+- Keep `RefactorPlan.txt` up to date: cross out tasks when fully done, add follow-up tasks when work is partial, and record any new features/requests the operator suggests.
 
 ## Coding Style & Naming Conventions
 - Python 3.9+; 4-space indentation; follow existing naming (modules, lowercase functions).
