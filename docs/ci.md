@@ -24,7 +24,8 @@ This repository uses a GitHub Actions workflow (`.github/workflows/ci.yml`) that
    - Publishes `site/` to GitHub Pages via `peaceiris/actions-gh-pages`.
 
 5. **Release (semantic-release, main only)**
-   - Uses `python-semantic-release` to bump the version and publish release assets.
+   - Uses `python-semantic-release` to bump the version, update `VERSION`, and publish release assets.
+   - Gating: downstream publish/verify/container steps run only if either the `VERSION` file changed or a new tag was created during the run (prevents double-publishing).
    - Generates/updates `CHANGELOG.md` automatically and commits it with the release bump.
    - Needs `GH_TOKEN` (GitHub token) and `PYPI_TOKEN` (if publishing to PyPI through semantic-release).
 
@@ -44,6 +45,7 @@ This repository uses a GitHub Actions workflow (`.github/workflows/ci.yml`) that
 - `PYPI_TOKEN`: PyPI API token for publishing.
 - `GH_TOKEN`: (optional) used by semantic-release for tagging; `GITHUB_TOKEN` provided by Actions is usually sufficient.
 - GitHub Pages and GHCR steps use the built-in `GITHUB_TOKEN`.
+- Tag-triggered release workflow (`release-on-tag.yml`) relies on `PYPI_TOKEN` and `GITHUB_TOKEN`; ensure `VERSION` matches the tag when releasing manually.
 
 ## Local Reproduction
 
