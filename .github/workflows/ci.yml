@@ -163,7 +163,7 @@ jobs:
     name: "6) Build & publish to PyPI"
     needs: release
     runs-on: ubuntu-latest
-    if: false
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -188,7 +188,7 @@ jobs:
     name: "7) Verify package from PyPI"
     needs: publish
     runs-on: ubuntu-latest
-    if: false
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/setup-python@v5
         with:
@@ -208,7 +208,7 @@ jobs:
     name: "8) Build & push container"
     needs: publish
     runs-on: ubuntu-latest
-    if: false
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
       - name: Log in to GHCR
