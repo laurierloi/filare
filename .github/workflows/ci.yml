@@ -194,6 +194,7 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Build dist
         run: |
+          git pull --rebase
           uv venv
           uv pip install --python .venv/bin/python build twine
           uv run --no-sync python -m build
