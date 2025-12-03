@@ -42,7 +42,7 @@ Outstanding refactor tasks (completed items removed)
 
 10) Layout polish
 - Make per-page notes width configurable. ✅
-- Prevent BOM rows with distributor + distributor P/N from overflowing into adjacent sections.
+- Prevent BOM rows with distributor + distributor P/N from overflowing into adjacent sections. ✅
 - Show harness name alongside harness ID wherever rendered.
 - Improve rendering when two connector lines merge into one pin through a cable to avoid “bubble” artifacts.
 - Guard against overlapping sections (notes covering diagrams, BOM covering changelog) when content is larger than expected.
