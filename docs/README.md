@@ -171,14 +171,11 @@ See https://pango.gnome.org/
 
 ### Installing the latest release
 
-~~The latest Filare release can be downloaded from [PyPI](https://pypi.org/project/filare/) with the following command:~~
+The latest Filare release can be downloaded from [PyPI](https://pypi.org/project/filare/) with the following command:
 
 ```
 pip3 install filare
 ```
-
-Note: The https://github.com/laurierloi/Filare version sadly can't be downloaded from pypi at
-this time. If you have this need, submit a MR and it could be added under a different name.
 
 ### Installing the development version
 
