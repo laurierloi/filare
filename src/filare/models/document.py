@@ -36,10 +36,13 @@ class DocumentRepresentation:
     def as_dict(self) -> Dict[str, Any]:
         return {
             "metadata": self.metadata,
-            "pages": [p.model_dump() if hasattr(p, "model_dump") else p for p in self.pages],
+            "pages": [
+                _coerce_for_yaml(p.model_dump() if hasattr(p, "model_dump") else p)
+                for p in self.pages
+            ],
             "notes": self.notes,
             "bom": self.bom,
-            "extras": self.extras,
+            "extras": _coerce_for_yaml(self.extras),
         }
 
     def compute_hash(self) -> str:
@@ -83,21 +86,35 @@ class DocumentHashRegistry:
 
     def __init__(self, path: Path):
         self.path = path
-        self._hashes = set()  # type: ignore[var-annotated]
+        self._hashes: Dict[str, str] = {}
 
     def load(self) -> None:
         if not self.path.exists():
-            self._hashes = set()
+            self._hashes = {}
             return
-        data = yaml.safe_load(self.path.read_text(encoding="utf-8")) or []
-        self._hashes = set(data)
+        data = yaml.safe_load(self.path.read_text(encoding="utf-8")) or {}
+        if isinstance(data, list):
+            # legacy list support: treat as unknown filename entries
+            self._hashes = {f"unknown_{i}": h for i, h in enumerate(data)}
+        else:
+            self._hashes = dict(data)
 
-    def contains(self, value: str) -> bool:
-        return value in self._hashes
+    def contains(self, filename: str, value: str) -> bool:
+        return self._hashes.get(filename) == value
 
-    def add(self, value: str) -> None:
-        self._hashes.add(value)
+    def add(self, filename: str, value: str) -> None:
+        self._hashes[filename] = value
 
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.write_text(_yaml_dumps(sorted(self._hashes)), encoding="utf-8")
+        self.path.write_text(_yaml_dumps(self._hashes), encoding="utf-8")
+
+
+def _coerce_for_yaml(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {k: _coerce_for_yaml(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_coerce_for_yaml(v) for v in value]
+    if hasattr(value, "value"):
+        return getattr(value, "value")
+    return value

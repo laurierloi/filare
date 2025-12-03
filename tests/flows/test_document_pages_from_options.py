@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from filare.flows.build_harness import build_harness_from_files
-from filare.models.page import BOMPage, CutPage, HarnessPage, TerminationPage, TitlePage
+from filare.models.page import BOMPage, CutPage, HarnessPage, PageType, TerminationPage, TitlePage
 
 
 def _write_minimal(tmp_path: Path):
@@ -49,9 +49,9 @@ def _build_doc(tmp_path: Path, opts: str):
 def test_document_pages_default(tmp_path: Path):
     doc = _build_doc(tmp_path, "")
     types = [type(p) for p in doc.pages]
-    assert TitlePage in types
-    assert HarnessPage in types
-    assert BOMPage in types
+    assert any(isinstance(p, TitlePage) for p in doc.pages)
+    assert any(isinstance(p, HarnessPage) for p in doc.pages)
+    assert any(isinstance(p, BOMPage) for p in doc.pages)
     assert CutPage not in types
     assert TerminationPage not in types
 
@@ -62,11 +62,10 @@ def test_document_pages_with_cut_and_term(tmp_path: Path):
         "  include_cut_diagram: true\n  include_termination_diagram: true\n",
     )
     types = [type(p) for p in doc.pages]
-    assert CutPage in types
-    assert TerminationPage in types
+    assert any(isinstance(p, CutPage) for p in doc.pages)
+    assert any(isinstance(p, TerminationPage) for p in doc.pages)
 
 
 def test_document_pages_without_bom(tmp_path: Path):
     doc = _build_doc(tmp_path, "  include_bom: false\n")
-    types = [type(p) for p in doc.pages]
-    assert BOMPage not in types
+    assert all(not isinstance(p, BOMPage) for p in doc.pages)
