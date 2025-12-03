@@ -15,7 +15,7 @@ class PageOptions(BaseModel):
     index_table_updated_position: str = ""
     show_notes: bool = True
     notes_on_right: bool = True
-    notes_width: str = "100mm"
+    notes_width: str = "180mm"
 
     # diagram colors
     bgcolor: SingleColor = Field(default_factory=lambda: SingleColor(inp="WH"))
