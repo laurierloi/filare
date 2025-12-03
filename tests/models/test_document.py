@@ -67,6 +67,7 @@ def test_document_recognizes_page_types(tmp_path: Path):
         BOMPage(type="bom", name="BOM"),
         CutPage(type="cut", name="CUT"),
         TerminationPage(type="termination", name="TERM"),
+        TitlePage(type="title", name="TITLE"),
     ]
     doc = DocumentRepresentation(metadata={}, pages=pages)
     path = tmp_path / "doc.yaml"
