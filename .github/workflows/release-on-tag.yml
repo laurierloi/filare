@@ -22,6 +22,8 @@ jobs:
           VERSION="${GITHUB_REF##*/}"
           VERSION="${VERSION#v}"
           echo "$VERSION" > VERSION
+      # We re-emit the tag version into VERSION to ensure the published wheel/sdist
+      # matches the tag that triggered this workflow.
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
