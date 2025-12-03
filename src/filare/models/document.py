@@ -9,7 +9,14 @@ from typing import Any, Dict, List, Optional, Type
 
 import yaml
 
-from filare.models.page import BOMPage, CutPage, HarnessPage, PageBase, TerminationPage
+from filare.models.page import (
+    BOMPage,
+    CutPage,
+    HarnessPage,
+    PageBase,
+    TerminationPage,
+    TitlePage,
+)
 
 
 def _yaml_dumps(data: Any) -> str:
@@ -57,6 +64,8 @@ class DocumentRepresentation:
                 model = CutPage
             elif page_type == "termination":
                 model = TerminationPage
+            elif page_type == "title":
+                model = TitlePage
             else:
                 model = PageBase
             page_models.append(model(**page))

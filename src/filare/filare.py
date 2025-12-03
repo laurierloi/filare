@@ -8,7 +8,7 @@ from enum import Enum
 
 from filare.flows import build_harness_from_files
 from filare.models.document import DocumentRepresentation
-from filare.models.page import BOMPage, CutPage, HarnessPage, TerminationPage
+from filare.models.page import BOMPage, CutPage, HarnessPage, TerminationPage, TitlePage
 
 
 def parse(
@@ -73,6 +73,7 @@ def _build_document_representation(harness) -> DocumentRepresentation:
             formats=options_dict.get("formats", []),
         )
     ]
+    pages.append(TitlePage(type="title", name="titlepage"))
     if getattr(harness.options, "include_bom", True):
         pages.append(BOMPage(type="bom", name="bom", formats=["tsv"]))
     if getattr(harness.options, "include_cut_diagram", False):

@@ -362,11 +362,12 @@ def build_harness_from_files(
     document_representation: Optional[DocumentRepresentation] = None
     if doc_yaml_path:
         pages = [
+            TitlePage(type="title", name="titlepage"),
             HarnessPage(
                 type="harness",
                 name=getattr(metadata, "name", output_name),
                 formats=list(output_formats or []),
-            )
+            ),
         ]
         if getattr(harness.options, "include_bom", True):
             pages.append(BOMPage(type="bom", name="bom", formats=["tsv"]))

@@ -47,3 +47,12 @@ class TerminationPage(PageBase):
     formats: List[str] = Field(default_factory=list, description="Requested output formats")
 
     model_config = ConfigDict(extra="allow")
+
+
+class TitlePage(PageBase):
+    """Page representing a title page/front matter."""
+
+    include: bool = True
+    formats: List[str] = Field(default_factory=list, description="Requested output formats")
+
+    model_config = ConfigDict(extra="allow")
