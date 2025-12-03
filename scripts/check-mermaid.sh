@@ -27,6 +27,7 @@ fi
 idx=0
 status=0
 for f in "${files[@]}"; do
+  echo "Checking Mermaid blocks in: $f"
   # Extract each mermaid block to its own file
   while IFS= read -r -d '' block; do
     outfile="$tmpdir/$idx.mmd"
@@ -34,6 +35,8 @@ for f in "${files[@]}"; do
     if ! mmdc -p "$puppeteer_cfg" -i "$outfile" -o "$tmpdir/$idx.svg" >/dev/null 2>&1; then
       echo "Mermaid parse/render failed for $f (block $idx)" >&2
       status=1
+    else
+      echo "✓ Mermaid parsed/rendered: $f (block $idx)"
     fi
     idx=$((idx + 1))
   done < <(python3 - "$f" <<'PY'
@@ -47,5 +50,7 @@ for b in blocks:
 PY
 )
 done
+
+echo "Mermaid check completed with status: $status"
 
 exit $status
