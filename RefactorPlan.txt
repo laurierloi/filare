@@ -46,3 +46,10 @@ Outstanding refactor tasks (completed items removed)
 - Show harness name alongside harness ID wherever rendered.
 - Improve rendering when two connector lines merge into one pin through a cable to avoid “bubble” artifacts.
 - Guard against overlapping sections (notes covering diagrams, BOM covering changelog) when content is larger than expected.
+
+11) BOM pagination and derivative diagrams
+- Add option to force BOM onto a single page; add optional multi-page BOM splitting (configurable rows per page) with lettered page suffixes in page numbering (a, b, c, …).
+- Introduce reusable table model shared by BOM, wire cut diagram, and termination diagram. (Base model added; integrate into rendering.)
+- Add per-harness wire cut diagram (HTML table) with optional multi-page splitting (configurable rows/page) and lettered suffixes in page numbering.
+- Add per-harness termination diagram (HTML table) capturing splices/crimps and lengths; support multi-page splitting and lettered suffixes.
+- Add a BaseModel for termination details, allowing per-wire-end/connection definitions into connectors.
