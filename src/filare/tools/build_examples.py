@@ -132,12 +132,36 @@ def clean_generated(groupkeys):
 
 def _write_document_manifest(output_dir: Path) -> None:
     """Collect all document representations and emit a manifest."""
+    from filare.models.document import DocumentManifest, DocumentManifestEntry
+
     docs = []
+    title_metadata = {}
     for doc_file in sorted(output_dir.rglob("*.document.yaml")):
-        docs.append({"path": str(doc_file.relative_to(output_dir)), "name": doc_file.stem})
-    manifest = {"documents": docs}
+        rel = doc_file.relative_to(output_dir)
+        docs.append(DocumentManifestEntry(path=str(rel), name=doc_file.stem))
+        if not title_metadata:
+            try:
+                data = yaml.safe_load(doc_file.read_text(encoding="utf-8")) or {}
+                title_metadata = data.get("metadata", {})
+            except Exception:
+                title_metadata = {}
+
+    # attempt to locate shared BOM under this output dir
+    shared_bom = None
+    for candidate in output_dir.rglob("shared_bom*.tsv"):
+        shared_bom = str(candidate.relative_to(output_dir))
+        break
+
+    manifest = DocumentManifest(
+        documents=docs,
+        title_metadata=title_metadata,
+        shared_bom=shared_bom,
+    )
     manifest_path = output_dir / "document_manifest.yaml"
-    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=True), encoding="utf-8")
+    manifest_path.write_text(
+        yaml.safe_dump(manifest.model_dump(mode="json"), sort_keys=True),
+        encoding="utf-8",
+    )
     print(f'Wrote document manifest to {manifest_path}')
 
 

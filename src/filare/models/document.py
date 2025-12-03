@@ -8,12 +8,14 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Type
 
 import yaml
+from pydantic import BaseModel, Field
 
 from filare.models.page import (
     BOMPage,
     CutPage,
     HarnessPage,
     PageBase,
+    PageType,
     TerminationPage,
     TitlePage,
 )
@@ -132,3 +134,17 @@ def _coerce_for_yaml(value: Any) -> Any:
     if hasattr(value, "value"):
         return getattr(value, "value")
     return value
+
+
+class DocumentManifestEntry(BaseModel):
+    path: str
+    name: str
+
+
+class DocumentManifest(BaseModel):
+    documents: List[DocumentManifestEntry] = Field(default_factory=list)
+    title_metadata: Dict[str, Any] = Field(default_factory=dict)
+    shared_bom: Optional[str] = None
+    split_combined_bom: bool = False
+    split_notes: bool = False
+    split_index: bool = False
