@@ -17,6 +17,20 @@ cat >"$puppeteer_cfg" <<'CFG'
 }
 CFG
 
+failed_list=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --failed-list)
+      failed_list="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown arg: $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
 mapfile -t files < <(rg -l '```mermaid' "$root_dir/docs" || true)
 
 if [ "${#files[@]}" -eq 0 ]; then
@@ -26,20 +40,56 @@ fi
 
 idx=0
 status=0
-for f in "${files[@]}"; do
-  echo "Checking Mermaid blocks in: $f"
-  # Extract each mermaid block to its own file
-  while IFS= read -r -d '' block; do
+failed_output="$root_dir/mermaid_failed.txt"
+> "$failed_output"
+
+if [[ -n "$failed_list" ]]; then
+  mapfile -t to_rerun <"$failed_list"
+  echo "Re-running failed Mermaid blocks from $failed_list"
+  for line in "${to_rerun[@]}"; do
+    f="${line%% *}"
+    blk="${line##* }"
+    echo "Rechecking $f (block $blk)"
+    block="$(python3 - "$f" "$blk" <<'PY'
+import sys, re, pathlib
+path = pathlib.Path(sys.argv[1])
+target = int(sys.argv[2])
+blocks = re.findall(r"```mermaid\n(.*?)\n```", path.read_text(), flags=re.DOTALL)
+if target < 0 or target >= len(blocks):
+    raise SystemExit(f"Invalid block index {target} for {path}")
+sys.stdout.write(blocks[target])
+PY
+)"
     outfile="$tmpdir/$idx.mmd"
     printf "%s\n" "$block" >"$outfile"
     if ! mmdc -p "$puppeteer_cfg" -i "$outfile" -o "$tmpdir/$idx.svg" >/dev/null 2>&1; then
-      echo "Mermaid parse/render failed for $f (block $idx)" >&2
+      echo "Mermaid parse/render failed for $f (block $blk)" >&2
       status=1
     else
-      echo "✓ Mermaid parsed/rendered: $f (block $idx)"
+      echo "✓ Mermaid parsed/rendered: $f (block $blk)"
     fi
     idx=$((idx + 1))
-  done < <(python3 - "$f" <<'PY'
+  done
+else
+  for f in "${files[@]}"; do
+    echo "Checking Mermaid blocks in: $f"
+    block_idx=0
+    while IFS= read -r -d '' block; do
+      outfile="$tmpdir/$idx.mmd"
+      printf "%s\n" "$block" >"$outfile"
+      if ! mmdc -p "$puppeteer_cfg" -i "$outfile" -o "$tmpdir/$idx.svg" >/dev/null 2>&1; then
+        echo "Mermaid parse/render failed for $f (block $block_idx)" >&2
+        printf "%s %s\n" "$f" "$block_idx" >>"$failed_output"
+        status=1
+        echo "---- failing block content ($f block $block_idx) ----" >&2
+        printf "%s\n" "$block" >&2
+        echo "-----------------------------------------------------" >&2
+      else
+        echo "✓ Mermaid parsed/rendered: $f (block $block_idx)"
+      fi
+      idx=$((idx + 1))
+      block_idx=$((block_idx + 1))
+    done < <(python3 - "$f" <<'PY'
 import sys, re, pathlib
 path = pathlib.Path(sys.argv[1])
 text = path.read_text()
@@ -49,8 +99,15 @@ for b in blocks:
     sys.stdout.buffer.write(b"\0")
 PY
 )
-done
+  done
+fi
 
-echo "Mermaid check completed with status: $status"
+if [[ $status -ne 0 ]]; then
+  echo "Mermaid check completed with failures. To rerun failed blocks only:"
+  echo "  ./scripts/check-mermaid.sh --failed-list $failed_output"
+else
+  echo "Mermaid check completed successfully."
+  rm -f "$failed_output"
+fi
 
 exit $status
