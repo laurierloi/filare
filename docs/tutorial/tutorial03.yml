@@ -23,3 +23,8 @@ connections:
   - # connect the shielding to a pin
     - X1: 1
     - W1: s
+options:
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
+

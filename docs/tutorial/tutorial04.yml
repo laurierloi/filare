@@ -34,3 +34,8 @@ connections:
     - X2: [1-4]
     - W2: [1-4]
     - X3: [1-4]
+options:
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
+

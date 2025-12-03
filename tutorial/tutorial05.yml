@@ -21,3 +21,8 @@ connections:
     - F1. # a new ferrule is auto-generated for each of the four wires
     - W1: [1-4]
     - X1: [1-4]
+options:
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
+

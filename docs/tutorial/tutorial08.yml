@@ -1,5 +1,8 @@
 options:
   mini_bom_mode: false
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
 
 connectors:
   X1: &template1 # define a template for later use

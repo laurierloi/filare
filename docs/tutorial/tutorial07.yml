@@ -50,3 +50,8 @@ connections:
     - X5: [1-4]
     - W5: [1-4]
     - X6: [1-4]
+options:
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
+
