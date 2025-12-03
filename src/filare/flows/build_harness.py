@@ -4,7 +4,10 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
+from enum import Enum
+
 from filare.models.metadata import Metadata
+from filare.models.document import DocumentHashRegistry, DocumentRepresentation
 from filare.models.notes import Notes, get_page_notes
 from filare.models.options import PageOptions, get_page_options
 from filare.models.connector import ConnectorModel
@@ -16,6 +19,18 @@ from filare.models.harness import Harness
 from filare.models.utils import expand, get_single_key_and_value, smart_file_resolve
 
 from .render_outputs import render_harness_outputs
+
+
+def _make_jsonable(value):
+    if isinstance(value, dict):
+        return {k: _make_jsonable(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_make_jsonable(v) for v in value]
+    if isinstance(value, Path):
+        return str(value)
+    if isinstance(value, Enum):
+        return value.value
+    return value
 
 
 def _build_metadata(yaml_file, yaml_data, extra_metadata, metadata_output_name):
@@ -190,6 +205,11 @@ def build_harness_from_files(
     output_dir = yaml_file.parent if not output_dir else output_dir
     output_name = output_name_override if output_name_override else yaml_file.stem
     metadata_output_name = metadata_output_name or output_name
+    doc_yaml_path: Optional[Path] = None
+    hash_registry_path: Optional[Path] = None
+    if output_dir:
+        doc_yaml_path = output_dir / f"{output_name}.document.yaml"
+        hash_registry_path = output_dir / "document_hashes.yaml"
 
     try:
         metadata = _build_metadata(
@@ -312,6 +332,31 @@ def build_harness_from_files(
 
     harness.populate_bom()
 
+    document_representation: Optional[DocumentRepresentation] = None
+    if doc_yaml_path:
+        document_representation = DocumentRepresentation(
+            metadata=_make_jsonable(
+                metadata.model_dump() if hasattr(metadata, "model_dump") else {}
+            ),
+            pages=[{"type": "harness", "name": getattr(metadata, "name", output_name)}],
+            notes=str(harness.notes) if harness.notes else None,
+            bom={} if not harness.options.include_bom else {},
+            extras={
+                "options": _make_jsonable(
+                    harness.options.model_dump(mode="json")
+                )
+                if hasattr(harness.options, "model_dump")
+                else {}
+            },
+        )
+        doc_hash = document_representation.compute_hash()
+        registry = DocumentHashRegistry(hash_registry_path)
+        registry.load()
+        if not registry.contains(doc_hash):
+            document_representation.to_yaml(doc_yaml_path)
+            registry.add(doc_hash)
+            registry.save()
+
     if output_formats:
         render_harness_outputs(harness, output_dir, output_name, output_formats)
 
@@ -331,5 +376,7 @@ def build_harness_from_files(
                 returns["harness"] = harness
             if rt == "shared_bom":
                 returns["shared_bom"] = harness.shared_bom
+            if rt in ("document", "doc"):
+                returns["document"] = document_representation or DocumentRepresentation()
 
         return returns
