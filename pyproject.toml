@@ -1,10 +1,7 @@
-[build-system]
-requires = ["setuptools>=75"]
-build-backend = "setuptools.build_meta"
 
 [project]
 name = "filare"
-dynamic = ["version"]
+version = "0.0.0"
 description = "Easily document cables and wiring harnesses"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -71,9 +68,6 @@ dev = [
 package-dir = { "" = "src" }
 include-package-data = true
 
-[tool.setuptools.dynamic]
-version = { file = "VERSION" }
-
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = false
@@ -104,25 +98,27 @@ skip_covered = false
 directory = "report/coverage"
 
 [tool.semantic_release]
-version_toml = []
+version_toml = ["pyproject.toml:project.version"]
 branch = "main"
 changelog_file = "CHANGELOG.md"
 commit_message = "chore(release): v{version}"
 commit_author = "semantic-release <semantic-release@users.noreply.github.com>"
+commit_version_number = true
 upload_to_pypi = true
 upload_to_release = true
 build_command = "uv build"
 version_variable = ["VERSION"]
 version_pattern = "^(?P<version>.*)$"
 changelog_sections = [
-    { type = "feat", section = "Features", hidden = false },
-    { type = "fix", section = "Fixes", hidden = false },
-    { type = "perf", section = "Performance", hidden = false },
-    { type = "refactor", section = "Refactor", hidden = false },
-    { type = "docs", section = "Documentation", hidden = false },
-    { type = "build", section = "Build", hidden = false },
-    { type = "ci", section = "CI", hidden = false },
-    { type = "chore", section = "Chores", hidden = false },
+  ["feat", "Features"],
+  ["fix", "Fixes"],
+  ["perf", "Performance"],
+  ["refactor", "Refactor"],
+  ["docs", "Documentation"],
+  ["build", "Build"],
+  ["ci", "CI"],
+  ["chore", "Chores"],
 ]
+
 [tool.isort]
 profile = "black"

@@ -172,8 +172,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: |
-          uv run --no-sync semantic-release version
-          uv run --no-sync semantic-release publish
+          uv run semantic-release version
+          uv run semantic-release publish
       - name: Ensure VERSION updated and pushed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -231,6 +231,9 @@ jobs:
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Pull latest
+        run: |
+          git pull --rebase
       - name: Align VERSION with release output
         run: |
           if [ -z "${{ needs.release.outputs.new_version }}" ]; then
@@ -240,7 +243,6 @@ jobs:
           echo "${{ needs.release.outputs.new_version }}" > VERSION
       - name: Build dist
         run: |
-          git pull --rebase
           uv venv
           uv pip install --python .venv/bin/python build twine
           uv run --no-sync python -m build
