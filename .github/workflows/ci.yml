@@ -209,6 +209,13 @@ jobs:
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Align VERSION with release output
+        run: |
+          if [ -z "${{ needs.release.outputs.new_version }}" ]; then
+            echo "Release job did not provide a new version" >&2
+            exit 1
+          fi
+          echo "${{ needs.release.outputs.new_version }}" > VERSION
       - name: Build dist
         run: |
           git pull --rebase
