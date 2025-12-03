@@ -101,11 +101,11 @@ pages:
   name: titlepage
   type: title
 - formats:
+  - png
   - tsv
   - svg
-  - png
-  - shared_bom
   - html
+  - shared_bom
   - gv
   name: test-01-tutorial03
   type: harness
