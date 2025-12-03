@@ -38,12 +38,18 @@ def test_bom_render_strip_empty_columns():
         make_entry(desc="Item1", qty=1, designators=["X1"]),
         make_entry(desc="Item2", qty=2, designators=["X2"]),
     ]
+    page_opts = {
+        "titleblock_rows": 1,
+        "titleblock_row_height": 5,
+        "bom_updated_position": None,
+        "bom_row_height": 5,
+    }
     render = BomRender(
         header=["#", "Qty", "Unit", "Description", "Designators", ""],
         rows=[e.as_list() + [""] for e in entries],
         strip_empty_columns=True,
     )
-    rendered = render.render(page_options={}, bom_options=BomRenderOptions())
+    rendered = render.render(page_options=page_opts, bom_options=BomRenderOptions())
     assert "Item1" in rendered
     assert "Item2" in rendered
 
