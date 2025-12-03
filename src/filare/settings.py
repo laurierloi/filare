@@ -1,20 +1,27 @@
 """Centralized settings loaded from environment with WV_ prefix."""
 
-import os
 from typing import Optional
 
-from pydantic.v1 import BaseSettings, Field
+try:
+    from pydantic_settings import BaseSettings, SettingsConfigDict
+    USING_PYDANTIC_V1 = False
+except ImportError:  # fallback to pydantic v1 BaseSettings for older envs
+    from pydantic.v1 import BaseSettings
+
+    SettingsConfigDict = None  # type: ignore
+    USING_PYDANTIC_V1 = True
 
 
 class FilareSettings(BaseSettings):
-    graphviz_engine: Optional[str] = Field(
-        default=None, env="WV_GRAPHVIZ_ENGINE"
-    )  # e.g., dot, neato
-    debug: bool = Field(default=False, env="WV_DEBUG")
+    graphviz_engine: Optional[str] = None  # e.g., dot, neato
+    debug: bool = False
 
-    class Config:
-        env_prefix = "WV_"
-        case_sensitive = False
+    if not USING_PYDANTIC_V1:
+        model_config = SettingsConfigDict(env_prefix="WV_", case_sensitive=False)
+    else:
+        class Config:
+            env_prefix = "WV_"
+            case_sensitive = False
 
 
 settings = FilareSettings()

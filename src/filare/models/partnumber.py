@@ -1,17 +1,24 @@
 from functools import reduce
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from pydantic.v1 import BaseModel, validator
+try:  # pydantic v2
+    from pydantic import BaseModel, field_validator
+except ImportError:  # fallback for environments still on pydantic v1
+    from pydantic.v1 import BaseModel, validator as _validator
+
+    def field_validator(*args, **kwargs):  # type: ignore
+        kwargs.pop("mode", None)
+        return _validator(*args, **kwargs)
 
 from filare.models.utils import awg_equiv, mm2_equiv, remove_links
 
 
 class PartNumberInfo(BaseModel):
-    pn: str = ""
-    manufacturer: str = ""
-    mpn: str = ""
-    supplier: str = ""
-    spn: str = ""
+    pn: Optional[str] = ""
+    manufacturer: Optional[str] = ""
+    mpn: Optional[str] = ""
+    supplier: Optional[str] = ""
+    spn: Optional[str] = ""
     is_list: bool = False
 
     BOM_KEY_TO_COLUMNS = {
@@ -39,7 +46,7 @@ class PartNumberInfo(BaseModel):
     def __setitem__(self, key, value):
         setattr(self, key, value)
 
-    @validator("pn", "manufacturer", "mpn", "supplier", "spn", pre=True)
+    @field_validator("pn", "manufacturer", "mpn", "supplier", "spn", mode="before")
     def _clean_arg(cls, v):
         if isinstance(v, list):
             raise ValueError(f"pn ({v}) should not be a list")
@@ -127,10 +134,12 @@ class PartNumberInfo(BaseModel):
     def as_list(self, parent_partnumbers=None):
         return partnumbers2list(self, parent_partnumbers)
 
-    class Config:
-        allow_mutation = True
-        arbitrary_types_allowed = True
-        frozen = False
+    model_config = {
+        "allow_mutation": True,
+        "arbitrary_types_allowed": True,
+        "frozen": False,
+        "extra": "allow",
+    }
 
 
 class PartnumberInfoList(BaseModel):
@@ -181,8 +190,7 @@ class PartnumberInfoList(BaseModel):
         for pn in self.pn_list:
             yield pn.as_list()
 
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = {"arbitrary_types_allowed": True}
 
 
 def partnumbers2list(

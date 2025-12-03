@@ -1,7 +1,7 @@
 from math import modf
 from typing import Any, Union
 
-from pydantic.v1 import BaseModel, validator
+from pydantic import BaseModel
 
 
 class NumberAndUnit(BaseModel):
@@ -63,10 +63,10 @@ class NumberAndUnit(BaseModel):
     def __eq__(self, other):
         return self.number == other.number and self.unit == other.unit
 
-    class Config:
-        arbitrary_types_allowed = True
-        allow_mutation = True
-        allow_population_by_field_name = True
+    model_config = {
+        "arbitrary_types_allowed": True,
+        "populate_by_name": True,
+    }
 
     def __add__(self, other):
         other = NumberAndUnit.to_number_and_unit(other, self.unit, 0)

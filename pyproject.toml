@@ -37,6 +37,7 @@ dependencies = [
     "jinja2",
     "weasyprint",
     "pydantic>=2,<3",
+    "pydantic-settings>=2,<3",
 ]
 
 [project.scripts]
