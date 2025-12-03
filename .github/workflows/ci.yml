@@ -119,6 +119,8 @@ jobs:
         run: |
           uv venv
           uv sync --group dev
+      - name: Sync README into docs
+        run: bash scripts/sync-readme-to-docs.sh
       - name: Prepare site content
         run: |
           mkdir -p docs/examples docs/tutorial
