@@ -1042,7 +1042,7 @@
 <p>This page gives a high-level map of how Filare fits together. For visual cheatsheets, see the Mermaid diagrams in <code>docs/graphs/architecture.md</code>, <code>docs/graphs/data_flow.md</code>, and <code>docs/graphs/models.md</code>.</p>
 <h2 id="main-entry-points">Main entry points<a class="headerlink" href="#main-entry-points" title="Permanent link">&para;</a></h2>
 <ul>
-<li>CLI: <code>src/filare/wv_cli.py</code> (exposed as <code>filare</code> via <code>uv run --no-sync filare ...</code>).</li>
+<li>CLI: <code>src/filare/cli.py</code> (exposed as <code>filare</code> via <code>uv run --no-sync filare ...</code>).</li>
 <li>Example/tutorial builder: <code>src/filare/tools/build_examples.py</code> drives the CLI over the example and tutorial sets.</li>
 </ul>
 <h2 id="visual-map">Visual map<a class="headerlink" href="#visual-map" title="Permanent link">&para;</a></h2>
@@ -1072,7 +1072,7 @@
   end
 
   subgraph CLI
-    C1[wv_cli]
+    C1[cli]
   end
 
   Parser --&gt; Flows
