@@ -79,6 +79,11 @@ def generate_html_output(
         page_options=options, bom_options=bom_render_options
     )
 
+    if options.show_index_table or options.split_index_page:
+        rendered["index_table"] = IndexTable.from_pages_metadata(
+            metadata.pages_metadata
+        ).render(options)
+
     # TODO: instead provide a PageOption to generate or not the svg
     svgdata = None
     if template_name != "titlepage":
@@ -128,6 +133,45 @@ def generate_html_output(
 
     # save generated file
     filename.with_suffix(".html").open("w").write(page_rendered)
+    _write_split_sections(filename, metadata, options, rendered)
+
+
+def _write_split_sections(
+    filename: Path, metadata: Metadata, options: PageOptions, rendered: Dict[str, str]
+) -> None:
+    """Emit split section HTML files based on options."""
+    splits = {
+        "bom": options.split_bom_page and "bom" in rendered,
+        "notes": options.split_notes_page and "notes" in rendered,
+        "index": options.split_index_page and "index_table" in rendered,
+    }
+    for section, should_write in splits.items():
+        if not should_write:
+            continue
+        content = rendered.get(section if section != "index" else "index_table")
+        if not content:
+            continue
+        title_bits = [getattr(metadata, "title", ""), section]
+        title = " - ".join([t for t in title_bits if t])
+        page = _wrap_section_html(title or section, content)
+        target = filename.with_suffix(f".{section}.html")
+        target.write_text(page, encoding="utf-8")
+        logging.info("Wrote split %s page to %s", section, target)
+
+
+def _wrap_section_html(title: str, body: str) -> str:
+    return (
+        "<!doctype html>\n"
+        "<html>\n"
+        "<head>\n"
+        '<meta charset="utf-8">\n'
+        f"<title>{title}</title>\n"
+        "</head>\n"
+        "<body>\n"
+        f"{body}\n"
+        "</body>\n"
+        "</html>\n"
+    )
 
 
 def generate_titlepage(yaml_data, extra_metadata, shared_bom, for_pdf=False):

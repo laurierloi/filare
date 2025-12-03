@@ -1,7 +1,14 @@
 from pathlib import Path
 
 from filare.flows.build_harness import build_harness_from_files
-from filare.models.page import BOMPage, CutPage, HarnessPage, PageType, TerminationPage, TitlePage
+from filare.models.page import (
+    BOMPage,
+    CutPage,
+    HarnessPage,
+    PageType,
+    TerminationPage,
+    TitlePage,
+)
 
 
 def _write_minimal(tmp_path: Path):
@@ -31,11 +38,7 @@ def _write_minimal(tmp_path: Path):
 def _build_doc(tmp_path: Path, opts: str):
     harness_path, metadata_path = _write_minimal(tmp_path)
     if opts:
-        harness_path.write_text(
-            harness_path.read_text()
-            + "\noptions:\n"
-            + opts
-        )
+        harness_path.write_text(harness_path.read_text() + "\noptions:\n" + opts)
     ret = build_harness_from_files(
         [harness_path],
         [metadata_path],

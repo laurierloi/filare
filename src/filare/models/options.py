@@ -16,6 +16,9 @@ class PageOptions(BaseModel):
     show_notes: bool = True
     notes_on_right: bool = True
     notes_width: str = "180mm"
+    split_bom_page: bool = False
+    split_notes_page: bool = False
+    split_index_page: bool = False
 
     # diagram colors
     bgcolor: SingleColor = Field(default_factory=lambda: SingleColor(inp="WH"))

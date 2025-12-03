@@ -3,7 +3,15 @@ from pathlib import Path
 from filare.models.document import DocumentHashRegistry, DocumentRepresentation
 from filare.models.harness import Harness
 from filare.models.notes import Notes
-from filare.models.page import BOMPage, CutPage, HarnessPage, PageBase, PageType, TerminationPage, TitlePage
+from filare.models.page import (
+    BOMPage,
+    CutPage,
+    HarnessPage,
+    PageBase,
+    PageType,
+    TerminationPage,
+    TitlePage,
+)
 from filare.filare import _build_document_representation
 
 
@@ -40,7 +48,9 @@ def test_document_hash_registry_tracks_hashes(tmp_path: Path):
 
 
 def test_build_document_from_harness(basic_metadata, basic_page_options):
-    harness = Harness(metadata=basic_metadata, options=basic_page_options, notes=Notes([]))
+    harness = Harness(
+        metadata=basic_metadata, options=basic_page_options, notes=Notes([])
+    )
     doc = _build_document_representation(harness)
     assert isinstance(doc, DocumentRepresentation)
     assert doc.metadata.get("pn") == basic_metadata.pn

@@ -63,10 +63,10 @@ flowchart TD
    - Tabular/text output: `render/output.py` writes BOM/TSV and HTML wrappers; `render/templates.py` provides the Jinja templates and HTML helpers.
 4. **Document representation**  
    `flows/build_harness.py` now emits a pre-render `DocumentRepresentation` (YAML) capturing metadata, page stubs, notes, and BOM (if enabled). Hash tracking prevents overwriting user-edited documents.
-4. **Aggregate artifacts**
+5. **Aggregate artifacts**
    - `flows/shared_bom.py` emits a combined `shared_bom.tsv`.
    - `flows/index_pages.py` builds title pages and PDF bundles.
-5. **Outputs**  
+6. **Outputs**  
    SVG/PNG diagrams, HTML pages (diagram + title block), TSV BOMs, shared BOM, and optional PDF bundles end up under the requested output directory.
 
 ## Extending/operating

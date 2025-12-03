@@ -27,7 +27,9 @@ def test_additional_bom_accepts_component_model(basic_metadata, basic_page_optio
     assert harness.additional_bom_items
 
 
-def test_harness_respects_include_bom_flag(tmp_path, basic_metadata, basic_page_options):
+def test_harness_respects_include_bom_flag(
+    tmp_path, basic_metadata, basic_page_options
+):
     basic_page_options.include_bom = False
     harness = _build_harness(basic_metadata, basic_page_options)
     harness.add_connector_model(ConnectorModel(designator="J1", pinlabels=["1", "2"]))

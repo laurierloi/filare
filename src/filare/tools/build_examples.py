@@ -136,14 +136,22 @@ def _write_document_manifest(output_dir: Path) -> None:
 
     docs = []
     title_metadata = {}
+    split_bom = False
+    split_notes = False
+    split_index = False
     for doc_file in sorted(output_dir.rglob("*.document.yaml")):
         rel = doc_file.relative_to(output_dir)
         docs.append(DocumentManifestEntry(path=str(rel), name=doc_file.stem))
-        if not title_metadata:
-            try:
-                data = yaml.safe_load(doc_file.read_text(encoding="utf-8")) or {}
+        try:
+            data = yaml.safe_load(doc_file.read_text(encoding="utf-8")) or {}
+            if not title_metadata:
                 title_metadata = data.get("metadata", {})
-            except Exception:
+            opts = (data.get("extras") or {}).get("options", {})
+            split_bom = split_bom or bool(opts.get("split_bom_page"))
+            split_notes = split_notes or bool(opts.get("split_notes_page"))
+            split_index = split_index or bool(opts.get("split_index_page"))
+        except Exception:
+            if not title_metadata:
                 title_metadata = {}
 
     # attempt to locate shared BOM under this output dir
@@ -156,13 +164,16 @@ def _write_document_manifest(output_dir: Path) -> None:
         documents=docs,
         title_metadata=title_metadata,
         shared_bom=shared_bom,
+        split_combined_bom=split_bom,
+        split_notes=split_notes,
+        split_index=split_index,
     )
     manifest_path = output_dir / "document_manifest.yaml"
     manifest_path.write_text(
         yaml.safe_dump(manifest.model_dump(mode="json"), sort_keys=True),
         encoding="utf-8",
     )
-    print(f'Wrote document manifest to {manifest_path}')
+    print(f"Wrote document manifest to {manifest_path}")
 
 
 def parse_args():

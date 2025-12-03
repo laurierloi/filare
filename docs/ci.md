@@ -27,20 +27,20 @@ This repository uses a GitHub Actions workflow (`.github/workflows/ci.yml`) that
    - Build up to `DocumentRepresentation` YAML (with hashes) without rendering final assets, to validate graph/document assembly.
    - Useful for faster CI checks before full render/publish steps.
 
-5. **Release (semantic-release, main only)**
+6. **Release (semantic-release, main only)**
    - Uses `python-semantic-release` to bump the version, update `VERSION`, and publish release assets.
    - Gating: downstream publish/verify/container steps run only if either the `VERSION` file changed or a new tag was created during the run (prevents double-publishing).
    - Generates/updates `CHANGELOG.md` automatically and commits it with the release bump.
    - Needs `GH_TOKEN` (GitHub token) and `PYPI_TOKEN` (if publishing to PyPI through semantic-release).
 
-6. **Publish to PyPI (main only)**
+7. **Publish to PyPI (main only)**
    - Builds the distribution (`python -m build`).
    - Uploads via `twine` using `PYPI_TOKEN`.
 
-7. **Verify PyPI**
+8. **Verify PyPI**
    - Installs `filare` from PyPI and checks `filare --help`.
 
-8. **Container (GHCR)**
+9. **Container (GHCR)**
    - Builds a Docker image and pushes to `ghcr.io/${{ github.repository }}:latest`.
    - Uses `GITHUB_TOKEN` for registry auth.
 
