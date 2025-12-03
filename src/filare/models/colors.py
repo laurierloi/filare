@@ -3,9 +3,9 @@
 from collections import namedtuple
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
-from pydantic.v1 import BaseModel, root_validator
+from pydantic import BaseModel, ConfigDict
 
 padding_amount = 1
 
@@ -58,8 +58,8 @@ def get_color_by_colorcode_index(color_code: str, index: int) -> str:
 
 
 class SingleColor(BaseModel):
-    code_en: str = None
-    html: str = None
+    code_en: Optional[str] = None
+    html: Optional[str] = None
 
     def __init__(self, inp=None, **data):
         if "code_en" in data or "html" in data:
@@ -82,9 +82,7 @@ class SingleColor(BaseModel):
             values = {"code_en": str(inp), "html": str(inp)}
         super().__init__(**values, **data)
 
-    class Config:
-        arbitrary_types_allowed = True
-        allow_mutation = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     @property
     def code_de(self):

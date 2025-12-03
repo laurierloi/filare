@@ -1,10 +1,12 @@
 from functools import reduce
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, ClassVar, Dict, List, Optional, Tuple, Union
 
 try:  # pydantic v2
-    from pydantic import BaseModel, field_validator
+    from pydantic import BaseModel, ConfigDict, field_validator
+    USING_PYDANTIC_V1 = False
 except ImportError:  # fallback for environments still on pydantic v1
     from pydantic.v1 import BaseModel, validator as _validator
+    USING_PYDANTIC_V1 = True
 
     def field_validator(*args, **kwargs):  # type: ignore
         kwargs.pop("mode", None)
@@ -21,7 +23,7 @@ class PartNumberInfo(BaseModel):
     spn: Optional[str] = ""
     is_list: bool = False
 
-    BOM_KEY_TO_COLUMNS = {
+    BOM_KEY_TO_COLUMNS: ClassVar[Dict[str, str]] = {
         "pn": "P/N",
         "manufacturer": "Manufacturer",
         "mpn": "MPN",
@@ -134,12 +136,19 @@ class PartNumberInfo(BaseModel):
     def as_list(self, parent_partnumbers=None):
         return partnumbers2list(self, parent_partnumbers)
 
-    model_config = {
-        "allow_mutation": True,
-        "arbitrary_types_allowed": True,
-        "frozen": False,
-        "extra": "allow",
-    }
+    if USING_PYDANTIC_V1:
+
+        class Config:
+            allow_mutation = True
+            arbitrary_types_allowed = True
+            frozen = False
+            extra = "allow"
+
+    else:
+        model_config = ConfigDict(
+            arbitrary_types_allowed=True,
+            extra="allow",
+        )
 
 
 class PartnumberInfoList(BaseModel):
@@ -190,7 +199,13 @@ class PartnumberInfoList(BaseModel):
         for pn in self.pn_list:
             yield pn.as_list()
 
-    model_config = {"arbitrary_types_allowed": True}
+    if USING_PYDANTIC_V1:
+
+        class Config:
+            arbitrary_types_allowed = True
+
+    else:
+        model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 def partnumbers2list(

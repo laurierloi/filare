@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Sequence, Union
 
-from pydantic.v1 import BaseModel, Extra, Field, root_validator, validator
+from pydantic import Field, field_validator, model_validator
 
 from filare.models.colors import MultiColor, SingleColor, get_color_by_colorcode_index
 from filare.models.connector import GraphicalComponentModel
@@ -30,7 +30,7 @@ class CableModel(GraphicalComponentModel):
     show_wirecount: bool = True
     show_equiv: bool = False
 
-    @validator("colors", pre=True)
+    @field_validator("colors", mode="before")
     def _coerce_colors(cls, value: Any) -> List[str]:
         if value is None:
             return []
@@ -38,19 +38,19 @@ class CableModel(GraphicalComponentModel):
             return [value]
         return list(value)
 
-    @validator("wirelabels", pre=True)
+    @field_validator("wirelabels", mode="before")
     def _coerce_wirelabels(cls, value: Any) -> List[Any]:
         if value is None:
             return []
         return list(value)
 
-    @validator("gauge", "length", pre=True)
+    @field_validator("gauge", "length", mode="before")
     def _coerce_number_unit(cls, value: Any) -> Optional[NumberAndUnit]:
         if value is None:
             return None
         return NumberAndUnit.to_number_and_unit(value)
 
-    @validator("shield", pre=True)
+    @field_validator("shield", mode="before")
     def _coerce_shield(cls, value: Any):
         if value is None:
             return False
@@ -58,12 +58,12 @@ class CableModel(GraphicalComponentModel):
             return value
         return value
 
-    @root_validator
-    def _ensure_colors(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        colors = values.get("colors") or []
-        wirecount = values.get("wirecount")
-        color_code = values.get("color_code")
-        color = values.get("color")
+    @model_validator(mode="after")
+    def _ensure_colors(self):
+        colors = self.colors or []
+        wirecount = self.wirecount
+        color_code = self.color_code
+        color = self.color
         if not colors and wirecount:
             if color_code:
                 colors = [
@@ -75,8 +75,8 @@ class CableModel(GraphicalComponentModel):
                 colors = [multicolor[i] for i in range(wirecount)]
             else:
                 colors = ["" for _ in range(wirecount)]
-        values["colors"] = colors
-        return values
+        self.colors = colors
+        return self
 
     def to_cable(self) -> Cable:
         kwargs = dict(

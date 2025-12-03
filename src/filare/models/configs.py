@@ -2,16 +2,13 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic.v1 import BaseModel, Extra, Field, root_validator, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class ConfigBaseModel(BaseModel):
     """Common base for YAML-facing configuration models."""
 
-    class Config:
-        extra = Extra.allow
-        allow_mutation = True
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
 
 
 class PinConfig(ConfigBaseModel):
@@ -32,7 +29,23 @@ class ConnectorConfig(ConfigBaseModel):
     images: Optional[List[str]] = None
     notes: Optional[List[str]] = None
 
-    @root_validator(pre=True)
+    @field_validator("pins", mode="before")
+    def _coerce_pins(cls, value: Any) -> Any:
+        if value is None:
+            return value
+        if isinstance(value, dict):
+            return [value]
+        return value
+
+    @field_validator("loops", mode="before")
+    def _ensure_loop_list(cls, value: Any) -> Any:
+        if value is None:
+            return value
+        if isinstance(value, dict):
+            return [value]
+        return list(value)
+
+    @model_validator(mode="before")
     def _set_pincount_from_inputs(cls, values: Dict[str, Any]) -> Dict[str, Any]:
         if values.get("pincount") is None:
             pins = values.get("pins") or []
@@ -46,36 +59,6 @@ class ConnectorConfig(ConfigBaseModel):
             elif pinlabels:
                 values["pincount"] = len(pinlabels)
         return values
-
-    @validator("pins", pre=True)
-    def _coerce_pins(cls, value: Any) -> Any:
-        if value is None:
-            return value
-        if isinstance(value, dict):
-            return [value]
-        return value
-
-    @validator("loops", pre=True)
-    def _ensure_loop_list(cls, value: Any) -> Any:
-        if value is None:
-            return value
-        if isinstance(value, dict):
-            return [value]
-        return list(value)
-
-    @validator("pincount", pre=True, always=True)
-    def _derive_pincount(
-        cls, value: Optional[int], values: Dict[str, Any]
-    ) -> Optional[int]:
-        if value is not None:
-            return value
-        pins = values.get("pins")
-        if pins:
-            return len(pins)
-        pinlabels = values.get("pinlabels")
-        if pinlabels:
-            return len(pinlabels)
-        return value
 
 
 class WireConfig(ConfigBaseModel):
@@ -97,7 +80,7 @@ class CableConfig(ConfigBaseModel):
     notes: Optional[List[str]] = None
     style: Optional[str] = None
 
-    @validator("colors", pre=True)
+    @field_validator("colors", mode="before")
     def _coerce_colors(cls, value: Any) -> Any:
         if value is None:
             return value
@@ -105,19 +88,15 @@ class CableConfig(ConfigBaseModel):
             return [value]
         return list(value)
 
-    @validator("wirecount", always=True)
-    def _derive_wirecount(
-        cls, value: Optional[int], values: Dict[str, Any]
-    ) -> Optional[int]:
-        if value is not None:
-            return value
-        wires = values.get("wires")
-        if wires:
-            return len(wires)
-        colors = values.get("colors")
-        if colors:
-            return len(colors)
-        return value
+    @model_validator(mode="after")
+    def _derive_wirecount(self):
+        if self.wirecount is not None:
+            return self
+        if self.wires:
+            self.wirecount = len(self.wires)
+        elif self.colors:
+            self.wirecount = len(self.colors)
+        return self
 
 
 class ConnectionConfig(ConfigBaseModel):
@@ -128,7 +107,7 @@ class ConnectionConfig(ConfigBaseModel):
     bundle: Optional[str] = None
     notes: Optional[List[str]] = None
 
-    @validator("endpoints", pre=True)
+    @field_validator("endpoints", mode="before")
     def _coerce_endpoints(cls, value: Any) -> List[str]:
         if isinstance(value, str):
             return [value]
@@ -169,7 +148,7 @@ class PageOptionsConfig(ConfigBaseModel):
     margin_mm: Optional[float] = None
     formats: Optional[List[str]] = None
 
-    @validator("formats", pre=True)
+    @field_validator("formats", mode="before")
     def _coerce_formats(cls, value: Any) -> Any:
         if value is None:
             return value

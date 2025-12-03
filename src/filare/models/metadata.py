@@ -3,7 +3,21 @@ from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from pydantic.v1 import BaseModel, Field, root_validator, validator
+try:  # pydantic v2
+    from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+    USING_PYDANTIC_V1 = False
+except ImportError:  # fallback for v1
+    from pydantic.v1 import BaseModel, Field, root_validator, validator as _validator
+
+    USING_PYDANTIC_V1 = True
+
+    def field_validator(*args, **kwargs):  # type: ignore
+        kwargs.pop("mode", None)
+        return _validator(*args, **kwargs)
+
+    def model_validator(*args, **kwargs):  # type: ignore
+        kwargs.pop("mode", None)
+        return root_validator(*args, **kwargs)
 
 import filare  # for doing filare.__file__
 
@@ -17,23 +31,21 @@ class DocumentInfo(BaseModel):
     title: str
     pn: str
 
-    class Config:
-        frozen = True
+    model_config = {"frozen": True}
 
 
 class CompanyInfo(BaseModel):
     company: str
     address: str
 
-    class Config:
-        frozen = True
+    model_config = {"frozen": True}
 
 
 class AuthorSignature(BaseModel):
     name: str = ""
     date: Optional[object] = None
 
-    @validator("date", pre=True)
+    @field_validator("date", mode="before")
     def _coerce_date(cls, value):
         if value is None:
             return None
@@ -53,8 +65,7 @@ class AuthorSignature(BaseModel):
                 ) from err
         return value
 
-    class Config:
-        frozen = True
+    model_config = {"frozen": True}
 
 
 class AuthorRole(AuthorSignature):
@@ -73,8 +84,7 @@ class OutputMetadata(BaseModel):
     output_dir: Path
     output_name: str
 
-    class Config:
-        frozen = True
+    model_config = {"frozen": True}
 
 
 class SheetMetadata(BaseModel):
@@ -82,8 +92,7 @@ class SheetMetadata(BaseModel):
     sheet_current: int
     sheet_name: str
 
-    class Config:
-        frozen = True
+    model_config = {"frozen": True}
 
 
 class PagesMetadata(BaseModel):
@@ -95,8 +104,7 @@ class PagesMetadata(BaseModel):
     pages_notes: Dict[str, str] = Field(default_factory=dict)
     output_dir: Path
 
-    class Config:
-        frozen = True
+    model_config = {"frozen": True}
 
 
 class PageTemplateTypes(str, Enum):
@@ -120,31 +128,53 @@ class PageTemplateConfig(BaseModel):
     name: PageTemplateTypes = PageTemplateTypes.din_6771
     sheetsize: SheetSizes = SheetSizes.A3
     orientation: Optional[Orientations] = None
+    if USING_PYDANTIC_V1:
 
-    @validator("name", pre=True)
+        class Config:
+            frozen = False
+
+    else:
+        model_config = ConfigDict(frozen=False)
+
+    @field_validator("name", mode="before")
     def _coerce_name(cls, value):
         return PageTemplateTypes(value)
 
-    @validator("sheetsize", pre=True)
+    @field_validator("sheetsize", mode="before")
     def _coerce_size(cls, value):
         return SheetSizes(value)
 
-    @root_validator
-    def _default_orientation(cls, values):
-        if values.get("orientation") is None:
-            size = values.get("sheetsize")
-            values["orientation"] = (
-                Orientations.portrait
-                if size == SheetSizes.A4
-                else Orientations.landscape
-            )
-        return values
+    if not USING_PYDANTIC_V1:
+
+        @model_validator(mode="before")
+        def _default_orientation(cls, values):
+            data = dict(values or {})
+            if data.get("orientation") is None:
+                size = data.get("sheetsize")
+                data["orientation"] = (
+                    Orientations.portrait
+                    if size == SheetSizes.A4
+                    else Orientations.landscape
+                )
+            return data
+
+    else:
+
+        @model_validator
+        def _default_orientation(cls, values):
+            if values.get("orientation") is None:
+                size = values.get("sheetsize")
+                values["orientation"] = (
+                    Orientations.portrait
+                    if size == SheetSizes.A4
+                    else Orientations.landscape
+                )
+            return values
 
     def has_bom_reversed(self):
         return self.name == PageTemplateTypes.din_6771
 
-    class Config:
-        frozen = True
+    model_config = {"frozen": True}
 
 
 # TODO: Metadata is a 'fourre-tout' of metadata right now.
@@ -168,7 +198,7 @@ class Metadata(
         else:
             return self.output_name
 
-    @validator("authors", pre=True)
+    @field_validator("authors", mode="before")
     def _coerce_authors(cls, value):
         if not value:
             return {}
@@ -177,7 +207,7 @@ class Metadata(
             for key, val in value.items()
         }
 
-    @validator("revisions", pre=True)
+    @field_validator("revisions", mode="before")
     def _coerce_revisions(cls, value):
         if not value:
             return {}
@@ -229,6 +259,11 @@ class Metadata(
             output_dir=self.output_dir,
         )
 
-    class Config:
-        frozen = True
-        arbitrary_types_allowed = True
+    if USING_PYDANTIC_V1:
+
+        class Config:
+            frozen = True
+            arbitrary_types_allowed = True
+
+    else:
+        model_config = ConfigDict(frozen=True, arbitrary_types_allowed=True)

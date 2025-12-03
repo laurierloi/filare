@@ -31,3 +31,6 @@ Outstanding refactor tasks (completed items removed)
 - Add template-input models (TemplateConnector/TemplateCable/TemplateBOMItem, etc.) and conversions from config/dataclasses.
 - Build a small graph representation (nodes/edges for pins/interfaces/bundles/segments) and map to template-input models with tests.
 - Incrementally wire dataclasses/flows to accept config models while keeping legacy behavior; add regression tests for BOM/HTML/TSV parity.
+
+8) Pydantic config tightening
+- Remove `arbitrary_types_allowed` usage across models by replacing with proper type wrappers/converters; do this after remaining migrations stabilize.

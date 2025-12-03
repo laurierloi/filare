@@ -135,13 +135,21 @@ class Harness:
                     add_to_bom(e)
                 return
 
+            def _as_dict(obj):
+                if hasattr(obj, "model_dump"):
+                    return obj.model_dump()
+                if hasattr(obj, "dict"):
+                    return obj.dict()
+                return obj
+
             if not isinstance(entry, BomEntry):
                 base = entry
                 if isinstance(entry, BomEntryBase):
                     base = entry
-                elif hasattr(entry, "dict"):
-                    base = BomEntryBase(**entry.dict())
-                entry = BomEntry(**base.dict())
+                else:
+                    maybe_dict = _as_dict(entry)
+                    base = BomEntryBase(**maybe_dict)
+                entry = BomEntry(**_as_dict(base))
 
             if isinstance(entry, list):
                 for e in entry:

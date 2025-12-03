@@ -1,7 +1,7 @@
 from typing import ClassVar, Dict, List, Union
 
 import tabulate as tabulate_module
-from pydantic.v1 import BaseModel, Field, root_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from filare.models.numbers import NumberAndUnit
 from filare.models.partnumber import PartNumberInfo
@@ -33,21 +33,19 @@ class BomEntryBase(BaseModel):
         "per_harness": "Per Harness",
     }
 
-    class Config:
-        arbitrary_types_allowed = True
-        allow_mutation = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    @root_validator
-    def _scale_qty(cls, values):
+    @model_validator(mode="after")
+    def _scale_qty(self):
         try:
-            values["qty_multiplier"] = float(values.get("qty_multiplier", 1))
+            self.qty_multiplier = float(self.qty_multiplier or 1)
         except Exception:
-            values["qty_multiplier"] = 1
-        if values.get("qty") is not None:
-            values["qty"] *= float(values.get("qty_multiplier", 1))
-        if values.get("amount") is not None:
-            values["amount"] *= float(values.get("qty_multiplier", 1))
-        return values
+            self.qty_multiplier = 1
+        if self.qty is not None:
+            self.qty *= float(self.qty_multiplier or 1)
+        if self.amount is not None:
+            self.amount *= float(self.qty_multiplier or 1)
+        return self
 
     def __hash__(self):
         return hash((self.partnumbers, self.description))
@@ -135,9 +133,7 @@ class BomEntry(BomEntryBase):
     def __repr__(self):
         return f"{self.id}: {self.partnumbers}, {self.qty}"
 
-    class Config:
-        arbitrary_types_allowed = True
-        allow_mutation = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class BomRender:

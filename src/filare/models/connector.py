@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Sequence, Union
 
-from pydantic.v1 import BaseModel, Extra, Field, root_validator, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from filare.models.colors import MultiColor, SingleColor
 from filare.models.dataclasses import (
@@ -35,29 +35,27 @@ class GraphicalComponentModel(BaseModel):
     show_name: Optional[bool] = None
     show_pincount: Optional[bool] = None
 
-    class Config:
-        extra = Extra.allow
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
 
-    @validator("type", "subtype", "notes", pre=True)
+    @field_validator("type", "subtype", "notes", mode="before")
     def _to_multiline(cls, value):
         if value is None:
             return value
         return MultilineHypertext.to(value)
 
-    @validator("color", pre=True)
+    @field_validator("color", mode="before")
     def _to_multicolor(cls, value):
         if value is None:
             return value
         return MultiColor(value)
 
-    @validator("bgcolor", "bgcolor_title", pre=True)
+    @field_validator("bgcolor", "bgcolor_title", mode="before")
     def _to_single_color(cls, value):
         if value is None:
             return value
         return SingleColor(value)
 
-    @validator("image", pre=True)
+    @field_validator("image", mode="before")
     def _to_image(cls, value):
         if value is None:
             return None
@@ -67,7 +65,7 @@ class GraphicalComponentModel(BaseModel):
             return Image(**value)
         return value
 
-    @validator("category", pre=True)
+    @field_validator("category", mode="before")
     def _coerce_category(cls, value: Any):
         if value is None:
             return None
@@ -106,15 +104,16 @@ class ConnectorModel(GraphicalComponentModel):
     images: List[str] = Field(default_factory=list)
     hide_disconnected_pins: bool = False
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def _normalize_pincount(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        if values.get("pincount") is None:
-            pins = values.get("pins") or []
-            pinlabels = values.get("pinlabels") or []
-            values["pincount"] = len(pins) or len(pinlabels) or None
-        return values
+        data = dict(values or {})
+        if data.get("pincount") is None:
+            pins = data.get("pins") or []
+            pinlabels = data.get("pinlabels") or []
+            data["pincount"] = len(pins) or len(pinlabels) or None
+        return data
 
-    @validator("loops", pre=True)
+    @field_validator("loops", mode="before")
     def _coerce_loops(cls, value: Any):
         if value is None:
             return []

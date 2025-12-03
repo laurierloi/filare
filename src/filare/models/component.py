@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, List, Optional, Union
 
-from pydantic.v1 import BaseModel, Extra, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from filare.models.dataclasses import Component, GraphicalComponent  # noqa: F401
 from filare.models.hypertext import MultilineHypertext
@@ -43,17 +43,15 @@ class ComponentModel(BaseModel):
     ] = 1
     bgcolor: Optional[SingleColor] = None
 
-    class Config:
-        extra = Extra.allow
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
 
-    @validator("type", "subtype", pre=True)
+    @field_validator("type", "subtype", mode="before")
     def _to_multiline(cls, value: Any) -> Optional[MultilineHypertext]:
         if value is None:
             return None
         return MultilineHypertext.to(value)
 
-    @validator("category", pre=True)
+    @field_validator("category", mode="before")
     def _coerce_category(cls, value: Any):
         if value is None:
             return None
@@ -64,27 +62,32 @@ class ComponentModel(BaseModel):
         except Exception:
             return value
 
-    @validator("qty", "amount", pre=True)
+    @field_validator("qty", "amount", mode="before")
     def _to_number_and_unit(cls, value: Any) -> Optional[NumberAndUnit]:
         if value is None:
             return None
         return NumberAndUnit.to_number_and_unit(value)
 
-    @validator("bgcolor", pre=True)
+    @field_validator("bgcolor", mode="before")
     def _to_single_color(cls, value: Any) -> Optional[SingleColor]:
         if value is None:
             return None
         return SingleColor(value)
 
-    @validator("additional_components", pre=True, each_item=True)
+    @field_validator("additional_components", mode="before")
     def _coerce_additional(cls, value: Any):
-        if isinstance(value, ComponentModel):
-            return value
-        if isinstance(value, Component):
-            return ComponentModel.from_component(value)
-        if isinstance(value, dict):
-            return ComponentModel(**value)
-        return value
+        vals = value if isinstance(value, list) else [value]
+        out = []
+        for v in vals:
+            if isinstance(v, ComponentModel):
+                out.append(v)
+            elif isinstance(v, Component):
+                out.append(ComponentModel.from_component(v))
+            elif isinstance(v, dict):
+                out.append(ComponentModel(**v))
+            else:
+                out.append(v)
+        return out if isinstance(value, list) else out[0]
 
     @classmethod
     def from_component(cls, comp: Component) -> "ComponentModel":

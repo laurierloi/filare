@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic.v1 import BaseModel, Field, root_validator, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from filare.models.colors import ColorOutputMode, SingleColor
 from filare.models.types import PlainText
@@ -37,58 +37,51 @@ class PageOptions(BaseModel):
     mini_bom_mode: bool = True
     template_separator: str = "."
     for_pdf: bool = False
-    _pad: int = 0
-    _template_paths: List = Field(default_factory=list)
-    _image_paths: List = Field(default_factory=list)
+    pad: int = 0
+    template_paths: List = Field(default_factory=list)
+    image_paths: List = Field(default_factory=list)
 
-    @validator(
+    @field_validator(
         "bgcolor",
         "bgcolor_node",
         "bgcolor_connector",
         "bgcolor_cable",
         "bgcolor_bundle",
-        pre=True,
+        mode="before",
     )
     def _to_single_color(cls, value):
         return value if isinstance(value, SingleColor) else SingleColor(inp=value)
 
-    @root_validator
-    def _fill_missing_colors(cls, values):
-        values["bgcolor_node"] = values.get("bgcolor_node") or values.get("bgcolor")
-        values["bgcolor_connector"] = values.get("bgcolor_connector") or values.get(
-            "bgcolor_node"
-        )
-        values["bgcolor_cable"] = values.get("bgcolor_cable") or values.get(
-            "bgcolor_node"
-        )
-        values["bgcolor_bundle"] = values.get("bgcolor_bundle") or values.get(
-            "bgcolor_cable"
-        )
-        return values
+    @model_validator(mode="after")
+    def _fill_missing_colors(self):
+        self.bgcolor_node = self.bgcolor_node or self.bgcolor
+        self.bgcolor_connector = self.bgcolor_connector or self.bgcolor_node
+        self.bgcolor_cable = self.bgcolor_cable or self.bgcolor_node
+        self.bgcolor_bundle = self.bgcolor_bundle or self.bgcolor_cable
+        return self
 
-    @validator(
+    @field_validator(
         "bom_rows",
         "titleblock_rows",
-        pre=True,
+        mode="before",
     )
     def _coerce_int(cls, value):
         if isinstance(value, list):
             return len(value)
         return int(value)
 
-    @validator(
+    @field_validator(
         "bom_row_height",
         "titleblock_row_height",
         "index_table_row_height",
-        pre=True,
+        mode="before",
     )
     def _coerce_float(cls, value):
         return float(value)
 
-    class Config:
-        arbitrary_types_allowed = True
-        validate_assignment = True
-        underscore_attrs_are_private = True
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+    )
 
 
 def get_page_options(parsed_data, page_name: str):
