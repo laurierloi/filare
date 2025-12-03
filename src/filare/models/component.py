@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, List, Optional, Union
 
-from pydantic import BaseModel, Extra, Field, validator
+from pydantic.v1 import BaseModel, Extra, Field, validator
 
 from filare.models.dataclasses import Component, GraphicalComponent  # noqa: F401
 from filare.models.hypertext import MultilineHypertext

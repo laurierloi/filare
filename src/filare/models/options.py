@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, root_validator, validator
+from pydantic.v1 import BaseModel, Field, root_validator, validator
 
 from filare.models.colors import ColorOutputMode, SingleColor
 from filare.models.types import PlainText

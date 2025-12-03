@@ -3,7 +3,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from pydantic import BaseModel, Field, root_validator, validator
+from pydantic.v1 import BaseModel, Field, root_validator, validator
 
 import filare  # for doing filare.__file__
 

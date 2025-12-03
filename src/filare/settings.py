@@ -3,7 +3,7 @@
 import os
 from typing import Optional
 
-from pydantic import BaseSettings, Field
+from pydantic.v1 import BaseSettings, Field
 
 
 class FilareSettings(BaseSettings):

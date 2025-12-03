@@ -1,7 +1,7 @@
 from typing import ClassVar, Dict, List, Union
 
 import tabulate as tabulate_module
-from pydantic import BaseModel, Field, root_validator
+from pydantic.v1 import BaseModel, Field, root_validator
 
 from filare.models.numbers import NumberAndUnit
 from filare.models.partnumber import PartNumberInfo

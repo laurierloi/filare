@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Sequence, Union
 
-from pydantic import BaseModel, Extra, Field, validator
+from pydantic.v1 import BaseModel, Extra, Field, validator
 
 from filare.models.configs import (
     CableConfig,

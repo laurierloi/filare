@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List
 
-from pydantic import BaseModel, root_validator
+from pydantic.v1 import BaseModel, root_validator
 
 padding_amount = 1
 

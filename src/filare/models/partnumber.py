@@ -1,7 +1,7 @@
 from functools import reduce
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from pydantic import BaseModel, validator
+from pydantic.v1 import BaseModel, validator
 
 from filare.models.utils import awg_equiv, mm2_equiv, remove_links
 

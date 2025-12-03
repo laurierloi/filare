@@ -36,7 +36,7 @@ dependencies = [
     "tabulate",
     "jinja2",
     "weasyprint",
-    "pydantic<2",
+    "pydantic>=2,<3",
 ]
 
 [project.scripts]

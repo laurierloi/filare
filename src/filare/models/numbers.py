@@ -1,7 +1,7 @@
 from math import modf
 from typing import Any, Union
 
-from pydantic import BaseModel, validator
+from pydantic.v1 import BaseModel, validator
 
 
 class NumberAndUnit(BaseModel):

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Sequence, Union
 
-from pydantic import BaseModel, Extra, Field, root_validator, validator
+from pydantic.v1 import BaseModel, Extra, Field, root_validator, validator
 
 from filare.models.colors import MultiColor, SingleColor, get_color_by_colorcode_index
 from filare.models.connector import GraphicalComponentModel

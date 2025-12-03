@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import click
-from pydantic import BaseModel, Field, root_validator
+from pydantic.v1 import BaseModel, Field, root_validator
 
 
 class HarnessQuantity(BaseModel):
