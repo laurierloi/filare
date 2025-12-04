@@ -73,3 +73,10 @@ Outstanding refactor tasks (completed items removed)
 - Update index table to link to all generated HTML documents; when splits exist, render 3 columns (page name, content type: harness/cut/BOM/termination/index, page link).
 - Add a template for the termination diagram page and integrate it into rendering.
 - Add a template for the cut diagram page and integrate it into rendering.
+
+13) Dataclasses phase-out
+- 13.1 Ensure each dataclass in src/filare/models/dataclasses.py has an equivalent Pydantic component model.
+- 13.2 Update parsing to produce component models instead of dataclasses.
+- 13.3 Update rendering flows to consume component models instead of dataclasses.
+- 13.4 Validate feature parity after the switch (examples/tests cover no capability loss).
+- 13.5 Sweep repo to remove remaining dataclass references and drop the dataclasses module.
