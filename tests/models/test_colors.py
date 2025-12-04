@@ -87,9 +87,9 @@ def test_multi_color_unusual_cases(monkeypatch):
     # non-standard output mode hits fallback joiner
     monkeypatch.setattr("filare.models.colors.color_output_mode", type("X", (), {"name": "OTHER"})())
     assert str(mc) == "ABC"
-    # length >3 currently pads first/last pair; no exception
+    # length >3 returns html_padded_list with first/last preserved
     padded = MultiColor(["RD", "BK", "GN", "YE"]).html_padded_list
-    assert len(padded) == 3
+    assert len(padded) == 4
 
 
 @pytest.mark.parametrize(
