@@ -469,10 +469,11 @@ class Harness:
         if "html" in fmt:
             bom_for_html = self.bom if self.options.include_bom else {}
             rendered = {}
-            if getattr(self.options, "include_cut_diagram", False):
-                rendered["cut_table"] = _build_cut_table(self)
-            if getattr(self.options, "include_termination_diagram", False):
-                rendered["termination_table"] = _build_termination_table(self)
+            if settings.enable_cut_termination:
+                if getattr(self.options, "include_cut_diagram", False):
+                    rendered["cut_table"] = _build_cut_table(self)
+                if getattr(self.options, "include_termination_diagram", False):
+                    rendered["termination_table"] = _build_termination_table(self)
             generate_html_output(
                 filename, bom_for_html, self.metadata, self.options, self.notes, rendered
             )
