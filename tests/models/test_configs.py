@@ -49,7 +49,7 @@ def test_connector_config_round_trip(connector_config_data):
 def test_connector_config_pincolors_and_loops_dict():
     cfg = ConnectorConfig(
         designator="JX",
-        pinlabels={"1": "A", "2": "B"},
+        pinlabels=["A", "B"],
         pincolors=[["RD"], ["BK"]],
         loops={"first": "1", "last": "2"},
     )
