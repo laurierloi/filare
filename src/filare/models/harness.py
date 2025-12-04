@@ -12,7 +12,8 @@ from filare import APP_NAME, APP_URL, __version__
 from filare.models import colors
 from filare.models.bom import BomContent, BomEntry, BomEntryBase, BomRenderOptions
 from filare.models.document import DocumentRepresentation
-from filare.models.dataclasses import BomCategory, Cable, Component, Connector, Side
+from filare.models.dataclasses import Cable, Component, Connector
+from filare.models.types import BomCategory, Side
 from filare.models.connector import ConnectorModel
 from filare.models.cable import CableModel
 from filare.models.component import ComponentModel

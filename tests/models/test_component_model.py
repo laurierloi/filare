@@ -1,6 +1,7 @@
 from filare.models.component import ComponentModel
-from filare.models.dataclasses import BomCategory, Component
+from filare.models.dataclasses import Component
 from filare.models.numbers import NumberAndUnit
+from filare.models.types import BomCategory
 
 
 def test_component_model_to_from_dataclass():

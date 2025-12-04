@@ -1,5 +1,5 @@
 from filare.models.connector import Connector
-from filare.models.dataclasses import BomCategory
+from filare.models.types import BomCategory
 
 
 def test_connector_creates_pins_and_loops(connector):

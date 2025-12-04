@@ -7,7 +7,7 @@ from filare.render.output import generate_html_output
 from filare.models.bom import BomRenderOptions, BomEntry, BomContent
 from filare.models.numbers import NumberAndUnit
 from filare.models.partnumber import PartNumberInfo
-from filare.models.dataclasses import BomCategory
+from filare.models.types import BomCategory
 
 
 def test_generate_html_output_creates_file(tmp_path):

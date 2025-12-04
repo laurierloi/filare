@@ -1,6 +1,6 @@
 from filare.models.component import Component, GraphicalComponent
 from filare.models.numbers import NumberAndUnit
-from filare.models.dataclasses import BomCategory, QtyMultiplierConnector
+from filare.models.types import BomCategory, QtyMultiplierConnector
 
 
 def test_component_additional_components_infer_category():
