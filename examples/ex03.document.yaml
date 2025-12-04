@@ -111,12 +111,12 @@ pages:
   name: titlepage
   type: title
 - formats:
+  - svg
+  - html
   - png
   - gv
-  - html
   - tsv
   - shared_bom
-  - svg
   name: test-01-ex03
   type: harness
 - formats:
