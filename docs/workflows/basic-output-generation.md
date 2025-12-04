@@ -13,7 +13,7 @@ Walk Persona A (technician) and Persona D (new engineer) through rendering a har
 2. Render a harness with default formats: `uv run filare examples/demo01.yml -o outputs`
 3. Change the base output name (if desired): `uv run filare examples/demo01.yml -O demo01_run1 -o outputs`
 4. Generate and apply quantity multipliers (shared BOM scaling):
-   - `uv run filare-qty tests/bom/bomqty.yml`
+   - `uv run filare-qty tests/bom/bomqty.yml -f`
    - `uv run filare examples/demo01.yml -u -m quantity_multipliers.txt -o outputs`
 
 ## Inputs
