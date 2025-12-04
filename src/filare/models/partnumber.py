@@ -1,18 +1,7 @@
 from functools import reduce
 from typing import Any, ClassVar, Dict, List, Optional, Tuple, Union
 
-try:  # pydantic v2
-    from pydantic import BaseModel, ConfigDict, field_validator
-
-    USING_PYDANTIC_V1 = False
-except ImportError:  # fallback for environments still on pydantic v1
-    from pydantic.v1 import BaseModel, validator as _validator
-
-    USING_PYDANTIC_V1 = True
-
-    def field_validator(*args, **kwargs):  # type: ignore
-        kwargs.pop("mode", None)
-        return _validator(*args, **kwargs)
+from pydantic import BaseModel, ConfigDict, field_validator
 
 
 from filare.models.utils import awg_equiv, mm2_equiv, remove_links

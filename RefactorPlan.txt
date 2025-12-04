@@ -15,7 +15,6 @@ Outstanding refactor tasks (completed items removed)
 - 1.12 src/filare/models/template_inputs.py >90% (83.9%)
 - 1.13 src/filare/render/graphviz.py >90% (89.2%)
 - 1.14 src/filare/settings.py >90% (58.8%)
-- 1.14.1 - dead - src/filare/settings.py:6-15 (pydantic v1 fallback unreachable in current dependency set)
 - 1.15 src/filare/tools/build_examples.py >90% (66.1%)
 
 2) Coverage hardening

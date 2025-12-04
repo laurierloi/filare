@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import click
-from pydantic.v1 import BaseModel, Field, root_validator
+from pydantic import BaseModel, Field, ConfigDict, model_validator
 
 
 class HarnessQuantity(BaseModel):
@@ -29,11 +29,9 @@ class HarnessQuantity(BaseModel):
             **data,
         )
 
-    class Config:
-        arbitrary_types_allowed = True
-        allow_mutation = True
+    model_config = ConfigDict(arbitrary_types_allowed=True, allow_mutation=True)
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def _derive_paths(cls, values):
         harnesses = values.get("harnesses") or []
         if not harnesses:
