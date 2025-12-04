@@ -1,21 +1,23 @@
 Outstanding refactor tasks (completed items removed)
 
 1) Coverage gaps (>90% target)
-- 1.1 src/filare/filare.py >90% (80.9%)
-- 1.2 src/filare/models/cable.py >90% (76.2%)
-- 1.3 src/filare/models/colors.py >90% (77.4%)
-- 1.4 src/filare/models/configs.py >90% (87.7%)
-- 1.5 src/filare/models/connector.py >90% (80.4%)
-- 1.6 src/filare/models/dataclasses.py >90% (89.4%)
-- 1.7 src/filare/models/harness.py >90% (81.9%)
-- 1.8 src/filare/models/harness_quantity.py >90% (83.8%)
-- 1.9 src/filare/models/image.py >90% (85.4%)
-- 1.10 src/filare/models/metadata.py >90% (83.9%)
-- 1.11 src/filare/models/partnumber.py >90% (78.2%)
-- 1.12 src/filare/models/template_inputs.py >90% (83.9%)
-- 1.13 src/filare/render/graphviz.py >90% (89.2%)
-- 1.14 src/filare/settings.py >90% (58.8%)
-- 1.15 src/filare/tools/build_examples.py >90% (66.1%)
+- 1.1 src/filare/cli.py 88%
+- 1.2 src/filare/index_table.py 89%
+- 1.3 src/filare/models/bom.py 88%
+- 1.4 src/filare/models/colors.py 82%
+- 1.5 src/filare/models/component.py 85%
+- 1.6 src/filare/models/configs.py 81%
+- 1.7 src/filare/models/connector.py 76%
+- 1.8 src/filare/models/dataclasses.py 86%
+- 1.9 src/filare/models/harness.py 71%
+- 1.10 src/filare/models/image.py 83%
+- 1.11 src/filare/models/metadata.py 85%
+- 1.12 src/filare/models/options.py 88%
+- 1.13 src/filare/models/partnumber.py 80%
+- 1.14 src/filare/models/template_inputs.py 90%
+- 1.15 src/filare/render/graphviz.py 84%
+- 1.16 src/filare/render/html_utils.py 88%
+- 1.17 src/filare/tools/build_examples.py 59%
 Note: while closing these gaps, flag and record any dead/unreachable code paths under this task (e.g., unreachable branches) so they can be removed instead of force-covered.
 
 2) Coverage hardening
