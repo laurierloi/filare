@@ -63,7 +63,15 @@ jobs:
           uv venv
           uv sync --group dev
       - name: Pytest
-        run: uv run --no-sync pytest
+        run: uv run --no-sync pytest --cov=filare --cov-report=term --cov-report=xml
+      - name: Upload coverage to Codecov
+        if: github.ref == 'refs/heads/main'
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: true
+          verbose: false
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   build_examples:
     name: "3) Build examples/templates"
