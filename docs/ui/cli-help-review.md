@@ -18,7 +18,7 @@ The CLI help surfaces all flags but hides key defaults and workflows. Format cod
 - Persona A: Cannot tell what `hpst` means or which one produces a picture; no example command to copy/paste.
 - Persona B: Multiplier handling (defaults, location, when shared BOM scaling applies) is undocumented; multi-file ordering and output location are implicit.
 - Persona C: Flag meanings vary between commands (`-f`), and there is no hint at non-interactive usage or expected exit behavior for CI.
-- Persona D: Jargon (“shared bom”) and lowercase help text (“if set…”) provide no guidance or troubleshooting cues; missing “next step after filare-qty.”
+- Persona D: Jargon (“shared BOM”) and lowercase help text (“if set…”) provide no guidance or troubleshooting cues; missing “next step after filare-qty.”
 
 ## User Impact
 Users must trial-and-error formats, multiplier files, and output locations, slowing onboarding and making automation brittle when defaults are not explicit.
@@ -34,7 +34,7 @@ Not triggered in help flow; however, the help does not indicate what errors to e
 
 ## Naming & Schema Issues
 - Mixed-case format codes (`p` vs `P`) are easy to mistype; the letter codes do not match the file extensions (e.g., `g` → `gv`).
-- Terminology shifts between `qty_multipliers`, `qty-multipliers`, and “shared bom” increase cognitive load.
+- Terminology shifts between `qty_multipliers`, `qty-multipliers`, and “shared BOM” increase cognitive load.
 - Short flag `-f` changes meaning between `filare` (formats) and `filare-qty` (force), creating mental context switching.
 
 ## Proposed Improvements
