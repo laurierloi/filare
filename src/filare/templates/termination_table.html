@@ -1,0 +1,20 @@
+<table id="termination-table-inner" border="1" cellspacing="0" cellpadding="4">
+  <thead>
+    <tr>
+      <th>Source</th>
+      <th>Target</th>
+      <th>Source Termination</th>
+      <th>Target Termination</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.source }}</td>
+      <td>{{ row.target }}</td>
+      <td>{{ row.source_termination }}</td>
+      <td>{{ row.target_termination }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

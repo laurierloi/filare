@@ -1,0 +1,20 @@
+<table id="cut-table-inner" border="1" cellspacing="0" cellpadding="4">
+  <thead>
+    <tr>
+      <th>Wire</th>
+      <th>Part Number</th>
+      <th>Color</th>
+      <th>Length</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.wire }}</td>
+      <td>{{ row.partno }}</td>
+      <td>{{ row.color }}</td>
+      <td>{{ row.length }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
