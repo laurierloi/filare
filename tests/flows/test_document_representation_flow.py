@@ -95,6 +95,56 @@ def test_document_representation_not_overwritten_on_user_edit(tmp_path: Path, ca
         output_dir=tmp_path,
         return_types=("document",),
     )
-    assert any("skipping overwrite" in rec.message for rec in caplog.records)
+    assert any(
+        ("skipping overwrite" in rec.message)
+        or ("Document representation locked" in rec.message)
+        for rec in caplog.records
+    )
     reloaded = yaml.safe_load(doc_path.read_text())
     assert reloaded["metadata"]["pn"] == "USER_EDIT"
+
+
+def test_document_representation_respected_when_locked(tmp_path: Path):
+    harness_path = tmp_path / "h.yml"
+    metadata_path = tmp_path / "m.yml"
+    harness_path.write_text(
+        "connectors:\n  J1:\n    pincount: 1\nconnections:\n  -\n    - J1: [1]\n"
+    )
+    metadata_path.write_text(
+        "metadata:\n"
+        "  pn: T\n"
+        "  company: ACME\n"
+        "  address: 1 Road\n"
+        "  sheet_total: 1\n"
+        "  sheet_current: 1\n"
+        "  sheet_name: S\n"
+        "  output_dir: .\n"
+        "  titlepage: t\n"
+        "  output_names: [h]\n"
+        "  files: [h.yml]\n"
+        "  use_qty_multipliers: false\n"
+        "  multiplier_file_name: qty.txt\n"
+    )
+
+    # Seed a user-authored document and lock it via registry
+    doc_path = tmp_path / "h.document.yaml"
+    doc_path.write_text(
+        yaml.safe_dump({"metadata": {"pn": "USER_DOC"}, "pages": [], "extras": {}})
+    )
+    registry = tmp_path / "document_hashes.yaml"
+    registry.write_text(
+        yaml.safe_dump(
+            {doc_path.name: {"hash": "ignored", "allow_override": False}}
+        )
+    )
+
+    ret = build_harness_from_files(
+        [harness_path],
+        [metadata_path],
+        output_formats=(),
+        output_dir=tmp_path,
+        return_types=("document",),
+    )
+    assert ret["document"].metadata.get("pn") == "USER_DOC"
+    reloaded = yaml.safe_load(doc_path.read_text())
+    assert reloaded["metadata"]["pn"] == "USER_DOC"
