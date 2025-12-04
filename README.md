@@ -124,6 +124,9 @@ Run common tasks (mount your working tree so outputs land on the host):
   ```
   docker run --rm -p 9000:9000 -v "$PWD":/app filare bash -lc 'cd /app && uv run --no-sync mkdocs build && cd site && python3 -m http.server 9000'
   ```
+- Regenerate document YAMLs (document representations) and control overwrites:
+  - By default generated `*.document.yaml` files can be overwritten on rebuild. To freeze a document, set `allow_override: false` for that entry in `outputs/*/document_hashes.yaml`; reruns will then warn and keep your manual edits.
+  - To force a refresh, delete the corresponding `*.document.yaml` and its entry in `document_hashes.yaml` before rebuilding.
 
 ## Building docs locally (without Docker)
 

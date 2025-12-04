@@ -42,7 +42,7 @@ def test_document_hash_registry_tracks_hashes(tmp_path: Path):
     registry = DocumentHashRegistry(reg_path)
     registry.load()
     assert not registry.contains("doc.yaml", digest)
-    registry.add("doc.yaml", digest)
+    registry.add("doc.yaml", digest, allow_override=False)
     registry.save()
 
     registry2 = DocumentHashRegistry(reg_path)

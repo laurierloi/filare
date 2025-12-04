@@ -100,10 +100,10 @@ class DocumentHashRegistry:
             if isinstance(payload, dict):
                 entries[fname] = {
                     "hash": payload.get("hash"),
-                    "allow_override": bool(payload.get("allow_override", False)),
+                    "allow_override": bool(payload.get("allow_override", True)),
                 }
             else:
-                entries[fname] = {"hash": payload, "allow_override": False}
+                entries[fname] = {"hash": payload, "allow_override": True}
         self._entries = entries
 
     def contains(self, filename: str, value: str) -> bool:
@@ -116,9 +116,11 @@ class DocumentHashRegistry:
 
     def allow_override(self, filename: str) -> bool:
         entry = self._entries.get(filename)
-        return bool(entry and entry.get("allow_override"))
+        if entry is None:
+            return True
+        return bool(entry.get("allow_override"))
 
-    def add(self, filename: str, value: str, allow_override: bool = False) -> None:
+    def add(self, filename: str, value: str, allow_override: bool = True) -> None:
         self._entries[filename] = {"hash": value, "allow_override": allow_override}
 
     def save(self) -> None:

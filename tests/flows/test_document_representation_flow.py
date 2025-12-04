@@ -81,6 +81,10 @@ def test_document_representation_not_overwritten_on_user_edit(tmp_path: Path, ca
     content = yaml.safe_load(doc_path.read_text())
     content["metadata"]["pn"] = "USER_EDIT"
     doc_path.write_text(yaml.safe_dump(content))
+    # lock overrides
+    reg_data = yaml.safe_load(registry.read_text()) or {}
+    reg_data[doc_path.name]["allow_override"] = False
+    registry.write_text(yaml.safe_dump(reg_data))
 
     # Second run should warn and not overwrite
     caplog.clear()
