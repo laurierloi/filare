@@ -34,14 +34,14 @@ Not triggered in help flow; however, the help does not indicate what errors to e
 
 ## Naming & Schema Issues
 - Mixed-case format codes (`p` vs `P`) are easy to mistype; the letter codes do not match the file extensions (e.g., `g` → `gv`).
-- Terminology shifts between `qty_multipliers`, `qty-multipliers`, and “shared bom” increase cognitive load.
+- Quantity multipliers naming is inconsistent across the codebase: CLI flags use hyphens (`--use-qty-multipliers`), the default file uses underscores (`quantity_multipliers.txt`), and internal code uses underscores (`qty_multipliers`). This mixed convention increases cognitive load for users learning the system.
 - Short flag `-f` changes meaning between `filare` (formats) and `filare-qty` (force), creating mental context switching.
 
 ## Proposed Improvements
 - Add a short “Common commands” block to both helps (e.g., `uv run filare examples/demo01.yml -f hpst -o outputs` and `uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`).
 - Show defaults inline: expand `hpst` in the option text, show `quantity_multipliers.txt` as the default path, and state the default output directory.
 - Clarify workflow: indicate that `filare-qty` prepares multipliers for shared BOM scaling and that `--use-qty-multipliers` consumes them.
-- Normalize wording and casing: sentence-case help, consistent “Qty multipliers” phrasing, and a clear table mapping format letters to extensions.
+- Normalize wording and casing: sentence-case help, consistent "quantity multipliers" phrasing across CLI and documentation, and a clear table mapping format letters to extensions.
 - Call out multi-file behavior: inputs are sorted; `-c/-d` accept multiples and are merged in order.
 
 ## Required Follow-Up (issues/features/rework)
