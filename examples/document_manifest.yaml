@@ -22,9 +22,9 @@ documents:
 - name: ex11.document
   path: ex11.document.yaml
 shared_bom: shared_bom.tsv
-split_combined_bom: false
-split_index: false
-split_notes: false
+split_combined_bom: true
+split_index: true
+split_notes: true
 title_metadata:
   address: 8888 fancy street west
   authors:

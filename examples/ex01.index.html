@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>test - index</title>
+</head>
+<body>
+<style>
+  .A4 #index_table { /* index_table on top of title block */
+    position: absolute;
+    top: 20mm;
+    left: 0;
+    width:180mm;
+  }
+
+  .A3 #index_table, .A2 #index_table { /* index_table to the left of title block */
+    position: absolute;
+    
+    top: 20mm;
+    right: 20mm;
+    
+  }
+
+  #index_table tr {
+    height: 4.25;
+  }
+
+  #index_table tr:nth-child(odd) {
+    background-color: #EEEEEE
+  }
+
+  #index_table table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  #index_table .index_table_col_id {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  #index_table .index_table_col_qty {
+    text-align: right;
+  }
+
+</style>
+
+
+<!-- index_table TEMPLATE --!>
+<div id="index_table">
+  <b> INDEX TABLE </b>
+  <table>
+    <!-- header --!>
+    <tr>
+      
+      <td><b> Sheet </b></td>
+      
+      <td><b> Page </b></td>
+      
+      <td><b> Notes </b></td>
+      
+    </tr>
+    <!-- content --!>
+    
+    <tr>
+    
+      <td> 1 </td>
+    
+      <td> <a href=titlepage.html>titlepage</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> 2 </td>
+    
+      <td> <a href=ex01.html>ex01</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> 3 </td>
+    
+      <td> <a href=ex02.html>ex02</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> 4 </td>
+    
+      <td> <a href=ex03.html>ex03</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> 5 </td>
+    
+      <td> <a href=ex04.html>ex04</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> 6 </td>
+    
+      <td> <a href=ex05.html>ex05</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> 7 </td>
+    
+      <td> <a href=ex06.html>ex06</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> 8 </td>
+    
+      <td> <a href=ex07.html>ex07</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> 9 </td>
+    
+      <td> <a href=ex08.html>ex08</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> 10 </td>
+    
+      <td> <a href=ex09.html>ex09</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> 11 </td>
+    
+      <td> <a href=ex10.html>ex10</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> 12 </td>
+    
+      <td> <a href=ex11.html>ex11</a> </td>
+    
+      <td>  </td>
+    
+    </tr>
+    
+  </table >
+</div>
+</body>
+</html>

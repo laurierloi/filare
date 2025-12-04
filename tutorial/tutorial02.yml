@@ -24,3 +24,8 @@ connections:
     - W1: [1-4]
     # non-sequential wiring:
     - X2: [1,2,4,3]
+options:
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
+

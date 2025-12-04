@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>test - notes</title>
+</head>
+<body>
+<style>
+  .A4 #notes { /* NOTES on top of BOM */
+    position: absolute;
+    
+    bottom: 51.0mm;
+    
+    right: 0;
+  }
+
+  .A3 #notes, .A2 #notes { /* NOTES on top of title block */
+    position: absolute;
+    
+    right: 10mm;
+    bottom: 42.5mm;
+    
+  }
+
+  #notes {
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  .A4 #notes {
+    width: 180mm;
+  }
+
+  .A3 #notes, .A2 #notes {
+    width: 180mm;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+
+  #notes ol, ul, li {
+    text-align: left;
+  }
+
+</style>
+
+
+<!-- NOTES TEMPLATE --!>
+<div id="notes">
+
+  <h3>Notes:</h3>
+  <ol>
+  <li>Wire color is a recommendation</li>
+  <li>Label harnesses with text given in diagram</li>
+  <li>Label every connector to match the designation in the drawing</li>
+  <li>Zip tie entire harness at 1ft increments where required.</li>
+  <li>Cover all cables with 1/2" or 1/8" black sleeving as required.</li>
+</ol>
+
+</div>
+</body>
+</html>

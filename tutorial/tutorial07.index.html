@@ -1,0 +1,349 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>test - index</title>
+</head>
+<body>
+<style>
+  .A4 #index_table { /* index_table on top of title block */
+    position: absolute;
+    top: 20mm;
+    left: 0;
+    width:180mm;
+  }
+
+  .A3 #index_table, .A2 #index_table { /* index_table to the left of title block */
+    position: absolute;
+    
+    top: 20mm;
+    right: 20mm;
+    
+  }
+
+  #index_table tr {
+    height: 4.25;
+  }
+
+  #index_table tr:nth-child(odd) {
+    background-color: #EEEEEE
+  }
+
+  #index_table table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  #index_table .index_table_col_id {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  #index_table .index_table_col_qty {
+    text-align: right;
+  }
+
+</style>
+
+
+<!-- index_table TEMPLATE --!>
+<div id="index_table">
+  <b> INDEX TABLE </b>
+  <table>
+    <!-- header --!>
+    <tr>
+      
+      <td><b> Name </b></td>
+      
+      <td><b> Content </b></td>
+      
+      <td><b> Page </b></td>
+      
+    </tr>
+    <!-- content --!>
+    
+    <tr>
+    
+      <td> titlepage </td>
+    
+      <td> Index page </td>
+    
+      <td> <a href=titlepage.html>titlepage.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> titlepage </td>
+    
+      <td> Harness </td>
+    
+      <td> <a href=titlepage.html>titlepage.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial01 </td>
+    
+      <td> Harness </td>
+    
+      <td> <a href=tutorial01.html>tutorial01.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial01.bom </td>
+    
+      <td> BOM </td>
+    
+      <td> <a href=tutorial01.bom.html>tutorial01.bom.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial01.notes </td>
+    
+      <td> Notes </td>
+    
+      <td> <a href=tutorial01.notes.html>tutorial01.notes.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial01.index </td>
+    
+      <td> Index page </td>
+    
+      <td> <a href=tutorial01.index.html>tutorial01.index.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial02 </td>
+    
+      <td> Harness </td>
+    
+      <td> <a href=tutorial02.html>tutorial02.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial02.bom </td>
+    
+      <td> BOM </td>
+    
+      <td> <a href=tutorial02.bom.html>tutorial02.bom.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial02.notes </td>
+    
+      <td> Notes </td>
+    
+      <td> <a href=tutorial02.notes.html>tutorial02.notes.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial02.index </td>
+    
+      <td> Index page </td>
+    
+      <td> <a href=tutorial02.index.html>tutorial02.index.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial03 </td>
+    
+      <td> Harness </td>
+    
+      <td> <a href=tutorial03.html>tutorial03.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial03.bom </td>
+    
+      <td> BOM </td>
+    
+      <td> <a href=tutorial03.bom.html>tutorial03.bom.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial03.notes </td>
+    
+      <td> Notes </td>
+    
+      <td> <a href=tutorial03.notes.html>tutorial03.notes.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial03.index </td>
+    
+      <td> Index page </td>
+    
+      <td> <a href=tutorial03.index.html>tutorial03.index.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial04 </td>
+    
+      <td> Harness </td>
+    
+      <td> <a href=tutorial04.html>tutorial04.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial04.bom </td>
+    
+      <td> BOM </td>
+    
+      <td> <a href=tutorial04.bom.html>tutorial04.bom.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial04.notes </td>
+    
+      <td> Notes </td>
+    
+      <td> <a href=tutorial04.notes.html>tutorial04.notes.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial04.index </td>
+    
+      <td> Index page </td>
+    
+      <td> <a href=tutorial04.index.html>tutorial04.index.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial05 </td>
+    
+      <td> Harness </td>
+    
+      <td> <a href=tutorial05.html>tutorial05.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial05.bom </td>
+    
+      <td> BOM </td>
+    
+      <td> <a href=tutorial05.bom.html>tutorial05.bom.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial05.notes </td>
+    
+      <td> Notes </td>
+    
+      <td> <a href=tutorial05.notes.html>tutorial05.notes.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial05.index </td>
+    
+      <td> Index page </td>
+    
+      <td> <a href=tutorial05.index.html>tutorial05.index.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial06 </td>
+    
+      <td> Harness </td>
+    
+      <td> <a href=tutorial06.html>tutorial06.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial06.bom </td>
+    
+      <td> BOM </td>
+    
+      <td> <a href=tutorial06.bom.html>tutorial06.bom.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial06.notes </td>
+    
+      <td> Notes </td>
+    
+      <td> <a href=tutorial06.notes.html>tutorial06.notes.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial06.index </td>
+    
+      <td> Index page </td>
+    
+      <td> <a href=tutorial06.index.html>tutorial06.index.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial07 </td>
+    
+      <td> Harness </td>
+    
+      <td> <a href=tutorial07.html>tutorial07.html</a> </td>
+    
+    </tr>
+    
+    <tr>
+    
+      <td> tutorial08 </td>
+    
+      <td> Harness </td>
+    
+      <td> <a href=tutorial08.html>tutorial08.html</a> </td>
+    
+    </tr>
+    
+  </table >
+</div>
+</body>
+</html>

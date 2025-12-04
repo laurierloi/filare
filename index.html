@@ -291,6 +291,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#why-filare-over-wireviz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Filare over WireViz?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#features" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1246,6 +1257,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#why-filare-over-wireviz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Filare over WireViz?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#features" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1568,6 +1590,15 @@
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a></p>
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
 <p>Filare (the new name for WireViz) is a tool for documenting cables, wiring harnesses and connector pinouts. It takes plain text, YAML-formatted files as input and produces graphical output (SVG, PNG, ...) via <a href="https://www.graphviz.org/">GraphViz</a>. It handles automatic BOM (Bill of Materials) creation and a number of extras.</p>
+<h2 id="why-filare-over-wireviz">Why Filare over WireViz?<a class="headerlink" href="#why-filare-over-wireviz" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The file structure has been revamped for better separation of concern</li>
+<li>Tests have been added to increase dramatically the coverage of the library</li>
+<li>Jinja2 templates are now used for key visual elements</li>
+<li>Pydantic is used instead of dataclasses to bring the data structure into the 2020s</li>
+<li>Support for engineering document export is much better, allowing sharing with suppliers and clients directly</li>
+<li>The representation is backward-compatible when possible, so the user should be able to switch seemlessly</li>
+</ul>
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Filare input files are fully text based</li>
@@ -1657,6 +1688,9 @@
 <li>Build and serve docs (port 9000):
   <div class="highlight"><pre><span></span><code>docker run --rm -p 9000:9000 -v &quot;$PWD&quot;:/app filare bash -lc &#39;cd /app &amp;&amp; uv run --no-sync mkdocs build &amp;&amp; cd site &amp;&amp; python3 -m http.server 9000&#39;
 </code></pre></div></li>
+<li>Regenerate document YAMLs (document representations) and control overwrites:</li>
+<li>By default generated <code>*.document.yaml</code> files can be overwritten on rebuild. To freeze a document, set <code>allow_override: false</code> for that entry in <code>outputs/*/document_hashes.yaml</code>; reruns will then warn and keep your manual edits.</li>
+<li>To force a refresh, delete the corresponding <code>*.document.yaml</code> and its entry in <code>document_hashes.yaml</code> before rebuilding.</li>
 </ul>
 <h2 id="building-docs-locally-without-docker">Building docs locally (without Docker)<a class="headerlink" href="#building-docs-locally-without-docker" title="Permanent link">&para;</a></h2>
 <p>From the project root:</p>

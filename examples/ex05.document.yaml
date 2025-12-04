@@ -24,8 +24,8 @@ extras:
     for_pdf: false
     image_paths: []
     include_bom: true
-    include_cut_diagram: false
-    include_termination_diagram: false
+    include_cut_diagram: true
+    include_termination_diagram: true
     index_table_on_right: true
     index_table_row_height: 4.25
     index_table_updated_position: ''
@@ -36,9 +36,9 @@ extras:
     show_bom: true
     show_index_table: true
     show_notes: true
-    split_bom_page: false
-    split_index_page: false
-    split_notes_page: false
+    split_bom_page: true
+    split_index_page: true
+    split_notes_page: true
     template_paths: []
     template_separator: .
     titleblock_row_height: 4.25
@@ -111,12 +111,12 @@ pages:
   name: titlepage
   type: title
 - formats:
-  - gv
   - png
-  - shared_bom
+  - gv
   - html
-  - svg
   - tsv
+  - shared_bom
+  - svg
   name: test-01-ex05
   type: harness
 - formats:
@@ -124,3 +124,11 @@ pages:
   include: true
   name: bom
   type: bom
+- formats: []
+  include: false
+  name: cut
+  type: cut
+- formats: []
+  include: false
+  name: termination
+  type: termination
