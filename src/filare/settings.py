@@ -10,7 +10,7 @@ class FilareSettings(BaseSettings):
     debug: bool = False
     enable_cut_termination: bool = False
 
-    model_config = SettingsConfigDict(env_prefix="WV_", case_sensitive=False)
+    model_config = SettingsConfigDict(env_prefix="FIL_", case_sensitive=False)
 
 
 settings = FilareSettings()
