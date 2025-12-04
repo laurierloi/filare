@@ -38,7 +38,7 @@ Not triggered in help flow; however, the help does not indicate what errors to e
 - Short flag `-f` changes meaning between `filare` (formats) and `filare-qty` (force), creating mental context switching.
 
 ## Proposed Improvements
-- Add a short “Common commands” block to both helps (e.g., `uv run filare examples/demo01.yml -f hpst -o outputs` and `uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`).
+- Add a short “Common commands” block to both helps (e.g., `uv run filare examples/demo01.yml -f hpst -o outputs` and `uv run filare-qty tests/bom/bomqty.yml`).
 - Show defaults inline: expand `hpst` in the option text, show `quantity_multipliers.txt` as the default path, and state the default output directory.
 - Clarify workflow: indicate that `filare-qty` prepares multipliers for shared BOM scaling and that `--use-qty-multipliers` consumes them.
 - Normalize wording and casing: sentence-case help, consistent “Qty multipliers” phrasing, and a clear table mapping format letters to extensions.
