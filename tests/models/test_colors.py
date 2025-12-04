@@ -21,6 +21,17 @@ def test_single_color_unknown_defaults_html():
     assert c.code_en.lower() == "magenta"
     assert c.html.lower() == "magenta"
 
+def test_single_color_direct_values_and_copy(monkeypatch):
+    # direct values triggers early init branch
+    c = SingleColor(code_en="RD", html="#ff0000")
+    assert str(c) == "RD"
+    copy = SingleColor(c)
+    assert copy.code_en == "RD"
+    # reset mode to something non-standard to hit default convert_case branch
+    monkeypatch.setattr("filare.models.colors.color_output_mode", type("X", (), {"name": "MISC"})())
+    assert str(SingleColor(html=None)) == ""
+    assert str(c) == "#ff0000"
+
 def test_single_color_numeric_and_falsey():
     c = SingleColor(inp=0x123456)
     assert c.html == "#123456"
@@ -68,6 +79,17 @@ def test_multi_color_html_and_padding_defaults():
     assert [c.code_en for c in multi.colors] == ["RD", "BU"]
     assert multi.html.startswith("#")
     assert multi.html_padded.endswith("#0066ff") or ":" in multi.html_padded
+
+def test_multi_color_unusual_cases(monkeypatch):
+    # odd-length string falls back to treating as html color
+    mc = MultiColor("ABC")
+    assert mc[0].code_en == "ABC"
+    # non-standard output mode hits fallback joiner
+    monkeypatch.setattr("filare.models.colors.color_output_mode", type("X", (), {"name": "OTHER"})())
+    assert str(mc).startswith("#") or "???" in str(mc)
+    # length >3 raises padding exception
+    with pytest.raises(Exception):
+        _ = MultiColor(["RD", "BK", "GN", "YE"]).html_padded_list
 
 
 @pytest.mark.parametrize(
