@@ -10,6 +10,15 @@
 
 Filare (the new name for WireViz) is a tool for documenting cables, wiring harnesses and connector pinouts. It takes plain text, YAML-formatted files as input and produces graphical output (SVG, PNG, ...) via [GraphViz](https://www.graphviz.org/). It handles automatic BOM (Bill of Materials) creation and a number of extras.
 
+## Why Filare over WireViz?
+
+- The file structure has been revamped for better separation of concern
+- Tests have been added to increase dramatically the coverage of the library
+- Jinja2 templates are now used for key visual elements
+- Pydantic is used instead of dataclasses to bring the data structure into the 2020s
+- Support for engineering document export is much better, allowing sharing with suppliers and clients directly
+- The representation is backward-compatible when possible, so the user should be able to switch seemlessly
+
 ## Features
 
 - Filare input files are fully text based
