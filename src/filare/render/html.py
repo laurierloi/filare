@@ -145,6 +145,7 @@ def generate_html_output(
     # save generated file
     filename.with_suffix(".html").open("w").write(page_rendered)
     _write_split_sections(filename, metadata, options, rendered)
+    _write_aux_pages(filename, metadata, options, rendered)
 
 
 def _write_split_sections(
@@ -183,6 +184,39 @@ def _wrap_section_html(title: str, body: str) -> str:
         "</body>\n"
         "</html>\n"
     )
+
+
+def _write_aux_pages(
+    filename: Path, metadata: Metadata, options: PageOptions, rendered: Dict[str, str]
+) -> None:
+    """Emit auxiliary pages such as cut/termination placeholders when requested."""
+    aux_pages = []
+    if getattr(options, "include_cut_diagram", False):
+        aux_pages.append(
+            ("cut", get_template("cut", ".html"), {"cut_table": rendered.get("cut_table", "")})
+        )
+    if getattr(options, "include_termination_diagram", False):
+        aux_pages.append(
+            (
+                "termination",
+                get_template("termination", ".html"),
+                {"termination_table": rendered.get("termination_table", "")},
+            )
+        )
+    for suffix, template, context in aux_pages:
+        target = filename.with_suffix(f".{suffix}.html")
+        page = template.render(
+            {
+                **context,
+                "metadata": metadata,
+                "options": options,
+                "titleblock": rendered.get("titleblock", ""),
+                "notes": rendered.get("notes", ""),
+                "bom": rendered.get("bom", ""),
+                "diagram": rendered.get("diagram", ""),
+            }
+        )
+        target.write_text(page, encoding="utf-8")
 
 
 def generate_titlepage(yaml_data, extra_metadata, shared_bom, for_pdf=False):
