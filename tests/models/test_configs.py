@@ -46,6 +46,19 @@ def test_connector_config_round_trip(connector_config_data):
     _round_trip(cfg)
 
 
+def test_connector_config_pincolors_and_loops_dict():
+    cfg = ConnectorConfig(
+        designator="JX",
+        pinlabels={"1": "A", "2": "B"},
+        pincolors=[["RD"], ["BK"]],
+        loops={"first": "1", "last": "2"},
+    )
+    assert cfg.pincount == 2
+    assert cfg.pincolors == [["RD"], ["BK"]]
+    assert isinstance(cfg.loops, list)
+    _round_trip(cfg)
+
+
 def test_cable_config_round_trip(cable_config_data):
     cfg = CableConfig(**cable_config_data)
     assert cfg.wirecount == 2
@@ -63,6 +76,13 @@ def test_connection_config_endpoint_coercion(connection_config_data):
     cfg = ConnectionConfig(**connection_config_data)
     assert cfg.endpoints == ["J1:1", "J2:1"]
     _round_trip(cfg)
+
+
+def test_connection_config_accepts_tuple_and_set():
+    cfg = ConnectionConfig(endpoints=("J1:1", "J2:2"), color=["RD"])
+    assert cfg.endpoints == ["J1:1", "J2:2"]
+    cfg2 = ConnectionConfig(endpoints={"J1:1", "J2:3"})
+    assert set(cfg2.endpoints) == {"J1:1", "J2:3"}
 
 
 def test_metadata_config_round_trip(metadata_config_data):
