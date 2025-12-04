@@ -29,7 +29,7 @@ class HarnessQuantity(BaseModel):
             **data,
         )
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, allow_mutation=True)
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     @model_validator(mode="before")
     def _derive_paths(cls, values):

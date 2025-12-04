@@ -22,7 +22,7 @@ def test_template_connector_from_config(connector_config_data):
     assert len(connector.pins) == 2
     assert all(isinstance(pin, TemplatePin) for pin in connector.pins)
     assert connector.loops and connector.loops[0]["first"] == "1"
-    dumped = connector.dict(exclude_none=True)
+    dumped = connector.model_dump(exclude_none=True)
     assert dumped["designator"] == "J1"
 
 

@@ -130,19 +130,10 @@ class PartNumberInfo(BaseModel):
     def as_list(self, parent_partnumbers=None):
         return partnumbers2list(self, parent_partnumbers)
 
-    if USING_PYDANTIC_V1:
-
-        class Config:
-            allow_mutation = True
-            arbitrary_types_allowed = True
-            frozen = False
-            extra = "allow"
-
-    else:
-        model_config = ConfigDict(
-            arbitrary_types_allowed=True,
-            extra="allow",
-        )
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+        extra="allow",
+    )
 
 
 class PartnumberInfoList(BaseModel):
