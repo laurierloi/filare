@@ -66,7 +66,7 @@ def test_partnumberinfo_list_as_unique_and_shared():
     assert shared.manufacturer == "ACME"
     uniques = p_list.as_unique_list()
     assert isinstance(uniques, list)
-    assert any("P1" in item or "P2" in item for item in uniques)
+    assert {p.pn for p in uniques} == {"P1", "P2"}
 
 
 def test_partnumbers2list_merging_parents_and_children():
