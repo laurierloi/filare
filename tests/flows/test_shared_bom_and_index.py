@@ -91,3 +91,31 @@ def test_index_table_includes_split_links(tmp_path):
     rendered = table.render(options)
     assert "h1.bom.html" in rendered
     assert "BOM" in rendered and "Notes" in rendered
+
+
+def test_index_table_includes_cut_and_termination(tmp_path):
+    (tmp_path / "titlepage.html").write_text("title", encoding="utf-8")
+    (tmp_path / "h1.html").write_text("main", encoding="utf-8")
+    (tmp_path / "h1.cut.html").write_text("cut", encoding="utf-8")
+    (tmp_path / "h1.termination.html").write_text("term", encoding="utf-8")
+    metadata = PagesMetadata(
+        titlepage=Path("titlepage"),
+        output_names=["h1"],
+        files=["h1.yml"],
+        use_qty_multipliers=False,
+        multiplier_file_name="qty.txt",
+        pages_notes={},
+        output_dir=tmp_path,
+    )
+    table = IndexTable.from_pages_metadata(metadata)
+    assert table.header == ("Name", "Content", "Page")
+    options = SimpleNamespace(
+        for_pdf=False,
+        index_table_updated_position="",
+        index_table_on_right=True,
+        index_table_row_height=4.25,
+    )
+    rendered = table.render(options)
+    assert "h1.cut.html" in rendered
+    assert "h1.termination.html" in rendered
+    assert "Cut diagram" in rendered and "Termination diagram" in rendered
