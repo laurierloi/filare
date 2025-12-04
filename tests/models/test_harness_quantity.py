@@ -51,3 +51,36 @@ def test_harness_quantity_handles_missing_file_gracefully(tmp_path):
     hq.save_qty_multipliers_to_file()
     data = json.loads((tmp_path / "quantity_multipliers.txt").read_text())
     assert data["H1"] == 0
+
+
+def test_harness_quantity_derives_paths(tmp_path):
+    h1 = tmp_path / "H1.yml"
+    h1.write_text("connectors: {}")
+    hq = HarnessQuantity([h1], output_dir=tmp_path)
+    assert hq.folder == tmp_path
+    assert hq.qty_multipliers == tmp_path / "quantity_multipliers.txt"
+    assert hq.harness_names == ["H1"]
+
+
+def test_harness_quantity_retrieve_multiplier(tmp_path):
+    h1 = tmp_path / "H1.yml"
+    h1.write_text("connectors: {}")
+    hq = HarnessQuantity([h1], output_dir=tmp_path, multipliers={"H1": 4})
+    bom_path = tmp_path / "H1.bom.tsv"
+    bom_path.write_text("")  # only stem used
+    assert hq.retrieve_harness_qty_multiplier(bom_path) == 4
+
+
+def test_harness_quantity_input_warning(monkeypatch, caplog, tmp_path):
+    caplog.set_level(logging.WARNING)
+    inputs = iter(["not-a-number"])
+
+    def fake_input(prompt):
+        return next(inputs)
+
+    monkeypatch.setattr(builtins, "input", fake_input)
+    h1 = tmp_path / "H1.yml"
+    h1.write_text("connectors: {}")
+    hq = HarnessQuantity([h1], output_dir=tmp_path)
+    hq.get_qty_multipliers_from_user()
+    assert any("Quantity multiplier must be an integer" in rec.message for rec in caplog.records)
