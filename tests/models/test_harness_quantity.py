@@ -85,3 +85,17 @@ def test_harness_quantity_input_warning(monkeypatch, caplog, tmp_path):
     hq = HarnessQuantity([h1], output_dir=tmp_path)
     hq.get_qty_multipliers_from_user()
     assert any("Quantity multiplier must be an integer" in rec.message for rec in caplog.records)
+
+
+def test_harness_quantity_allows_empty_when_paths_provided(tmp_path):
+    folder = tmp_path / "out"
+    folder.mkdir()
+    qty_path = folder / "quantity_multipliers.txt"
+    hq = HarnessQuantity(
+        harnesses=[],
+        folder=folder,
+        qty_multipliers=qty_path,
+        multiplier_file_name="quantity_multipliers.txt",
+    )
+    assert hq.folder == folder
+    assert hq.qty_multipliers == qty_path
