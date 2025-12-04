@@ -191,7 +191,7 @@ uv run filare --version
 
 ### Installing the development version
 
-Access to the current state of the development branch by cloning the repo and syncing dependencies with uv:
+Access the current state of the development branch by cloning the repo and syncing dependencies with uv:
 
 ```
 # Cloning the repository
