@@ -270,10 +270,10 @@ Use `filare-qty` to capture per-harness quantity multipliers before generating a
 
 ```
 # Prompt for multipliers (or reuse an existing quantity_multipliers.txt)
-uv run filare-qty tests/bom/bomqty.yml
+$ uv run filare-qty tests/bom/bomqty.yml
 
 # Apply the multipliers when building the shared BOM
-uv run filare tests/bom/bomqty.yml --use-qty-multipliers
+$ uv run filare tests/bom/bomqty.yml --use-qty-multipliers
 ```
 
 By default the multipliers are stored as JSON in `quantity_multipliers.txt` next to the harness file; override the path with `--multiplier-file-name` and re-prompt with `--force-new`.
