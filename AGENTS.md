@@ -48,6 +48,21 @@ You can assume:
 
 Never call `pip`, `python -m venv`, or raw `python/pytest`. Always use `uv`.
 
+Always use uv for Python commands in this project (virtualenv, installs, running tools).
+
+Never write to or rely on the user’s global cache (e.g. /home/<user>/.cache/uv).
+
+When you call uv, always set a project-local cache directory:
+
+Example (preferred):
+
+export UV_CACHE_DIR="${PWD}/.uv-cache"
+or prefix commands with:
+UV_CACHE_DIR=.uv-cache uv run …
+
+Do not use sudo and do not try to fix permissions in $HOME (e.g. /home/<user>/.cache/uv). If you hit a
+permission error there, stop and report it.
+
 ### Setup
 
 ```bash
