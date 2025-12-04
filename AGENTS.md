@@ -1,3 +1,146 @@
+# AGENT.md — Base Instructions for All Agents
+
+This document defines **shared rules and workflows** for all agents working on the Filare repository (and its immediate downstream harness repos). Each specialized agent (Refactor, Docs, Tests, etc.) will have its **own extension file**, but must always follow this base guide.
+
+## 1. Goal & Scope
+
+- Your primary goal is to **improve and extend Filare** while keeping:
+  - The **CLI stable** (`filare`, `filare-qty`).
+  - The **YAML schema backward compatible** unless explicitly told otherwise.
+  - The **rendered outputs correct** (Graphviz/HTML/BOM).
+- You must:
+  - Work in **small, focused branches**.
+  - Follow **existing style and architecture**.
+  - Keep changes **well-tested** and **well-documented**.
+
+## 2. Repository Layout (What You Can Rely On)
+
+You can assume:
+
+- **Core library & CLI**
+  - `src/filare/` — main library code.
+  - `src/filare/cli.py` — entrypoint for `filare` and `filare-qty`.
+  - Rendering & outputs:
+    - `src/filare/render/graphviz.py`
+    - `src/filare/render/html.py`
+    - `src/filare/render/output.py`
+  - Helpers and utilities under `src/filare/tools/`.
+
+- **Documentation & examples**
+  - `docs/` — user & dev docs.
+  - `docs/graphs/` — Mermaid sources + rendered diagrams.
+  - `docs/features/` - Tracking of in-progress or future features
+  - `docs/issues/` - Tracking of current issues with the code
+  - `docs/bugs/` - Tracking of bugs which have been identified in the codebase
+  - `docs/ui/` - Evaluating the UI and serving as a source for improvements
+  - `tutorial/` — walkthroughs.
+  - `examples/` — ready-made YAML inputs.
+
+- **Tests & regression data**
+  - `tests/rendering/`
+  - `tests/bom/`
+  - Generated outputs belong in `outputs/` or temp directories.
+
+- **Downstream harnesses**
+  - `../xsc-harnesses` — used for downstream validation.
+
+## 3. Environment & Commands (Always Use `uv`)
+
+Never call `pip`, `python -m venv`, or raw `python/pytest`. Always use `uv`.
+
+### Setup
+
+```bash
+uv venv
+uv sync
+```
+
+### Add packages
+
+```bash
+uv add <package>
+```
+
+### Run commands
+
+```bash
+uv run filare <file>
+uv run pytest
+```
+
+### Build examples
+
+```bash
+uv sync --group dev
+uv run --no-sync python src/filare/tools/build_examples.py
+```
+
+## 4. Coding Style & Conventions
+
+- Python 3.9+
+- 4-space indentation
+- Black + isort via `./scripts/pre-commit.sh`
+- Google-style docstrings
+- Lowercase module/function names
+- Update docs when behaviors change
+
+## 5. Branching, Commits, Merge Requests
+
+### Branch naming
+
+```
+<agent_role>/<feature-name>
+```
+
+### Commit guidelines
+
+- Small, focused commits
+- Imperative commit messages
+- Add description when required
+- Use conventional commits
+
+#### Short summary of conventional commits
+
+The Conventional Commits specification is a lightweight convention on top of commit messages. It provides an easy set of rules for creating an explicit commit history; which makes it easier to write automated tools on top of. This convention dovetails with SemVer, by describing the features, fixes, and breaking changes made in commit messages.
+
+The commit message should be structured as follows:
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+##### Specification:
+
+- Commits MUST be prefixed with a type, which consists of a noun, feat, fix, etc., followed by the OPTIONAL scope, OPTIONAL !, and REQUIRED terminal colon and space.
+- The type feat MUST be used when a commit adds a new feature to your application or library.
+- The type fix MUST be used when a commit represents a bug fix for your application.
+- A scope MAY be provided after a type. A scope MUST consist of a noun describing a section of the codebase surrounded by parenthesis, e.g., fix(parser):
+- A description MUST immediately follow the colon and space after the type/scope prefix. The description is a short summary of the code changes, e.g., fix: array parsing issue when multiple spaces were contained in string.
+- A longer commit body MAY be provided after the short description, providing additional contextual information about the code changes. The body MUST begin one blank line after the description.
+- A commit body is free-form and MAY consist of any number of newline separated paragraphs.
+- One or more footers MAY be provided one blank line after the body. Each footer MUST consist of a word token, followed by either a :<space> or <space># separator, followed by a string value (this is inspired by the git trailer convention).
+- A footer’s token MUST use - in place of whitespace characters, e.g., Acked-by (this helps differentiate the footer section from a multi-paragraph body). An exception is made for BREAKING CHANGE, which MAY also be used as a token.
+- A footer’s value MAY contain spaces and newlines, and parsing MUST terminate when the next valid footer token/separator pair is observed.
+- Breaking changes MUST be indicated in the type/scope prefix of a commit, or as an entry in the footer.
+- If included as a footer, a breaking change MUST consist of the uppercase text BREAKING CHANGE, followed by a colon, space, and description, e.g., BREAKING CHANGE: environment variables now take precedence over config files.
+- If included in the type/scope prefix, breaking changes MUST be indicated by a ! immediately before the :. If ! is used, BREAKING CHANGE: MAY be omitted from the footer section, and the commit description SHALL be used to describe the breaking change.
+- Types other than feat and fix MAY be used in your commit messages, e.g., docs: update ref docs.
+- example of other types: build:, chore:, ci:, docs:, style:, refactor:, perf:, test:
+- The units of information that make up Conventional Commits MUST NOT be treated as case sensitive by implementors, with the exception of BREAKING CHANGE which MUST be uppercase.
+- BREAKING-CHANGE MUST be synonymous with BREAKING CHANGE, when used as a token in a footer.
+
+### Repository
+
+- Remote lives on github
+- url is  https://github.com/laurierloi/filare
+- page is https://laurierloi.github.io/filare/
+   - it is deployed from the gh-pages branch of the repo
+- pypi package is found at: https://pypi.org/project/filare/
+
 # Repository Guidelines
 
 ## Project Structure & Module Organization
@@ -13,12 +156,11 @@
   - Create venv: `uv venv` # Create venv before running any other command
   - Add a package: `uv add <package>`
   - Install all packages `uv venv; uv sync`
-  - Run a Python entrypoint or script: `uv venv; uv run <command>`
+  - Run a Python entrypoint or script: `uv run <command>`
   - Run tests/coverage: `uv run pytest`
   - Avoid `pip`, `python -m venv`, or direct `python`/`pytest` calls; route everything through `uv venv`/`uv run`.
 - Quick sanity run: `uv venv; uv sync; uv run filare examples/demo01.yml -f hpst -o outputs` (HTML/PNG/SVG/TSV). Add `-c examples/components.yml` or `-d metadata.yml` as needed.
-- Build downstream harnesses with the same venv: `cd ../xsc-harnesses && WIREVIZ=../Filare-codex1/.venv/bin/filare make`; `make clean` removes generated SVG/PNG/PDF/TSV.
-- For manual BOM scaling checks: `uv venv; uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
+- For manual BOM scaling checks: `uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
 - Keep `scripts/pre-commit.sh` aligned with CI: it must build a fresh uv venv, install deps, run black, prettier, pytest, and the example builds before you commit.
 - Before committing, generate all examples/tutorials via the script used in CI: `uv venv; uv sync --group dev; uv run --no-sync python src/filare/tools/build_examples.py` (then stage the regenerated outputs if needed).
 - Always run lint locally before committing; use `scripts/lint.sh` (black + prettier) so changes are applied, not just checked.
@@ -47,3 +189,81 @@
 ## Branding Notes
 - Use the Filare brand in user-facing text, CLI help, docs, and examples; keep legacy `filare` names only where required for compatibility.
 - Align naming, colors, and tone with `docs/brand.md`; refresh that file alongside any brand-affecting changes.
+
+### MRs
+
+- Target: `beta`
+- Keep MR < 30 commits
+- Squash on merge
+- Avoid committing generated files unless required
+
+## 6. Testing & Validation
+
+- Run tests with:
+
+```bash
+uv run pytest
+```
+
+- Add YAMLs to `tests/rendering/` or `tests/bom/`
+- Build examples
+- Optional: build downstream harnesses
+
+## 7. Agent Workflow
+
+### Ramp-up
+
+- Always ask the operator for your role if you don't know it
+- Your role must be one of:
+  - COVERAGE
+  - DOCUMENTATION
+  - REWORK
+  - FEATURE
+  - TOOLS
+  - EXPLORATOR
+  - JUDGE
+  - VALIDATOR
+  - UI
+- Read this file + your role-specific guide (AGENT.<ROLE>.md)
+- Scan relevant code
+- Write a short step plan
+- Keep the step plan in `outputs/agents/<your_role>/plan-N`
+- Update the step plan as you progress in the execution
+
+### Execution
+
+- Implement → test → update docs → checkout branch -> commit
+- The branch you checkout should be <your role>/<feature description>
+- Do not open a new branch if you are a judge or validator, you should ask for
+  which branch to review or validate
+- Continue steps until complete
+- Open MR into `beta` on github
+- Use the github CLI to open the MR
+- Read .env to get necessary credentials
+- If a credential you need is not in .env, ask the operator with the specific name and the reason
+
+## 8. Collaboration & Quality Gates
+
+1. Worker agents produce branches
+2. Judge agents review
+3. Tester agents run full checks
+4. Approved work moves beyond `beta` into `main`
+
+## 9. Branding & User-Facing Text
+
+- Use **Filare** consistently
+- Follow `docs/brand.md`
+
+## 10. Forbidden Actions
+
+Do **not**:
+
+- Introduce breaking schema or CLI changes
+- Delete public APIs without migration
+- Commit secrets or machine‑specific configs
+
+---
+
+This base file is shared by all agents. Role-specific guides extend this one.
+The role-specific guide is found in agents/AGENT.<ROLE>.md
+If you do not know your role, always ask the operator
