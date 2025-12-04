@@ -82,15 +82,25 @@ options:  # dictionary of common attributes for the whole harness
   hide_disconnected_pins: <bool>  # defaults to false
 
   # loops
-  loops: <List[loop]>  # every list item is a loop object representing two pins
-                 # on the connector that are to be shorted
-	  loop:
-		- <first>: the first <pin> of the loop
-		- <second>: the second <pin> of the loop
-		- <side>: either "LEFT" or "RIGHT"
-		- show_label: <bool> defaults to true, will show the loop label
+  loops:  # each item shorts two pins on the connector
+    - first: <pin>     # pin number or pin label
+      second: <pin>    # pin number or pin label
+      side: <LEFT|RIGHT|null>  # optional; anchor the loop to a side
+      show_label: <bool>       # defaults to true; hide the label when false
+      color: <color>           # optional stroke color
+    # shorthand tuple/list form is also allowed:
+    # - [<pin>, <pin>]  # treated as {first: <pin>, second: <pin>}
+
+  # example:
+  # loops:
+  #   - first: 1
+  #     second: 2
+  #     side: LEFT
+  #   - [3, 4]  # uses default side/label/color
 
 ```
+
+Loops mark both pins as connected and render a short jumper on the chosen side (when provided). If `side` is omitted, Filare chooses a side based on the connector layout. Set `show_label: false` to hide the loop label for purely visual jumpers, and use `color` to highlight the jumper trace.
 
 ## Cable attributes
 
