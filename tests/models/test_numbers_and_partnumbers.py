@@ -50,8 +50,10 @@ def test_partnumberinfo_list_keep_only_shared():
 def test_partnumberinfo_clear_per_field_and_copy():
     a = PartNumberInfo(pn="A", manufacturer="M")
     b = PartNumberInfo(pn="B", manufacturer="M")
-    assert a.clear_per_field("==", b).pn == ""
-    assert a.clear_per_field("!=", b).pn == "A"
+    cleared_eq = a.clear_per_field("==", b)
+    assert cleared_eq.manufacturer == "" and cleared_eq.pn == "A"
+    cleared_neq = a.clear_per_field("!=", b)
+    assert cleared_neq.pn == "" and cleared_neq.manufacturer == "M"
     with pytest.raises(NotImplementedError):
         a.clear_per_field(">", b)
 
