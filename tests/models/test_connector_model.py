@@ -21,3 +21,20 @@ def test_connector_model_defaults():
     assert connector.pinlabels == ["1", "2"]
     assert connector.pincount == 2
     assert connector.pincolors[0] == "RD"
+
+
+def test_connector_model_coercions_and_category():
+    model = ConnectorModel(
+        designator="X2",
+        pins=[{"id": "1"}],
+        loops={"first": "1", "second": "1"},
+        color=["RD", "GN"],
+        category="connector",
+    )
+    assert model.pincount == 1
+    connector = model.to_connector()
+    assert connector.category.name.upper() == "CONNECTOR"
+    assert connector.loops
+    gc = model.to_graphical_component()
+    assert gc.designator == "X2"
+    assert str(gc.color).startswith("#") or str(gc.color)

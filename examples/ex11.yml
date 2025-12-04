@@ -54,3 +54,10 @@ connections:
       #- - X2: [8]
       #  - WLB2: [1]
       #  - X2: [7]
+options:
+  include_cut_diagram: true
+  include_termination_diagram: true
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
+

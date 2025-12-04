@@ -23,7 +23,7 @@ class ConnectorConfig(ConfigBaseModel):
     pincount: Optional[int] = None
     pins: Optional[List[PinConfig]] = None
     pinlabels: Optional[List[str]] = None
-    pincolors: Optional[Union[List[str], Dict[str, str]]] = None
+    pincolors: Optional[Union[List[Union[str, List[str]]], Dict[str, Union[str, List[str]]]]] = None
     loops: Optional[List[Dict[str, Any]]] = None
     style: Optional[str] = None
     images: Optional[List[str]] = None
@@ -59,6 +59,17 @@ class ConnectorConfig(ConfigBaseModel):
             elif pinlabels:
                 values["pincount"] = len(pinlabels)
         return values
+
+    @field_validator("pincolors", mode="before")
+    def _normalize_pincolors(cls, value: Any) -> Any:
+        if value is None:
+            return None
+        if isinstance(value, list):
+            # flatten list-of-lists to per-pin colors
+            return [v if isinstance(v, str) else list(v) for v in value]
+        if isinstance(value, dict):
+            return {k: (v if isinstance(v, str) else list(v)) for k, v in value.items()}
+        return value
 
 
 class WireConfig(ConfigBaseModel):

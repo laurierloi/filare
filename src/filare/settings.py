@@ -2,28 +2,18 @@
 
 from typing import Optional
 
-try:
-    from pydantic_settings import BaseSettings, SettingsConfigDict
-
-    USING_PYDANTIC_V1 = False
-except ImportError:  # fallback to pydantic v1 BaseSettings for older envs
-    from pydantic.v1 import BaseSettings
-
-    SettingsConfigDict = None  # type: ignore
-    USING_PYDANTIC_V1 = True
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class FilareSettings(BaseSettings):
-    graphviz_engine: Optional[str] = None  # e.g., dot, neato
+    graphviz_engine: Optional[str] = Field(
+        default=None, validation_alias="WV_GRAPHVIZ_ENGINE"
+    )  # e.g., dot, neato
     debug: bool = False
+    enable_cut_termination: bool = False
 
-    if not USING_PYDANTIC_V1:
-        model_config = SettingsConfigDict(env_prefix="WV_", case_sensitive=False)
-    else:
-
-        class Config:
-            env_prefix = "WV_"
-            case_sensitive = False
+    model_config = SettingsConfigDict(env_prefix="WV_", case_sensitive=False)
 
 
 settings = FilareSettings()

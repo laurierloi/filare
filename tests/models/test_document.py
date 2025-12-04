@@ -1,5 +1,8 @@
+from enum import Enum
 from pathlib import Path
+from types import SimpleNamespace
 
+from filare import filare as filare_module
 from filare.models.document import DocumentHashRegistry, DocumentRepresentation
 from filare.models.harness import Harness
 from filare.models.notes import Notes
@@ -12,7 +15,7 @@ from filare.models.page import (
     TerminationPage,
     TitlePage,
 )
-from filare.filare import _build_document_representation
+from filare.filare import _build_document_representation, _make_jsonable
 
 
 def test_document_representation_round_trip(tmp_path: Path):
@@ -39,7 +42,7 @@ def test_document_hash_registry_tracks_hashes(tmp_path: Path):
     registry = DocumentHashRegistry(reg_path)
     registry.load()
     assert not registry.contains("doc.yaml", digest)
-    registry.add("doc.yaml", digest)
+    registry.add("doc.yaml", digest, allow_override=False)
     registry.save()
 
     registry2 = DocumentHashRegistry(reg_path)
@@ -88,3 +91,56 @@ def test_document_recognizes_page_types(tmp_path: Path):
     assert isinstance(loaded.pages[1], BOMPage)
     assert isinstance(loaded.pages[2], CutPage)
     assert isinstance(loaded.pages[3], TerminationPage)
+
+
+def test_parse_returns_document_and_optional_pages(monkeypatch):
+    class DummyMeta:
+        def dict(self):
+            return {"pn": "PN-123"}
+
+    class DummyOptions:
+        def __init__(self):
+            self.include_bom = True
+            self.include_cut_diagram = True
+            self.include_termination_diagram = True
+            self.formats = ["svg"]
+
+        def dict(self):
+            return {
+                "include_bom": self.include_bom,
+                "include_cut_diagram": self.include_cut_diagram,
+                "include_termination_diagram": self.include_termination_diagram,
+                "formats": self.formats,
+            }
+
+    harness = SimpleNamespace(metadata=DummyMeta(), options=DummyOptions(), notes=None)
+
+    def fake_build_harness_from_files(**kwargs):
+        return harness
+
+    monkeypatch.setattr(
+        filare_module, "build_harness_from_files", fake_build_harness_from_files
+    )
+
+    doc = filare_module.parse(
+        inp=[], metadata_files=[], return_types=("document",), output_formats=("svg",)
+    )
+
+    assert isinstance(doc, DocumentRepresentation)
+    assert any(isinstance(page, CutPage) for page in doc.pages)
+    assert any(isinstance(page, TerminationPage) for page in doc.pages)
+    assert any(isinstance(page, BOMPage) for page in doc.pages)
+    assert doc.extras["options"]["include_cut_diagram"]
+    assert doc.extras["options"]["include_termination_diagram"]
+
+
+def test_make_jsonable_handles_path_and_enum():
+    class Dummy(Enum):
+        VALUE = "value"
+
+    result = _make_jsonable(
+        {"path": Path("a/b.txt"), "choice": Dummy.VALUE, "items": [Path("c/d")]}
+    )
+    assert result["path"] == "a/b.txt"
+    assert result["choice"] == "value"
+    assert result["items"] == ["c/d"]

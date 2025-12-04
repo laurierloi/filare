@@ -124,6 +124,8 @@ class MultiColor:
         self.colors = []
         if inp is None:
             pass
+        elif isinstance(inp, MultiColor):  # copy existing multicolor
+            self.colors = list(inp.colors)
         elif isinstance(inp, List):  # input is already a list
             for item in inp:
                 if item is None:

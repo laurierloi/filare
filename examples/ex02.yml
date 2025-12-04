@@ -37,3 +37,10 @@ connections:
     - X1: [1-2]
     - W3: [1-2]
     - X4: [1-2]
+options:
+  include_cut_diagram: true
+  include_termination_diagram: true
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
+

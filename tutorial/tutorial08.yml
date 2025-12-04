@@ -1,4 +1,7 @@
 options:
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
   mini_bom_mode: false
 
 connectors:

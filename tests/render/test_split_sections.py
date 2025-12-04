@@ -95,26 +95,32 @@ def _verify_split_files(
     bom_file = base.with_suffix(".bom.html")
     notes_file = base.with_suffix(".notes.html")
     index_file = base.with_suffix(".index.html")
+    html = base.with_suffix(".html").read_text(encoding="utf-8")
 
     if split_bom:
         _assert_exists(bom_file)
         _assert_contains(bom_file, 'id="bom"')
         _assert_not_contains(bom_file, "SplitNote")
+        assert 'id="bom"' not in html
     else:
         _assert_missing(bom_file)
+        assert 'id="bom"' in html
 
     if split_notes:
         _assert_exists(notes_file)
         _assert_contains(notes_file, 'id="notes"')
         _assert_contains(notes_file, "SplitNote")
         _assert_not_contains(notes_file, 'id="bom"')
+        assert 'id="notes"' not in html
     else:
         _assert_missing(notes_file)
+        assert 'id="notes"' in html
 
     if split_index:
         _assert_exists(index_file)
         _assert_contains(index_file, "index_table")
         _assert_not_contains(index_file, "SplitNote")
+        assert "index_table" not in html
     else:
         _assert_missing(index_file)
 
@@ -127,11 +133,12 @@ def _ensure_base_output(base: Path) -> None:
     assert base.with_suffix(".html").exists()
 
 
-def _assert_no_unexpected_sections(base: Path) -> None:
+def _assert_no_unexpected_sections(
+    base: Path, split_bom: bool, split_notes: bool, split_index: bool
+) -> None:
     html = base.with_suffix(".html").read_text(encoding="utf-8")
-    assert "SplitNote" in html
-    # ensure main html still carries combined content
-    assert 'id="bom"' in html
+    if not split_notes:
+        assert "SplitNote" in html
 
 
 def _format_params(split_bom: bool, split_notes: bool, split_index: bool) -> str:
@@ -144,7 +151,7 @@ def _maybe_run_split_generation(
     opts = _build_opts(split_bom, split_notes, split_index)
     base = _run_harness(tmp_path, opts)
     _ensure_base_output(base)
-    _assert_no_unexpected_sections(base)
+    _assert_no_unexpected_sections(base, split_bom, split_notes, split_index)
     _verify_split_files(base, split_bom, split_notes, split_index)
 
 

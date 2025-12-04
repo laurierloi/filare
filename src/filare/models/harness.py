@@ -468,8 +468,14 @@ class Harness:
             print("CSV output is not yet supported")
         if "html" in fmt:
             bom_for_html = self.bom if self.options.include_bom else {}
+            rendered = {}
+            if settings.enable_cut_termination:
+                if getattr(self.options, "include_cut_diagram", False):
+                    rendered["cut_table"] = _build_cut_table(self)
+                if getattr(self.options, "include_termination_diagram", False):
+                    rendered["termination_table"] = _build_termination_table(self)
             generate_html_output(
-                filename, bom_for_html, self.metadata, self.options, self.notes
+                filename, bom_for_html, self.metadata, self.options, self.notes, rendered
             )
         if "pdf" in fmt:
             generate_pdf_output(filename)
@@ -478,3 +484,49 @@ class Harness:
 
 
 __all__ = ["Harness"]
+
+
+def _build_cut_table(harness) -> str:
+    """Build cut table HTML from harness wires."""
+    rows = []
+    for cable in harness.cables.values():
+        seen = set()
+        for idx, wire in cable.wire_objects.items():
+            if idx in seen:
+                continue
+            seen.add(idx)
+            color = getattr(wire.color, "code_en", None) or getattr(
+                wire.color, "html", ""
+            ) or ",".join(wire.color) if hasattr(wire, "color") else ""
+            length = getattr(wire, "length", None) or getattr(cable, "length", "")
+            rows.append(
+                {
+                    "wire": f"{cable.designator}-{idx + 1}",
+                    "partno": getattr(cable, "pn", "") or "",
+                    "color": color or "",
+                    "length": length or "",
+                }
+            )
+    tpl = get_template("cut_table", ".html")
+    return tpl.render({"rows": rows})
+
+
+def _build_termination_table(harness) -> str:
+    """Build termination table HTML from harness connections."""
+    rows = []
+    for cable in harness.cables.values():
+        for connection in getattr(cable, "_connections", []):
+            src = str(connection.from_.parent) if connection.from_ else ""
+            tgt = str(connection.to.parent) if connection.to else ""
+            src_term = getattr(connection.from_, "termination", "") or "n/a"
+            tgt_term = getattr(connection.to, "termination", "") or "n/a"
+            rows.append(
+                {
+                    "source": src,
+                    "target": tgt,
+                    "source_termination": src_term,
+                    "target_termination": tgt_term,
+                }
+            )
+    tpl = get_template("termination_table", ".html")
+    return tpl.render({"rows": rows})

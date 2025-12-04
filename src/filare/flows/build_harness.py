@@ -379,7 +379,20 @@ def build_harness_from_files(
     harness.populate_bom()
 
     document_representation: Optional[DocumentRepresentation] = None
-    if doc_yaml_path:
+    registry = DocumentHashRegistry(hash_registry_path)
+    registry.load()
+
+    generate_document = bool(doc_yaml_path)
+    if doc_yaml_path and doc_yaml_path.exists():
+        if not registry.allow_override(doc_yaml_path.name):
+            logging.warning(
+                "Document representation locked (allow_override=False); using existing %s",
+                doc_yaml_path,
+            )
+            document_representation = DocumentRepresentation.from_yaml(doc_yaml_path)
+            harness.document = document_representation
+            generate_document = False
+    if generate_document and doc_yaml_path:
         pages = [
             TitlePage(type=PageType.title, name="titlepage"),
             HarnessPage(

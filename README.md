@@ -10,6 +10,15 @@
 
 Filare (the new name for WireViz) is a tool for documenting cables, wiring harnesses and connector pinouts. It takes plain text, YAML-formatted files as input and produces graphical output (SVG, PNG, ...) via [GraphViz](https://www.graphviz.org/). It handles automatic BOM (Bill of Materials) creation and a number of extras.
 
+## Why Filare over WireViz?
+
+- The file structure has been revamped for better separation of concern
+- Tests have been added to increase dramatically the coverage of the library
+- Jinja2 templates are now used for key visual elements
+- Pydantic is used instead of dataclasses to bring the data structure into the 2020s
+- Support for engineering document export is much better, allowing sharing with suppliers and clients directly
+- The representation is backward-compatible when possible, so the user should be able to switch seemlessly
+
 ## Features
 
 - Filare input files are fully text based
@@ -124,6 +133,9 @@ Run common tasks (mount your working tree so outputs land on the host):
   ```
   docker run --rm -p 9000:9000 -v "$PWD":/app filare bash -lc 'cd /app && uv run --no-sync mkdocs build && cd site && python3 -m http.server 9000'
   ```
+- Regenerate document YAMLs (document representations) and control overwrites:
+  - By default generated `*.document.yaml` files can be overwritten on rebuild. To freeze a document, set `allow_override: false` for that entry in `outputs/*/document_hashes.yaml`; reruns will then warn and keep your manual edits.
+  - To force a refresh, delete the corresponding `*.document.yaml` and its entry in `document_hashes.yaml` before rebuilding.
 
 ## Building docs locally (without Docker)
 

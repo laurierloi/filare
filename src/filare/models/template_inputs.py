@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Sequence, Union
 
-from pydantic.v1 import BaseModel, Extra, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from filare.models.configs import (
     CableConfig,
@@ -16,9 +16,7 @@ from filare.models.numbers import NumberAndUnit
 class TemplateBaseModel(BaseModel):
     """Base class for template-facing inputs."""
 
-    class Config:
-        extra = Extra.forbid
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(extra="forbid", arbitrary_types_allowed=True)
 
 
 class TemplatePin(TemplateBaseModel):
@@ -26,7 +24,7 @@ class TemplatePin(TemplateBaseModel):
     color: List[str] = Field(default_factory=list)
     id: Optional[str] = None
 
-    @validator("color", pre=True)
+    @field_validator("color", mode="before")
     def _coerce_color(cls, value: Union[str, Sequence[str]]) -> List[str]:
         if value is None:
             return []
@@ -69,7 +67,7 @@ class TemplateWire(TemplateBaseModel):
     color: List[str] = Field(default_factory=list)
     length: Optional[NumberAndUnit] = None
 
-    @validator("color", pre=True)
+    @field_validator("color", mode="before")
     def _coerce_color(cls, value: Union[str, Sequence[str]]) -> List[str]:
         if value is None:
             return []
@@ -77,7 +75,7 @@ class TemplateWire(TemplateBaseModel):
             return [value]
         return list(value)
 
-    @validator("length", pre=True)
+    @field_validator("length", mode="before")
     def _coerce_length(
         cls, value: Union[str, NumberAndUnit, None]
     ) -> Optional[NumberAndUnit]:
@@ -120,13 +118,13 @@ class TemplateConnection(TemplateBaseModel):
     net: Optional[str] = None
     color: List[str] = Field(default_factory=list)
 
-    @validator("endpoints", pre=True)
+    @field_validator("endpoints", mode="before")
     def _coerce_endpoints(cls, value: Union[str, Sequence[str]]) -> List[str]:
         if isinstance(value, str):
             return [value]
         return list(value)
 
-    @validator("color", pre=True)
+    @field_validator("color", mode="before")
     def _coerce_color(cls, value: Union[str, Sequence[str]]) -> List[str]:
         if value is None:
             return []

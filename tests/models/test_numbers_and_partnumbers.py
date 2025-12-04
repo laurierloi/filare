@@ -45,3 +45,36 @@ def test_partnumberinfo_list_keep_only_shared():
     shared = PartNumberInfo(pn="X", manufacturer="ACME")
     p_list = PartnumberInfoList(pn_list=[shared, shared.copy()])
     assert p_list.keep_only_shared().pn == "X"
+
+
+def test_partnumberinfo_clear_per_field_and_copy():
+    a = PartNumberInfo(pn="A", manufacturer="M")
+    b = PartNumberInfo(pn="B", manufacturer="M")
+    cleared_eq = a.clear_per_field("==", b)
+    assert cleared_eq.manufacturer == "" and cleared_eq.pn == "A"
+    cleared_neq = a.clear_per_field("!=", b)
+    assert cleared_neq.pn == "" and cleared_neq.manufacturer == "M"
+    with pytest.raises(NotImplementedError):
+        a.clear_per_field(">", b)
+
+
+def test_partnumberinfo_list_as_unique_and_shared():
+    pn1 = PartNumberInfo(pn="P1", manufacturer="ACME")
+    pn2 = PartNumberInfo(pn="P2", manufacturer="ACME")
+    p_list = PartnumberInfoList(pn_list=[pn1, pn2])
+    shared = p_list.keep_only_shared()
+    assert shared.manufacturer == "ACME"
+    uniques = p_list.as_unique_list()
+    assert isinstance(uniques, list)
+    assert {p.pn for p in uniques} == {"P1", "P2"}
+
+
+def test_partnumbers2list_merging_parents_and_children():
+    child = PartNumberInfo(pn="C1", manufacturer="ACME", mpn="M1", supplier="SUP", spn="SP")
+    parents = PartnumberInfoList(pn_list=[PartNumberInfo(pn="C1", manufacturer="ACME")])
+    merged = partnumbers2list(child, parents)
+    flat = [item for sub in merged for item in sub]
+    # Parent matches pn/manufacturer, so expect supplier/MPN/SPN entries to remain
+    assert any("SUP" in s for s in flat)
+    assert any("SP" in s for s in flat)
+    assert any("M1" in s for s in flat)

@@ -1,5 +1,25 @@
 Outstanding refactor tasks (completed items removed)
 
+1) Coverage gaps (>90% target)
+- 1.1 src/filare/cli.py 88%
+- 1.2 src/filare/index_table.py 89%
+- 1.3 src/filare/models/bom.py 88%
+- 1.4 src/filare/models/colors.py 82%
+- 1.5 src/filare/models/component.py 85%
+- 1.6 src/filare/models/configs.py 81%
+- 1.7 src/filare/models/connector.py 76%
+- 1.8 src/filare/models/dataclasses.py 86%
+- 1.9 src/filare/models/harness.py 71%
+- 1.10 src/filare/models/image.py 83%
+- 1.11 src/filare/models/metadata.py 85%
+- 1.12 src/filare/models/options.py 88%
+- 1.13 src/filare/models/partnumber.py 80%
+- 1.14 src/filare/models/template_inputs.py 90%
+- 1.15 src/filare/render/graphviz.py 84%
+- 1.16 src/filare/render/html_utils.py 88%
+- 1.17 src/filare/tools/build_examples.py 59%
+Note: while closing these gaps, flag and record any dead/unreachable code paths under this task (e.g., unreachable branches) so they can be removed instead of force-covered.
+
 2) Coverage hardening
 - Raise coverage for lower modules: models/colors, models/cable, models/bom, models/dataclasses, models/utils, render/graphviz, parser/yaml_loader (edge cases).
 - Add parser edge-case tests and render smoke tests as needed.
@@ -51,7 +71,15 @@ Outstanding refactor tasks (completed items removed)
 - Add configuration knobs so users can choose whether to include the new schematics in the engineering document.
 
 12) Document representation and change tracking
-- Create a document representation model (pre-render) containing all pages/diagrams/notes/BOMs.
-- Save the document representation to YAML and accept it as input to drive document generation; generate it automatically by default.
-- Track user edits by hashing the YAML and maintaining a hash list file; only overwrite when unchanged or after prompting if user edits exist.
-- Add Page BaseModel(s) for pages with necessary info (components, harnesses, metadata, notes, etc.) and have `DocumentRepresentation.pages` use these typed page models per page type/content.
+- Accept `*.document.yaml` as an input to drive document generation (not just emit), with tests ensuring the YAML input path is honored and user edits are preserved per hash rules.
+- Update page generation templates so split components (BOM/notes/index) are excluded from the combined page when split output is configured.
+- Update index table to link to all generated HTML documents; when splits exist, render 3 columns (page name, content type: harness/cut/BOM/termination/index, page link).
+- Add a template for the termination diagram page and integrate it into rendering.
+- Add a template for the cut diagram page and integrate it into rendering.
+
+13) Dataclasses phase-out
+- 13.1 Ensure each dataclass in src/filare/models/dataclasses.py has an equivalent Pydantic component model.
+- 13.2 Update parsing to produce component models instead of dataclasses.
+- 13.3 Update rendering flows to consume component models instead of dataclasses.
+- 13.4 Validate feature parity after the switch (examples/tests cover no capability loss).
+- 13.5 Sweep repo to remove remaining dataclass references and drop the dataclasses module.

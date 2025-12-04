@@ -7,6 +7,8 @@ from filare.render.templates import get_template
 def test_get_template_loads_existing_template():
     tpl = get_template("titleblock", ".html")
     assert tpl is not None
+    assert get_template("cut", ".html") is not None
+    assert get_template("termination", ".html") is not None
 
 
 def test_html_utils_render_basic_table():

@@ -3,22 +3,9 @@ from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-try:  # pydantic v2
-    from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-    USING_PYDANTIC_V1 = False
-except ImportError:  # fallback for v1
-    from pydantic.v1 import BaseModel, Field, root_validator, validator as _validator
-
-    USING_PYDANTIC_V1 = True
-
-    def field_validator(*args, **kwargs):  # type: ignore
-        kwargs.pop("mode", None)
-        return _validator(*args, **kwargs)
-
-    def model_validator(*args, **kwargs):  # type: ignore
-        kwargs.pop("mode", None)
-        return root_validator(*args, **kwargs)
+USING_PYDANTIC_V1 = False
 
 
 import filare  # for doing filare.__file__
