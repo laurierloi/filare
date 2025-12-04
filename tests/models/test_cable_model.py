@@ -16,3 +16,29 @@ def test_cable_model_with_color_code():
     assert cable.wirecount == 3
     assert len(cable.colors) == 3
     assert cable.colors[0]  # not empty
+
+
+def test_cable_model_coercions_and_defaults():
+    model = CableModel(
+        designator="C3",
+        colors="RD",
+        wirelabels=None,
+        shield=None,
+        gauge="1 mm",
+        length="2 m",
+    )
+    assert model.colors == ["RD"]
+    assert model.wirelabels == []
+    assert model.shield is False
+    assert str(model.gauge) == "1 mm"
+    assert str(model.length) == "2 m"
+
+
+def test_cable_model_multicolor_repeats_for_wirecount():
+    model = CableModel(designator="C4", wirecount=3, color="RDBU")
+    assert [str(color) for color in model.colors] == ["RD", "BU", "RD"]
+
+
+def test_cable_model_shield_string_preserved():
+    model = CableModel(designator="C5", wirecount=1, shield="foil")
+    assert model.shield == "foil"
