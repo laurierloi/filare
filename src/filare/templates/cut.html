@@ -1,0 +1,13 @@
+{% extends "page.html" %}
+{% block title %}Cut Diagram{% endblock %}
+
+{% block frame_content %}
+  <h2>Cut Diagram</h2>
+  <div id="cut-table">
+    {% if cut_table %}
+      {{ cut_table }}
+    {% else %}
+      <p>No cut diagram data provided.</p>
+    {% endif %}
+  </div>
+{% endblock %}

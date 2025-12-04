@@ -123,11 +123,22 @@ def generate_html_output(
     if "notes" in replacements and replacements["notes"].notes:
         rendered["notes"] = get_template("notes.html").render(replacements)
 
+    filtered = dict(rendered)
+    if options.split_bom_page:
+        options.show_bom = False
+        filtered["bom"] = ""
+    if options.split_notes_page:
+        options.show_notes = False
+        filtered["notes"] = ""
+    if options.split_index_page:
+        options.show_index_table = False
+        filtered["index_table"] = ""
+
     # generate page template
     page_rendered = get_template(template_name, ".html").render(
         {
             **replacements,
-            **rendered,
+            **filtered,
         }
     )
 

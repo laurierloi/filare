@@ -5,6 +5,8 @@ from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+USING_PYDANTIC_V1 = False
+
 
 import filare  # for doing filare.__file__
 

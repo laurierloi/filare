@@ -3,6 +3,8 @@ from typing import Any, ClassVar, Dict, List, Optional, Tuple, Union
 
 from pydantic import BaseModel, ConfigDict, field_validator
 
+USING_PYDANTIC_V1 = False
+
 
 from filare.models.utils import awg_equiv, mm2_equiv, remove_links
 

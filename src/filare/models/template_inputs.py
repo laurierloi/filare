@@ -118,13 +118,13 @@ class TemplateConnection(TemplateBaseModel):
     net: Optional[str] = None
     color: List[str] = Field(default_factory=list)
 
-    @validator("endpoints", pre=True)
+    @field_validator("endpoints", mode="before")
     def _coerce_endpoints(cls, value: Union[str, Sequence[str]]) -> List[str]:
         if isinstance(value, str):
             return [value]
         return list(value)
 
-    @validator("color", pre=True)
+    @field_validator("color", mode="before")
     def _coerce_color(cls, value: Union[str, Sequence[str]]) -> List[str]:
         if value is None:
             return []

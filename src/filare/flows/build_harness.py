@@ -382,6 +382,7 @@ def build_harness_from_files(
     registry = DocumentHashRegistry(hash_registry_path)
     registry.load()
 
+    generate_document = bool(doc_yaml_path)
     if doc_yaml_path and doc_yaml_path.exists():
         if not registry.allow_override(doc_yaml_path.name):
             logging.warning(
@@ -390,10 +391,8 @@ def build_harness_from_files(
             )
             document_representation = DocumentRepresentation.from_yaml(doc_yaml_path)
             harness.document = document_representation
-        else:
-            # Fall through to regenerate/update document
-            pass
-    elif doc_yaml_path:
+            generate_document = False
+    if generate_document and doc_yaml_path:
         pages = [
             TitlePage(type=PageType.title, name="titlepage"),
             HarnessPage(

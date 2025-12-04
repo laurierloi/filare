@@ -1,0 +1,13 @@
+{% extends "page.html" %}
+{% block title %}Termination Diagram{% endblock %}
+
+{% block frame_content %}
+  <h2>Termination Diagram</h2>
+  <div id="termination-table">
+    {% if termination_table %}
+      {{ termination_table }}
+    {% else %}
+      <p>No termination diagram data provided.</p>
+    {% endif %}
+  </div>
+{% endblock %}
