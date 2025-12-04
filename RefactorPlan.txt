@@ -16,6 +16,7 @@ Outstanding refactor tasks (completed items removed)
 - 1.13 src/filare/render/graphviz.py >90% (89.2%)
 - 1.14 src/filare/settings.py >90% (58.8%)
 - 1.15 src/filare/tools/build_examples.py >90% (66.1%)
+Note: while closing these gaps, flag and record any dead/unreachable code paths under this task (e.g., unreachable branches) so they can be removed instead of force-covered.
 
 2) Coverage hardening
 - Raise coverage for lower modules: models/colors, models/cable, models/bom, models/dataclasses, models/utils, render/graphviz, parser/yaml_loader (edge cases).
