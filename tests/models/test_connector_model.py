@@ -27,7 +27,7 @@ def test_connector_model_coercions_and_category():
     model = ConnectorModel(
         designator="X2",
         pins=[{"id": "1"}],
-        loops={"first": "1", "last": "1"},
+        loops={"first": "1", "second": "1"},
         color=["RD", "GN"],
         category="connector",
     )
