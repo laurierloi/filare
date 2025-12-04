@@ -2,11 +2,8 @@
 
 import logging
 import re
-from dataclasses import asdict, dataclass, field, fields
 from pathlib import Path
-from typing import Dict, List
-
-import filare  # for doing filare.__file__
+from typing import Dict, List, Optional
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
 from filare.models.metadata import Metadata
@@ -65,19 +62,10 @@ def generate_html_output(
     if rendered is None:
         rendered = {}
 
-    if bom_render_options is None:
-        bom_render_options = BomRenderOptions(
-            restrict_printed_lengths=True,
-            filter_entries=True,
-            no_per_harness=True,
-            reverse=metadata.template.has_bom_reversed(),
-        )
-
-    bom_render = BomContent(bom).get_bom_render(options=bom_render_options)
-    options.bom_rows = len(bom_render.rows)
-    rendered["bom"] = bom_render.render(
-        page_options=options, bom_options=bom_render_options
+    bom_render_options = _ensure_bom_render_options(
+        bom_render_options, metadata.template.has_bom_reversed()
     )
+    rendered["bom"] = _render_bom_section(bom, bom_render_options, options)
 
     if options.show_index_table or options.split_index_page:
         rendered["index_table"] = IndexTable.from_pages_metadata(
@@ -88,31 +76,14 @@ def generate_html_output(
     svgdata = None
     if template_name != "titlepage":
         # embed SVG diagram for all but the titlepage
-        with filename.with_suffix(".svg").open("r") as f:
-            svgdata = re.sub(
-                "^<[?]xml [^?>]*[?]>[^<]*<!DOCTYPE [^>]*>",
-                "<!-- XML and DOCTYPE declarations from SVG file removed -->",
-                f.read(),
-                1,
-            )
+        svgdata = _load_svg_diagram(filename)
 
-    match = re.search(r"[0-9]+$", str(filename))
-    if not match:
-        harness_number = metadata.sheet_current + 1
-    else:
-        harness_number = int(match[0])
+    harness_number = _derive_harness_number(filename, metadata.sheet_current)
+    partno = _build_part_number(
+        metadata.pn, metadata.revision, harness_number, template_name
+    )
 
-    partno = f"{metadata.pn}-{metadata.revision}"
-    if template_name != "titlepage":
-        partno += f"-{harness_number}"
-
-    replacements = {
-        "options": options,
-        "diagram": svgdata,
-        "metadata": metadata,
-        "notes": notes,
-        "partno": partno,
-    }
+    replacements = _build_replacements(options, svgdata, metadata, notes, partno)
 
     # TODO: all rendering should be done within their respective classes
 
@@ -123,16 +94,7 @@ def generate_html_output(
     if "notes" in replacements and replacements["notes"].notes:
         rendered["notes"] = get_template("notes.html").render(replacements)
 
-    filtered = dict(rendered)
-    if options.split_bom_page:
-        options.show_bom = False
-        filtered["bom"] = ""
-    if options.split_notes_page:
-        options.show_notes = False
-        filtered["notes"] = ""
-    if options.split_index_page:
-        options.show_index_table = False
-        filtered["index_table"] = ""
+    filtered = _filtered_sections(options, rendered)
 
     # generate page template
     page_rendered = get_template(template_name, ".html").render(
@@ -169,6 +131,90 @@ def _write_split_sections(
         target = filename.with_suffix(f".{section}.html")
         target.write_text(page, encoding="utf-8")
         logging.info("Wrote split %s page to %s", section, target)
+
+
+def _derive_harness_number(filename: Path, sheet_current: int) -> int:
+    """Extract harness number from filename, falling back to sheet index."""
+    match = re.search(r"[0-9]+$", str(filename))
+    if not match:
+        return sheet_current + 1
+    return int(match[0])
+
+
+def _build_part_number(pn: str, revision: str, harness_number: int, template_name: str) -> str:
+    """Compose part number string used on rendered pages."""
+    partno = f"{pn}-{revision}"
+    if template_name != "titlepage":
+        return f"{partno}-{harness_number}"
+    return partno
+
+
+def _build_replacements(
+    options: PageOptions,
+    diagram: Optional[str],
+    metadata: Metadata,
+    notes: Notes,
+    partno: str,
+) -> Dict[str, object]:
+    """Collect template replacements for HTML rendering."""
+    return {
+        "options": options,
+        "diagram": diagram,
+        "metadata": metadata,
+        "notes": notes,
+        "partno": partno,
+    }
+
+
+def _load_svg_diagram(filename: Path) -> str:
+    """Load and sanitize the SVG diagram content for embedding."""
+    with filename.with_suffix(".svg").open("r") as f:
+        return re.sub(
+            "^<[?]xml [^?>]*[?]>[^<]*<!DOCTYPE [^>]*>",
+            "<!-- XML and DOCTYPE declarations from SVG file removed -->",
+            f.read(),
+            1,
+        )
+
+
+def _ensure_bom_render_options(
+    bom_render_options: Optional[BomRenderOptions], reverse_bom: bool
+) -> BomRenderOptions:
+    """Provide default BOM render options when none are supplied."""
+    if bom_render_options is not None:
+        return bom_render_options
+    return BomRenderOptions(
+        restrict_printed_lengths=True,
+        filter_entries=True,
+        no_per_harness=True,
+        reverse=reverse_bom,
+    )
+
+
+def _render_bom_section(
+    bom: List[List[str]],
+    bom_render_options: BomRenderOptions,
+    options: PageOptions,
+) -> str:
+    """Render BOM HTML snippet and update options with row count."""
+    bom_render = BomContent(bom).get_bom_render(options=bom_render_options)
+    options.bom_rows = len(bom_render.rows)
+    return bom_render.render(page_options=options, bom_options=bom_render_options)
+
+
+def _filtered_sections(options: PageOptions, rendered: Dict[str, str]) -> Dict[str, str]:
+    """Hide sections when split pages are requested while preserving source content."""
+    filtered = dict(rendered)
+    if options.split_bom_page:
+        options.show_bom = False
+        filtered["bom"] = ""
+    if options.split_notes_page:
+        options.show_notes = False
+        filtered["notes"] = ""
+    if options.split_index_page:
+        options.show_index_table = False
+        filtered["index_table"] = ""
+    return filtered
 
 
 def _wrap_section_html(title: str, body: str) -> str:
