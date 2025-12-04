@@ -74,5 +74,7 @@ def test_partnumbers2list_merging_parents_and_children():
     parents = PartnumberInfoList(pn_list=[PartNumberInfo(pn="C1", manufacturer="ACME")])
     merged = partnumbers2list(child, parents)
     flat = [item for sub in merged for item in sub]
-    assert any("C1" in s for s in flat)
+    # Parent matches pn/manufacturer, so expect supplier/MPN/SPN entries to remain
     assert any("SUP" in s for s in flat)
+    assert any("SP" in s for s in flat)
+    assert any("M1" in s for s in flat)
