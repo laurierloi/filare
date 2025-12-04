@@ -104,12 +104,12 @@ pages:
   name: titlepage
   type: title
 - formats:
-  - tsv
-  - svg
   - shared_bom
-  - png
-  - html
   - gv
+  - png
+  - svg
+  - tsv
+  - html
   name: test-01-tutorial05
   type: harness
 - formats:
