@@ -14,6 +14,11 @@ def test_settings_engine_override(monkeypatch):
     s = FilareSettings()
     assert s.graphviz_engine == "neato"
 
+def test_settings_debug_env_case_insensitive(monkeypatch):
+    monkeypatch.setenv("wv_debug", "true")
+    s = FilareSettings()
+    assert s.debug is True
+
 
 def test_filare_settings_alias_points_to_filare():
     assert FilareSettings is settings.__class__
