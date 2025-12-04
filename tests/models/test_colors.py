@@ -86,7 +86,7 @@ def test_multi_color_unusual_cases(monkeypatch):
     assert mc[0].code_en == "ABC"
     # non-standard output mode hits fallback joiner
     monkeypatch.setattr("filare.models.colors.color_output_mode", type("X", (), {"name": "OTHER"})())
-    assert str(mc).startswith("#") or "???" in str(mc)
+    assert str(mc) == "ABC"
     # length >3 raises padding exception
     with pytest.raises(Exception):
         _ = MultiColor(["RD", "BK", "GN", "YE"]).html_padded_list
