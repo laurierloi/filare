@@ -22,3 +22,10 @@ connections:
   - - X1: [1-8]
     - W1: [1-8]
     - X2: [3,6,1,7,8,2,4,5] # crossover
+options:
+  include_cut_diagram: true
+  include_termination_diagram: true
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
+

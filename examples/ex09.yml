@@ -29,3 +29,10 @@ connections:
   -
     - X1: 13
     - W1: s
+options:
+  include_cut_diagram: true
+  include_termination_diagram: true
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
+

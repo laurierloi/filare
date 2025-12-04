@@ -57,3 +57,10 @@ connections:
     - X5: [1-4]
     - W5: [1-4]
     - X6: [1-4]
+options:
+  include_cut_diagram: true
+  include_termination_diagram: true
+  split_bom_page: true
+  split_notes_page: true
+  split_index_page: true
+
