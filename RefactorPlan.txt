@@ -69,3 +69,7 @@ Outstanding refactor tasks (completed items removed)
 
 12) Document representation and change tracking
 - Accept `*.document.yaml` as an input to drive document generation (not just emit), with tests ensuring the YAML input path is honored and user edits are preserved per hash rules.
+- Update page generation templates so split components (BOM/notes/index) are excluded from the combined page when split output is configured.
+- Update index table to link to all generated HTML documents; when splits exist, render 3 columns (page name, content type: harness/cut/BOM/termination/index, page link).
+- Add a template for the termination diagram page and integrate it into rendering.
+- Add a template for the cut diagram page and integrate it into rendering.
