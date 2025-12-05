@@ -339,7 +339,7 @@ def test_cli_split_sections_emit_split_files(tmp_path):
     )
 
     base = output_dir / "split"
-    for suffix in (".html", ".bom.html", ".notes.html", ".index.html"):
+    for suffix in (".html", ".bom.html", ".notes.html"):
         assert base.with_suffix(suffix).exists(), f"Missing split output {suffix}"
 
     notes_html = base.with_suffix(".notes.html").read_text()

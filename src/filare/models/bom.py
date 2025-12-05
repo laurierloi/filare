@@ -5,6 +5,13 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from filare.models.numbers import NumberAndUnit
 from filare.models.partnumber import PartNumberInfo
+from filare.models.table_models import (
+    TableCell,
+    TablePage,
+    TablePaginationOptions,
+    TableRow,
+    paginate_rows,
+)
 from filare.models.utils import remove_links
 from filare.render.templates import get_template
 
@@ -186,6 +193,39 @@ class BomRender:
                 "options": page_options,
             }
         )
+
+    def to_table_rows(self) -> List[TableRow]:
+        """Return rows as TableRow objects with css classes preserved."""
+        table_rows: List[TableRow] = []
+        for row in self.rows:
+            cells = []
+            for idx, value in enumerate(row):
+                css_class = (
+                    self.columns_class[idx] if idx < len(self.columns_class) else None
+                )
+                cells.append(TableCell(value=str(value), css_class=css_class))
+            table_rows.append(TableRow(cells=cells))
+        return table_rows
+
+    def paginate(
+        self,
+        pagination: TablePaginationOptions,
+        page_options=None,
+        bom_options=None,
+    ) -> List[TablePage]:
+        """Split the BOM into paginated HTML chunks."""
+        pages = paginate_rows(self.to_table_rows(), pagination)
+        results: List[TablePage] = []
+        for page in pages:
+            subset = [row.values for row in page.rows]
+            rendered_page = BomRender(
+                self.header,
+                subset,
+                strip_empty_columns=self.strip_empty_columns,
+                columns_class=self.columns_class,
+            ).render(page_options=page_options, bom_options=bom_options)
+            results.append(page.with_html(rendered_page))
+        return results
 
 
 class BomRenderOptions:

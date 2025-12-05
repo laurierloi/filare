@@ -471,9 +471,13 @@ class Harness:
             bom_for_html = self.bom if self.options.include_bom else {}
             rendered = {}
             if getattr(self.options, "include_cut_diagram", False):
-                rendered["cut_table"] = _build_cut_table(self)
+                cut_rows, cut_html = _build_cut_table(self)
+                rendered["cut_rows"] = cut_rows
+                rendered["cut_table"] = cut_html
             if getattr(self.options, "include_termination_diagram", False):
-                rendered["termination_table"] = _build_termination_table(self)
+                term_rows, term_html = _build_termination_table(self)
+                rendered["termination_rows"] = term_rows
+                rendered["termination_table"] = term_html
             generate_html_output(
                 filename,
                 bom_for_html,
@@ -491,8 +495,8 @@ class Harness:
 __all__ = ["Harness"]
 
 
-def _build_cut_table(harness) -> str:
-    """Build cut table HTML from harness wires."""
+def _build_cut_table(harness):
+    """Build cut table rows and HTML from harness wires."""
     rows = []
     for cable in harness.cables.values():
         seen = set()
@@ -517,11 +521,11 @@ def _build_cut_table(harness) -> str:
                 }
             )
     tpl = get_template("cut_table", ".html")
-    return tpl.render({"rows": rows})
+    return rows, tpl.render({"rows": rows})
 
 
-def _build_termination_table(harness) -> str:
-    """Build termination table HTML from harness connections."""
+def _build_termination_table(harness):
+    """Build termination table rows and HTML from harness connections."""
     rows = []
     for cable in harness.cables.values():
         for connection in getattr(cable, "_connections", []):
@@ -538,4 +542,4 @@ def _build_termination_table(harness) -> str:
                 }
             )
     tpl = get_template("termination_table", ".html")
-    return tpl.render({"rows": rows})
+    return rows, tpl.render({"rows": rows})
