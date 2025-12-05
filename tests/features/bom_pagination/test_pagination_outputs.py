@@ -70,10 +70,10 @@ def test_bom_pagination_outputs_lettered_pages(tmp_path):
         "  table_page_suffix_letters: true\n",
     )
 
-    assert base.with_suffix(".bom.html").exists()
+    assert base.with_suffix(".bom.a.html").exists()
     assert base.with_suffix(".bom.b.html").exists()
     assert base.with_suffix(".bom.c.html").exists()
-    assert not base.with_suffix(".bom.a.html").exists()
+    assert base.with_suffix(".bom.html").exists()
 
     index_html = base.with_suffix(".index.html").read_text(encoding="utf-8")
     assert "h.bom.a" in index_html

@@ -309,16 +309,29 @@ def _write_split_sections(
                 if not page.html:
                     continue
                 suffix = page.suffix or letter_suffix(idx)
+                has_letters = len(bom_pages) > 1
                 target = (
-                    filename.with_suffix(".bom.html")
-                    if idx == 0
-                    else filename.with_suffix(f".bom.{suffix}.html")
+                    filename.with_suffix(f".bom.{suffix}.html")
+                    if has_letters and suffix
+                    else filename.with_suffix(".bom.html")
                 )
-                title_bits = [getattr(metadata, "title", ""), f"{section}.{suffix or ''}"]
+                title_bits = [
+                    getattr(metadata, "title", ""),
+                    f"{section}.{suffix or ''}" if has_letters else section,
+                ]
                 title = " - ".join([t for t in title_bits if t])
                 wrapped = _wrap_section_html(title or section, page.html)
                 target.write_text(wrapped, encoding="utf-8")
                 logging.info("Wrote paginated %s page to %s", section, target)
+                if has_letters and idx == 0:
+                    legacy_target = filename.with_suffix(".bom.html")
+                    if legacy_target != target:
+                        legacy_target.write_text(wrapped, encoding="utf-8")
+                        logging.info(
+                            "Wrote legacy first paginated %s page to %s",
+                            section,
+                            legacy_target,
+                        )
             continue
 
         content = rendered.get(section if section != "index" else "index_table")
