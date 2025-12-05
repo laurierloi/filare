@@ -66,3 +66,47 @@ Fold quantity multiplier management into the main Filare CLI (no separate `filar
 ## Dependencies
 - Depends on Typer-based hierarchical CLI (docs/features/cli-typer-migration.md).
 - Requires structured multiplier parser (txt/json/yaml) and shared BOM integration points.
+
+## Data & Formats (Implementation Detail)
+- Default file name: `quantity_multipliers.txt` in project root unless `-m/--multiplier-file` is provided.
+- TXT format: one `key=value` per line, `#` for comments; keys match harness part identifiers; values are numeric (int/float).
+- JSON/YAML format: flat map of `{key: number}`; support optional metadata block `{version, generated_at, source_files}` for traceability.
+- Order of harness files: maintain sorted order unless `--order` is specified elsewhere; report the order used.
+
+## Validation Rules
+- Detect missing multiplier entries for referenced parts (strict mode fails).
+- Detect unused entries (warn).
+- Reject non-numeric values or duplicate keys with differing values.
+- Report source file and line (when available) for TXT/structured formats.
+
+## Reports (Machine-Friendly)
+- `--format json` outputs shape:
+  ```json
+  {
+    "status": "ok|error|warning",
+    "file": "quantity_multipliers.txt",
+    "missing": ["partA", "partB"],
+    "unused": ["oldPart"],
+    "applied": {"partA": 5, "partC": 2},
+    "errors": [{"key": "partX", "message": "non-numeric", "line": 12}]
+  }
+  ```
+- Table output mirrors these fields in human-readable form.
+
+## Non-Interactive & CI Behavior
+- All commands must support non-interactive mode (no prompts) with deterministic exit codes:
+  - 0: success (and warnings only if `--strict` not set)
+  - 1: validation/application errors
+  - 2: usage/config errors
+- `--dry-run` available on apply/report to avoid writing outputs during CI checks.
+
+## Backward Compatibility / Migration
+- Phase 1: `filare-qty` remains; prints deprecation notice and delegates to `filare harness qty ...`.
+- Phase 2: Warning escalates; help text points to new commands and examples.
+- Phase 3: Remove shim after major release (document timeline in changelog).
+
+## Implementation Notes
+- Centralize multiplier parsing/serialization for TXT/JSON/YAML to avoid drift.
+- Reuse shared BOM flow; inject multipliers early and emit per-harness + aggregated reports.
+- Add examples to `examples/` showing multiplier files in each format.
+- Update workflows/tutorials to include the new commands and `--json` reporting for CI.
