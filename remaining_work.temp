@@ -1,0 +1,3 @@
+Pending follow-up tasks (not yet started):
+- Add adapter layer exposing Pin/Loop/Connection via Pydantic models to prepare for dataclass phase-out without changing behavior.
+- File a REWORK issue describing the full migration plan for Connector/Cable/Wire dataclasses to Pydantic models (scope, risks, test needs).
