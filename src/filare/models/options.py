@@ -1,9 +1,25 @@
-from typing import List, Optional
+from typing import List, Optional, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from filare.models.colors import ColorOutputMode, SingleColor
 from filare.models.types import PlainText
+
+
+class ImportedSVGOptions(BaseModel):
+    src: str
+    width: Optional[str] = None
+    height: Optional[str] = None
+    align: Literal["left", "center", "right"] = "center"
+    offset_x: str = "0"
+    offset_y: str = "0"
+    preserve_aspect_ratio: bool = True
+
+    @field_validator("src", "width", "height", "offset_x", "offset_y", mode="before")
+    def _coerce_str(cls, value):
+        return str(value).strip() if value is not None else value
+
+    model_config = ConfigDict(extra="forbid")
 
 
 class PageOptions(BaseModel):
@@ -51,6 +67,7 @@ class PageOptions(BaseModel):
     include_bom: bool = True
     include_cut_diagram: bool = False
     include_termination_diagram: bool = False
+    diagram_svg: Optional[ImportedSVGOptions] = None
 
     @field_validator(
         "bgcolor",
@@ -112,6 +129,16 @@ class PageOptions(BaseModel):
     )
     def _coerce_float(cls, value):
         return float(value)
+
+    @field_validator("diagram_svg", mode="before")
+    def _coerce_diagram_svg(cls, value):
+        if not value:
+            return None
+        if isinstance(value, ImportedSVGOptions):
+            return value
+        if isinstance(value, str):
+            return {"src": value}
+        return value
 
     model_config = ConfigDict(
         arbitrary_types_allowed=True,

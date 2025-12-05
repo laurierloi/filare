@@ -3,6 +3,7 @@
 import copy
 import logging
 import re
+import filare
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -15,6 +16,12 @@ from filare.models.metadata import Metadata
 from filare.models.notes import Notes, get_page_notes
 from filare.models.options import PageOptions, get_page_options
 from filare.models.table_models import TablePage, TablePaginationOptions, letter_suffix
+from filare.render.imported_svg import (
+    build_import_container_style,
+    build_import_inner_style,
+    prepare_imported_svg,
+    strip_svg_declarations,
+)
 from filare.render.templates import get_template
 
 
@@ -55,19 +62,56 @@ class _RenderReplacements(BaseModel):
 
     options: PageOptions
     diagram: Optional[str]
+    diagram_container_class: str = ""
+    diagram_container_style: str = ""
     metadata: Metadata
     notes: Notes
     partno: str
+    generator: str = ""
+    title: str = ""
+    description: str = ""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    @classmethod
+    def from_render_context(
+        cls,
+        *,
+        options: PageOptions,
+        diagram: Optional[str],
+        diagram_container_class: str,
+        diagram_container_style: str,
+        metadata: Metadata,
+        notes: Notes,
+        partno: str,
+    ) -> Dict[str, object]:
+        """Build a replacements mapping with sensible defaults for templates."""
+        generator = f"{getattr(filare, 'APP_NAME', 'Filare')} {getattr(filare, '__version__', '')}"
+        return cls(
+            options=options,
+            diagram=diagram,
+            diagram_container_class=diagram_container_class,
+            diagram_container_style=diagram_container_style,
+            metadata=metadata,
+            notes=notes,
+            partno=partno,
+            generator=generator,
+            title=getattr(metadata, "title", ""),
+            description=getattr(metadata, "description", ""),
+        ).as_mapping()
 
     def as_mapping(self) -> Dict[str, object]:
         return {
             "options": self.options,
             "diagram": self.diagram,
+            "diagram_container_class": self.diagram_container_class,
+            "diagram_container_style": self.diagram_container_style,
             "metadata": self.metadata,
             "notes": self.notes,
             "partno": self.partno,
+            "generator": self.generator,
+            "title": self.title,
+            "description": self.description,
         }
 
 
@@ -151,20 +195,47 @@ def generate_html_output(
             paginated_pages=pagination_hints,
         ).render(options_for_render)
 
-    # TODO: instead provide a PageOption to generate or not the svg
-    diagram = _load_svg_diagram(filename) if template_name != "titlepage" else None
-    harness_number = _derive_harness_number(filename, metadata.sheet_current)
-    partno = _build_part_number(
-        metadata.pn, getattr(metadata, "revision", ""), harness_number, template_name
-    )
+    diagram_container_class = "diagram-default"
+    diagram_container_style = ""
+    svgdata = rendered.get("diagram")
+    if template_name != "titlepage" and svgdata is None:
+        svgdata = strip_svg_declarations(filename.with_suffix(".svg").read_text())
 
-    replacements = _RenderReplacements(
+    if getattr(options, "diagram_svg", None):
+        diagram_container_class = "diagram-has-import"
+        diagram_container_style = build_import_container_style(options.diagram_svg)
+        if svgdata is None:
+            svgdata = prepare_imported_svg(options.diagram_svg)
+        inner_style = build_import_inner_style(options.diagram_svg)
+        style_attr = f' style="{inner_style}"' if inner_style else ""
+        svgdata = f'<div class="diagram-import"{style_attr}>{svgdata}</div>'
+    elif svgdata is None:
+        svgdata = ""
+
+    rendered["diagram"] = svgdata
+
+    match = re.search(r"[0-9]+$", str(filename))
+    if not match:
+        harness_number = metadata.sheet_current + 1
+    else:
+        harness_number = int(match[0])
+
+    revision = ""
+    try:
+        revision = metadata.revision
+    except Exception:
+        revision = ""
+    partno = _build_part_number(metadata.pn, revision, harness_number, template_name)
+
+    replacements = _RenderReplacements.from_render_context(
         options=options_for_render,
-        diagram=diagram,
+        diagram=svgdata,
+        diagram_container_class=diagram_container_class,
+        diagram_container_style=diagram_container_style,
         metadata=metadata,
         notes=notes,
         partno=partno,
-    ).as_mapping()
+    )
 
     # TODO: all rendering should be done within their respective classes
 

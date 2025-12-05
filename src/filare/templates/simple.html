@@ -11,7 +11,7 @@
   {{ description }}
 </div>
 
-<div id="diagram">
+<div id="diagram"{% if diagram_container_class %} class="{{ diagram_container_class }}"{% endif %}{% if diagram_container_style %} style="{{ diagram_container_style }}"{% endif %}>
   {{ diagram }}
 </div>
 
