@@ -147,3 +147,35 @@ def test_set_dot_basics_respects_engine(monkeypatch):
     gv.set_dot_basics(dot, options)
     assert dot.engine == "neato"
     assert dot.graph_attrs and dot.node_attrs and dot.edge_attrs
+
+
+def test_set_dot_basics_accepts_dict_colors(monkeypatch):
+    class DummyDot:
+        def __init__(self):
+            self.body = []
+            self.engine = None
+            self.graph_attrs = []
+            self.node_attrs = []
+            self.edge_attrs = []
+
+        def attr(self, section, **kwargs):
+            if section == "graph":
+                self.graph_attrs.append(kwargs)
+            elif section == "node":
+                self.node_attrs.append(kwargs)
+            elif section == "edge":
+                self.edge_attrs.append(kwargs)
+
+    opts = type(
+        "Opts",
+        (),
+        {
+            "bgcolor": {"html": "#ffffff"},
+            "bgcolor_node": {"code_en": "BK"},
+            "fontname": "Arial",
+        },
+    )
+    dot = DummyDot()
+    gv.set_dot_basics(dot, opts)
+    assert dot.graph_attrs[0]["bgcolor"] == "#ffffff"
+    assert dot.node_attrs[0]["fillcolor"] in ("#000000", "bk")
