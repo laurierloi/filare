@@ -24,6 +24,7 @@ Add a tooling-only check that fails when rendered text in generated HTML overlap
 3) Integration:
    - Add a CI job on `beta`/`main` pushes (skip PRs) so it runs after examples/docs are built; keep runtime manageable (e.g., allow opt-in via workflow input/matrix).
    - Provide a Docker image (or `Dockerfile`) with Playwright/Chromium and required fonts so CI/local runs are consistent and do not depend on host setup; optionally wrap via `scripts/check-overlap.sh`.
+   - Use glob-based page matching for ignores; config file lives at repo root as `.filare-overlap-ignore.yml`.
 
 ## Ignore Mechanism
 - Support both selector-based and text-regex ignores.
@@ -43,6 +44,6 @@ Add a tooling-only check that fails when rendered text in generated HTML overlap
 - Ignore logic should drop any overlap pair if either node matches an ignore rule.
 
 ## Open Questions / Decisions Needed
-- Confirm the config file location/name (e.g., repo root `.filare-overlap-ignore.yml`).
-- Confirm whether page-scoped ignores should use path globs or regex.
+- Confirm whether any additional ignore file defaults are needed beyond `.filare-overlap-ignore.yml`.
+- Confirm whether page-scoped ignores should support advanced glob features (current plan: glob).
 - Decide whether to add a follow-up feature to manage ignore baselines (e.g., auto-suggest ignores when overlaps are deemed acceptable).
