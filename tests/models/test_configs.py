@@ -71,6 +71,13 @@ def test_connector_config_pincolors_dict_and_pins_dict():
     _round_trip(cfg)
 
 
+def test_connector_config_pinlabels_tuple_sets_pincount():
+    cfg = ConnectorConfig(designator="JZ", pinlabels=("1", "2"))
+    assert cfg.pincount == 2
+    assert list(cfg.pinlabels) == ["1", "2"]
+    _round_trip(cfg)
+
+
 def test_cable_config_round_trip(cable_config_data):
     cfg = CableConfig(**cable_config_data)
     assert cfg.wirecount == 2
@@ -82,6 +89,12 @@ def test_cable_config_colors_string_and_wirecount_derivation():
     cfg = CableConfig(designator="CX", colors="RD")
     assert cfg.colors == ["RD"]
     assert cfg.wirecount == 1
+    _round_trip(cfg)
+
+
+def test_cable_config_wirecount_preserved_when_set():
+    cfg = CableConfig(designator="CY", wirecount=3, wires=[])
+    assert cfg.wirecount == 3
     _round_trip(cfg)
 
 
@@ -102,6 +115,14 @@ def test_connection_config_accepts_tuple_and_set():
     assert cfg.endpoints == ["J1:1", "J2:2"]
     cfg2 = ConnectionConfig(endpoints={"J1:1", "J2:3"})
     assert set(cfg2.endpoints) == {"J1:1", "J2:3"}
+
+
+def test_page_options_config_formats_none_and_list():
+    cfg = PageOptionsConfig(formats=None)
+    assert cfg.formats is None
+    cfg2 = PageOptionsConfig(formats=["svg", "pdf"])
+    assert cfg2.formats == ["svg", "pdf"]
+    _round_trip(cfg2)
 
 
 def test_metadata_config_round_trip(metadata_config_data):
