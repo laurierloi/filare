@@ -111,7 +111,7 @@ class ColorPaddingUnsupported(FilareModelException):
         super().__init__(f"Padding not supported for len {length}")
 
 
-class FileResolutionError(FilareToolsException):
+class FileResolutionError(FilareToolsException, FileNotFoundError):
     """Raised when a file cannot be resolved in allowed search paths."""
 
     def __init__(self, filename, search_paths):
@@ -123,11 +123,13 @@ class FileResolutionError(FilareToolsException):
         super().__init__(f"{filename} was not found in: \n{paths_display}")
 
 
-class UnsupportedLoopSide(FilareRenderException):
+class UnsupportedLoopSide(FilareRenderException, ValueError):
     """Raised when loop rendering cannot determine a connector side."""
 
-    def __init__(self):
-        super().__init__("No side for loops")
+    def __init__(self, designator: str):
+        super().__init__(
+            f"Connector {designator}: no side set for loops; set ports_left/ports_right or loop side."
+        )
 
 
 class PinResolutionError(FilareModelException):
