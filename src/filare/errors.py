@@ -18,7 +18,7 @@ class FilareRenderException(FilareBaseException):
     """Raised for rendering errors."""
 
 
-class FilareToolsException(FilareBaseException):
+class FilareToolsException(FilareBaseException, ValueError):
     """Raised for tooling/utility errors."""
 
 
@@ -122,7 +122,11 @@ class FileResolutionError(FilareToolsException, FileNotFoundError):
         paths_display = (
             "\n".join(str(p) for p in search_paths) if search_paths else str(filename)
         )
-        super().__init__(f"{filename} was not found in: \n{paths_display}")
+        self.message = f"{filename} was not found in: \n{paths_display}"
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return self.message
 
 
 class UnsupportedLoopSide(FilareRenderException, ValueError):
@@ -142,14 +146,14 @@ class PinResolutionError(FilareModelException):
         super().__init__(f"{connector}: {message}")
 
 
-class MetadataValidationError(FilareModelException):
+class MetadataValidationError(FilareModelException, ValueError):
     """Raised for invalid metadata values."""
 
     def __init__(self, message: str):
         super().__init__(message)
 
 
-class PartNumberValidationError(FilareModelException):
+class PartNumberValidationError(FilareModelException, ValueError):
     """Raised when part number fields are malformed."""
 
     def __init__(self, value):

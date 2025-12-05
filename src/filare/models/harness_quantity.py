@@ -87,9 +87,11 @@ class HarnessQuantity(BaseModel):
                     input("Quantity multiplier for {}? ".format(name))
                 )
             except ValueError:
-                from filare.errors import FilareToolsException
-
-                raise FilareToolsException("Quantity multiplier must be an integer!")
+                logging.warning(
+                    "Quantity multiplier must be an integer for %s; defaulting to 1",
+                    name,
+                )
+                self.multipliers[name] = 1
 
     def save_qty_multipliers_to_file(self):
         """Write collected multipliers to the configured JSON file."""

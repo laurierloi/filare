@@ -123,6 +123,8 @@ def clean_whitespace(inp):
 
 
 def smart_file_resolve(filename: Path, possible_paths: (Path, List[Path])) -> Path:
+    if isinstance(filename, str):
+        filename = Path(filename)
     if isinstance(possible_paths, Path) or isinstance(possible_paths, str):
         possible_paths = [possible_paths]
     if filename.is_absolute():

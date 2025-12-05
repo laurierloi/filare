@@ -5,6 +5,7 @@ import logging
 import pytest
 
 from filare.models.harness_quantity import HarnessQuantity
+from filare.errors import FilareToolsException
 
 
 def test_harness_quantity_reads_existing_file(tmp_path):
@@ -33,7 +34,7 @@ def test_harness_quantity_bad_json_raises(tmp_path):
     qty_file = tmp_path / "quantity_multipliers.txt"
     qty_file.write_text("not json")
     hq = HarnessQuantity([tmp_path / "H1.yml"], output_dir=tmp_path)
-    with pytest.raises(ValueError):
+    with pytest.raises(FilareToolsException):
         hq.fetch_qty_multipliers_from_file()
 
 
@@ -41,7 +42,7 @@ def test_harness_quantity_missing_multiplier_asserts(tmp_path):
     qty_file = tmp_path / "quantity_multipliers.txt"
     qty_file.write_text(json.dumps({"OTHER": 1}))
     hq = HarnessQuantity([tmp_path / "H1.yml"], output_dir=tmp_path)
-    with pytest.raises(AssertionError):
+    with pytest.raises(FilareToolsException):
         hq.fetch_qty_multipliers_from_file()
 
 
