@@ -9,7 +9,19 @@ from weasyprint import HTML
 def generate_pdf_output(
     filename_list: List[Path],
 ):
-    """Generate a pdf output"""
+    """Render a list of HTML files into a single PDF.
+
+    Args:
+        filename_list: List of harness HTML paths (or a single path). When multiple
+            files are provided, the PDF is named after the containing directory.
+
+    Returns:
+        None. Writes a PDF next to the input files.
+
+    Raises:
+        FileNotFoundError: If an input HTML file is missing.
+        Exception: If WeasyPrint fails to render or write the PDF.
+    """
     if isinstance(filename_list, Path):
         filename_list = [filename_list]
         output_path = filename_list[0].with_suffix(".pdf")

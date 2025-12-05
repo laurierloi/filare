@@ -27,14 +27,24 @@ mm2_equiv_table = {v: k for k, v in awg_equiv_table.items()}
 
 
 def awg_equiv(mm2):
+    """Return the AWG gauge string for a given cross-sectional area in mm²."""
     return awg_equiv_table.get(str(mm2), "Unknown")
 
 
 def mm2_equiv(awg):
+    """Return the mm² cross-sectional area string for a given AWG gauge."""
     return mm2_equiv_table.get(str(awg), "Unknown")
 
 
 def expand(yaml_data):
+    """Expand range-like YAML entries (e.g., ``[1-3]``) into explicit lists.
+
+    Args:
+        yaml_data: Scalar or list that may include strings in ``a-b`` form.
+
+    Returns:
+        List with ranges expanded and individual entries coerced to int when possible.
+    """
     # yaml_data can be:
     # - a singleton (normally str or int)
     # - a list of str or int

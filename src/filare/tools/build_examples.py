@@ -51,6 +51,16 @@ generated_extensions = (
 
 
 def collect_filenames(description, groupkey, ext_list):
+    """Collect a sorted list of files in a group folder.
+
+    Args:
+        description: Human-friendly prefix for log output.
+        groupkey: Key in `groups` indicating which collection to read.
+        ext_list: List of extensions/globs to include (e.g., [".yml"]).
+
+    Returns:
+        A sorted list of matching Path objects.
+    """
     path = groups[groupkey]["path"]
     patterns = [f"{groups[groupkey]['prefix']}*{ext}" for ext in ext_list]
     if ext_list != input_extensions and readme in groups[groupkey]:
@@ -60,6 +70,15 @@ def collect_filenames(description, groupkey, ext_list):
 
 
 def build_generated(groupkeys, output_base=None):
+    """Build examples/tutorials for the provided group keys via the CLI.
+
+    Args:
+        groupkeys: Iterable of keys from `groups` to process.
+        output_base: Optional root directory to place generated artifacts.
+
+    Returns:
+        None. Outputs rendered assets and document manifests to disk.
+    """
     output_base = Path(output_base) if output_base else None
     all_dest_paths = []
     for key in groupkeys:
@@ -124,6 +143,14 @@ def build_generated(groupkeys, output_base=None):
 
 
 def clean_generated(groupkeys):
+    """Remove generated artifacts for the provided groups.
+
+    Args:
+        groupkeys: Iterable of keys from `groups` indicating which outputs to clean.
+
+    Returns:
+        None. Deletes rendered assets and document manifests for a clean rebuild.
+    """
     for key in groupkeys:
         # collect and remove files
         for filename in collect_filenames("Cleaning", key, generated_extensions):
