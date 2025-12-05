@@ -63,7 +63,6 @@ def test_harness_output_and_tables(tmp_path, basic_metadata, monkeypatch):
 
     harness._graph = FakeGraph()
 
-    monkeypatch.setattr(settings, "enable_cut_termination", True)
     monkeypatch.setattr(harness_module, "embed_svg_images_file", lambda path: None)
     template_calls = []
 

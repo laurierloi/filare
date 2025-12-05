@@ -125,7 +125,14 @@ def _apply_document_to_harness(
                     options_data[field] = SingleColor(**value)
                 except Exception:
                     pass
-        int_fields = ["bom_rows", "titleblock_rows", "pad"]
+        int_fields = [
+            "bom_rows",
+            "titleblock_rows",
+            "pad",
+            "bom_rows_per_page",
+            "cut_rows_per_page",
+            "termination_rows_per_page",
+        ]
         for field in int_fields:
             value = options_data.get(field)
             if isinstance(value, str) and value.isdigit():

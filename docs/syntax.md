@@ -295,6 +295,23 @@ fontname: <str> # Default = 'arial'
 # about additional components inside the diagram node (connector/cable box).
 # If False, show all info about additional components inside the diagram node.
 mini_bom_mode: <bool> # Default = True
+
+# BOM rendering and pagination
+include_bom: <bool> # Default = True
+split_bom_page: <bool> # Default = False; when true, BOM renders to <name>.bom.html
+bom_rows_per_page: <int> # Optional; when set with split_bom_page, paginate BOM rows with lettered suffixes
+bom_force_single_page: <bool> # Default = False; keep BOM on a single page even if bom_rows_per_page is set
+
+# Split tables and index
+split_notes_page: <bool> # Default = False; split notes into <name>.notes.html
+split_index_page: <bool> # Default = False; split index table into <name>.index.html
+table_page_suffix_letters: <bool> # Default = True; use a/b/c suffixes when pagination produces multiple pages
+
+# Cut and termination diagrams
+include_cut_diagram: <bool> # Default = False
+include_termination_diagram: <bool> # Default = False
+cut_rows_per_page: <int> # Optional; paginate cut tables when set
+termination_rows_per_page: <int> # Optional; paginate termination tables when set
 ```
 
 ## BOM items and additional components

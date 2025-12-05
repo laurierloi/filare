@@ -19,6 +19,11 @@ class PageOptions(BaseModel):
     split_bom_page: bool = False
     split_notes_page: bool = False
     split_index_page: bool = False
+    bom_rows_per_page: Optional[int] = None
+    bom_force_single_page: bool = False
+    table_page_suffix_letters: bool = True
+    cut_rows_per_page: Optional[int] = None
+    termination_rows_per_page: Optional[int] = None
 
     # diagram colors
     bgcolor: SingleColor = Field(default_factory=lambda: SingleColor(inp="WH"))
@@ -75,6 +80,29 @@ class PageOptions(BaseModel):
         if isinstance(value, list):
             return len(value)
         return int(value)
+
+    @field_validator(
+        "bom_rows_per_page",
+        "cut_rows_per_page",
+        "termination_rows_per_page",
+        mode="before",
+    )
+    def _coerce_optional_int(cls, value):
+        if value in (None, ""):
+            return None
+        return int(value)
+
+    @model_validator(mode="after")
+    def _normalize_row_counts(self):
+        """Normalize row count fields to ints when provided as strings."""
+        for field in ("bom_rows_per_page", "cut_rows_per_page", "termination_rows_per_page"):
+            value = getattr(self, field)
+            if isinstance(value, str):
+                try:
+                    setattr(self, field, int(value))
+                except ValueError:
+                    setattr(self, field, None)
+        return self
 
     @field_validator(
         "bom_row_height",
