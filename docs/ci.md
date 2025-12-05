@@ -1,6 +1,18 @@
 # Filare CI Pipeline
 
-This repository uses a GitHub Actions workflow (`.github/workflows/ci.yml`) that runs on pushes and pull requests to `main`. It is split into staged jobs so you can see where failures occur and reuse artifacts across steps.
+This repository uses:
+
+- A main CI workflow (`.github/workflows/ci.yml`, named “Filare Main CI (release path)”) that runs on pushes to `main`/`beta` and on pull requests targeting `main` (release/publish path).
+- A beta PR CI workflow (`.github/workflows/pr-beta-ci.yml`) that runs on pull requests targeting `beta` (lint → tests only).
+- A lightweight guard workflow (`.github/workflows/pr-target-beta.yml`) that enforces the beta-first flow by blocking PRs that bypass `beta` or attempt to merge into `main` without prior validation.
+
+## Branch & validation flow
+
+- Default PR base is `beta`; set the repository’s default branch to `beta` in GitHub settings so the GitHub UI/`gh pr create` offer `beta` by default.
+- Beta PRs run `.github/workflows/pr-beta-ci.yml` (lint, then tests).
+- A PR targeting `main` is allowed only when the head branch is this repository’s `beta` branch and the PR carries the `validated` label (added by the validation agent); it runs the full `.github/workflows/ci.yml`.
+- All other PR targets will fail the `Enforce beta as default base` check and must be retargeted to `beta`.
+- Ensure the repository has a `validated` label so the validation agent can tag the `beta` → `main` promotion PR.
 
 ## Jobs / Stages
 
@@ -63,5 +75,5 @@ This repository uses a GitHub Actions workflow (`.github/workflows/ci.yml`) that
 
 1. Edit `.github/workflows/ci.yml` to adjust stages, Python/Node versions, or paths.
 2. Ensure secrets (`PYPI_TOKEN`) are set in the repo settings.
-3. Push to `main` to exercise all stages; PRs run lint/tests/examples.
+3. Push to `beta` or `main` to exercise lint/tests/examples; push to `main` to run docs/publish/release. PRs to `beta` run the dedicated beta PR lint/test workflow; PRs to `main` run the full CI.
 4. For gh-pages, confirm Pages is enabled for the `gh-pages` branch.
