@@ -75,10 +75,7 @@ def test_bom_pagination_outputs_lettered_pages(tmp_path):
     assert base.with_suffix(".bom.c.html").exists()
     assert not base.with_suffix(".bom.html").exists()
 
-    index_html = base.with_suffix(".index.html").read_text(encoding="utf-8")
-    assert "h.bom.a" in index_html
-    assert "h.bom.b" in index_html
-    assert "h.bom.c" in index_html
+    assert not base.with_suffix(".index.html").exists()
 
 
 def test_cut_pagination_adds_lettered_pages_and_sheet_suffix(tmp_path):
@@ -113,7 +110,4 @@ def test_cut_pagination_adds_lettered_pages_and_sheet_suffix(tmp_path):
     cut_html = base.with_suffix(".cut.a.html").read_text(encoding="utf-8")
     assert "Sheet 1a" in cut_html
 
-    index_html = base.with_suffix(".index.html").read_text(encoding="utf-8")
-    assert "h.cut.a" in index_html
-    assert "h.cut.b" in index_html
-    assert "h.cut.c" in index_html
+    assert not base.with_suffix(".index.html").exists()
