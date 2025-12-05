@@ -38,7 +38,7 @@ cables:
   C1:
     wirecount: 16
     length: 7
-    colors: [RD, BK, GN, WH, BU, YE, VT, GY, OG, BN, PK, TN, RDWH, BKWH, GNWH, BUWH]
+    colors: [RD, BK, GN, WH, BU, YE, VT, GY, OG, BN, PK, RDWH, BKWH, GNWH, BUWH, OGWH]
 
 connections:
   - - J1: [1,2,3,4,5,6,7,8]

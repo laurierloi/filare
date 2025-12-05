@@ -92,6 +92,18 @@ class PageOptions(BaseModel):
             return None
         return int(value)
 
+    @model_validator(mode="after")
+    def _normalize_row_counts(self):
+        """Normalize row count fields to ints when provided as strings."""
+        for field in ("bom_rows_per_page", "cut_rows_per_page", "termination_rows_per_page"):
+            value = getattr(self, field)
+            if isinstance(value, str):
+                try:
+                    setattr(self, field, int(value))
+                except ValueError:
+                    setattr(self, field, None)
+        return self
+
     @field_validator(
         "bom_row_height",
         "titleblock_row_height",
