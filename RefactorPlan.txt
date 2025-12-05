@@ -4,7 +4,7 @@ Outstanding refactor tasks (completed items removed)
 - 1.6 src/filare/models/configs.py 88%
 - 1.7 src/filare/models/connector.py 85%
 - 1.8 src/filare/models/dataclasses.py 86%
-- 1.9 src/filare/models/harness.py 72%
+- 1.9 src/filare/models/harness.py 83%
 - 1.17 src/filare/tools/build_examples.py 81%
 Note: while closing these gaps, flag and record any dead/unreachable code paths under this task (e.g., unreachable branches) so they can be removed instead of force-covered.
 
