@@ -10,6 +10,7 @@ from filare.models.utils import awg_equiv, mm2_equiv, remove_links
 
 
 class PartNumberInfo(BaseModel):
+    """Container for part-identifying metadata used in BOM output."""
     pn: Optional[str] = ""
     manufacturer: Optional[str] = ""
     mpn: Optional[str] = ""
@@ -26,6 +27,7 @@ class PartNumberInfo(BaseModel):
     }
 
     def __bool__(self):
+        """Evaluate truthy if any identifying field is set."""
         return bool(
             self.pn or self.manufacturer or self.mpn or self.supplier or self.spn
         )
@@ -50,14 +52,17 @@ class PartNumberInfo(BaseModel):
 
     @property
     def bom_keys(self):
+        """Return ordered BOM field keys."""
         return list(self.BOM_KEY_TO_COLUMNS.keys())
 
     @property
     def bom_dict(self):
+        """Return a dict of BOM fields keyed by internal names."""
         return {k: self[k] for k in self.bom_keys}
 
     @property
     def str_list(self):
+        """Return a human-readable list of formatted part metadata strings."""
         l = ["", "", ""]
         if self.pn:
             l[0] = f"P/N: {self.pn}"
@@ -80,6 +85,7 @@ class PartNumberInfo(BaseModel):
         return [i for i in l if i]
 
     def copy(self):
+        """Shallow copy of part number fields."""
         return PartNumberInfo(
             pn=self.pn,
             manufacturer=self.manufacturer,
@@ -89,6 +95,7 @@ class PartNumberInfo(BaseModel):
         )
 
     def clear_per_field(self, op, other):
+        """Clear matching or non-matching fields based on an operator."""
         part = self.copy()
 
         if other is None:
