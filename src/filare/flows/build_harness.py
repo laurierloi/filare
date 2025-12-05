@@ -32,7 +32,6 @@ from filare.errors import (
     MissingOutputSpecification,
     MultipleSeparatorError,
     FilareFlowException,
-    UnknownTemplateDesignator,
 )
 
 from .render_outputs import render_harness_outputs
@@ -424,7 +423,12 @@ def build_harness_from_files(
                         designator=designator, **template_cables[template]
                     )
                 else:
-                    raise UnknownTemplateDesignator(template)
+                    known_connectors = ", ".join(sorted(template_connectors))
+                    known_cables = ", ".join(sorted(template_cables))
+                    raise ValueError(
+                        f"Unknown template/designator '{template}' "
+                        f"(known connectors: {known_connectors or 'none'}; known cables: {known_cables or 'none'})"
+                    )
 
             alternate_type()
 
