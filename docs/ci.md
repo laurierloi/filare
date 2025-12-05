@@ -2,7 +2,7 @@
 
 This repository uses:
 
-- A main CI workflow (`.github/workflows/ci.yml`) that runs on pushes to `main`/`beta` and on pull requests targeting `main`.
+- A main CI workflow (`.github/workflows/ci.yml`, named “Filare Main CI (release path)”) that runs on pushes to `main`/`beta` and on pull requests targeting `main` (release/publish path).
 - A beta PR CI workflow (`.github/workflows/pr-beta-ci.yml`) that runs on pull requests targeting `beta` (lint → tests only).
 - A lightweight guard workflow (`.github/workflows/pr-target-beta.yml`) that enforces the beta-first flow by blocking PRs that bypass `beta` or attempt to merge into `main` without prior validation.
 
