@@ -234,6 +234,8 @@ class Metadata(
 
     @property
     def revision(self):
+        if not self.revisions_list:
+            return ""
         return self.revisions_list[-1].revision
 
     @property

@@ -82,15 +82,25 @@ options:  # dictionary of common attributes for the whole harness
   hide_disconnected_pins: <bool>  # defaults to false
 
   # loops
-  loops: <List[loop]>  # every list item is a loop object representing two pins
-                 # on the connector that are to be shorted
-	  loop:
-		- <first>: the first <pin> of the loop
-		- <second>: the second <pin> of the loop
-		- <side>: either "LEFT" or "RIGHT"
-		- show_label: <bool> defaults to true, will show the loop label
+  loops:  # each item shorts two pins on the connector
+    - first: <pin>     # pin number or pin label
+      second: <pin>    # pin number or pin label
+      side: <LEFT|RIGHT|null>  # optional; anchor the loop to a side
+      show_label: <bool>       # defaults to true; hide the label when false
+      color: <color>           # optional stroke color
+    # shorthand tuple/list form is also allowed:
+    # - [<pin>, <pin>]  # treated as {first: <pin>, second: <pin>}
+
+  # example:
+  # loops:
+  #   - first: 1
+  #     second: 2
+  #     side: LEFT
+  #   - [3, 4]  # uses default side/label/color
 
 ```
+
+Loops mark both pins as connected and render a short jumper on the chosen side (when provided). If `side` is omitted, Filare chooses a side based on the connector layout. Set `show_label: false` to hide the loop label for purely visual jumpers, and use `color` to highlight the jumper trace.
 
 ## Cable attributes
 
@@ -402,6 +412,15 @@ image:
 ```
 
 For more fine grained control over the image parameters, please see [`advanced_image_usage.md`](advanced_image_usage.md).
+
+## Quantity multipliers (shared BOM scaling)
+
+When generating a shared BOM across multiple harnesses, you can scale quantities with a multiplier file:
+
+1. Run `uv run filare-qty <harness.yml> [--multiplier-file-name <path>] [--force-new]` to create or update a JSON file (default `quantity_multipliers.txt`) with `{<harness_name>: <int>}` entries.
+2. Run `uv run filare <harness.yml> --use-qty-multipliers [--multiplier-file-name <path>] ...` to apply those multipliers while building `shared_bom.tsv`.
+
+If the multiplier file is missing, `filare-qty` prompts for integer values. To protect an existing file, omit `--force-new`. Place the multiplier file alongside your harnesses or point `--multiplier-file-name` to a shared location (e.g., `outputs/quantity_multipliers.txt`).
 
 ## Multiline strings
 
