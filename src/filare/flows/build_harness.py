@@ -105,6 +105,9 @@ def _build_metadata(yaml_file, yaml_data, extra_metadata, metadata_output_name):
             **{
                 "output_name": metadata_output_name,
                 "title": yaml_file.stem,
+                "pn": yaml_file.stem,
+                "company": "",
+                "address": "",
             },
             **yaml_data.get("metadata", {}),
             **extra_metadata,
@@ -355,9 +358,11 @@ def build_harness_from_files(
             yaml_file, yaml_data, extra_metadata, metadata_output_name
         )
     except TypeError as exc:
-        raise FilareFlowException(
-            "Metadata definition is missing an argument, refer to trace for which one; see src/filare/metadata.py for field definitions"
-        ) from exc
+        if output_formats:
+            raise FilareFlowException(
+                "Metadata definition is missing an argument, refer to trace for which one; see src/filare/metadata.py for field definitions"
+            ) from exc
+        raise
 
     harness = Harness(
         metadata=metadata,

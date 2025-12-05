@@ -820,7 +820,7 @@ class Cable(WireClass):
                         )
                 else:
                     raise ValueError(
-                        f"Cable {self.designator}: part data lists only supported for bundles"
+                        f"Cable {self.designator}: part data lists only supported for bundles (wirecount {self.wirecount})"
                     )
 
         # all checks have passed
