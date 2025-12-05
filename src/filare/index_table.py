@@ -23,6 +23,7 @@ class IndexTableRow:
     link: str = ""
 
     def get_items(self, for_pdf=False):
+        """Return the tuple of column values for this row."""
         if self.content:
             return (
                 self.page,
@@ -40,6 +41,7 @@ class IndexTableRow:
             return (self.sheet, self.get_formatted_page(for_pdf), self.notes)
 
     def get_formatted_page(self, for_pdf):
+        """Format the page column, hyperlinking HTML when not generating PDF."""
         target = str(self.link or self.page)
         if for_pdf:
             return target
@@ -57,10 +59,12 @@ class IndexTable:
 
     @staticmethod
     def use_quantity_column(metadata: PagesMetadata):
+        """Return True if quantity column should be shown (qty multipliers enabled)."""
         return metadata is not None and metadata.use_qty_multipliers
 
     @staticmethod
     def get_index_table_header(metadata: PagesMetadata = None, include_content=False):
+        """Build the header tuple, optionally skipping quantity or adding content."""
         if include_content:
             return ("Name", "Content", "Page")
         skip = []
@@ -73,6 +77,7 @@ class IndexTable:
     def from_pages_metadata(
         cls, metadata: PagesMetadata, options=None, paginated_pages: Dict[str, List[str]] = None
     ):
+        """Construct an index table from rendered pages metadata."""
         # detect split pages
         split_types = [
             ("bom", "BOM"),

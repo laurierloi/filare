@@ -35,6 +35,7 @@ class Tag:
         self.attribs = Attribs({**kwargs})
 
     def update_attribs(self, **kwargs):
+        """Merge additional attributes into the tag."""
         for k, v in kwargs.items():
             self.attribs[k] = v
 
@@ -44,6 +45,7 @@ class Tag:
 
     @property
     def auto_flat(self):
+        """Decide if this tag should render on one line based on content."""
         if self.flat is not None:  # user specified
             return self.flat
         if not _is_iterable_not_str(self.contents):  # catch str, int, float, ...
@@ -52,6 +54,7 @@ class Tag:
 
     @property
     def is_empty(self):
+        """Return True if the rendered contents are empty."""
         return self.get_contents(force_flat=True) == ""
 
     def indent_lines(self, lines, force_flat=False):
@@ -62,6 +65,7 @@ class Tag:
             return "\n".join(f"{indenter}{line}" for line in lines.split("\n"))
 
     def get_contents(self, force_flat=False):
+        """Render child contents, honoring flat/indent settings."""
         separator = "" if self.auto_flat or force_flat else "\n"
         if _is_iterable_not_str(self.contents):
             return separator.join(
@@ -77,6 +81,7 @@ class Tag:
             return self.indent_lines(str(self.contents), force_flat)
 
     def __repr__(self):
+        """Render the tag and contents as HTML."""
         separator = "" if self.auto_flat else "\n"
         if self.delete_if_empty and self.is_empty:
             return ""

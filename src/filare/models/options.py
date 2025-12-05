@@ -146,10 +146,16 @@ class PageOptions(BaseModel):
 
 
 def get_page_options(parsed_data, page_name: str):
-    """Get the page options
+    """Resolve page-specific options with sensible fallbacks.
 
-    uses: the page\'s options   -> general options -> default options
-        ('{page_name}_options') ->    ('options')  -> {}
+    Precedence: `{page_name}_options` -> `options` -> defaults.
+
+    Args:
+        parsed_data: Parsed YAML dict for the harness.
+        page_name: Page type name (e.g., "harness", "title").
+
+    Returns:
+        PageOptions instance combining specific and global overrides.
     """
     page_options_name = f"{page_name}_options"
     if page_options_name in parsed_data:
