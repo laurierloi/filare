@@ -6,7 +6,7 @@ on:
     tags:
       - "v*"
   pull_request:
-    branches: [beta, main]
+    branches: [main]
 
 permissions:
   contents: write
