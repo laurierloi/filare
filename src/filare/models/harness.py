@@ -28,6 +28,7 @@ from filare.render.graphviz import (
     gv_node_connector,
     set_dot_basics,
 )
+from filare.render.imported_svg import prepare_imported_svg
 from filare.render.html import generate_html_output
 from filare.render.pdf import generate_pdf_output
 from filare.render.templates import get_template
@@ -434,6 +435,8 @@ class Harness:
 
     @property
     def svg(self):
+        if getattr(self.options, "diagram_svg", None):
+            return prepare_imported_svg(self.options.diagram_svg)
         graph = self.graph
         return embed_svg_images(graph.pipe(format="svg").decode("utf-8"), Path.cwd())
 
@@ -444,9 +447,19 @@ class Harness:
         cleanup: bool = True,
         fmt: tuple = ("html", "png", "svg", "tsv"),
     ) -> None:
+        fmt_list = list(fmt)
+        imported_svg_markup = None
+        if getattr(self.options, "diagram_svg", None):
+            imported_svg_markup = prepare_imported_svg(self.options.diagram_svg)
+            if "png" in fmt_list:
+                logging.info(
+                    "diagram_svg set; skipping PNG generation (SVG/HTML will use imported asset)"
+                )
+                fmt_list = [f for f in fmt_list if f != "png"]
+
         graph = self.graph
         rendered = set()
-        for f in fmt:
+        for f in fmt_list:
             if f in ("png", "svg", "html"):
                 render_format = "svg" if f == "html" else f
                 if render_format in rendered:
@@ -454,22 +467,27 @@ class Harness:
                 graph.format = render_format
                 graph.render(filename=filename, view=view, cleanup=cleanup)
                 rendered.add(render_format)
-        if "svg" in fmt or "html" in fmt:
-            embed_svg_images_file(filename.with_suffix(".svg"))
-        if "gv" in fmt:
+        if "svg" in fmt_list or "html" in fmt_list:
+            if imported_svg_markup:
+                filename.with_suffix(".svg").write_text(imported_svg_markup)
+            else:
+                embed_svg_images_file(filename.with_suffix(".svg"))
+        if "gv" in fmt_list:
             graph.save(filename=filename.with_suffix(".gv"))
-        if "tsv" in fmt and self.options.include_bom:
+        if "tsv" in fmt_list and self.options.include_bom:
             bom_render = BomContent(self.bom).get_bom_render(
                 options=BomRenderOptions(
                     restrict_printed_lengths=False,
                 )
             )
             filename.with_suffix(".tsv").open("w").write(bom_render.as_tsv())
-        if "csv" in fmt:
+        if "csv" in fmt_list:
             print("CSV output is not yet supported")
-        if "html" in fmt:
+        if "html" in fmt_list:
             bom_for_html = self.bom if self.options.include_bom else {}
             rendered = {}
+            if imported_svg_markup:
+                rendered["diagram"] = imported_svg_markup
             if getattr(self.options, "include_cut_diagram", False):
                 cut_rows, cut_html = _build_cut_table(self)
                 rendered["cut_rows"] = cut_rows
@@ -486,9 +504,9 @@ class Harness:
                 self.notes,
                 rendered,
             )
-        if "pdf" in fmt:
+        if "pdf" in fmt_list:
             generate_pdf_output(filename)
-        if "html" in fmt and not "svg" in fmt:
+        if "html" in fmt_list and "svg" not in fmt_list:
             filename.with_suffix(".svg").unlink()
 
 

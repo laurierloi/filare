@@ -29,6 +29,7 @@ tutorial/*
 outputs/*
 !examples/*.yml
 !examples/*.document.yaml
+!examples/drawio-import-demo.svg
 !tutorial/*.yml
 !tutorial/*.md
 

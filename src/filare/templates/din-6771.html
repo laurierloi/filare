@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
 
-    #diagram svg, #diagram img {
+    #diagram.diagram-default svg, #diagram.diagram-default img {
       max-width: 95%;
       max-height: 100%;
       position: relative;
@@ -41,7 +41,7 @@
 {% endblock %}
 
 {% block frame_content %}
-    <div id="diagram">
+    <div id="diagram"{% if diagram_container_class %} class="{{ diagram_container_class }}"{% endif %}{% if diagram_container_style %} style="{{ diagram_container_style }}"{% endif %}>
       {{ diagram }}
     </div>
 

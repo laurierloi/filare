@@ -314,6 +314,24 @@ cut_rows_per_page: <int> # Optional; paginate cut tables when set
 termination_rows_per_page: <int> # Optional; paginate termination tables when set
 ```
 
+### Importing external SVG diagrams (DrawIO)
+
+You can replace the auto-generated diagram with a DrawIO-exported SVG and control how it is placed on the page:
+
+```yaml
+options:
+  diagram_svg:
+    src: diagrams/power-page.svg   # path to the DrawIO-exported SVG
+    width: 90%                     # optional; defaults to 95% max width
+    height: 180mm                  # optional max/fixed height
+    align: left                    # left, center (default), or right
+    offset_x: 5mm                  # optional translation on the page
+    offset_y: 0
+    preserve_aspect_ratio: true    # set to false to allow stretching
+```
+
+Relative `src` paths are resolved from the harness YAML file location (and any `options.image_paths`). The SVG is inlined (including linked images) and used for both HTML and SVG outputs; PDFs generated from HTML will include the imported diagram as well. When `diagram_svg` is set, PNG output is skipped to avoid mixing Graphviz and DrawIO renders.
+
 ## BOM items and additional components
 
 Connectors (both regular, and auto-generated), cables, and wires of a bundle are automatically added to the BOM,
