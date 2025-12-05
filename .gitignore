@@ -28,6 +28,7 @@ examples/*
 tutorial/*
 outputs/*
 !examples/*.yml
+!examples/*.document.yaml
 !tutorial/*.yml
 !tutorial/*.md
 
