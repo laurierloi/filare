@@ -34,6 +34,12 @@ groups = {
         "path": base_dir / "examples",
         "prefix": "demo",
     },
+    "multi-page": {
+        "path": base_dir / "examples" / "multi-page",
+        "prefix": "ex",
+        readme: [],  # Include no files
+        "title": "Multi-page Examples",
+    },
 }
 
 input_extensions = [".yml"]
