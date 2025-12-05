@@ -38,3 +38,17 @@ def test_connector_model_coercions_and_category():
     gc = model.to_graphical_component()
     assert gc.designator == "X2"
     assert str(gc.color).startswith("#") or str(gc.color)
+
+
+def test_connector_model_simple_style_and_pinlabels_dict():
+    model = ConnectorModel(
+        designator="S1",
+        style="simple",
+        pinlabels=["A"],
+        pincolors=["RD"],
+    )
+    conn = model.to_connector()
+    assert conn.pincount == 1
+    assert conn.style == "simple"
+    assert conn.pinlabels == ["A"]
+    assert conn.pincolors[0] == "RD"
