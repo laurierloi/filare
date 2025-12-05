@@ -1,0 +1,91 @@
+metadata:
+  pn: MP-EX02
+  title: Multi-page BOM/Cut/Termination Example 02
+  company: ACME Wiring
+  address: 1 Cable Way
+  sheet_total: 1
+  sheet_current: 1
+  sheet_name: ex02
+  output_dir: .
+  titlepage: titlepage
+  output_names: [ex02]
+  files: [ex02.yml]
+  use_qty_multipliers: false
+  multiplier_file_name: qty.txt
+  revisions:
+    a:
+      name: tester
+      date: 2024-01-01
+      changelog: init
+
+options:
+  include_bom: true
+  split_bom_page: true
+  bom_rows_per_page: 10
+  table_page_suffix_letters: true
+  include_cut_diagram: true
+  cut_rows_per_page: 10
+  include_termination_diagram: true
+  termination_rows_per_page: 10
+
+connectors:
+  J1:
+    pincount: 16
+  J2:
+    pincount: 16
+
+cables:
+  C1:
+    wirecount: 16
+    length: 7
+    colors: [RD, BK, GN, WH, BU, YE, VT, GY, OG, BN, PK, TN, RDWH, BKWH, GNWH, BUWH]
+
+connections:
+  - - J1: [1,2,3,4,5,6,7,8]
+    - C1: [1,2,3,4,5,6,7,8]
+    - J2: [1,2,3,4,5,6,7,8]
+  - - J1: [9,10,11,12,13,14,15,16]
+    - C1: [9,10,11,12,13,14,15,16]
+    - J2: [9,10,11,12,13,14,15,16]
+
+additional_bom_items:
+  - description: Accessory 01
+    qty: 1
+  - description: Accessory 02
+    qty: 1
+  - description: Accessory 03
+    qty: 1
+  - description: Accessory 04
+    qty: 1
+  - description: Accessory 05
+    qty: 1
+  - description: Accessory 06
+    qty: 1
+  - description: Accessory 07
+    qty: 1
+  - description: Accessory 08
+    qty: 1
+  - description: Accessory 09
+    qty: 1
+  - description: Accessory 10
+    qty: 1
+  - description: Accessory 11
+    qty: 1
+  - description: Accessory 12
+    qty: 1
+  - description: Accessory 13
+    qty: 1
+  - description: Accessory 14
+    qty: 1
+  - description: Accessory 15
+    qty: 1
+  - description: Accessory 16
+    qty: 1
+  - description: Accessory 17
+    qty: 1
+  - description: Accessory 18
+    qty: 1
+  - description: Accessory 19
+    qty: 1
+  - description: Accessory 20
+    qty: 1

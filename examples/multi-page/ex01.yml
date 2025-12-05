@@ -1,0 +1,81 @@
+metadata:
+  pn: MP-EX01
+  title: Multi-page BOM/Cut/Termination Example 01
+  company: ACME Wiring
+  address: 1 Cable Way
+  sheet_total: 1
+  sheet_current: 1
+  sheet_name: ex01
+  output_dir: .
+  titlepage: titlepage
+  output_names: [ex01]
+  files: [ex01.yml]
+  use_qty_multipliers: false
+  multiplier_file_name: qty.txt
+  revisions:
+    a:
+      name: tester
+      date: 2024-01-01
+      changelog: init
+
+options:
+  include_bom: true
+  split_bom_page: true
+  bom_rows_per_page: 10
+  table_page_suffix_letters: true
+  include_cut_diagram: true
+  cut_rows_per_page: 10
+  include_termination_diagram: true
+  termination_rows_per_page: 10
+
+connectors:
+  J1:
+    pincount: 12
+  J2:
+    pincount: 12
+
+cables:
+  C1:
+    wirecount: 12
+    length: 5
+    colors: [RD, BK, GN, WH, BU, YE, VT, GY, OG, BN, PK, TN]
+
+connections:
+  - - J1: [1,2,3,4,5,6]
+    - C1: [1,2,3,4,5,6]
+    - J2: [1,2,3,4,5,6]
+  - - J1: [7,8,9,10,11,12]
+    - C1: [7,8,9,10,11,12]
+    - J2: [7,8,9,10,11,12]
+
+additional_bom_items:
+  - description: Spare fastener 01
+    qty: 1
+  - description: Spare fastener 02
+    qty: 1
+  - description: Spare fastener 03
+    qty: 1
+  - description: Spare fastener 04
+    qty: 1
+  - description: Spare fastener 05
+    qty: 1
+  - description: Spare fastener 06
+    qty: 1
+  - description: Spare fastener 07
+    qty: 1
+  - description: Spare fastener 08
+    qty: 1
+  - description: Spare fastener 09
+    qty: 1
+  - description: Spare fastener 10
+    qty: 1
+  - description: Spare fastener 11
+    qty: 1
+  - description: Spare fastener 12
+    qty: 1
+  - description: Spare fastener 13
+    qty: 1
+  - description: Spare fastener 14
+    qty: 1
+  - description: Spare fastener 15
+    qty: 1
