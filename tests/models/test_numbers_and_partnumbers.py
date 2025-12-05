@@ -85,7 +85,9 @@ def test_partnumberinfo_list_as_unique_and_shared():
 
 
 def test_partnumbers2list_merging_parents_and_children():
-    child = PartNumberInfo(pn="C1", manufacturer="ACME", mpn="M1", supplier="SUP", spn="SP")
+    child = PartNumberInfo(
+        pn="C1", manufacturer="ACME", mpn="M1", supplier="SUP", spn="SP"
+    )
     parents = PartnumberInfoList(pn_list=[PartNumberInfo(pn="C1", manufacturer="ACME")])
     merged = partnumbers2list(child, parents)
     flat = [item for sub in merged for item in sub]
