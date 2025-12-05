@@ -1,0 +1,6 @@
+Proposed validator test extensions:
+- Multi-harness CLI run with html/pdf formats to verify titlepage, per-harness pages, and shared BOM artifacts are emitted.
+- BOM suppression and split sections: exercise include_bom=false, split_bom_page, split_notes_page, split_index_page to confirm only expected html/tsv files exist.
+- Quantity multipliers negative/missing cases: ensure error handling and file prompts behave and do not scale shared BOM when invalid.
+- Connector overview mode: run CLI with connector_view=overview to verify connector orientation and generated SVG presence.
+- Additional BOM items: harness YAML with additional_bom_items to confirm they appear in BOM/TSV and shared BOM aggregation.

@@ -17,6 +17,8 @@ MetadataKeys = PlainText  # Literal['title', 'description', 'notes', ...]
 
 
 class DocumentInfo(BaseModel):
+    """Minimal document identity (title and PN)."""
+
     title: str
     pn: str
 
@@ -24,6 +26,8 @@ class DocumentInfo(BaseModel):
 
 
 class CompanyInfo(BaseModel):
+    """Company identity block for title pages."""
+
     company: str
     address: str
 
@@ -31,6 +35,8 @@ class CompanyInfo(BaseModel):
 
 
 class AuthorSignature(BaseModel):
+    """Signature block for authors/reviewers with optional date."""
+
     name: str = ""
     date: Optional[object] = None
 
@@ -49,7 +55,9 @@ class AuthorSignature(BaseModel):
             try:
                 return datetime.strptime(value, date_format)
             except Exception as err:
-                raise ValueError(
+                from filare.errors import MetadataValidationError
+
+                raise MetadataValidationError(
                     f'date ({value}) should be parsable with format ({date_format}) or set to "n/a" or "TBD"'
                 ) from err
         return value
@@ -58,18 +66,26 @@ class AuthorSignature(BaseModel):
 
 
 class AuthorRole(AuthorSignature):
+    """Author signature enriched with a role label."""
+
     role: str = ""
 
 
 class RevisionSignature(AuthorSignature):
+    """Signature for a single revision entry with changelog text."""
+
     changelog: str = ""
 
 
 class RevisionInfo(RevisionSignature):
+    """Revision entry with explicit revision ID."""
+
     revision: str = ""
 
 
 class OutputMetadata(BaseModel):
+    """Paths/names for output artifacts."""
+
     output_dir: Path
     output_name: str
 
@@ -77,14 +93,19 @@ class OutputMetadata(BaseModel):
 
 
 class SheetMetadata(BaseModel):
+    """Sheet numbering metadata for paginated outputs."""
+
     sheet_total: int
     sheet_current: int
     sheet_name: str
+    sheet_suffix: str = ""
 
     model_config = {"frozen": True}
 
 
 class PagesMetadata(BaseModel):
+    """Metadata needed to render pages and shared assets."""
+
     titlepage: Path
     output_names: List[str]
     files: List[Union[str, Path]]
@@ -114,6 +135,8 @@ class Orientations(str, Enum):
 
 
 class PageTemplateConfig(BaseModel):
+    """Configuration for page template, size, and orientation."""
+
     name: PageTemplateTypes = PageTemplateTypes.din_6771
     sheetsize: SheetSizes = SheetSizes.A3
     orientation: Optional[Orientations] = None
@@ -182,6 +205,7 @@ class Metadata(
 
     @property
     def name(self):
+        """Return the preferred document name, prefixing PN if provided."""
         if self.pn and self.pn not in self.output_name:
             return f"{self.pn}-{self.output_name}"
         else:
@@ -207,10 +231,12 @@ class Metadata(
 
     @property
     def generator(self):
+        """Return the generator string (app name/version/URL)."""
         return f"{filare.APP_NAME} {filare.__version__} - {filare.APP_URL}"
 
     @property
     def authors_list(self):
+        """Return authors as a list of AuthorRole instances."""
         _authors_list = []
         for role, author in self.authors.items():
             _authors_list.append(
@@ -220,6 +246,7 @@ class Metadata(
 
     @property
     def revisions_list(self):
+        """Return revisions as a list of RevisionInfo instances."""
         _revisions_list = []
         for revision, sig in self.revisions.items():
             _revisions_list.append(
@@ -234,6 +261,9 @@ class Metadata(
 
     @property
     def revision(self):
+        """Return the most recent revision string ('' if none)."""
+        if not self.revisions_list:
+            return ""
         return self.revisions_list[-1].revision
 
     @property

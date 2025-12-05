@@ -82,7 +82,7 @@ Output file:
 
 Read the [syntax description](syntax.md) to learn about Filare's features and how to use them.
 
-See the [tutorial page](tutorial/readme.md) for sample code, as well as the [example gallery](examples/readme.md) to see more of what Filare can do.
+See the [tutorial page](https://github.com/laurierloi/filare/blob/main/tutorial/readme.md) for sample code, as well as the [example gallery](https://github.com/laurierloi/filare/blob/main/examples/readme.md) to see more of what Filare can do.
 
 ## Installation
 
@@ -93,6 +93,16 @@ Filare requires Python 3.9 or later.
 Filare requires GraphViz to be installed in order to work. See the [GraphViz download page](https://graphviz.org/download/) for OS-specific instructions.
 
 _Note_: Ubuntu 18.04 LTS users in particular may need to separately install Python 3.7 or above, as that comes with Python 3.6 as the included system Python install. The option to generate pdf is not supported for python 3.7, so it might not be possible to use with this version of Ubuntu. If you are forced to use Ubuntu 18.04 for some reason, fill up an issue/MR and I can provide a Docker image to perform the generation.
+
+### Quick install (uv, recommended)
+
+Filare uses the [uv](https://docs.astral.sh/uv/) workflow for dependency management and command execution.
+
+```
+uv venv
+uv sync
+uv run filare --help
+```
 
 ### Container (Ubuntu 24.04, uv, graphviz, prettier)
 
@@ -122,7 +132,7 @@ Run common tasks (mount your working tree so outputs land on the host):
   ```
 - Build and serve docs (port 9000):
   ```
-  docker run --rm -p 9000:9000 -v "$PWD":/app filare bash -lc 'cd /app && uv run --no-sync mkdocs build && cd site && python3 -m http.server 9000'
+  docker run --rm -p 9000:9000 -v "$PWD":/app filare bash -lc 'cd /app && uv run --no-sync mkdocs build && cd site && uv run --no-sync python -m http.server 9000'
   ```
 
 ## Building docs locally (without Docker)
@@ -131,14 +141,14 @@ From the project root:
 
 ```
 uv run --no-sync mkdocs build
-python3 -m http.server 9000 --directory site
+uv run --no-sync python -m http.server 9000 --directory site
 ```
 
 Then open http://localhost:9000.
 
 - Run tests:
   ```
-  docker run --rm -v "$PWD":/app filare uv run --no-sync pytest
+  uv run --no-sync pytest
   ```
 
 ### Documentation (MkDocs + optional Sphinx)
@@ -171,37 +181,29 @@ See https://pango.gnome.org/
 
 ### Installing the latest release
 
-The latest Filare release can be downloaded from [PyPI](https://pypi.org/project/filare/) with the following command:
+Install from [PyPI](https://pypi.org/project/filare/) using uv:
 
 ```
-pip3 install filare
+uv venv
+uv pip install filare
+uv run filare --version
 ```
 
 ### Installing the development version
 
-Access to the current state of the development branch can be gained by cloning the repo and installing manually.
-
-We suggest always installing Filare within a python virtualenv. This avoids many issues caused by
-dependencies management.
-
-#### Installing Filare within a virtual env
+Access the current state of the development branch by cloning the repo and syncing dependencies with uv:
 
 ```
 # Cloning the repository
-git clone git+https://github.com/laurierloi/Filare
-cd Filare
+git clone https://github.com/laurierloi/filare
+cd filare
 
-# Setup virtualenv
-python3 -m pip install --user virtualenv
-python3 -m virtualenv venv-filare
-source venv-filare/bin/activate
-
-# Installing/Upgrading dependencies
-pip install -U pip setuptools wheel
-
-# Installing with local modification tracking
-pip install -e .
+# Setup env and install dependencies
+uv venv
+uv sync
 ```
+
+Avoid mixing `pip` and `uv` inside the same environment to prevent dependency drift. If you prefer a one-off install without a venv, use the container workflow above instead of system-wide `pip`.
 
 If you would like to contribute to this project, make sure you read the [contribution guidelines](CONTRIBUTING.md)!
 
@@ -215,7 +217,7 @@ Then, a list of harnesses to include within the document should also be provided
 In the simplest case, 1 harness can be provided.
 
 ```
-$ filare -d ~/path/to/file/metadata.yml ~/path/to/file/myharness1.yml ~/path/to/file/myharness2.yml
+$ uv run filare -d ~/path/to/file/metadata.yml ~/path/to/file/myharness1.yml ~/path/to/file/myharness2.yml
 ```
 
 Depending on the options specified, this will output some or all of the following files:
@@ -230,25 +232,39 @@ myharness{1,2}.bom.tsv    BOM (bill of materials) as tab-separated text file
 myharness{1,2}.html       HTML page with wiring diagram and BOM embedded
 ```
 
-Wildcars in the file path are also supported to process multiple files at once, e.g.:
+Wildcards in the file path are also supported to process multiple files at once, e.g.:
 
 ```
-$ filare ~/path/to/files/*.yml
+$ uv run filare ~/path/to/files/*.yml
 ```
 
 To see how to specify the output formats, as well as additional options, run:
 
 ```
-$ filare --help
+$ uv run filare --help
 ```
 
 #### Sample run all examples
 
 ```
-$ filare -d examples/metadata.yml examples/ex*.yml
+$ uv run filare -d examples/metadata.yml examples/ex*.yml
 ```
 
 Then open `examples/titlepage.html` to open the document root
+
+### Quantity multipliers (`filare-qty`)
+
+Use `filare-qty` to capture per-harness quantity multipliers before generating a shared BOM with `filare`.
+
+```
+# Prompt for multipliers (or reuse an existing quantity_multipliers.txt)
+$ uv run filare-qty tests/bom/bomqty.yml
+
+# Apply the multipliers when building the shared BOM
+$ uv run filare tests/bom/bomqty.yml --use-qty-multipliers
+```
+
+By default the multipliers are stored as JSON in `quantity_multipliers.txt` next to the harness file; override the path with `--multiplier-file-name` and re-prompt with `--force-new`.
 
 ### (Re-)Building the example projects
 

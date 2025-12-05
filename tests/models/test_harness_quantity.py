@@ -84,7 +84,10 @@ def test_harness_quantity_input_warning(monkeypatch, caplog, tmp_path):
     h1.write_text("connectors: {}")
     hq = HarnessQuantity([h1], output_dir=tmp_path)
     hq.get_qty_multipliers_from_user()
-    assert any("Quantity multiplier must be an integer" in rec.message for rec in caplog.records)
+    assert any(
+        "Quantity multiplier must be an integer" in rec.message
+        for rec in caplog.records
+    )
 
 
 def test_harness_quantity_allows_empty_when_paths_provided(tmp_path):

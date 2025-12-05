@@ -12,7 +12,8 @@ from filare import APP_NAME, APP_URL, __version__
 from filare.models import colors
 from filare.models.bom import BomContent, BomEntry, BomEntryBase, BomRenderOptions
 from filare.models.document import DocumentRepresentation
-from filare.models.dataclasses import BomCategory, Cable, Component, Connector, Side
+from filare.models.dataclasses import Cable, Component, Connector
+from filare.models.types import BomCategory, Side
 from filare.models.connector import ConnectorModel
 from filare.models.cable import CableModel
 from filare.models.component import ComponentModel
@@ -27,6 +28,7 @@ from filare.render.graphviz import (
     gv_node_connector,
     set_dot_basics,
 )
+from filare.render.imported_svg import prepare_imported_svg
 from filare.render.html import generate_html_output
 from filare.render.pdf import generate_pdf_output
 from filare.render.templates import get_template
@@ -277,8 +279,10 @@ class Harness:
                     if pinlabel in connector.pins:
                         pinnumber = pinlabel
                     else:
-                        raise ValueError(
-                            f"Pinlabel {pinlabel} is not in pinlabels of connector {name}"
+                        from filare.errors import PinResolutionError
+
+                        raise PinResolutionError(
+                            name, f"Pinlabel {pinlabel} is not in pinlabels"
                         )
 
             if pinnumber is not None:
@@ -286,26 +290,37 @@ class Harness:
                     i for i, x in enumerate(connector.pins) if x == pinnumber
                 ]
                 if len(pinnumber_indexes) > 1:
-                    raise ValueError(
-                        f"Pinnumber {pinnumber} is not unique in pins of connector {name}"
+                    from filare.errors import PinResolutionError
+
+                    raise PinResolutionError(
+                        name, f"Pinnumber {pinnumber} is not unique in pins"
                     )
                 pinnumber_index = pinnumber_indexes[0]
                 if pinlabel_indexes is not None:
                     if pinnumber_index not in pinlabel_indexes:
-                        raise ValueError(
-                            f"No pinnumber {pinnumber} matches pinlabel {pinlabel} in connector {name}, pinlabel for that pinnumber is {connector.pinlabels[pinnumber_index]}"
+                        from filare.errors import PinResolutionError
+
+                        raise PinResolutionError(
+                            name,
+                            f"No pinnumber {pinnumber} matches pinlabel {pinlabel}; pinlabel for that pinnumber is {connector.pinlabels[pinnumber_index]}",
                         )
             elif pinlabel_indexes is not None:
                 if len(pinlabel_indexes) > 1:
                     pinnumber_indexes = [connector.pins[i] for i in pinlabel_indexes]
-                    raise ValueError(
-                        f"Pinlabel {pinlabel} is not unique in pinlabels of connector {name} (available pins are: {pinnumber_indexes}), and no pinnumber defined to disambiguate\nThe user can define a pinnumber by using the form PINLABEL__PINNUMBER, where the double underscore is the separator"
+                    from filare.errors import PinResolutionError
+
+                    raise PinResolutionError(
+                        name,
+                        f"Pinlabel {pinlabel} is not unique in pinlabels (available pins are: {pinnumber_indexes}), and no pinnumber defined to disambiguate",
                     )
                 pinnumber_index = pinlabel_indexes[0]
 
             if pinnumber_index is None:
-                raise ValueError(
-                    f"Neither pinlabel ({pinlabel}) or pinnumber ({pinnumber}) where found on connector {name}, pinlabels: {connector.pinlabels}, pinnumbers: {connector.pins})"
+                from filare.errors import PinResolutionError
+
+                raise PinResolutionError(
+                    name,
+                    f"Neither pinlabel ({pinlabel}) or pinnumber ({pinnumber}) were found; pinlabels: {connector.pinlabels}, pinnumbers: {connector.pins}",
                 )
 
             pin = connector.pins[pinnumber_index]
@@ -320,23 +335,30 @@ class Harness:
             # check if provided name is ambiguous
             if via_wire in cable.colors and via_wire in cable.wirelabels:
                 if cable.colors.index(via_wire) != cable.wirelabels.index(via_wire):
-                    raise Exception(
-                        f"{via_name}:{via_wire} is defined both in colors and wirelabels, "
-                        "for different wires."
+                    from filare.errors import CableWireResolutionError
+
+                    raise CableWireResolutionError(
+                        via_name,
+                        via_wire,
+                        "is defined both in colors and wirelabels, for different wires.",
                     )
                 # TODO: Maybe issue a warning if present in both lists
                 # but referencing the same wire?
             if via_wire in cable.colors:
                 if cable.colors.count(via_wire) > 1:
-                    raise Exception(
-                        f"{via_name}:{via_wire} is used for more than one wire."
+                    from filare.errors import CableWireResolutionError
+
+                    raise CableWireResolutionError(
+                        via_name, via_wire, "is used for more than one wire."
                     )
                 # list index starts at 0, wire IDs start at 1
                 via_wire = cable.colors.index(via_wire) + 1
             elif via_wire in cable.wirelabels:
                 if cable.wirelabels.count(via_wire) > 1:
-                    raise Exception(
-                        f"{via_name}:{via_wire} is used for more than one wire."
+                    from filare.errors import CableWireResolutionError
+
+                    raise CableWireResolutionError(
+                        via_name, via_wire, "is used for more than one wire."
                     )
                 via_wire = (
                     cable.wirelabels.index(via_wire) + 1
@@ -433,6 +455,8 @@ class Harness:
 
     @property
     def svg(self):
+        if getattr(self.options, "diagram_svg", None):
+            return prepare_imported_svg(self.options.diagram_svg)
         graph = self.graph
         return embed_svg_images(graph.pipe(format="svg").decode("utf-8"), Path.cwd())
 
@@ -443,9 +467,19 @@ class Harness:
         cleanup: bool = True,
         fmt: tuple = ("html", "png", "svg", "tsv"),
     ) -> None:
+        fmt_list = list(fmt)
+        imported_svg_markup = None
+        if getattr(self.options, "diagram_svg", None):
+            imported_svg_markup = prepare_imported_svg(self.options.diagram_svg)
+            if "png" in fmt_list:
+                logging.info(
+                    "diagram_svg set; skipping PNG generation (SVG/HTML will use imported asset)"
+                )
+                fmt_list = [f for f in fmt_list if f != "png"]
+
         graph = self.graph
         rendered = set()
-        for f in fmt:
+        for f in fmt_list:
             if f in ("png", "svg", "html"):
                 render_format = "svg" if f == "html" else f
                 if render_format in rendered:
@@ -453,41 +487,54 @@ class Harness:
                 graph.format = render_format
                 graph.render(filename=filename, view=view, cleanup=cleanup)
                 rendered.add(render_format)
-        if "svg" in fmt or "html" in fmt:
-            embed_svg_images_file(filename.with_suffix(".svg"))
-        if "gv" in fmt:
+        if "svg" in fmt_list or "html" in fmt_list:
+            if imported_svg_markup:
+                filename.with_suffix(".svg").write_text(imported_svg_markup)
+            else:
+                embed_svg_images_file(filename.with_suffix(".svg"))
+        if "gv" in fmt_list:
             graph.save(filename=filename.with_suffix(".gv"))
-        if "tsv" in fmt and self.options.include_bom:
+        if "tsv" in fmt_list and self.options.include_bom:
             bom_render = BomContent(self.bom).get_bom_render(
                 options=BomRenderOptions(
                     restrict_printed_lengths=False,
                 )
             )
             filename.with_suffix(".tsv").open("w").write(bom_render.as_tsv())
-        if "csv" in fmt:
+        if "csv" in fmt_list:
             print("CSV output is not yet supported")
-        if "html" in fmt:
+        if "html" in fmt_list:
             bom_for_html = self.bom if self.options.include_bom else {}
             rendered = {}
-            if settings.enable_cut_termination:
-                if getattr(self.options, "include_cut_diagram", False):
-                    rendered["cut_table"] = _build_cut_table(self)
-                if getattr(self.options, "include_termination_diagram", False):
-                    rendered["termination_table"] = _build_termination_table(self)
+            if imported_svg_markup:
+                rendered["diagram"] = imported_svg_markup
+            if getattr(self.options, "include_cut_diagram", False):
+                cut_rows, cut_html = _build_cut_table(self)
+                rendered["cut_rows"] = cut_rows
+                rendered["cut_table"] = cut_html
+            if getattr(self.options, "include_termination_diagram", False):
+                term_rows, term_html = _build_termination_table(self)
+                rendered["termination_rows"] = term_rows
+                rendered["termination_table"] = term_html
             generate_html_output(
-                filename, bom_for_html, self.metadata, self.options, self.notes, rendered
+                filename,
+                bom_for_html,
+                self.metadata,
+                self.options,
+                self.notes,
+                rendered,
             )
-        if "pdf" in fmt:
+        if "pdf" in fmt_list:
             generate_pdf_output(filename)
-        if "html" in fmt and not "svg" in fmt:
+        if "html" in fmt_list and "svg" not in fmt_list:
             filename.with_suffix(".svg").unlink()
 
 
 __all__ = ["Harness"]
 
 
-def _build_cut_table(harness) -> str:
-    """Build cut table HTML from harness wires."""
+def _build_cut_table(harness):
+    """Build cut table rows and HTML from harness wires."""
     rows = []
     for cable in harness.cables.values():
         seen = set()
@@ -495,9 +542,13 @@ def _build_cut_table(harness) -> str:
             if idx in seen:
                 continue
             seen.add(idx)
-            color = getattr(wire.color, "code_en", None) or getattr(
-                wire.color, "html", ""
-            ) or ",".join(wire.color) if hasattr(wire, "color") else ""
+            color = (
+                getattr(wire.color, "code_en", None)
+                or getattr(wire.color, "html", "")
+                or ",".join(wire.color)
+                if hasattr(wire, "color")
+                else ""
+            )
             length = getattr(wire, "length", None) or getattr(cable, "length", "")
             rows.append(
                 {
@@ -508,11 +559,11 @@ def _build_cut_table(harness) -> str:
                 }
             )
     tpl = get_template("cut_table", ".html")
-    return tpl.render({"rows": rows})
+    return rows, tpl.render({"rows": rows})
 
 
-def _build_termination_table(harness) -> str:
-    """Build termination table HTML from harness connections."""
+def _build_termination_table(harness):
+    """Build termination table rows and HTML from harness connections."""
     rows = []
     for cable in harness.cables.values():
         for connection in getattr(cable, "_connections", []):
@@ -529,4 +580,4 @@ def _build_termination_table(harness) -> str:
                 }
             )
     tpl = get_template("termination_table", ".html")
-    return tpl.render({"rows": rows})
+    return rows, tpl.render({"rows": rows})

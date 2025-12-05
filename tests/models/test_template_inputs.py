@@ -41,6 +41,7 @@ def test_template_cable_from_wire_objects(wire_config_data):
     assert cable.wires[0].label == "SIG"
     assert cable.wires[0].color == ["GN"]
 
+
 def test_template_cable_from_colors_only():
     cfg = CableConfig(designator="C3", colors=["RD", "GN"], length="1 m")
     cable = TemplateCable.from_config(cfg)
@@ -55,6 +56,7 @@ def test_template_connection_from_config(connection_config_data):
     assert conn.color == ["RD"]
     assert conn.net == "SIG1"
 
+
 def test_template_connection_validates_and_coerces():
     cfg = ConnectionConfig(endpoints=("J1:1", "J2:2"), color="BK", net=None)
     conn = TemplateConnection.from_config(cfg)
@@ -64,7 +66,9 @@ def test_template_connection_validates_and_coerces():
 
 
 def test_template_connector_from_pinlabels():
-    cfg = ConnectorConfig(designator="J3", pinlabels=["1", "2"], pincolors=[["RD"], ["BK"]])
+    cfg = ConnectorConfig(
+        designator="J3", pinlabels=["1", "2"], pincolors=[["RD"], ["BK"]]
+    )
     connector = TemplateConnector.from_config(cfg)
     assert len(connector.pins) == 2
     assert connector.pins[0].label == "1"
@@ -76,8 +80,20 @@ def test_template_wire_validators():
     wire = TemplateWire(color="RD", length="2 m")
     assert wire.color == ["RD"]
     assert str(wire.length) == "2 m"
+    assert TemplateWire(color=None).color == []
 
 
 def test_template_models_forbid_extra():
     with pytest.raises(Exception):
         TemplateConnector(designator="JX", pins=[], extra="nope")
+
+
+def test_template_pin_color_none_and_id():
+    pin = TemplatePin(label="L", color=None, id="1")
+    assert pin.color == []
+
+
+def test_template_connection_coercions():
+    conn = TemplateConnection(endpoints="J1:1", color=None, net="N")
+    assert conn.endpoints == ["J1:1"]
+    assert conn.color == []

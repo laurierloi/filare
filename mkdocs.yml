@@ -26,7 +26,10 @@ nav:
       - Mermaid Check: mermaid.md
   - Dev:
       - Metadata Guide: dev/metadata_guide.md
+      - GitHub CLI: dev/github.md
+      - Text Overlap Checker: dev/text_overlap_checker.md
       - Tasks: tasks.md
+  - Collisions: collisions/summary.md
   - Changelog: CHANGELOG.md
   - Contributing: CONTRIBUTING.md
   - Branding: brand.md

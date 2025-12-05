@@ -5,9 +5,11 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 import yaml
+from filare.errors import FilareParserException
 
 
 def merge_item(x, y):
+    """Merge two YAML-derived values with list concatenation and dict recursion."""
     if y is None:
         ret = x
     elif x is None:
@@ -26,7 +28,7 @@ def merge_item(x, y):
                 elif k in y:
                     new_dict[k] = y[k]
                 else:
-                    raise RuntimeError(
+                    raise FilareParserException(
                         f"Key {k} not in x or y, this should never happen!"
                     )
             ret = new_dict
@@ -38,11 +40,12 @@ def merge_item(x, y):
 
 
 def merge_content(content: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Merge content"""
+    """Reduce a list of YAML fragments into a single merged dict."""
     return reduce(merge_item, content)
 
 
 def parse_merge_yaml(_yamls: List[str]) -> Dict[str, Any]:
+    """Parse and merge multiple YAML strings, applying merge semantics."""
     if not _yamls:
         return {}
     loaded = safe_load_yaml(_yamls)
@@ -50,6 +53,7 @@ def parse_merge_yaml(_yamls: List[str]) -> Dict[str, Any]:
 
 
 def safe_load_yaml(texts: List[str]) -> List[Dict[str, Any]]:
+    """Load YAML strings while preserving ints as strings to avoid mangling."""
     loader = yaml.loader.SafeLoader
     loader.construct_yaml_int = loader.construct_yaml_str
     # Keep all int as string, because component number tend to be int and can be mangled by the cast
@@ -60,11 +64,13 @@ def safe_load_yaml(texts: List[str]) -> List[Dict[str, Any]]:
 
 
 def parse_merge_files(files: List[Path]) -> Dict[str, Any]:
+    """Load multiple YAML files and merge their content."""
     content = []
     return parse_merge_yaml([f.open("r").read() for f in files])
 
 
 def parse_concat_merge_files(concats: List[Path], merge: List[Path]) -> Dict[str, Any]:
+    """Concatenate a list of YAML files, then merge with another list."""
     return parse_merge_yaml(
         [
             "\n".join([f.open("r").read() for f in concats]),

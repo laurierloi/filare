@@ -15,5 +15,7 @@ from filare.models.options import *  # noqa: F401,F403
 from filare.models.table_models import *  # noqa: F401,F403
 from filare.models.termination import *  # noqa: F401,F403
 from filare.models.page import *  # noqa: F401,F403
+from filare.models.connections import *  # noqa: F401,F403
 from filare.models.types import *  # noqa: F401,F403
 from filare.models.template_inputs import *  # noqa: F401,F403
+from filare.models.primitives import *  # noqa: F401,F403

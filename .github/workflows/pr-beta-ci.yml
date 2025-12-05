@@ -1,0 +1,62 @@
+name: Beta PR CI
+
+on:
+  pull_request:
+    branches: [beta]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  lint:
+    name: "PR Lint (beta)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Create venv and install deps
+        run: |
+          uv venv
+          uv sync --group dev
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install prettier + mermaid-cli
+        run: npm install --global prettier @mermaid-js/mermaid-cli@11.12.0
+      - name: Run black
+        run: uv run --no-sync black --check src tests
+      - name: Run prettier
+        run: prettier --check "docs/**/*.{md,html}"
+      - name: Check mermaid diagrams
+        run: ./scripts/check-mermaid.sh
+
+  test:
+    name: "PR Tests (beta)"
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+      - name: Install project
+        run: |
+          uv venv
+          uv sync --group dev
+      - name: Pytest
+        run: uv run --no-sync pytest --cov=filare --cov-report=term --cov-report=xml --junitxml=junit.xml -o junit_family=legacy

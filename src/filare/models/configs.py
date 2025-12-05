@@ -23,7 +23,9 @@ class ConnectorConfig(ConfigBaseModel):
     pincount: Optional[int] = None
     pins: Optional[List[PinConfig]] = None
     pinlabels: Optional[List[str]] = None
-    pincolors: Optional[Union[List[Union[str, List[str]]], Dict[str, Union[str, List[str]]]]] = None
+    pincolors: Optional[
+        Union[List[Union[str, List[str]]], Dict[str, Union[str, List[str]]]]
+    ] = None
     loops: Optional[List[Dict[str, Any]]] = None
     style: Optional[str] = None
     images: Optional[List[str]] = None

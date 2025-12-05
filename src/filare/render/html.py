@@ -1,19 +1,28 @@
 # -*- coding: utf-8 -*-
 
+import copy
 import logging
 import re
-from dataclasses import asdict, dataclass, field, fields
+import filare
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional, Tuple
 
-import filare  # for doing filare.__file__
+from pydantic import BaseModel, ConfigDict
+
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
+from filare.models.harness_quantity import HarnessQuantity
 from filare.models.metadata import Metadata
 from filare.models.notes import Notes, get_page_notes
 from filare.models.options import PageOptions, get_page_options
+from filare.models.table_models import TablePage, TablePaginationOptions, letter_suffix
+from filare.render.imported_svg import (
+    build_import_container_style,
+    build_import_inner_style,
+    prepare_imported_svg,
+    strip_svg_declarations,
+)
 from filare.render.templates import get_template
-from filare.models.harness_quantity import HarnessQuantity
 
 
 def generate_shared_bom(
@@ -48,7 +57,64 @@ def generate_shared_bom(
     return shared_bom_base
 
 
-# TODO: should define the dataclass needed to avoid doing any dict shuffling in here
+class _RenderReplacements(BaseModel):
+    """Container for template replacement values."""
+
+    options: PageOptions
+    diagram: Optional[str]
+    diagram_container_class: str = ""
+    diagram_container_style: str = ""
+    metadata: Metadata
+    notes: Notes
+    partno: str
+    generator: str = ""
+    title: str = ""
+    description: str = ""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    @classmethod
+    def from_render_context(
+        cls,
+        *,
+        options: PageOptions,
+        diagram: Optional[str],
+        diagram_container_class: str,
+        diagram_container_style: str,
+        metadata: Metadata,
+        notes: Notes,
+        partno: str,
+    ) -> Dict[str, object]:
+        """Build a replacements mapping with sensible defaults for templates."""
+        generator = f"{getattr(filare, 'APP_NAME', 'Filare')} {getattr(filare, '__version__', '')}"
+        return cls(
+            options=options,
+            diagram=diagram,
+            diagram_container_class=diagram_container_class,
+            diagram_container_style=diagram_container_style,
+            metadata=metadata,
+            notes=notes,
+            partno=partno,
+            generator=generator,
+            title=getattr(metadata, "title", ""),
+            description=getattr(metadata, "description", ""),
+        ).as_mapping()
+
+    def as_mapping(self) -> Dict[str, object]:
+        return {
+            "options": self.options,
+            "diagram": self.diagram,
+            "diagram_container_class": self.diagram_container_class,
+            "diagram_container_style": self.diagram_container_style,
+            "metadata": self.metadata,
+            "notes": self.notes,
+            "partno": self.partno,
+            "generator": self.generator,
+            "title": self.title,
+            "description": self.description,
+        }
+
+
 def generate_html_output(
     filename: Path,
     bom: List[List[str]],
@@ -62,39 +128,88 @@ def generate_html_output(
     assert metadata and isinstance(metadata, Metadata), "metadata should be defiend"
     template_name = metadata.template.name
 
-    if rendered is None:
-        rendered = {}
-
-    if bom_render_options is None:
-        bom_render_options = BomRenderOptions(
-            restrict_printed_lengths=True,
-            filter_entries=True,
-            no_per_harness=True,
-            reverse=metadata.template.has_bom_reversed(),
-        )
-
-    bom_render = BomContent(bom).get_bom_render(options=bom_render_options)
-    options.bom_rows = len(bom_render.rows)
-    rendered["bom"] = bom_render.render(
-        page_options=options, bom_options=bom_render_options
+    options_for_render = (
+        options.model_copy(deep=True)
+        if hasattr(options, "model_copy")
+        else copy.deepcopy(options)
     )
+    rendered = {} if rendered is None else dict(rendered)
 
-    if options.show_index_table or options.split_index_page:
+    bom_render_options = _ensure_bom_render_options(
+        bom_render_options, metadata.template.has_bom_reversed()
+    )
+    bom_html, bom_rows, bom_pages = _render_bom_section(
+        bom, bom_render_options, options_for_render
+    )
+    options_for_render.bom_rows = bom_rows
+    options.bom_rows = bom_rows
+    rendered["bom"] = bom_html
+    cut_rows = rendered.get("cut_rows")
+    termination_rows = rendered.get("termination_rows")
+    cut_pages = (
+        _chunk_rows(
+            cut_rows,
+            getattr(options_for_render, "cut_rows_per_page", None),
+            getattr(options_for_render, "table_page_suffix_letters", True),
+        )
+        if getattr(options_for_render, "include_cut_diagram", False)
+        else None
+    )
+    termination_pages = (
+        _chunk_rows(
+            termination_rows,
+            getattr(options_for_render, "termination_rows_per_page", None),
+            getattr(options_for_render, "table_page_suffix_letters", True),
+        )
+        if getattr(options_for_render, "include_termination_diagram", False)
+        else None
+    )
+    if cut_pages == [] and getattr(options_for_render, "include_cut_diagram", False):
+        cut_pages = [("", [])]
+    if termination_pages == [] and getattr(
+        options_for_render, "include_termination_diagram", False
+    ):
+        termination_pages = [("", [])]
+
+    pagination_hints = {
+        key: value
+        for key, value in {
+            "bom": [p.suffix or "" for p in bom_pages] if bom_pages else [],
+            "cut": [page_suffix for page_suffix, _ in (cut_pages or [])],
+            "termination": [
+                page_suffix for page_suffix, _ in (termination_pages or [])
+            ],
+        }.items()
+        if value
+    }
+
+    should_render_index = options.show_index_table or options.split_index_page
+    options_for_render.show_index_table = options.show_index_table
+    if should_render_index:
         rendered["index_table"] = IndexTable.from_pages_metadata(
-            metadata.pages_metadata
-        ).render(options)
+            metadata.pages_metadata,
+            options_for_render,
+            paginated_pages=pagination_hints,
+        ).render(options_for_render)
 
-    # TODO: instead provide a PageOption to generate or not the svg
-    svgdata = None
-    if template_name != "titlepage":
-        # embed SVG diagram for all but the titlepage
-        with filename.with_suffix(".svg").open("r") as f:
-            svgdata = re.sub(
-                "^<[?]xml [^?>]*[?]>[^<]*<!DOCTYPE [^>]*>",
-                "<!-- XML and DOCTYPE declarations from SVG file removed -->",
-                f.read(),
-                1,
-            )
+    diagram_container_class = "diagram-default"
+    diagram_container_style = ""
+    svgdata = rendered.get("diagram")
+    if template_name != "titlepage" and svgdata is None:
+        svgdata = strip_svg_declarations(filename.with_suffix(".svg").read_text())
+
+    if getattr(options, "diagram_svg", None):
+        diagram_container_class = "diagram-has-import"
+        diagram_container_style = build_import_container_style(options.diagram_svg)
+        if svgdata is None:
+            svgdata = prepare_imported_svg(options.diagram_svg)
+        inner_style = build_import_inner_style(options.diagram_svg)
+        style_attr = f' style="{inner_style}"' if inner_style else ""
+        svgdata = f'<div class="diagram-import"{style_attr}>{svgdata}</div>'
+    elif svgdata is None:
+        svgdata = ""
+
+    rendered["diagram"] = svgdata
 
     match = re.search(r"[0-9]+$", str(filename))
     if not match:
@@ -102,37 +217,32 @@ def generate_html_output(
     else:
         harness_number = int(match[0])
 
-    partno = f"{metadata.pn}-{metadata.revision}"
-    if template_name != "titlepage":
-        partno += f"-{harness_number}"
+    revision = ""
+    try:
+        revision = metadata.revision
+    except Exception:
+        revision = ""
+    partno = _build_part_number(metadata.pn, revision, harness_number, template_name)
 
-    replacements = {
-        "options": options,
-        "diagram": svgdata,
-        "metadata": metadata,
-        "notes": notes,
-        "partno": partno,
-    }
+    replacements = _RenderReplacements.from_render_context(
+        options=options_for_render,
+        diagram=svgdata,
+        diagram_container_class=diagram_container_class,
+        diagram_container_style=diagram_container_style,
+        metadata=metadata,
+        notes=notes,
+        partno=partno,
+    )
 
     # TODO: all rendering should be done within their respective classes
 
     # prepare titleblock
     rendered["titleblock"] = get_template("titleblock.html").render(replacements)
 
-    # preparate Notes
-    if "notes" in replacements and replacements["notes"].notes:
+    if replacements.get("notes") and replacements["notes"].notes:
         rendered["notes"] = get_template("notes.html").render(replacements)
 
-    filtered = dict(rendered)
-    if options.split_bom_page:
-        options.show_bom = False
-        filtered["bom"] = ""
-    if options.split_notes_page:
-        options.show_notes = False
-        filtered["notes"] = ""
-    if options.split_index_page:
-        options.show_index_table = False
-        filtered["index_table"] = ""
+    filtered = _filtered_sections(options_for_render, rendered)
 
     # generate page template
     page_rendered = get_template(template_name, ".html").render(
@@ -144,22 +254,156 @@ def generate_html_output(
 
     # save generated file
     filename.with_suffix(".html").open("w").write(page_rendered)
-    _write_split_sections(filename, metadata, options, rendered)
-    _write_aux_pages(filename, metadata, options, rendered)
+    _write_split_sections(filename, metadata, options, rendered, bom_pages=bom_pages)
+    _write_aux_pages(
+        filename,
+        metadata,
+        options,
+        rendered,
+        cut_rows=cut_rows,
+        termination_rows=termination_rows,
+        cut_pages=cut_pages,
+        termination_pages=termination_pages,
+    )
+
+
+def _ensure_bom_render_options(
+    bom_render_options: Optional[BomRenderOptions], reverse_bom: bool
+) -> BomRenderOptions:
+    """Provide default BOM render options when none are supplied."""
+    if bom_render_options is not None:
+        return bom_render_options
+    return BomRenderOptions(
+        restrict_printed_lengths=True,
+        filter_entries=True,
+        no_per_harness=True,
+        reverse=reverse_bom,
+    )
+
+
+def _render_bom_section(
+    bom: List[List[str]],
+    bom_render_options: BomRenderOptions,
+    options: PageOptions,
+) -> Tuple[str, int, List]:
+    """Render BOM HTML snippet and return HTML plus row count and paginated pages."""
+    bom_render = BomContent(bom).get_bom_render(options=bom_render_options)
+    bom_rows = len(bom_render.rows)
+    pagination = TablePaginationOptions(
+        rows_per_page=options.bom_rows_per_page,
+        force_single_page=options.bom_force_single_page,
+        use_letter_suffix=options.table_page_suffix_letters,
+    )
+    bom_pages = []
+    if options.split_bom_page and pagination.enabled:
+        bom_pages = bom_render.paginate(
+            pagination, page_options=options, bom_options=bom_render_options
+        )
+        if not bom_pages:
+            bom_html = bom_render.render(
+                page_options=options, bom_options=bom_render_options
+            )
+            bom_pages = [TablePage(index=0, suffix="", rows=[], html=bom_html)]
+        else:
+            bom_html = bom_pages[0].html
+    else:
+        bom_html = bom_render.render(
+            page_options=options, bom_options=bom_render_options
+        )
+    return (bom_html, bom_rows, bom_pages)
+
+
+def _derive_harness_number(filename: Path, sheet_current: int) -> int:
+    """Extract harness number from filename, falling back to sheet index."""
+    match = re.search(r"[0-9]+$", str(filename))
+    if not match:
+        return sheet_current + 1
+    return int(match[0])
+
+
+def _build_part_number(
+    pn: str, revision: str, harness_number: int, template_name: str
+) -> str:
+    """Compose part number string used on rendered pages."""
+    base = pn if not revision else f"{pn}-{revision}"
+    if template_name != "titlepage":
+        suffix = harness_number
+        return f"{base}-{suffix}" if base else f"{pn}-{suffix}"
+    return base
+
+
+def _load_svg_diagram(filename: Path) -> str:
+    """Load and sanitize the SVG diagram content for embedding."""
+    with filename.with_suffix(".svg").open("r") as f:
+        return re.sub(
+            "^<[?]xml [^?>]*[?]>[^<]*<!DOCTYPE [^>]*>",
+            "<!-- XML and DOCTYPE declarations from SVG file removed -->",
+            f.read(),
+            1,
+        )
+
+
+def _filtered_sections(
+    options: PageOptions, rendered: Dict[str, str]
+) -> Dict[str, str]:
+    """Hide sections when split pages are requested while preserving source content."""
+    filtered = dict(rendered)
+    if options.split_bom_page:
+        options.show_bom = False
+        filtered["bom"] = ""
+    if options.split_notes_page:
+        options.show_notes = False
+        filtered["notes"] = ""
+    if options.split_index_page:
+        options.show_index_table = False
+        filtered["index_table"] = ""
+    return filtered
 
 
 def _write_split_sections(
-    filename: Path, metadata: Metadata, options: PageOptions, rendered: Dict[str, str]
+    filename: Path,
+    metadata: Metadata,
+    options: PageOptions,
+    rendered: Dict[str, str],
+    bom_pages: Optional[List] = None,
 ) -> None:
     """Emit split section HTML files based on options."""
+    template_name = getattr(getattr(metadata, "template", None), "name", None)
+    is_titlepage = (
+        str(template_name) == "titlepage"
+        or getattr(metadata, "output_name", "") == "titlepage"
+    )
     splits = {
         "bom": options.split_bom_page and "bom" in rendered,
         "notes": options.split_notes_page and "notes" in rendered,
-        "index": options.split_index_page and "index_table" in rendered,
+        "index": options.split_index_page
+        and "index_table" in rendered
+        and is_titlepage,
     }
     for section, should_write in splits.items():
         if not should_write:
             continue
+        if section == "bom" and bom_pages:
+            for idx, page in enumerate(bom_pages):
+                if not page.html:
+                    continue
+                suffix = page.suffix or letter_suffix(idx)
+                has_letters = len(bom_pages) > 1
+                target = (
+                    filename.with_suffix(f".bom.{suffix}.html")
+                    if has_letters and suffix
+                    else filename.with_suffix(".bom.html")
+                )
+                title_bits = [
+                    getattr(metadata, "title", ""),
+                    f"{section}.{suffix or ''}" if has_letters else section,
+                ]
+                title = " - ".join([t for t in title_bits if t])
+                wrapped = _wrap_section_html(title or section, page.html)
+                target.write_text(wrapped, encoding="utf-8")
+                logging.info("Wrote paginated %s page to %s", section, target)
+            continue
+
         content = rendered.get(section if section != "index" else "index_table")
         if not content:
             continue
@@ -186,37 +430,117 @@ def _wrap_section_html(title: str, body: str) -> str:
     )
 
 
+def _chunk_rows(
+    rows: Optional[List[Dict[str, str]]],
+    rows_per_page: Optional[int],
+    use_letters: bool,
+) -> List[Tuple[str, List[Dict[str, str]]]]:
+    """Split a list of row dicts into paginated chunks with optional letter suffixes."""
+    if not rows:
+        return []
+    if not rows_per_page:
+        return [("", rows)]
+    per_page = int(rows_per_page)
+    chunks: List[List[Dict[str, str]]] = [
+        rows[i : i + per_page] for i in range(0, len(rows), per_page)
+    ]
+    suffixes: List[str] = (
+        [letter_suffix(idx) for idx in range(len(chunks))]
+        if use_letters and len(chunks) > 1
+        else ["" for _ in chunks]
+    )
+    return list(zip(suffixes, chunks))
+
+
 def _write_aux_pages(
-    filename: Path, metadata: Metadata, options: PageOptions, rendered: Dict[str, str]
+    filename: Path,
+    metadata: Metadata,
+    options: PageOptions,
+    rendered: Dict[str, str],
+    cut_rows: Optional[List[Dict[str, str]]] = None,
+    termination_rows: Optional[List[Dict[str, str]]] = None,
+    cut_pages: Optional[List[Tuple[str, List[Dict[str, str]]]]] = None,
+    termination_pages: Optional[List[Tuple[str, List[Dict[str, str]]]]] = None,
 ) -> None:
     """Emit auxiliary pages such as cut/termination placeholders when requested."""
     aux_pages = []
     if getattr(options, "include_cut_diagram", False):
+        pages = cut_pages
+        if pages is None:
+            pages = _chunk_rows(
+                cut_rows,
+                getattr(options, "cut_rows_per_page", None),
+                getattr(options, "table_page_suffix_letters", True),
+            )
         aux_pages.append(
-            ("cut", get_template("cut", ".html"), {"cut_table": rendered.get("cut_table", "")})
+            (
+                "cut",
+                get_template("cut", ".html"),
+                get_template("cut_table", ".html"),
+                rendered.get("cut_table", ""),
+                pages,
+            )
         )
     if getattr(options, "include_termination_diagram", False):
+        pages = termination_pages
+        if pages is None:
+            pages = _chunk_rows(
+                termination_rows,
+                getattr(options, "termination_rows_per_page", None),
+                getattr(options, "table_page_suffix_letters", True),
+            )
         aux_pages.append(
             (
                 "termination",
                 get_template("termination", ".html"),
-                {"termination_table": rendered.get("termination_table", "")},
+                get_template("termination_table", ".html"),
+                rendered.get("termination_table", ""),
+                pages,
             )
         )
-    for suffix, template, context in aux_pages:
-        target = filename.with_suffix(f".{suffix}.html")
-        page = template.render(
-            {
-                **context,
-                "metadata": metadata,
-                "options": options,
-                "titleblock": rendered.get("titleblock", ""),
-                "notes": rendered.get("notes", ""),
-                "bom": rendered.get("bom", ""),
-                "diagram": rendered.get("diagram", ""),
-            }
-        )
-        target.write_text(page, encoding="utf-8")
+    for suffix, template, table_template, default_html, pages in aux_pages:
+        if not pages:
+            pages = [("", [])]
+        total_pages = len(pages)
+        for idx, (page_suffix, rows) in enumerate(pages):
+            table_html = table_template.render({"rows": rows}) if rows else default_html
+            suffix_for_file = (
+                f".{page_suffix or letter_suffix(idx)}" if total_pages > 1 else ""
+            )
+            target = filename.with_suffix(f".{suffix}{suffix_for_file}.html")
+            sheet_suffix = (
+                page_suffix if (total_pages > 1 and page_suffix is not None) else ""
+            )
+            page_metadata = (
+                metadata.model_copy(update={"sheet_suffix": sheet_suffix})
+                if hasattr(metadata, "model_copy")
+                else metadata
+            )
+            page_partno = _build_part_number(
+                getattr(page_metadata, "pn", ""),
+                getattr(page_metadata, "revision", ""),
+                getattr(page_metadata, "sheet_current", 0),
+                getattr(getattr(page_metadata, "template", None), "name", ""),
+            )
+            page_titleblock = get_template("titleblock.html").render(
+                {
+                    "metadata": page_metadata,
+                    "options": options,
+                    "partno": page_partno,
+                }
+            )
+            page = template.render(
+                {
+                    f"{suffix}_table": table_html,
+                    "metadata": page_metadata,
+                    "options": options,
+                    "titleblock": page_titleblock,
+                    "notes": rendered.get("notes", ""),
+                    "bom": rendered.get("bom", ""),
+                    "diagram": rendered.get("diagram", ""),
+                }
+            )
+            target.write_text(page, encoding="utf-8")
 
 
 def generate_titlepage(yaml_data, extra_metadata, shared_bom, for_pdf=False):

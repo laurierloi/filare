@@ -5,11 +5,20 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from filare.models.numbers import NumberAndUnit
 from filare.models.partnumber import PartNumberInfo
+from filare.models.table_models import (
+    TableCell,
+    TablePage,
+    TablePaginationOptions,
+    TableRow,
+    paginate_rows,
+)
 from filare.models.utils import remove_links
 from filare.render.templates import get_template
 
 
 class BomEntryBase(BaseModel):
+    """Base BOM entry with quantities, identifiers, and formatting helpers."""
+
     qty: NumberAndUnit
     partnumbers: PartNumberInfo
     id: str = ""
@@ -37,6 +46,7 @@ class BomEntryBase(BaseModel):
 
     @model_validator(mode="after")
     def _scale_qty(self):
+        """Scale qty/amount by the multiplier (if provided) after validation."""
         try:
             self.qty_multiplier = float(self.qty_multiplier or 1)
         except Exception:
@@ -57,6 +67,7 @@ class BomEntryBase(BaseModel):
             return hash(self) == hash(other)
 
     def __add__(self, other):
+        """Combine two BOM entries by summing quantities and designators."""
         if isinstance(other, list):
             return [self + o for o in other]
         elif isinstance(other, BomEntryBase):
@@ -67,6 +78,7 @@ class BomEntryBase(BaseModel):
             raise NotImplementedError(f"__add__ for {type(other)}")
 
     def scale_per_harness(self, multipliers):
+        """Apply per-harness multipliers to per_harness qty entries."""
         if self.scaled_per_harness:
             logging.warning("scale_per_harness() was called twice for item with no ID")
             return
@@ -77,10 +89,12 @@ class BomEntryBase(BaseModel):
 
     @property
     def unit(self):
+        """Unit string derived from qty."""
         return self.qty.unit if self.qty.unit else ""
 
     @property
     def description_clean(self):
+        """Description truncated to printable length and with links stripped."""
         desc = self.description
         if self.restrict_printed_lengths:
             desc = (
@@ -92,6 +106,7 @@ class BomEntryBase(BaseModel):
 
     @property
     def designators_str(self):
+        """Comma-joined designators with optional truncation."""
         if self.restrict_printed_lengths and len(self.designators) > 0:
             designators = self.designators[: self.MAX_PRINTED_DESIGNATORS]
             more = len(self.designators) - len(designators)
@@ -101,6 +116,7 @@ class BomEntryBase(BaseModel):
 
     @property
     def per_harness_str(self):
+        """Human-readable per-harness quantities."""
         if not self.per_harness:
             return ""
         parts = []
@@ -110,6 +126,7 @@ class BomEntryBase(BaseModel):
         return "; ".join(parts)
 
     def as_list(self, filter_empty=False, include_per_harness=False):
+        """Return a list representation for table rendering."""
         lst = [
             getattr(self, "id", ""),
             self.qty.number,
@@ -138,6 +155,7 @@ class BomEntry(BomEntryBase):
 
 class BomRender:
     def __init__(self, header, rows, strip_empty_columns=False, columns_class=None):
+        """Lightweight BOM table renderer using Jinja templates."""
         self.header = header
         self.rows = rows
         self.strip_empty_columns = strip_empty_columns
@@ -149,6 +167,7 @@ class BomRender:
             self.columns_class = columns_class
 
     def as_tsv(self):
+        """Render BOM rows as TSV text."""
         tsv = tabulate_module.tabulate(self.rows, self.header, tablefmt="tsv")
         return tsv
 
@@ -157,6 +176,7 @@ class BomRender:
         return self.header
 
     def render(self, page_options=None, bom_options=None):
+        """Render BOM HTML using the Jinja template."""
         if page_options is None:
             page_options = {}
         if bom_options is None:
@@ -187,6 +207,39 @@ class BomRender:
             }
         )
 
+    def to_table_rows(self) -> List[TableRow]:
+        """Return rows as TableRow objects with css classes preserved."""
+        table_rows: List[TableRow] = []
+        for row in self.rows:
+            cells = []
+            for idx, value in enumerate(row):
+                css_class = (
+                    self.columns_class[idx] if idx < len(self.columns_class) else None
+                )
+                cells.append(TableCell(value=str(value), css_class=css_class))
+            table_rows.append(TableRow(cells=cells))
+        return table_rows
+
+    def paginate(
+        self,
+        pagination: TablePaginationOptions,
+        page_options=None,
+        bom_options=None,
+    ) -> List[TablePage]:
+        """Split the BOM into paginated HTML chunks."""
+        pages = paginate_rows(self.to_table_rows(), pagination)
+        results: List[TablePage] = []
+        for page in pages:
+            subset = [row.values for row in page.rows]
+            rendered_page = BomRender(
+                self.header,
+                subset,
+                strip_empty_columns=self.strip_empty_columns,
+                columns_class=self.columns_class,
+            ).render(page_options=page_options, bom_options=bom_options)
+            results.append(page.with_html(rendered_page))
+        return results
+
 
 class BomRenderOptions:
     def __init__(
@@ -196,6 +249,7 @@ class BomRenderOptions:
         no_per_harness=False,
         reverse=False,
     ):
+        """Options to control BOM table rendering."""
         self.restrict_printed_lengths = restrict_printed_lengths
         self.filter_entries = filter_entries
         self.no_per_harness = no_per_harness
@@ -208,6 +262,7 @@ class BomContent(dict):
         super().__init__(bom)
 
     def filter_entries(self, restrict_printed_lengths=True, filter_entries=True):
+        """Filter or truncate entries prior to rendering."""
         # TODO: Refactor to not mutate in place
         for _, entry in self.items():
             entry.restrict_printed_lengths = restrict_printed_lengths

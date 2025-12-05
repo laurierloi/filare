@@ -42,55 +42,67 @@ options:  # dictionary of common attributes for the whole harness
 ## Connector attributes
 
 ```yaml
-<str>   :  # unique connector designator/name
+<str>: # unique connector designator/name
   # general information about a connector (all optional)
   type: <str>
   subtype: <str>
-  color: <color>  # see below
-  image: <image>  # see below
+  color: <color> # see below
+  image: <image> # see below
   notes: <str>
 
   # product information (all optional)
-  ignore_in_bom: <bool>  # if set to true the connector is not added to the BOM
-  pn: <str>              # [internal] part number
-  manufacturer: <str>    # manufacturer name
-  mpn: <str>             # manufacturer part number
-  supplier: <str>        # supplier name
-  spn: <str>             # supplier part number
+  ignore_in_bom: <bool> # if set to true the connector is not added to the BOM
+  pn: <str> # [internal] part number
+  manufacturer: <str> # manufacturer name
+  mpn: <str> # manufacturer part number
+  supplier: <str> # supplier name
+  spn: <str> # supplier part number
   additional_components: # additional components
     - <additional-component> # additional component (see below)
 
   # pinout information
   # at least one of the following must be specified
-  pincount: <int>    # if omitted, is set to length of specified list(s)
-  pins: <List>       # if omitted, is autofilled with [1, 2, ..., pincount]
-  pinlabels: <List>  # if omitted, is autofilled with blanks
+  pincount: <int> # if omitted, is set to length of specified list(s)
+  pins: <List> # if omitted, is autofilled with [1, 2, ..., pincount]
+  pinlabels: <List> # if omitted, is autofilled with blanks
 
   # pin color marks (optional)
-  pincolors: <List>  # list of colors to be assigned to the respective pins;
-                     # if list length is lower than connector pinout,
-                     # no color marks will be added to remaining pins
+  pincolors:
+    <List> # list of colors to be assigned to the respective pins;
+    # if list length is lower than connector pinout,
+    # no color marks will be added to remaining pins
 
   # rendering information (all optional)
-  bgcolor: <color>       # Background color of diagram connector box
+  bgcolor: <color> # Background color of diagram connector box
   bgcolor_title: <color> # Background color of title in diagram connector box
-  style: <style>         # may be set to simple for single pin connectors
-  show_name: <bool>      # defaults to true for regular connectors,
-                         # false for simple connectors
-  show_pincount: <bool>  # defaults to true for regular connectors
-                         # false for simple connectors
-  hide_disconnected_pins: <bool>  # defaults to false
+  style: <style> # may be set to simple for single pin connectors
+  show_name:
+    <bool> # defaults to true for regular connectors,
+    # false for simple connectors
+  show_pincount:
+    <bool> # defaults to true for regular connectors
+    # false for simple connectors
+  hide_disconnected_pins: <bool> # defaults to false
 
   # loops
-  loops: <List[loop]>  # every list item is a loop object representing two pins
-                 # on the connector that are to be shorted
-	  loop:
-		- <first>: the first <pin> of the loop
-		- <second>: the second <pin> of the loop
-		- <side>: either "LEFT" or "RIGHT"
-		- show_label: <bool> defaults to true, will show the loop label
+  loops: # each item shorts two pins on the connector
+    - first: <pin> # pin number or pin label
+      second: <pin> # pin number or pin label
+      side: <LEFT|RIGHT|null> # optional; anchor the loop to a side
+      show_label: <bool> # defaults to true; hide the label when false
+      color: <color> # optional stroke color
+    # shorthand tuple/list form is also allowed:
+    # - [<pin>, <pin>]  # treated as {first: <pin>, second: <pin>}
 
+  # example:
+  # loops:
+  #   - first: 1
+  #     second: 2
+  #     side: LEFT
+  #   - [3, 4]  # uses default side/label/color
 ```
+
+Loops mark both pins as connected and render a short jumper on the chosen side (when provided). If `side` is omitted, Filare chooses a side based on the connector layout. Set `show_label: false` to hide the loop label for purely visual jumpers, and use `color` to highlight the jumper trace.
 
 ## Cable attributes
 
@@ -285,7 +297,42 @@ fontname: <str> # Default = 'arial'
 # about additional components inside the diagram node (connector/cable box).
 # If False, show all info about additional components inside the diagram node.
 mini_bom_mode: <bool> # Default = True
+
+# BOM rendering and pagination
+include_bom: <bool> # Default = True
+split_bom_page: <bool> # Default = False; when true, BOM renders to <name>.bom.html
+bom_rows_per_page: <int> # Optional; when set with split_bom_page, paginate BOM rows with lettered suffixes
+bom_force_single_page: <bool> # Default = False; keep BOM on a single page even if bom_rows_per_page is set
+
+# Split tables and index
+split_notes_page: <bool> # Default = False; split notes into <name>.notes.html
+split_index_page: <bool> # Default = False; split index table into <name>.index.html
+table_page_suffix_letters: <bool> # Default = True; use a/b/c suffixes when pagination produces multiple pages
+
+# Cut and termination diagrams
+include_cut_diagram: <bool> # Default = False
+include_termination_diagram: <bool> # Default = False
+cut_rows_per_page: <int> # Optional; paginate cut tables when set
+termination_rows_per_page: <int> # Optional; paginate termination tables when set
 ```
+
+### Importing external SVG diagrams (DrawIO)
+
+You can replace the auto-generated diagram with a DrawIO-exported SVG and control how it is placed on the page:
+
+```yaml
+options:
+  diagram_svg:
+    src: diagrams/power-page.svg # path to the DrawIO-exported SVG
+    width: 90% # optional; defaults to 95% max width
+    height: 180mm # optional max/fixed height
+    align: left # left, center (default), or right
+    offset_x: 5mm # optional translation on the page
+    offset_y: 0
+    preserve_aspect_ratio: true # set to false to allow stretching
+```
+
+Relative `src` paths are resolved from the harness YAML file location (and any `options.image_paths`). The SVG is inlined (including linked images) and used for both HTML and SVG outputs; PDFs generated from HTML will include the imported diagram as well. When `diagram_svg` is set, PNG output is skipped to avoid mixing Graphviz and DrawIO renders.
 
 ## BOM items and additional components
 
@@ -402,6 +449,15 @@ image:
 ```
 
 For more fine grained control over the image parameters, please see [`advanced_image_usage.md`](advanced_image_usage.md).
+
+## Quantity multipliers (shared BOM scaling)
+
+When generating a shared BOM across multiple harnesses, you can scale quantities with a multiplier file:
+
+1. Run `uv run filare-qty <harness.yml> [--multiplier-file-name <path>] [--force-new]` to create or update a JSON file (default `quantity_multipliers.txt`) with `{<harness_name>: <int>}` entries.
+2. Run `uv run filare <harness.yml> --use-qty-multipliers [--multiplier-file-name <path>] ...` to apply those multipliers while building `shared_bom.tsv`.
+
+If the multiplier file is missing, `filare-qty` prompts for integer values. To protect an existing file, omit `--force-new`. Place the multiplier file alongside your harnesses or point `--multiplier-file-name` to a shared location (e.g., `outputs/quantity_multipliers.txt`).
 
 ## Multiline strings
 

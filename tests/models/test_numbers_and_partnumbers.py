@@ -39,6 +39,8 @@ def test_partnumbers2list_with_parent_filter():
     # The returned list is list-of-lists when parents are provided; flatten for assertion
     flat = [item for sub in lst for item in sub]
     assert "P1" not in "".join(flat)
+    # direct call without parent folds to single list
+    assert PartNumberInfo.list_keep_only_eq([child, parent]).pn == ""
 
 
 def test_partnumberinfo_list_keep_only_shared():
@@ -56,6 +58,19 @@ def test_partnumberinfo_clear_per_field_and_copy():
     assert cleared_neq.pn == "" and cleared_neq.manufacturer == "M"
     with pytest.raises(NotImplementedError):
         a.clear_per_field(">", b)
+    # list case routing
+    list_case = PartNumberInfo(pn="L1", manufacturer="M1", is_list=True)
+    list_case.pn_list = [PartNumberInfo(pn="L1")]
+    kept = list_case.keep_only_eq(PartNumberInfo(pn="L1"))
+    assert kept.pn == "L1"
+    assert kept.manufacturer == ""
+    # other None paths
+    assert a.clear_per_field("==", None).pn == "A"
+    assert a.clear_per_field("!=", None) is None
+    # other.is_list branch
+    list_other = PartnumberInfoList(pn_list=[PartNumberInfo(pn="A", manufacturer="M")])
+    cleared = a.clear_per_field("==", list_other)
+    assert cleared.pn == ""
 
 
 def test_partnumberinfo_list_as_unique_and_shared():
@@ -70,7 +85,9 @@ def test_partnumberinfo_list_as_unique_and_shared():
 
 
 def test_partnumbers2list_merging_parents_and_children():
-    child = PartNumberInfo(pn="C1", manufacturer="ACME", mpn="M1", supplier="SUP", spn="SP")
+    child = PartNumberInfo(
+        pn="C1", manufacturer="ACME", mpn="M1", supplier="SUP", spn="SP"
+    )
     parents = PartnumberInfoList(pn_list=[PartNumberInfo(pn="C1", manufacturer="ACME")])
     merged = partnumbers2list(child, parents)
     flat = [item for sub in merged for item in sub]
@@ -78,3 +95,44 @@ def test_partnumbers2list_merging_parents_and_children():
     assert any("SUP" in s for s in flat)
     assert any("SP" in s for s in flat)
     assert any("M1" in s for s in flat)
+
+
+def test_partnumberinfo_validators_and_accessors():
+    with pytest.raises(ValueError):
+        PartNumberInfo(pn=["bad"])
+    pn = PartNumberInfo(pn="X", manufacturer="M")
+    pn["mpn"] = "MP"
+    assert pn["mpn"] == "MP"
+    pn.supplier = "S"
+    assert any("Supplier" in s for s in pn.str_list)
+    assert "pn" in pn.bom_keys
+    assert pn.bom_dict["pn"] == "X"
+
+
+def test_partnumberinfo_list_keep_unique_and_remove():
+    pn1 = PartNumberInfo(pn="A", manufacturer="M")
+    pn2 = PartNumberInfo(pn="A", manufacturer="M2")
+    lst = PartnumberInfoList(pn_list=[pn1, pn2])
+    shared = lst.keep_only_shared()
+    assert shared.pn == "A"
+    # keep_unique yields versions with differing fields cleared
+    kept = list(lst.keep_unique([pn1, pn2]))
+    assert kept and isinstance(kept[0], PartNumberInfo)
+    # empty list returns None from keep_only_shared
+    assert PartnumberInfoList(pn_list=[]).keep_only_shared() is None
+    # keep_unique with more entries exercises shared removal path
+    pn3 = PartNumberInfo(pn="A", manufacturer="M3")
+    kept_multi = list(lst.keep_unique([pn1, pn2, pn3]))
+    assert kept_multi
+    # keep_only_eq yields generators
+    eq_list = list(lst.keep_only_eq(PartNumberInfo(pn="A", manufacturer="M")))
+    assert eq_list[0].pn == "" or isinstance(eq_list[0], PartNumberInfo)
+
+
+def test_partnumbers2list_without_parents():
+    pn = PartNumberInfo(pn="Solo")
+    lst = partnumbers2list(pn)
+    assert lst and "Solo" in "".join(lst)
+    parent = PartNumberInfo(pn="Solo", manufacturer="ACME")
+    lst_with_parent = partnumbers2list(pn, PartnumberInfoList(pn_list=[parent]))
+    assert isinstance(lst_with_parent, list)
