@@ -16,6 +16,7 @@ from filare.models.dataclasses import (
 from filare.models.types import Side
 from pathlib import Path
 
+from filare.errors import UnsupportedLoopSide
 from filare.models.image import Image
 from filare.render.html_utils import Img, Table, Td, Tr
 from filare.render.templates import get_template
@@ -73,9 +74,7 @@ def gv_connector_loops(connector: Connector) -> List:
         loop_side = "r"
         loop_dir = "e"
     else:
-        from filare.errors import UnsupportedLoopSide
-
-        raise UnsupportedLoopSide()
+        raise UnsupportedLoopSide(connector.designator)
     for loop in connector.loops:
         this_loop_side = loop_side
         this_loop_dir = loop_dir

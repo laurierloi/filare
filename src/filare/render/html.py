@@ -360,10 +360,15 @@ def _write_split_sections(
     bom_pages: Optional[List] = None,
 ) -> None:
     """Emit split section HTML files based on options."""
+    template_name = getattr(getattr(metadata, "template", None), "name", None)
+    is_titlepage = (
+        str(template_name) == "titlepage"
+        or getattr(metadata, "output_name", "") == "titlepage"
+    )
     splits = {
         "bom": options.split_bom_page and "bom" in rendered,
         "notes": options.split_notes_page and "notes" in rendered,
-        "index": options.split_index_page and "index_table" in rendered,
+        "index": options.split_index_page and "index_table" in rendered and is_titlepage,
     }
     for section, should_write in splits.items():
         if not should_write:
