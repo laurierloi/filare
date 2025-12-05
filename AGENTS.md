@@ -196,10 +196,15 @@ The commit message should be structured as follows:
 - Ensure GraphViz (`dot -V`) and required fonts are available before debugging rendering differences.
 
 ## Commit & Pull Request Guidelines
-- Open an issue first, then branch from `dev`. Use imperative, concise commit subjects and reference the issue number in the body when applicable.
-- Base PRs on `dev`; describe the user-visible change, mention new YAML examples/tests (including any XSC harness updates), and link related issues. Update `docs/syntax.md` when altering the YAML schema or outputs.
+- Open an issue first, then branch from `beta`. Use imperative, concise commit subjects and reference the issue number in the body when applicable.
+- Base PRs on `beta`; describe the user-visible change, mention new YAML examples/tests (including any XSC harness updates), and link related issues. Update `docs/syntax.md` when altering the YAML schema or outputs.
 - Avoid committing generated artifacts (diagrams, PDFs, tutorials) unless required; keep PRs focused and rebased for a clean history.
 - When executing a multi-step plan, complete and commit each step. If no operator input is needed and steps remain, proceed directly to the next step after each commit.
+- PR creation flow (target `beta`):
+  - Rebase on `origin/beta`, push your branch (`<role>/<desc>`).
+  - Authenticate `gh` (`gh auth login --hostname github.com --git-protocol ssh --web` or `gh auth login --with-token <<<"$GH_TOKEN"` with a PAT that has `repo` scope; keep tokens only in untracked files like `.env`).
+  - Create PR: `gh pr create --base beta --head <branch> --title "<type>: <summary>" --body-file /tmp/body.md` (or use `gh api repos/<owner>/<repo>/pulls -f base=beta -f head=<branch> -f title=... -f body@path`).
+  - `main` is only for promotion PRs from `beta` after validation; add the `validated` label for beta→main promotion.
 
 ## Branding Notes
 - Use the Filare brand in user-facing text, CLI help, docs, and examples; keep legacy `filare` names only where required for compatibility.
@@ -208,6 +213,8 @@ The commit message should be structured as follows:
 ### MRs
 
 - Target: `beta`
+- Set the GitHub default branch to `beta` so PRs default to the correct target.
+- PRs to `main` are only allowed from this repository’s `beta` branch after the validation agent has added the `validated` label.
 - Keep MR < 30 commits
 - Squash on merge
 - Avoid committing generated files unless required
