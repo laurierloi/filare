@@ -1,6 +1,6 @@
 # Template: Image Gallery / Reference Photos
 ## Category
-UI
+UI — Importance: Low
 ## Proposal
 Add a template to present reference images (photos, diagrams) with captions and optional tags, useful for assembly guidance and visual QA.
 ## Model

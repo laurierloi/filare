@@ -1,6 +1,6 @@
 # Template: Approvals / Signoff Page
 ## Category
-UI
+UI — Importance: High
 ## Proposal
 Add an approvals/signoff template for engineering release packets. The page captures designer/reviewer (and optional approver) signatures with dates and comments, without diagrams/BOM.
 ## Model

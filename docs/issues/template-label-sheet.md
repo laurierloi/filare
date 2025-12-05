@@ -1,6 +1,6 @@
 # Template: Label Sheet (Wire/Connector Tags)
 ## Category
-UI
+UI — Importance: Medium
 ## Proposal
 Add a label-sheet template to generate printable tags for wires/connectors. Users can print adhesive labels with designator, pin, color, and optional QR/shortcode.
 ## Model

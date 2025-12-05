@@ -1,6 +1,6 @@
 # Template: Wire List / Netlist
 ## Category
-UI
+UI — Importance: High
 ## Proposal
 Add a wire list template that outputs a concise netlist-style table for each connection, useful for technicians and testers. Focus on source/target pins, wire IDs, colors, lengths, and terminations.
 ## Model

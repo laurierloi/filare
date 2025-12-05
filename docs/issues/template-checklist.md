@@ -1,6 +1,6 @@
 # Template: Assembly/Test Checklist
 ## Category
-UI
+UI — Importance: Medium
 ## Proposal
 Add a checklist template for assembly or test steps tied to a harness. Provides step descriptions, expected results, and pass/fail/notes columns for technicians.
 ## Model

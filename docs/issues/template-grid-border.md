@@ -1,6 +1,6 @@
 # Template: Diagram Grid Border (Lettered)
 ## Category
-UI
+UI — Importance: Medium
 ## Proposal
 Add an optional lettered/numbered grid border around diagram pages so users can pinpoint locations (standard drawing practice). Grid labels (A, B, C… on one axis; 1, 2, 3… on the other) should overlay margins without obscuring diagrams.
 ## Model

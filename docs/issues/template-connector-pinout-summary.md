@@ -1,6 +1,6 @@
 # Template: Connector Pinout Summary
 ## Category
-UI
+UI — Importance: High
 ## Proposal
 Add a connector pinout summary template that lists each connector with its pins, functions, colors, and mating info, aggregated on a single page.
 ## Model

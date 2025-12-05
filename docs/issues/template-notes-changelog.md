@@ -1,6 +1,6 @@
 # Template: Notes/Changelog Page
 ## Category
-UI
+UI — Importance: Medium
 ## Proposal
 Add a notes-only/changelog template to capture release notes, approvals, and revision history without diagrams or BOM. Provides a clean page for managers/QA signoff.
 ## Model

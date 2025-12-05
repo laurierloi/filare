@@ -1,6 +1,6 @@
 # Template: Procurement BOM (minimal layout)
 ## Category
-UI
+UI — Importance: High
 ## Proposal
 Add a procurement-focused BOM template that outputs a clean table (no title block/diagram) for purchasing teams. Keep page size flexible (A4/A3), with optional grouping by supplier.
 ## Model
