@@ -764,8 +764,12 @@ class Cable(WireClass):
         # allow gauge, length, and other fields to be lists too (like part numbers),
         # and assign them the same way to bundles.
 
-        self.gauge = NumberAndUnit.to_number_and_unit(self.gauge, "mm2")
-        self.length = NumberAndUnit.to_number_and_unit(self.length, "m")
+        self.gauge = NumberAndUnit.to_number_and_unit(
+            self.gauge, "mm2", context=f"cable {self.designator} gauge"
+        )
+        self.length = NumberAndUnit.to_number_and_unit(
+            self.length, "m", context=f"cable {self.designator} length"
+        )
         self.amount = self.length  # for BOM
 
         if self.wirecount:  # number of wires explicitly defined

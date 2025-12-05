@@ -78,10 +78,12 @@ class UnknownTemplateDesignator(FilareFlowException):
 class InvalidNumberFormat(FilareModelException, ValueError):
     """Raised when a number/unit string cannot be parsed."""
 
-    def __init__(self, value: str):
+    def __init__(self, value: str, context: str = ""):
         self.value = value
+        self.context = context
+        prefix = f"{context}: " if context else ""
         super().__init__(
-            f"{value} is not a valid number and unit.\n"
+            f"{prefix}{value} is not a valid number and unit.\n"
             "It must be a number, or a number and unit separated by a space."
         )
 
