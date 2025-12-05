@@ -13,6 +13,7 @@ from filare.models.options import PageOptions, get_page_options
 from filare.models.connector import ConnectorModel
 from filare.models.cable import CableModel
 from filare.models.component import ComponentModel
+from filare.models.colors import ColorOutputMode
 from filare.models.page import (
     BOMPage,
     CutPage,
@@ -90,6 +91,48 @@ def _build_metadata(yaml_file, yaml_data, extra_metadata, metadata_output_name):
             **extra_metadata,
         }
     )
+
+
+def _apply_document_to_harness(
+    harness: Harness, document: DocumentRepresentation
+) -> None:
+    """Use a document representation to drive harness options/flags."""
+    if not document:
+        return
+
+    doc_options = document.extras.get("options", {})
+    if doc_options:
+        options_data = dict(doc_options)
+        if "color_output_mode" in options_data:
+            com_value = options_data["color_output_mode"]
+            if isinstance(com_value, str) and com_value.isdigit():
+                com_value = int(com_value)
+            try:
+                options_data["color_output_mode"] = ColorOutputMode(com_value)
+            except Exception:
+                options_data["color_output_mode"] = com_value
+        harness.options = PageOptions(**options_data)
+
+    page_types = {getattr(page, "type", None) for page in document.pages}
+    if page_types:
+        harness.options.include_bom = PageType.bom in page_types
+        harness.options.show_bom = harness.options.include_bom
+        harness.options.include_cut_diagram = PageType.cut in page_types
+        harness.options.include_termination_diagram = PageType.termination in page_types
+
+
+def _collect_formats_from_document(
+    document: Optional[DocumentRepresentation],
+) -> Tuple[str, ...]:
+    """Collect requested output formats from a document representation."""
+    if not document:
+        return ()
+    formats: List[str] = []
+    for page in document.pages:
+        for fmt in getattr(page, "formats", []) or []:
+            if fmt not in formats:
+                formats.append(fmt)
+    return tuple(formats)
 
 
 def _collect_templates(yaml_data, image_paths):
@@ -384,13 +427,14 @@ def build_harness_from_files(
 
     generate_document = bool(doc_yaml_path)
     if doc_yaml_path and doc_yaml_path.exists():
+        document_representation = DocumentRepresentation.from_yaml(doc_yaml_path)
+        harness.document = document_representation
+        _apply_document_to_harness(harness, document_representation)
         if not registry.allow_override(doc_yaml_path.name):
             logging.warning(
                 "Document representation locked (allow_override=False); using existing %s",
                 doc_yaml_path,
             )
-            document_representation = DocumentRepresentation.from_yaml(doc_yaml_path)
-            harness.document = document_representation
             generate_document = False
     if generate_document and doc_yaml_path:
         pages = [
@@ -429,8 +473,23 @@ def build_harness_from_files(
         )
         harness.document = document_representation
 
-    if output_formats:
-        render_harness_outputs(harness, output_dir, output_name, output_formats)
+    effective_output_formats: Tuple[str, ...] = tuple(output_formats or ())
+    doc_formats = _collect_formats_from_document(document_representation)
+    if doc_formats:
+        merged_formats = list(effective_output_formats)
+        for fmt in doc_formats:
+            if fmt not in merged_formats:
+                merged_formats.append(fmt)
+        effective_output_formats = tuple(merged_formats)
+    if not getattr(harness.options, "include_bom", True):
+        effective_output_formats = tuple(
+            fmt for fmt in effective_output_formats if fmt != "tsv"
+        )
+
+    if effective_output_formats:
+        render_harness_outputs(
+            harness, output_dir, output_name, effective_output_formats
+        )
 
     if return_types:
         if isinstance(return_types, str):

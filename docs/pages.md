@@ -15,6 +15,7 @@ Filare assembles engineering documents as a set of page types. Each page carries
 - The default document includes: `title`, `harness`, and `bom` pages.
 - `cut` and `termination` pages are opt-in; enable via `options.include_cut_diagram` / `options.include_termination_diagram`.
 - BOM inclusion can be turned off with `options.include_bom`.
+- The index table is generated only on the title page. When split output is requested, the title page excludes the index content and writes `titlepage.index.html` instead.
 
 ## Data provided
 
@@ -44,3 +45,12 @@ pages:
 ```
 
 User edits to the document YAML are preserved (hash-guarded). Delete `*.document.yaml` and `document_hashes.yaml` to regenerate from the harness if needed.
+
+### Using an existing document representation
+
+If a `*.document.yaml` already exists for the harness (same stem as the harness file, located in the output directory), Filare will load it and drive generation from it:
+
+- Options in `extras.options` are applied before rendering (e.g., `include_cut_diagram`, `include_termination_diagram`, `split_bom_page`, `split_notes_page`, `split_index_page`).
+- Page entries define which pages render; BOM/TSV output is skipped when the document omits a BOM page.
+- Document-requested formats on each page are merged with CLI formats.
+- Locked documents (`document_hashes.yaml` with `allow_override: false`) are respected and not overwritten.
