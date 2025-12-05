@@ -168,6 +168,36 @@ def test_multi_harness_html_and_shared_outputs(tmp_path):
     assert "MULTI-h1" in shared_bom and "MULTI-h2" in shared_bom
 
 
+def test_multi_harness_pdf_bundle(tmp_path):
+    pytest.importorskip("weasyprint")
+
+    output_dir = tmp_path / "out"
+    output_dir.mkdir()
+
+    metadata_path = tmp_path / "metadata.yml"
+    harness_a = tmp_path / "h1.yml"
+    harness_b = tmp_path / "h2.yml"
+
+    _write_metadata(metadata_path, pn="PDFMULTI")
+    _write_simple_harness(harness_a)
+    _write_simple_harness(harness_b)
+
+    cli.callback(  # type: ignore[attr-defined]
+        files=(harness_a, harness_b),
+        formats="hP",
+        components=(),
+        metadata=(metadata_path,),
+        output_dir=output_dir,
+        output_name=None,
+        version=False,
+        use_qty_multipliers=False,
+        multiplier_file_name="quantity_multipliers.txt",
+    )
+
+    pdf_path = (output_dir / output_dir.name).with_suffix(".pdf")
+    assert pdf_path.exists(), f"Expected combined PDF {pdf_path}"
+
+
 def test_cli_skips_bom_when_disabled(tmp_path):
     output_dir = tmp_path / "out"
     output_dir.mkdir()
