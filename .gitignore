@@ -10,6 +10,8 @@ venv/
 .venv/
 tags
 .coverage
+.temp
+*.temp
 
 # Build/compile/release artifacts
 build/

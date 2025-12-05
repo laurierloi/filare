@@ -21,6 +21,7 @@ from filare.models.primitives import (
 )
 from filare.models.hypertext import MultilineHypertext
 from filare.models.image import Image
+from filare.errors import ComponentValidationError
 from filare.models.numbers import NumberAndUnit
 from filare.models.partnumber import PartNumberInfo, PartnumberInfoList
 from filare.models.bom import BomEntry, BomEntryBase
@@ -303,7 +304,7 @@ class Connector(GraphicalComponent):
 
         if self.style == "simple":
             if self.pincount and self.pincount > 1:
-                raise Exception(
+                raise ComponentValidationError(
                     "Connectors with style set to simple may only have one pin"
                 )
             self.pincount = 1
@@ -313,7 +314,7 @@ class Connector(GraphicalComponent):
                 len(self.pins), len(self.pinlabels), len(self.pincolors)
             )
             if not self.pincount:
-                raise Exception(
+                raise ComponentValidationError(
                     "You need to specify at least one: "
                     "pincount, pins, pinlabels, or pincolors"
                 )
@@ -323,7 +324,7 @@ class Connector(GraphicalComponent):
             self.pins = list(range(1, self.pincount + 1))
 
         if len(self.pins) != len(set(self.pins)):
-            raise Exception("Pins are not unique")
+            raise ComponentValidationError("Pins are not unique")
 
         # convert all pins which can be to int
         def to_int_pin(pin):
@@ -776,7 +777,7 @@ class Cable(WireClass):
             elif self.color_code:
                 # use standard color palette (partly or looped if needed)
                 if self.color_code not in COLOR_CODES:
-                    raise Exception("Unknown color code")
+                    raise ComponentValidationError("Unknown color code")
                 self.colors = [
                     get_color_by_colorcode_index(self.color_code, i)
                     for i in range(self.wirecount)
@@ -788,7 +789,7 @@ class Cable(WireClass):
 
         else:  # wirecount implicit in length of color list
             if not self.colors:
-                raise Exception(
+                raise ComponentValidationError(
                     "Unknown number of wires. "
                     "Must specify wirecount or colors (implicit length)"
                 )
@@ -796,7 +797,7 @@ class Cable(WireClass):
 
         if self.wirelabels:
             if self.shield and "s" in self.wirelabels:
-                raise Exception(
+                raise ComponentValidationError(
                     '"s" may not be used as a wire label for a shielded cable.'
                 )
 
@@ -807,9 +808,13 @@ class Cable(WireClass):
                 if self.is_bundle:
                     # check the length
                     if len(idfield) != self.wirecount:
-                        raise Exception("lists of part data must match wirecount")
+                        raise ComponentValidationError(
+                            "lists of part data must match wirecount"
+                        )
                 else:
-                    raise Exception("lists of part data are only supported for bundles")
+                    raise ComponentValidationError(
+                        "lists of part data are only supported for bundles"
+                    )
 
         # all checks have passed
         wire_tuples = zip_longest(
@@ -921,7 +926,7 @@ class Cable(WireClass):
                 # inherit component's length unit if appropriate
                 if subitem.qty_multiplier.name.upper() in ["LENGTH", "TOTAL_LENGTH"]:
                     if subitem.qty.unit is not None:
-                        raise Exception(
+                        raise ComponentValidationError(
                             f"No unit may be specified when using"
                             f"{subitem.qty_multiplier} as a multiplier"
                         )
@@ -930,7 +935,7 @@ class Cable(WireClass):
                     )
 
             elif isinstance(subitem.qty_multiplier, QtyMultiplierConnector):
-                raise Exception("Used a connector multiplier in a cable!")
+                raise ComponentValidationError("Used a connector multiplier in a cable!")
             else:  # int or float
                 computed_factor = subitem.qty_multiplier
             subitem._qty_multiplier_computed = computed_factor

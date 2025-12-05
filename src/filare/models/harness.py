@@ -279,8 +279,10 @@ class Harness:
                     if pinlabel in connector.pins:
                         pinnumber = pinlabel
                     else:
-                        raise ValueError(
-                            f"Pinlabel {pinlabel} is not in pinlabels of connector {name}"
+                        from filare.errors import PinResolutionError
+
+                        raise PinResolutionError(
+                            name, f"Pinlabel {pinlabel} is not in pinlabels"
                         )
 
             if pinnumber is not None:
@@ -288,26 +290,37 @@ class Harness:
                     i for i, x in enumerate(connector.pins) if x == pinnumber
                 ]
                 if len(pinnumber_indexes) > 1:
-                    raise ValueError(
-                        f"Pinnumber {pinnumber} is not unique in pins of connector {name}"
+                    from filare.errors import PinResolutionError
+
+                    raise PinResolutionError(
+                        name, f"Pinnumber {pinnumber} is not unique in pins"
                     )
                 pinnumber_index = pinnumber_indexes[0]
                 if pinlabel_indexes is not None:
                     if pinnumber_index not in pinlabel_indexes:
-                        raise ValueError(
-                            f"No pinnumber {pinnumber} matches pinlabel {pinlabel} in connector {name}, pinlabel for that pinnumber is {connector.pinlabels[pinnumber_index]}"
+                        from filare.errors import PinResolutionError
+
+                        raise PinResolutionError(
+                            name,
+                            f"No pinnumber {pinnumber} matches pinlabel {pinlabel}; pinlabel for that pinnumber is {connector.pinlabels[pinnumber_index]}",
                         )
             elif pinlabel_indexes is not None:
                 if len(pinlabel_indexes) > 1:
                     pinnumber_indexes = [connector.pins[i] for i in pinlabel_indexes]
-                    raise ValueError(
-                        f"Pinlabel {pinlabel} is not unique in pinlabels of connector {name} (available pins are: {pinnumber_indexes}), and no pinnumber defined to disambiguate\nThe user can define a pinnumber by using the form PINLABEL__PINNUMBER, where the double underscore is the separator"
+                    from filare.errors import PinResolutionError
+
+                    raise PinResolutionError(
+                        name,
+                        f"Pinlabel {pinlabel} is not unique in pinlabels (available pins are: {pinnumber_indexes}), and no pinnumber defined to disambiguate",
                     )
                 pinnumber_index = pinlabel_indexes[0]
 
             if pinnumber_index is None:
-                raise ValueError(
-                    f"Neither pinlabel ({pinlabel}) or pinnumber ({pinnumber}) where found on connector {name}, pinlabels: {connector.pinlabels}, pinnumbers: {connector.pins})"
+                from filare.errors import PinResolutionError
+
+                raise PinResolutionError(
+                    name,
+                    f"Neither pinlabel ({pinlabel}) or pinnumber ({pinnumber}) were found; pinlabels: {connector.pinlabels}, pinnumbers: {connector.pins}",
                 )
 
             pin = connector.pins[pinnumber_index]
@@ -322,23 +335,28 @@ class Harness:
             # check if provided name is ambiguous
             if via_wire in cable.colors and via_wire in cable.wirelabels:
                 if cable.colors.index(via_wire) != cable.wirelabels.index(via_wire):
-                    raise Exception(
-                        f"{via_name}:{via_wire} is defined both in colors and wirelabels, "
-                        "for different wires."
+                    from filare.errors import CableWireResolutionError
+
+                    raise CableWireResolutionError(
+                        via_name, via_wire, "is defined both in colors and wirelabels, for different wires."
                     )
                 # TODO: Maybe issue a warning if present in both lists
                 # but referencing the same wire?
             if via_wire in cable.colors:
                 if cable.colors.count(via_wire) > 1:
-                    raise Exception(
-                        f"{via_name}:{via_wire} is used for more than one wire."
+                    from filare.errors import CableWireResolutionError
+
+                    raise CableWireResolutionError(
+                        via_name, via_wire, "is used for more than one wire."
                     )
                 # list index starts at 0, wire IDs start at 1
                 via_wire = cable.colors.index(via_wire) + 1
             elif via_wire in cable.wirelabels:
                 if cable.wirelabels.count(via_wire) > 1:
-                    raise Exception(
-                        f"{via_name}:{via_wire} is used for more than one wire."
+                    from filare.errors import CableWireResolutionError
+
+                    raise CableWireResolutionError(
+                        via_name, via_wire, "is used for more than one wire."
                     )
                 via_wire = (
                     cable.wirelabels.index(via_wire) + 1
