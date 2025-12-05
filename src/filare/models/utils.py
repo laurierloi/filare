@@ -80,13 +80,12 @@ def expand(yaml_data):
 
 
 def get_single_key_and_value(d: dict):
-    # used for defining a line in a harness' connection set
-    # E.g. for the YAML input `- X1: 1`
-    # this function returns a tuple in the form ("X1", "1")
+    """Return the single key/value pair from a one-entry dict."""
     return next(iter(d.items()))
 
 
 def int2tuple(inp):
+    """Convert any value to a 1-tuple, preserving tuples."""
     if isinstance(inp, tuple):
         output = inp
     else:
@@ -95,6 +94,7 @@ def int2tuple(inp):
 
 
 def flatten2d(inp):
+    """Flatten a 2D list/tuple into a 2D list of strings."""
     return [
         [str(item) if not isinstance(item, List) else ", ".join(item) for item in row]
         for row in inp
@@ -103,11 +103,13 @@ def flatten2d(inp):
 
 # TODO: move to hyperlink
 def html_line_breaks(inp):
+    """Convert newlines to HTML <br /> tags after stripping links."""
     return remove_links(inp).replace("\n", "<br />") if isinstance(inp, str) else inp
 
 
 # TODO: move to hyperlink
 def remove_links(inp):
+    """Strip HTML anchor tags, returning just the link text."""
     return (
         re.sub(r"<[aA] [^>]*>([^<]*)</[aA]>", r"\1", inp)
         if isinstance(inp, str)
@@ -116,6 +118,7 @@ def remove_links(inp):
 
 
 def clean_whitespace(inp):
+    """Collapse repeated whitespace and tidy stray spaces before punctuation."""
     return " ".join(inp.split()).replace(" ,", ",") if isinstance(inp, str) else inp
 
 

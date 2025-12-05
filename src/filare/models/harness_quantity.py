@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field, ConfigDict, model_validator
 
 
 class HarnessQuantity(BaseModel):
+    """Stores per-harness quantity multipliers and their backing file paths."""
     harnesses: List[Path]
     multiplier_file_name: str = "quantity_multipliers.txt"
     output_dir: Optional[Path] = None
@@ -33,6 +34,7 @@ class HarnessQuantity(BaseModel):
 
     @model_validator(mode="before")
     def _derive_paths(cls, values):
+        """Populate folder and multiplier file path from the first harness file."""
         harnesses = values.get("harnesses") or []
         if not harnesses:
             return values
@@ -45,12 +47,14 @@ class HarnessQuantity(BaseModel):
 
     @property
     def harness_names(self):
+        """Return the stem names (no extension) for all harness files."""
         return [harness.stem for harness in self.harnesses]
 
     def __getitem__(self, harness):
         return self.multipliers[harness]
 
     def fetch_qty_multipliers_from_file(self):
+        """Load multipliers from disk or prompt the user if the file is absent."""
         if self.qty_multipliers.is_file():
             with open(self.qty_multipliers, "r") as f:
                 try:
@@ -81,10 +85,12 @@ class HarnessQuantity(BaseModel):
                 break
 
     def save_qty_multipliers_to_file(self):
+        """Write collected multipliers to the configured JSON file."""
         with open(self.qty_multipliers, "w") as f:
             json.dump(self.multipliers, f)
 
     def retrieve_harness_qty_multiplier(self, bom_file):
+        """Return the multiplier for the harness associated with a BOM file path."""
         return int(self[Path(Path(bom_file).stem).stem])
 
 
@@ -115,6 +121,7 @@ class HarnessQuantity(BaseModel):
     help="if set, will always ask for new multipliers",
 )
 def qty_multipliers(files, multiplier_file_name, force_new):
+    """Click entrypoint to collect per-harness quantity multipliers."""
     harnesses = HarnessQuantity(files, multiplier_file_name)
     if force_new:
         harnesses.qty_multipliers.unlink(missing_ok=True)
