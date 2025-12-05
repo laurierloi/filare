@@ -62,19 +62,56 @@ class _RenderReplacements(BaseModel):
 
     options: PageOptions
     diagram: Optional[str]
+    diagram_container_class: str = ""
+    diagram_container_style: str = ""
     metadata: Metadata
     notes: Notes
     partno: str
+    generator: str = ""
+    title: str = ""
+    description: str = ""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    @classmethod
+    def from_render_context(
+        cls,
+        *,
+        options: PageOptions,
+        diagram: Optional[str],
+        diagram_container_class: str,
+        diagram_container_style: str,
+        metadata: Metadata,
+        notes: Notes,
+        partno: str,
+    ) -> Dict[str, object]:
+        """Build a replacements mapping with sensible defaults for templates."""
+        generator = f"{getattr(filare, 'APP_NAME', 'Filare')} {getattr(filare, '__version__', '')}"
+        return cls(
+            options=options,
+            diagram=diagram,
+            diagram_container_class=diagram_container_class,
+            diagram_container_style=diagram_container_style,
+            metadata=metadata,
+            notes=notes,
+            partno=partno,
+            generator=generator,
+            title=getattr(metadata, "title", ""),
+            description=getattr(metadata, "description", ""),
+        ).as_mapping()
 
     def as_mapping(self) -> Dict[str, object]:
         return {
             "options": self.options,
             "diagram": self.diagram,
+            "diagram_container_class": self.diagram_container_class,
+            "diagram_container_style": self.diagram_container_style,
             "metadata": self.metadata,
             "notes": self.notes,
             "partno": self.partno,
+            "generator": self.generator,
+            "title": self.title,
+            "description": self.description,
         }
 
 
@@ -188,26 +225,17 @@ def generate_html_output(
         revision = metadata.revision
     except Exception:
         revision = ""
-    partno = metadata.pn if not revision else f"{metadata.pn}-{revision}"
-    if template_name != "titlepage":
-        partno = (
-            f"{partno}-{harness_number}"
-            if revision
-            else f"{metadata.pn}-{harness_number}"
-        )
+    partno = _build_part_number(metadata.pn, revision, harness_number, template_name)
 
-    replacements = {
-        "options": options_for_render,
-        "diagram": svgdata,
-        "diagram_container_class": diagram_container_class,
-        "diagram_container_style": diagram_container_style,
-        "metadata": metadata,
-        "notes": notes,
-        "partno": partno,
-        "generator": f"{getattr(filare, 'APP_NAME', 'Filare')} {getattr(filare, '__version__', '')}",
-        "title": getattr(metadata, "title", ""),
-        "description": getattr(metadata, "description", ""),
-    }
+    replacements = _RenderReplacements.from_render_context(
+        options=options_for_render,
+        diagram=svgdata,
+        diagram_container_class=diagram_container_class,
+        diagram_container_style=diagram_container_style,
+        metadata=metadata,
+        notes=notes,
+        partno=partno,
+    )
 
     # TODO: all rendering should be done within their respective classes
 
