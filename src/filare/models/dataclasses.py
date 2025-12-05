@@ -811,12 +811,12 @@ class Cable(WireClass):
                 if self.is_bundle:
                     # check the length
                     if len(idfield) != self.wirecount:
-                        raise ComponentValidationError(
-                            "lists of part data must match wirecount"
+                        raise ValueError(
+                            f"Cable {self.designator}: part data list length {len(idfield)} must match wirecount {self.wirecount}"
                         )
                 else:
-                    raise ComponentValidationError(
-                        "lists of part data are only supported for bundles"
+                    raise ValueError(
+                        f"Cable {self.designator}: part data lists only supported for bundles"
                     )
 
         # all checks have passed

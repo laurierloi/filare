@@ -75,7 +75,7 @@ class UnknownTemplateDesignator(FilareFlowException):
         super().__init__(f"{template} is an unknown template/designator")
 
 
-class InvalidNumberFormat(FilareModelException):
+class InvalidNumberFormat(FilareModelException, ValueError):
     """Raised when a number/unit string cannot be parsed."""
 
     def __init__(self, value: str):
@@ -86,7 +86,7 @@ class InvalidNumberFormat(FilareModelException):
         )
 
 
-class ComponentValidationError(FilareModelException):
+class ComponentValidationError(FilareModelException, ValueError):
     """Generic component/model validation error."""
 
     def __init__(self, message: str):
