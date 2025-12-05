@@ -3,11 +3,9 @@
 import logging
 import re
 import copy
-from dataclasses import asdict, dataclass, field, fields
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List
-
-import filare  # for doing filare.__file__
+from typing import Dict, List, Optional, Tuple
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
 from filare.models.metadata import Metadata
@@ -49,7 +47,26 @@ def generate_shared_bom(
     return shared_bom_base
 
 
-# TODO: should define the dataclass needed to avoid doing any dict shuffling in here
+@dataclass
+class _RenderReplacements:
+    """Container for template replacement values."""
+
+    options: PageOptions
+    diagram: Optional[str]
+    metadata: Metadata
+    notes: Notes
+    partno: str
+
+    def as_mapping(self) -> Dict[str, object]:
+        return {
+            "options": self.options,
+            "diagram": self.diagram,
+            "metadata": self.metadata,
+            "notes": self.notes,
+            "partno": self.partno,
+        }
+
+
 def generate_html_output(
     filename: Path,
     bom: List[List[str]],
@@ -68,27 +85,20 @@ def generate_html_output(
         if hasattr(options, "model_copy")
         else copy.deepcopy(options)
     )
-
     rendered = {} if rendered is None else dict(rendered)
 
-    if bom_render_options is None:
-        bom_render_options = BomRenderOptions(
-            restrict_printed_lengths=True,
-            filter_entries=True,
-            no_per_harness=True,
-            reverse=metadata.template.has_bom_reversed(),
-        )
-
-    bom_render = BomContent(bom).get_bom_render(options=bom_render_options)
-    options_for_render.bom_rows = len(bom_render.rows)
-    options.bom_rows = len(bom_render.rows)
-    rendered["bom"] = bom_render.render(
-        page_options=options_for_render, bom_options=bom_render_options
+    bom_render_options = _ensure_bom_render_options(
+        bom_render_options, metadata.template.has_bom_reversed()
     )
+    bom_html, bom_rows = _render_bom_section(
+        bom, bom_render_options, options_for_render
+    )
+    options_for_render.bom_rows = bom_rows
+    options.bom_rows = bom_rows
+    rendered["bom"] = bom_html
 
     is_title_page = (
-        getattr(metadata.template, "name", None) == "titlepage"
-        or getattr(metadata, "sheet_name", "") == "titlepage"
+        template_name == "titlepage" or getattr(metadata, "sheet_name", "") == "titlepage"
     )
     should_render_index = is_title_page and (
         options.show_index_table or options.split_index_page
@@ -102,63 +112,29 @@ def generate_html_output(
         ).render(options_for_render)
 
     # TODO: instead provide a PageOption to generate or not the svg
-    svgdata = None
-    if template_name != "titlepage":
-        # embed SVG diagram for all but the titlepage
-        with filename.with_suffix(".svg").open("r") as f:
-            svgdata = re.sub(
-                "^<[?]xml [^?>]*[?]>[^<]*<!DOCTYPE [^>]*>",
-                "<!-- XML and DOCTYPE declarations from SVG file removed -->",
-                f.read(),
-                1,
-            )
+    diagram = _load_svg_diagram(filename) if template_name != "titlepage" else None
+    harness_number = _derive_harness_number(filename, metadata.sheet_current)
+    partno = _build_part_number(
+        metadata.pn, getattr(metadata, "revision", ""), harness_number, template_name
+    )
 
-    match = re.search(r"[0-9]+$", str(filename))
-    if not match:
-        harness_number = metadata.sheet_current + 1
-    else:
-        harness_number = int(match[0])
-
-    revision = ""
-    try:
-        revision = metadata.revision
-    except Exception:
-        revision = ""
-    partno = metadata.pn if not revision else f"{metadata.pn}-{revision}"
-    if template_name != "titlepage":
-        partno = (
-            f"{partno}-{harness_number}"
-            if revision
-            else f"{metadata.pn}-{harness_number}"
-        )
-
-    replacements = {
-        "options": options_for_render,
-        "diagram": svgdata,
-        "metadata": metadata,
-        "notes": notes,
-        "partno": partno,
-    }
+    replacements = _RenderReplacements(
+        options=options_for_render,
+        diagram=diagram,
+        metadata=metadata,
+        notes=notes,
+        partno=partno,
+    ).as_mapping()
 
     # TODO: all rendering should be done within their respective classes
 
     # prepare titleblock
     rendered["titleblock"] = get_template("titleblock.html").render(replacements)
 
-    # preparate Notes
-    if "notes" in replacements and replacements["notes"].notes:
+    if replacements.get("notes") and replacements["notes"].notes:
         rendered["notes"] = get_template("notes.html").render(replacements)
 
-    filtered = dict(rendered)
-    if options.split_bom_page:
-        options_for_render.show_bom = False
-        filtered["bom"] = ""
-    if options.split_notes_page:
-        options_for_render.show_notes = False
-        filtered["notes"] = ""
-    if options.split_index_page:
-        options_for_render.show_index_table = False
-        filtered["index_table"] = ""
+    filtered = _filtered_sections(options_for_render, rendered)
 
     # generate page template
     page_rendered = get_template(template_name, ".html").render(
@@ -172,6 +148,77 @@ def generate_html_output(
     filename.with_suffix(".html").open("w").write(page_rendered)
     _write_split_sections(filename, metadata, options, rendered)
     _write_aux_pages(filename, metadata, options, rendered)
+
+
+def _ensure_bom_render_options(
+    bom_render_options: Optional[BomRenderOptions], reverse_bom: bool
+) -> BomRenderOptions:
+    """Provide default BOM render options when none are supplied."""
+    if bom_render_options is not None:
+        return bom_render_options
+    return BomRenderOptions(
+        restrict_printed_lengths=True,
+        filter_entries=True,
+        no_per_harness=True,
+        reverse=reverse_bom,
+    )
+
+
+def _render_bom_section(
+    bom: List[List[str]],
+    bom_render_options: BomRenderOptions,
+    options: PageOptions,
+) -> Tuple[str, int]:
+    """Render BOM HTML snippet and return HTML plus row count."""
+    bom_render = BomContent(bom).get_bom_render(options=bom_render_options)
+    bom_rows = len(bom_render.rows)
+    return (
+        bom_render.render(page_options=options, bom_options=bom_render_options),
+        bom_rows,
+    )
+
+
+def _derive_harness_number(filename: Path, sheet_current: int) -> int:
+    """Extract harness number from filename, falling back to sheet index."""
+    match = re.search(r"[0-9]+$", str(filename))
+    if not match:
+        return sheet_current + 1
+    return int(match[0])
+
+
+def _build_part_number(pn: str, revision: str, harness_number: int, template_name: str) -> str:
+    """Compose part number string used on rendered pages."""
+    base = pn if not revision else f"{pn}-{revision}"
+    if template_name != "titlepage":
+        suffix = harness_number
+        return f"{base}-{suffix}" if base else f"{pn}-{suffix}"
+    return base
+
+
+def _load_svg_diagram(filename: Path) -> str:
+    """Load and sanitize the SVG diagram content for embedding."""
+    with filename.with_suffix(".svg").open("r") as f:
+        return re.sub(
+            "^<[?]xml [^?>]*[?]>[^<]*<!DOCTYPE [^>]*>",
+            "<!-- XML and DOCTYPE declarations from SVG file removed -->",
+            f.read(),
+            1,
+        )
+
+
+def _filtered_sections(options: PageOptions, rendered: Dict[str, str]) -> Dict[str, str]:
+    """Hide sections when split pages are requested while preserving source content."""
+    filtered = dict(rendered)
+    if options.split_bom_page:
+        options.show_bom = False
+        filtered["bom"] = ""
+    if options.split_notes_page:
+        options.show_notes = False
+        filtered["notes"] = ""
+    if options.split_index_page:
+        options.show_index_table = False
+        filtered["index_table"] = ""
+    return filtered
 
 
 def _write_split_sections(
