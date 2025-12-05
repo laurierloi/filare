@@ -35,3 +35,8 @@ Add `filare settings <command>` to read, update, and persist Filare settings (pa
 ## Dependencies / Notes
 - Requires defined settings storage format (per-user/project) and schema.
 - Built on Typer hierarchical CLI; ensure backward compatibility for existing defaults.
+
+## UI Notes
+- Show config file locations and scopes in help (`user` vs `project`) with examples.
+- Ensure outputs support both table and JSON for automation.
+- Provide non-interactive flags (`--yes`) and clear error messages when scope/key is invalid.

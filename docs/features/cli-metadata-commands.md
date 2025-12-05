@@ -34,3 +34,8 @@ Add `filare metadata <command>` subcommands to inspect, validate, merge, and nor
 ## Dependencies / Notes
 - Build on Typer hierarchical CLI (docs/features/cli-typer-migration.md).
 - Align defaults and schema references with existing docs/tutorials.
+
+## UI Notes
+- Provide examples for validate/merge/describe with multiple files and ordering.
+- Surface default schema path and show how to emit JSON reports for CI alongside table output.
+- Clarify how conflicts are reported (source file/line when available).
