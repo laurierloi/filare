@@ -20,6 +20,22 @@ def strip_svg_declarations(svg_text: str) -> str:
     return SVG_DECLARATION_PATTERN.sub("", svg_text or "").lstrip()
 
 
+def _maybe_add_viewbox(attrs: str) -> str:
+    """Add a viewBox if width/height are numeric and no viewBox is present."""
+    if "viewBox=" in attrs or "viewbox=" in attrs:
+        return attrs
+    width_match = re.search(r'width="([\d.]+)', attrs)
+    height_match = re.search(r'height="([\d.]+)', attrs)
+    if not width_match or not height_match:
+        return attrs
+    try:
+        width = float(width_match.group(1))
+        height = float(height_match.group(1))
+    except ValueError:
+        return attrs
+    return f'{attrs} viewBox="0 0 {width} {height}"'
+
+
 def _merge_style_attr(attrs: str, style: str) -> str:
     if not style:
         return attrs
@@ -42,6 +58,7 @@ def _apply_svg_root_styles(
     def repl(match: re.Match) -> str:
         attrs = match.group("attrs") or ""
         attrs = _merge_style_attr(attrs, style)
+        attrs = _maybe_add_viewbox(attrs)
         if preserve_aspect_ratio is False:
             if 'preserveAspectRatio="' in attrs:
                 attrs = re.sub(
@@ -58,6 +75,8 @@ def prepare_imported_svg(spec: ImportedSVGOptions) -> str:
     """Load, inline assets, and normalize style for an imported SVG."""
     svg_path = Path(spec.src)
     svg_text = strip_svg_declarations(svg_path.read_text(encoding="utf-8"))
+    if not SVG_TAG_PATTERN.search(svg_text):
+        raise ValueError(f"File {svg_path} does not contain a root <svg> element.")
     svg_text = embed_svg_images(svg_text, svg_path.parent)
 
     style_bits = []

@@ -23,6 +23,7 @@ Allow Filare to import an arbitrary SVG exported from DrawIO and embed it into r
 2025-12-04: Added follow-up sub-feature request for deeper DrawIO authoring integration.
 2025-12-04: Status set to IN_PROGRESS after operator approval; starting implementation planning.
 2025-12-04: Added diagram_svg schema, rendering pipeline support, tests, and docs for embedding DrawIO-exported SVGs; ran uv run pytest tests/features/drawio-svg-import tests/render/test_assets.py tests/render/test_html_generation.py.
+2025-12-04: Improved PNG handling (skip when importing SVG), added DrawIO demo example, expanded path resolution, added viewBox/root checks, ensured templates work, and added tests for coverage.
 
 ## Sub-Features
 - drawio-integration

@@ -4,6 +4,7 @@ from filare.flows.build_harness import _resolve_diagram_svg
 from filare.models.harness import Harness
 from filare.models.notes import Notes
 from filare.models.options import ImportedSVGOptions, PageOptions
+from filare.models.metadata import PageTemplateConfig, PageTemplateTypes
 
 
 def test_resolves_imported_svg_path(tmp_path):
@@ -60,3 +61,71 @@ def test_imported_svg_is_embedded_in_outputs(tmp_path, basic_metadata, basic_pag
     assert "justify-content: flex-start" in html_output
     assert "diagram-import" in html_output
     assert "translate(5mm" in html_output
+
+
+def test_png_is_skipped_when_diagram_svg_set(tmp_path, basic_metadata, basic_page_options):
+    calls = {"render_png": 0}
+
+    class DummyGraph:
+        def __init__(self, content: str):
+            self.format = "svg"
+            self._content = content
+
+        def render(self, filename, view=False, cleanup=True):
+            if self.format == "png":
+                calls["render_png"] += 1
+            Path(f"{filename}.{self.format}").write_text(self._content)
+            return str(filename)
+
+    svg_src = tmp_path / "diagram.svg"
+    svg_src.write_text("<svg width=\"10\" height=\"10\"/>")
+    options: PageOptions = basic_page_options
+    options.diagram_svg = ImportedSVGOptions(src=str(svg_src))
+    harness = Harness(metadata=basic_metadata, options=options, notes=Notes([]))
+    harness._graph = DummyGraph("<svg id='generated'></svg>")
+
+    harness.output(filename=tmp_path / "out", fmt=("html", "png", "svg"))
+
+    assert calls["render_png"] == 0
+    assert not (tmp_path / "out.png").exists()
+
+
+def test_simple_template_wraps_imported_svg(tmp_path, basic_metadata, basic_page_options):
+    # Force simple template to ensure wrapper variables work everywhere
+    metadata = basic_metadata.model_copy(
+        update={"template": PageTemplateConfig(name=PageTemplateTypes.simple)}
+    )
+    svg_src = tmp_path / "diagram.svg"
+    svg_src.write_text("<svg width=\"40\" height=\"20\"/>")
+    options: PageOptions = basic_page_options
+    options.diagram_svg = ImportedSVGOptions(src=str(svg_src), align="right")
+    harness = Harness(metadata=metadata, options=options, notes=Notes([]))
+
+    class DummyGraph:
+        def __init__(self, content: str):
+            self.format = "svg"
+            self._content = content
+
+        def render(self, filename, view=False, cleanup=True):
+            Path(f"{filename}.{self.format}").write_text(self._content)
+            return str(filename)
+
+    harness._graph = DummyGraph("<svg id='generated'></svg>")
+    harness.output(filename=tmp_path / "out", fmt=("html", "svg"))
+
+    html_output = (tmp_path / "out.html").read_text()
+    assert "diagram-has-import" in html_output
+    assert "justify-content: flex-end" in html_output
+    assert "diagram-import" in html_output
+
+
+def test_prepare_imported_svg_adds_viewbox(tmp_path):
+    from filare.render.imported_svg import prepare_imported_svg
+
+    svg_src = tmp_path / "diagram.svg"
+    svg_src.write_text('<svg width="200" height="100"><rect width="200" height="100"/></svg>')
+    spec = ImportedSVGOptions(src=str(svg_src), width="100%")
+
+    svg_out = prepare_imported_svg(spec)
+
+    assert 'viewBox="0 0 200.0 100.0"' in svg_out

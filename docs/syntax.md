@@ -330,7 +330,7 @@ options:
     preserve_aspect_ratio: true    # set to false to allow stretching
 ```
 
-Relative `src` paths are resolved from the harness YAML file location. The SVG is inlined (including linked images) and used for both HTML and SVG outputs; PDFs generated from HTML will include the imported diagram as well.
+Relative `src` paths are resolved from the harness YAML file location (and any `options.image_paths`). The SVG is inlined (including linked images) and used for both HTML and SVG outputs; PDFs generated from HTML will include the imported diagram as well. When `diagram_svg` is set, PNG output is skipped to avoid mixing Graphviz and DrawIO renders.
 
 ## BOM items and additional components
 

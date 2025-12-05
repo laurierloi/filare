@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="120">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f5f8ff"/>
+      <stop offset="100%" stop-color="#dfe9ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="120" fill="url(#g)" stroke="#6a8bd5" stroke-width="2"/>
+  <text x="20" y="60" font-size="16" font-family="Arial" fill="#1b2c52">DrawIO Export Demo</text>
+  <circle cx="160" cy="40" r="12" fill="#6a8bd5" opacity="0.7"/>
+  <circle cx="160" cy="80" r="12" fill="#6a8bd5" opacity="0.5"/>
+</svg>

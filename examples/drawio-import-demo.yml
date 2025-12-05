@@ -1,0 +1,33 @@
+connectors:
+  J1:
+    pins: [1]
+  J2:
+    pins: [1]
+
+cables:
+  C1:
+    wirecount: 1
+
+connections:
+  - [J1: 1, C1: 1, J2: 1]
+
+metadata:
+  title: DrawIO Import Demo
+  pn: DEMO-DRAWIO
+  company: Example Co
+  address: Anywhere
+  template:
+    name: din-6771
+    sheetsize: A4
+  revisions:
+    a:
+      name: Demo
+      date: 2024-01-01
+      changelog: init
+
+options:
+  diagram_svg:
+    src: drawio-import-demo.svg
+    width: 90%
+    align: center
+    offset_y: 5mm

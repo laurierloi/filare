@@ -81,11 +81,14 @@ def _maybe_write_document(
 
 
 def _resolve_diagram_svg(options: PageOptions, search_paths) -> None:
-    """Resolve diagram_svg paths relative to known input directories."""
+    """Resolve diagram_svg paths relative to known input/image directories."""
     spec = getattr(options, "diagram_svg", None)
     if not spec or not getattr(spec, "src", None):
         return
-    resolved = smart_file_resolve(Path(spec.src), search_paths)
+    candidate_paths = list(search_paths) + [
+        Path(p) for p in getattr(options, "image_paths", []) or []
+    ]
+    resolved = smart_file_resolve(Path(spec.src), candidate_paths)
     spec.src = resolved
 
 
