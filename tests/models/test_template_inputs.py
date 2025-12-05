@@ -76,8 +76,20 @@ def test_template_wire_validators():
     wire = TemplateWire(color="RD", length="2 m")
     assert wire.color == ["RD"]
     assert str(wire.length) == "2 m"
+    assert TemplateWire(color=None).color == []
 
 
 def test_template_models_forbid_extra():
     with pytest.raises(Exception):
         TemplateConnector(designator="JX", pins=[], extra="nope")
+
+
+def test_template_pin_color_none_and_id():
+    pin = TemplatePin(label="L", color=None, id="1")
+    assert pin.color == []
+
+
+def test_template_connection_coercions():
+    conn = TemplateConnection(endpoints="J1:1", color=None, net="N")
+    assert conn.endpoints == ["J1:1"]
+    assert conn.color == []

@@ -1,11 +1,14 @@
 import glob
+import shutil
 from pathlib import Path
 
 import pytest
 
-import pytest
-
 from filare.cli import cli
+
+pytestmark = pytest.mark.skipif(
+    shutil.which("dot") is None, reason="Graphviz dot executable not found"
+)
 
 
 def run_filare_cli(output_dir: Path, metadata: Path, inputs, formats="h"):
