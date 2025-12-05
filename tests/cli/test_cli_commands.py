@@ -81,3 +81,48 @@ def test_cli_generates_outputs(tmp_path):
 
     harness_tsv = tmp_path / f"{harness_path.stem}.tsv"
     assert harness_tsv.exists(), f"Missing CLI output {harness_tsv}"
+
+
+def test_cli_pdf_and_shared_bom_flow(monkeypatch, tmp_path):
+    runner = CliRunner()
+    harness_path, _ = _write_minimal_files(tmp_path)
+
+    calls = {}
+
+    def fake_parse(components, metadata_files, return_types, output_formats, **kwargs):
+        calls["parse_formats"] = set(output_formats)
+        shared_bom = kwargs["shared_bom"]
+        shared_bom["h"] = {"qty": 1}
+        return {"shared_bom": shared_bom}
+
+    def fake_shared_bom(**_kwargs):
+        calls["shared_bom"] = True
+        return tmp_path / "shared.tsv"
+
+    def fake_titlepage(metadata, extra_metadata, shared_bom, for_pdf=False):
+        calls.setdefault("titlepages", []).append(for_pdf)
+
+    def fake_pdf_bundle(paths):
+        calls["pdf_bundle"] = list(paths)
+
+    monkeypatch.setattr("filare.cli.wv.parse", fake_parse)
+    monkeypatch.setattr("filare.cli.build_shared_bom", fake_shared_bom)
+    monkeypatch.setattr("filare.cli.build_titlepage", fake_titlepage)
+    monkeypatch.setattr("filare.cli.build_pdf_bundle", fake_pdf_bundle)
+
+    result = runner.invoke(
+        cli,
+        [
+            str(harness_path),
+            "-f",
+            "Phb",
+            "-o",
+            str(tmp_path),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "pdf" not in calls["parse_formats"]  # pdf is stripped before parse
+    assert calls["shared_bom"] is True
+    assert calls["titlepages"] == [False, True]  # html + pdf titlepages
+    assert calls["pdf_bundle"] and calls["pdf_bundle"][0].name.startswith("titlepage")

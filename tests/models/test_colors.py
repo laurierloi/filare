@@ -37,6 +37,11 @@ def test_single_color_numeric_and_falsey():
     assert c.html == "#123456"
     assert bool(SingleColor(None)) is False
 
+def test_single_color_handles_other_types():
+    weird = SingleColor(inp=("x", "y"))
+    assert weird.code_en == "('x', 'y')"
+    assert SingleColor(None).code_de is None
+
 def test_single_color_german_mode(monkeypatch):
     monkeypatch.setattr("filare.models.colors.color_output_mode", ColorOutputMode.DE_LOWER)
     c = SingleColor(inp="GN")
@@ -73,12 +78,28 @@ def test_multi_color_with_none_and_singlecolor():
     assert len(multi) == 1
     assert multi[0].code_en == "RD"
 
+def test_multi_color_accepts_varied_inputs():
+    with_single_color = MultiColor([SingleColor("GN")])
+    assert with_single_color[0].code_en == "GN"
+
+    numeric = MultiColor(0x00FF00)
+    assert numeric[0].html == "#00ff00"
+
+    unknown_even = MultiColor("Q1Q1")
+    assert unknown_even[0].code_en == "Q1Q1"
+
+def test_multi_color_str_in_html_mode(monkeypatch):
+    monkeypatch.setattr("filare.models.colors.color_output_mode", ColorOutputMode.HTML_UPPER)
+    mc = MultiColor(["rd", "gn"])
+    assert ":" in str(mc)
+
 def test_multi_color_html_and_padding_defaults():
     multi = MultiColor(["RD", None, "BU"])
     # None entries are skipped
     assert [c.code_en for c in multi.colors] == ["RD", "BU"]
     assert multi.html.startswith("#")
     assert multi.html_padded.endswith("#0066ff") or ":" in multi.html_padded
+    assert multi.len == len(multi.colors)
 
 def test_multi_color_unusual_cases(monkeypatch):
     # odd-length string falls back to treating as html color
@@ -90,6 +111,21 @@ def test_multi_color_unusual_cases(monkeypatch):
     # length >3 returns html_padded_list with first/last preserved
     padded = MultiColor(["RD", "BK", "GN", "YE"]).html_padded_list
     assert len(padded) == 4
+
+def test_multi_color_padding_variants(monkeypatch):
+    monkeypatch.setattr("filare.models.colors.padding_amount", 2)
+
+    empty = MultiColor(None)
+    assert empty.html_padded == "#FFFFFF"
+
+    single = MultiColor(["RD"])
+    assert single.html_padded_list == ["#ff0000"] * 3
+
+    double = MultiColor(["RD", "GN"])
+    assert double.html_padded_list[1] == double.colors[1].html
+
+    triple = MultiColor(["RD", "GN", "BU"])
+    assert triple.html_padded_list == [c.html for c in triple.colors]
 
 
 @pytest.mark.parametrize(
