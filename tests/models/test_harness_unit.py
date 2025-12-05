@@ -27,8 +27,12 @@ def test_harness_output_and_tables(tmp_path, basic_metadata, monkeypatch):
     options = PageOptions(include_cut_diagram=True, include_termination_diagram=True)
     harness = Harness(metadata=basic_metadata, options=options, notes=Notes())
 
-    harness.add_connector_model({"designator": "J1", "pincount": 1, "pins": [1], "pinlabels": ["A"]})
-    harness.add_connector_model(ConnectorModel(designator="J2", pinlabels=["B"], pincount=1))
+    harness.add_connector_model(
+        {"designator": "J1", "pincount": 1, "pins": [1], "pinlabels": ["A"]}
+    )
+    harness.add_connector_model(
+        ConnectorModel(designator="J2", pinlabels=["B"], pincount=1)
+    )
     harness.add_cable_model({"designator": "C1", "wirecount": 1, "colors": ["RD"]})
     harness.add_additional_bom_item({"type": "Tag"})
 
@@ -71,10 +75,18 @@ def test_harness_output_and_tables(tmp_path, basic_metadata, monkeypatch):
             template_calls.append(ctx)
             return "<table></table>"
 
-    monkeypatch.setattr(harness_module, "get_template", lambda *args, **kwargs: FakeTemplate())
+    monkeypatch.setattr(
+        harness_module, "get_template", lambda *args, **kwargs: FakeTemplate()
+    )
     html_calls = []
-    monkeypatch.setattr(harness_module, "generate_html_output", lambda *args, **kwargs: html_calls.append(args))
-    monkeypatch.setattr(harness_module, "generate_pdf_output", lambda *args, **kwargs: None)
+    monkeypatch.setattr(
+        harness_module,
+        "generate_html_output",
+        lambda *args, **kwargs: html_calls.append(args),
+    )
+    monkeypatch.setattr(
+        harness_module, "generate_pdf_output", lambda *args, **kwargs: None
+    )
 
     out = tmp_path / "out"
     harness.output(out, fmt=("html", "svg", "gv", "tsv", "csv"))

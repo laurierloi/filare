@@ -1,14 +1,17 @@
 # Mechanical Harness Diagram Elements and Models
 
 ## Summary
+
 Identifies the elements and symbology used in mechanical harness diagrams (nailboard/fixture drawings, routing overlays) and proposes data models to capture geometry, annotations, materials, and hardware. Focus covers dimensions, splicing, shielding, wraps, ties, labels, and correlations between logical and mechanical views.
 
 ## Use Cases for Filare
+
 - Generate mechanical overlays for manufacturing (board builds, clamp placement, length checks).
 - Provide field/service diagrams with physical routing, labels, and splice/shield details.
 - Maintain traceability between electrical nets, BOM items, and mechanical placement.
 
 ## Technical Evaluation
+
 - Core elements (mechanical view):
   - Board/fixture outline; datum/grid; reference holes.
   - Harness path polylines with segment lengths, bend radii, breakout points.
@@ -50,27 +53,33 @@ Identifies the elements and symbology used in mechanical harness diagrams (nailb
   - Environment: notes for temperature/fluids near segments; routing constraints (min bend radius).
 
 ## Complexity Score (1–5)
+
 3 — Modeling requires coordinated geometry + materials + annotations but fits within an extended mechanical view without changing electrical core.
 
 ## Maintenance Risk
+
 - Symbols and drafting practices are stable (IPC/WHMA-A-620, OEM nailboard guides).
 - Risk lies in scope creep if 3D routing or FEA-style checks are attempted; keeping to 2D with optional CAD reference limits churn.
 - Optional materials catalogs (clamps, wraps) may need periodic refresh.
 
 ## Industry / Business Usage
+
 - Automotive: nailboard drawings with clamp spacing, convolute/tape sections, splice barrels, shield terminations to backshells, label flags at breakouts.
 - Aerospace/defense: backshell/boot details, grommets at bulkheads, lacing/tie intervals, shield pigtails or 360° terminations, strain-relief callouts.
 - Heavy equipment/industrial: armored/conduit runs, bulkhead glands, vibration-resistant clamps, inline protection devices.
 
 ## Who Uses It & Why It Works for Them
+
 - Manufacturing/QA: needs clamp/grommet placements, coverings, and lengths for board setup.
 - Service: uses labels, splice locations, and shielding notes to troubleshoot/repair.
 - Mechanical/electrical integration: checks pass-throughs, bend radii, and shield terminations against packaging/EMI needs.
 
 ## Feasibility
+
 - Feasible with an extended mechanical schema and renderer; symbology can be implemented in SVG/DXF without heavy CAD.
 
 ## Fit with Existing Filare Models
+
 - Current fit:
   - Connectors/cables/connections already model electrical nets; `additional_components` can carry clamps/wraps as BOM-only items but lack geometry/placement.
   - `metadata/options` can store drawing-level info but not geometry.
@@ -93,6 +102,7 @@ Identifies the elements and symbology used in mechanical harness diagrams (nailb
   - Output: users gain mechanical SVG/DXF plus legend; may need to learn symbol mapping but aligns with industry nailboard drawings.
 
 ## Required Work
+
 - REWORK tasks: Define mechanical entities (path, feature, protective segment, splice, label, dimension) and their relationships to electrical components.
 - FEATURE tasks: Add rendering support for symbols (clamp/grommet/splice/shield termination/covering/labels) with distance annotations; support path-based dimensions and breakout markers.
 - DOCUMENTATION tasks: Provide a legend of symbols and example mechanical YAML; describe units and datum usage.
@@ -100,9 +110,11 @@ Identifies the elements and symbology used in mechanical harness diagrams (nailb
 - COVERAGE tasks: Regression YAMLs covering paths with coverings, clamps, splices, shields, labels, and dimensions.
 
 ## Recommendation
+
 ADOPT_LATER — Define the mechanical model first, then implement 2D rendering and validations incrementally.
 
 ## Models
+
 - Geometry Model:
   - Units, datum/grid.
   - Board/outline polygon; reference holes.
@@ -126,9 +138,11 @@ ADOPT_LATER — Define the mechanical model first, then implement 2D rendering a
   - Shield termination ↔ connector/ground point and BOM backshell/ground hardware.
 
 ## References
+
 - IPC/WHMA-A-620 (workmanship and harness drawings)
 - OEM nailboard/fixture drafting guides (automotive, aerospace)
 - Common CAD/CAM nailboard outputs (DXF) used in harness shops
 
 ## Optional Appendix
+
 - Symbol legend candidates: polyline path; P-clamp icon; grommet ring; splice dot/barrel; shield ground/backshell glyph; hatched covering; tape/heat-shrink start-end ticks; flag label; chain dimensions along path.

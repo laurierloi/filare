@@ -942,7 +942,9 @@ class Cable(WireClass):
                     )
 
             elif isinstance(subitem.qty_multiplier, QtyMultiplierConnector):
-                raise ComponentValidationError("Used a connector multiplier in a cable!")
+                raise ComponentValidationError(
+                    "Used a connector multiplier in a cable!"
+                )
             else:  # int or float
                 computed_factor = subitem.qty_multiplier
             subitem._qty_multiplier_computed = computed_factor

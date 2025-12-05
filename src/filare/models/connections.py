@@ -100,18 +100,14 @@ class LoopModel(BaseModel):
 
     def to_loop(self) -> Loop:
         first_pin = (
-            self.first.to_pinclass()
-            if isinstance(self.first, PinModel)
-            else self.first
+            self.first.to_pinclass() if isinstance(self.first, PinModel) else self.first
         )
         second_pin = (
             self.second.to_pinclass()
             if isinstance(self.second, PinModel)
             else self.second
         )
-        side_val = (
-            self.side.name if isinstance(self.side, Side) else self.side
-        )
+        side_val = self.side.name if isinstance(self.side, Side) else self.side
         return Loop(
             first=first_pin,
             second=second_pin,
@@ -170,13 +166,9 @@ class ConnectionModel(BaseModel):
     def from_connection(cls, connection: Connection) -> "ConnectionModel":
         return cls(
             from_=(
-                PinModel.from_pinclass(connection.from_)
-                if connection.from_
-                else None
+                PinModel.from_pinclass(connection.from_) if connection.from_ else None
             ),
-            via=(
-                PinModel.from_pinclass(connection.via) if connection.via else None
-            ),
+            via=(PinModel.from_pinclass(connection.via) if connection.via else None),
             to=PinModel.from_pinclass(connection.to) if connection.to else None,
         )
 

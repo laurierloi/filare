@@ -54,7 +54,7 @@ def test_bom_entry_add_and_designators_str():
     )
     a += b
     assert a.qty.number == 3
-    assert a.designators_str.endswith("(...)" )
+    assert a.designators_str.endswith("(...)")
     with pytest.raises(NotImplementedError):
         a.__add__(object())
     assert (a == []) is False
@@ -103,7 +103,9 @@ def test_bom_content_filters_empty_and_reverse_rows():
 def test_bom_render_strip_empty_columns(tmp_path):
     from filare.models.options import PageOptions
 
-    render = BomRender(header=["#", "", "Qty"], rows=[[1, "x", 2]], strip_empty_columns=True)
+    render = BomRender(
+        header=["#", "", "Qty"], rows=[[1, "x", 2]], strip_empty_columns=True
+    )
     html = render.render(page_options=PageOptions(), bom_options=BomRenderOptions())
     assert "table" in html.lower()
 

@@ -1,9 +1,15 @@
 # Template: Wire List / Netlist
+
 ## Category
+
 UI — Importance: High
+
 ## Proposal
+
 Add a wire list template that outputs a concise netlist-style table for each connection, useful for technicians and testers. Focus on source/target pins, wire IDs, colors, lengths, and terminations.
+
 ## Model
+
 ```python
 class WireListRow(BaseModel):
     wire_id: str
@@ -20,10 +26,14 @@ class WireListContext(BaseModel):
     metadata: Metadata
     options: PageOptions
 ```
+
 ## Template Content
+
 - Table columns: Wire ID, From, To, Color, Length, Source Termination, Target Termination, Note.
 - Optional grouping by harness/page; print page title/part number in header.
 - Printable layout with wrap/ellipsis for long labels; alternate row shading.
+
 ## Where Used
+
 - Assembly/test teams needing a compact netlist separate from diagrams.
 - CI artifacts for connectivity checks.

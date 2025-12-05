@@ -3,6 +3,7 @@
 This summarizes text-overlap findings from `uv run --no-sync filare-check-overlap "outputs/**/*.html" --viewport 1280x720 --warn-threshold 1 --error-threshold 2` after running `build_examples.py`.
 
 ## Files with errors
+
 - `outputs/examples/titlepage.html`
   - Collisions: long note “Cover all cables with 1/2"…” overlaps metadata table cells and index links; header blocks (BOM/INDEX TABLE/Designators/Content/Date/Name) collide with links and table entries.
   - Likely cause: very long note on a single line plus dense title page table with minimal spacing.
@@ -25,5 +26,6 @@ This summarizes text-overlap findings from `uv run --no-sync filare-check-overla
   - Fix ideas: add spacing around BOM header block, allow header text wrap, or reduce font size for the special header.
 
 ## Notes
+
 - No other generated pages reported overlaps at the configured thresholds.
 - Ignore handling is available via `.filare-overlap-ignore.yml` if some collisions are acceptable, but prefer layout fixes first.

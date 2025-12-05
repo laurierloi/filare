@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field, ConfigDict, model_validator
 
 class HarnessQuantity(BaseModel):
     """Stores per-harness quantity multipliers and their backing file paths."""
+
     harnesses: List[Path]
     multiplier_file_name: str = "quantity_multipliers.txt"
     output_dir: Optional[Path] = None

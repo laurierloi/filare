@@ -1,9 +1,11 @@
 # CLI Commands: document domain
 
 ## Summary
+
 Add `filare document <command>` to manage full-document outputs (HTML/PDF bundles, title pages) and inspect render configuration.
 
 ## Commands
+
 - `filare document render <files...>` — render full documents (multi-page) with optional title page and PDF bundle.
   - Input: harness YAML files; optional metadata/components.
   - Flags: `-f, --formats <codes>` (e.g., hpstP), `-c, --components <file...>`, `-d, --metadata <file...>`, `-o, --output-dir`, `-O, --output-name`, `--no-titlepage`, `--pdf-bundle`, `--use-qty-multipliers`, `-m, --multiplier-file-name`.
@@ -18,22 +20,27 @@ Add `filare document <command>` to manage full-document outputs (HTML/PDF bundle
   - Output: combined PDF and ordering report.
 
 ## Inputs & Formats
+
 - Harness YAML files plus optional metadata/component YAMLs.
 - Format codes mirror existing ones; defaults surfaced inline.
 
 ## Outputs
+
 - Rendered artifacts in chosen formats; bundle outputs; inspection summaries.
 
 ## Rationale
+
 - Persona A/D: clear, task-scoped render command with explicit defaults.
 - Persona B: deterministic ordering and bundling controls.
 - Persona C: predictable exit codes and machine-readable inspection outputs.
 
 ## Dependencies / Notes
+
 - Works with hierarchical CLI and Typer migration.
 - Share format code table across domains to avoid conflicts.
 
 ## UI Notes
+
 - Show default format codes and expand them inline (`hpstP`) plus an example per common task (HTML+PDF, custom output name).
 - Clarify output locations (default input dir vs `-o`) and bundling order rules.
 - Provide machine-readable inspection output (`--format json`) while keeping table output concise for technicians.

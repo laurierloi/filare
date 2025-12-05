@@ -1,9 +1,11 @@
 # Parts Databases and Catalog Sources
 
 ## Summary
+
 Survey of existing parts databases that could feed a Filare part-ingestion tool. Focus on sources with downloadable or API-accessible data, plus tool-specific catalogs that may require manual export/conversion. Notes include access steps and licensing considerations.
 
 ## Candidates
+
 - **EPLAN Data Portal**
   - Content: Electrical/mechanical parts (connectors, relays, cables, etc.) with rich metadata and symbols/macros.
   - Access: Requires EPLAN account and license; exports typically via EPLAN (XML/EDZ); conversion to Filare would need a script to map EPLAN fields to Filare part model.
@@ -46,6 +48,7 @@ Survey of existing parts databases that could feed a Filare part-ingestion tool.
   - Conversion: Feasible via CSV/JSON import; validate field quality manually.
 
 ## Manual Steps / Access Notes
+
 - EPLAN: Export EDZ/XML from licensed EPLAN session; run a converter to map fields (MPN, manufacturer, description, electrical/mechanical specs) to Filare part model; remove proprietary symbol data unless permitted.
 - TraceParts: Use account to filter by manufacturer/category; download CSV if available; otherwise scrape with caution (check TOS). Map parametrics; link STEP as optional mechanical reference.
 - Octopart: Obtain API key; use REST queries filtered by manufacturer/category; cache responses to respect rate limits/TOS.
@@ -54,6 +57,7 @@ Survey of existing parts databases that could feed a Filare part-ingestion tool.
 - Open libraries: Pull CSV/JSON; clean/normalize fields; supplement with trusted sources for missing specs.
 
 ## Recommendation
+
 - Primary automated sources: Distributor APIs (Mouser/Digi-Key/Newark) and Octopart API (if licensed).
 - Secondary/manual sources: EPLAN exports (for internal use), TraceParts CSV, SnapEDA/Ultra Librarian via permitted exports.
 - Always respect TOS/licensing; keep ingestion adapters optional and cache results locally.

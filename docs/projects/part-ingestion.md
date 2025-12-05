@@ -1,11 +1,13 @@
 # Part Ingestion Project Plan
 
 ## Goals
+
 - Build an optional, adapter-based part ingestion tool to pull manufacturer/distributor data (MPN, specs, datasheets, lifecycle, pricing/availability, alternates) into Filare’s part model.
 - Support region-aware distributor queries and manufacturer detail lookups without breaking offline workflows.
 - Provide CLI/automation to fetch/update a local cache, keeping design files free of transient pricing while enabling enriched BOMs.
 
 ## Requirements
+
 - Interfaces
   - CLI commands to fetch/update parts by MPN or by query (manufacturer + category).
   - Configurable preferred distributor (Mouser, Digi-Key, Newark/element14) and region (country, currency, language).
@@ -27,6 +29,7 @@
   - Per-user/per-project config for preferred distributor/region and cache location.
 
 ## Phases and Steps
+
 - Phase 0: Foundations
   - Define part model mapping (from ingestion to Filare schema).
   - Specify config format (distributor preference, region, API keys, cache path).
@@ -60,6 +63,7 @@
   - Provide examples for region selection (country/currency) per distributor.
 
 ## Hints and Implementation Notes
+
 - Keep adapters isolated; version their API interactions; mock responses for tests.
 - Use a normalization layer to map differing field names into a common part schema.
 - Treat pricing as volatile: cache with timestamp; default to omit from committed artifacts.
@@ -68,6 +72,7 @@
 - Avoid schema churn by keeping the ingestion output a superset mapped onto Filare’s part model; stash extra fields under `source_data` if needed.
 
 ## Validation
+
 - Mocked integration tests per adapter (sample responses).
 - CLI tests for fetch/search, caching, locale handling, and diff/report.
 - Manual spot checks against known MPNs from Molex, Belden, Samtec, and distributor queries.

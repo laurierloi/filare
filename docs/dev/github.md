@@ -33,10 +33,12 @@ Verify with `gh version`. Authenticate once with `gh auth login` (choose HTTPS, 
 ## Managing labels (for the beta → main gate)
 
 If your `gh` build supports label commands:
+
 - Create: `gh label create validated --color 0E8A16 --description "Approved for beta→main promotion"`
 - List: `gh label list`
 
 If label subcommands are unavailable, use the REST API helper (requires `gh auth login`):
+
 ```
 OWNER=laurierloi
 REPO=filare
@@ -45,6 +47,7 @@ gh api --method POST repos/$OWNER/$REPO/labels \
   -f color=0E8A16 \
   -f description="Approved for beta→main promotion"
 ```
+
 To label a PR: `gh pr edit <number> --add-label validated` (or `gh api repos/$OWNER/$REPO/issues/<number>/labels -f labels='["validated"]'`).
 
 ## Default branch tip

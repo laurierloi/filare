@@ -1,13 +1,16 @@
 # Cut Diagram Requirements
 
 ## Summary
+
 Outlines what a cut diagram (wire/cable cutting instruction) should contain so shop-floor teams can cut and prep harness wires/cables correctly. Focus on fields, annotations, and symbology relevant to Filare.
 
 ## Use Cases for Filare
+
 - Generate cut lists/diagrams with lengths, prep, labeling, and material details for manual or automated cutting/printing equipment.
 - Provide clear instructions for wires versus multi-conductor cables (bundles), including shielding/termination prep.
 
 ## Technical Evaluation
+
 - Core contents:
   - Unique ID per wire/cable segment.
   - Length with units and tolerance; optionally total length vs. cut length (if trim/margin needed).
@@ -37,27 +40,34 @@ Outlines what a cut diagram (wire/cable cutting instruction) should contain so s
   - `quality_notes`, `process_ref` (e.g., IPC/WHMA-A-620 class), `inspection_criteria`.
 
 ## Complexity Score (1–5)
+
 2 — Mostly schema and output formatting; no deep render changes if kept as tabular/text instructions.
 
 ## Maintenance Risk
+
 - Low; cut instruction formats are stable. Ensure optional fields so minimal datasets still render.
 
 ## Industry / Business Usage
+
 - Harness shops use cut sheets/lists to program cutting/strip/tin machines and prepare terminals/seals.
 - IPC/WHMA-A-620 workmanship specs often referenced; automotive/aero shops specify strip lengths, shield prep, and labels.
 
 ## Who Uses It & Why It Works for Them
+
 - Manufacturing/QA: uses lengths, prep, and tooling to cut/terminate correctly.
 - Service: may reference labels and end IDs to replace wires.
 
 ## Feasibility
+
 - Feasible to add a cut-list schema and output (CSV/TSV and HTML/PDF) leveraging existing BOM metadata.
 
 ## Required Work
+
 - REWORK tasks: Define cut-list data model, tie to existing cables/wires/connectors; ensure optional fields.
 - FEATURE tasks: Add cut-list generation and export (CSV/TSV + HTML table), include end prep, labels, breakouts, shield prep.
 - DOCUMENTATION tasks: Syntax for cut list; examples; note optional fields and defaults.
 - COVERAGE tasks: Regression data for wires and multi-conductor cables with prep/labels/breakouts.
 
 ## Recommendation
+
 ADOPT_LATER — Add cut-list schema and outputs; keep rendering simple (tables) with optional line sketches later.

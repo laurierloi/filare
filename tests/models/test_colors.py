@@ -41,10 +41,12 @@ def test_single_color_numeric_and_falsey():
     assert c.html == "#123456"
     assert bool(SingleColor(None)) is False
 
+
 def test_single_color_handles_other_types():
     weird = SingleColor(inp=("x", "y"))
     assert weird.code_en == "('x', 'y')"
     assert SingleColor(None).code_de is None
+
 
 def test_single_color_german_mode(monkeypatch):
     monkeypatch.setattr(
@@ -85,6 +87,7 @@ def test_multi_color_with_none_and_singlecolor():
     assert len(multi) == 1
     assert multi[0].code_en == "RD"
 
+
 def test_multi_color_accepts_varied_inputs():
     with_single_color = MultiColor([SingleColor("GN")])
     assert with_single_color[0].code_en == "GN"
@@ -95,12 +98,14 @@ def test_multi_color_accepts_varied_inputs():
     unknown_even = MultiColor("Q1Q1")
     assert unknown_even[0].code_en == "Q1Q1"
 
+
 def test_multi_color_str_in_html_mode(monkeypatch):
     monkeypatch.setattr(
         "filare.models.colors.color_output_mode", ColorOutputMode.HTML_UPPER
     )
     mc = MultiColor(["rd", "gn"])
     assert ":" in str(mc)
+
 
 def test_multi_color_html_and_padding_defaults():
     multi = MultiColor(["RD", None, "BU"])
@@ -123,6 +128,7 @@ def test_multi_color_unusual_cases(monkeypatch):
     # length >3 returns html_padded_list with first/last preserved
     padded = MultiColor(["RD", "BK", "GN", "YE"]).html_padded_list
     assert len(padded) == 4
+
 
 def test_multi_color_padding_variants(monkeypatch):
     monkeypatch.setattr("filare.models.colors.padding_amount", 2)
