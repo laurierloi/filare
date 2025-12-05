@@ -103,8 +103,8 @@ def test_cli_generates_bom_and_document_representation(tmp_path):
 
 def test_shared_bom_respects_quantity_multipliers(tmp_path):
     multiplier_file = tmp_path / "quantity_multipliers.txt"
-    multiplier_file.write_text(json.dumps({"H1": 3}))
-    harness_file = tmp_path / "H1.yml"
+    multiplier_file.write_text(json.dumps({"h1": 3}))
+    harness_file = tmp_path / "h1.yml"
     harness_file.write_text("connectors: {}")
 
     entry = BomEntry(
@@ -114,7 +114,7 @@ def test_shared_bom_respects_quantity_multipliers(tmp_path):
         category="CON",
         designators=["J1"],
     )
-    entry.per_harness = {"H1": {"qty": NumberAndUnit(number=1, unit=None)}}
+    entry.per_harness = {"h1": {"qty": NumberAndUnit(number=1, unit=None)}}
     shared_bom = {hash(entry): entry}
 
     shared_bom_base = generate_shared_bom(
@@ -128,7 +128,63 @@ def test_shared_bom_respects_quantity_multipliers(tmp_path):
     assert shared_bom_base == tmp_path / "shared_bom"
     tsv = (tmp_path / "shared_bom.tsv").read_text()
     assert "Test component" in tsv
-    assert "H1:3" in tsv.replace(" ", ""), "Per-harness quantity should scale"
+    assert "h1:3" in tsv.lower().replace(" ", ""), "Per-harness quantity should scale"
+
+
+def test_cli_shared_bom_scales_with_multiplier_file(tmp_path):
+    output_dir = tmp_path / "out"
+    output_dir.mkdir()
+
+    multiplier_file = output_dir / "quantity_multipliers.txt"
+    multiplier_file.write_text(json.dumps({"h1": 3}))
+
+    metadata_path = tmp_path / "metadata.yml"
+    harness_path = tmp_path / "h1.yml"
+    _write_metadata(metadata_path, pn="h1")
+    harness_path.write_text(
+        textwrap.dedent(
+            """\
+            connectors:
+              J1:
+                pincount: 1
+                pn: CON-1
+              J2:
+                pincount: 1
+                pn: CON-2
+            cables:
+              W1:
+                wirecount: 1
+                pn: CAB-1
+                length: 1
+            connections:
+              -
+                - J1: 1
+                - W1: 1
+                - J2: 1
+            additional_bom_items:
+              - type: Sleeve
+                pn: SLV-1
+                qty: 2
+            """
+        )
+    )
+
+    cli.callback(  # type: ignore[attr-defined]
+        files=(harness_path,),
+        formats="tb",
+        components=(),
+        metadata=(metadata_path,),
+        output_dir=output_dir,
+        output_name=None,
+        version=False,
+        use_qty_multipliers=True,
+        multiplier_file_name=multiplier_file.name,
+    )
+
+    shared_bom_text = (output_dir / "shared_bom.tsv").read_text()
+    normalized = shared_bom_text.lower().replace(" ", "")
+    assert "h1:3" in normalized
+    assert "sleeve" in normalized
 
 
 def test_multi_harness_html_and_shared_outputs(tmp_path):
