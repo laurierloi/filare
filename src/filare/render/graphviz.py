@@ -12,8 +12,8 @@ from filare.models.dataclasses import (
     Connector,
     ShieldClass,
     WireClass,
-    Side,
 )
+from filare.models.types import Side
 from pathlib import Path
 
 from filare.models.image import Image

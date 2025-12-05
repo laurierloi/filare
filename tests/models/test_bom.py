@@ -4,7 +4,7 @@ import logging
 from filare.models.bom import BomContent, BomEntry, BomRenderOptions, BomRender
 from filare.models.partnumber import PartNumberInfo
 from filare.models.numbers import NumberAndUnit
-from filare.models.dataclasses import BomCategory
+from filare.models.types import BomCategory
 
 
 def test_bom_entry_scale_per_harness(bom_entry_sample):

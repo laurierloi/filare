@@ -8,12 +8,8 @@ from filare.models.options import PageOptions, get_page_options
 from filare.models.numbers import NumberAndUnit
 from filare.models.partnumber import PartNumberInfo
 from filare.models.colors import MultiColor
-from filare.models.dataclasses import (
-    BomCategory,
-    Component,
-    QtyMultiplierCable,
-    QtyMultiplierConnector,
-)
+from filare.models.dataclasses import Component
+from filare.models.types import BomCategory, QtyMultiplierCable, QtyMultiplierConnector
 from filare.models.configs import (
     CableConfig,
     ConnectionConfig,
