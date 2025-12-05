@@ -2,7 +2,7 @@
 
 ## Status
 
-IN_PROGRESS
+DONE
 
 ## Summary
 
@@ -27,8 +27,8 @@ Support authoring and consuming `*.document.yaml` inputs for document generation
 - [x] Adjust page generation to omit split components from the combined page when splits are requested.
 - [x] Expand the index table to list all generated documents with page name, content type, and link; include split outputs.
 - [x] Add regression tests and example YAMLs demonstrating split outputs, cut/termination templates, and document input acceptance.
-- [ ] Update relevant docs (syntax/guides) to describe new inputs, templates, and index table behavior.
-- [ ] Run lint/tests and prepare implementation on branch `FEATURE/document-reporesentation`.
+- [x] Update relevant docs (syntax/guides) to describe new inputs, templates, and index table behavior.
+- [x] Run lint/tests and prepare implementation on branch `FEATURE/document-reporesentation`.
 
 ## Progress Log
 
@@ -39,6 +39,7 @@ Support authoring and consuming `*.document.yaml` inputs for document generation
 2025-12-04: Enabled cut/termination page generation when requested and added regression to ensure aux pages render.
 2025-12-04: Added option coercion for document inputs, hardened revision handling, and reran `uv run pytest tests/flows/test_document_representation_flow.py` successfully.
 2025-12-04: Added example `examples/demo01.document.yaml`, documented loading existing documents as inputs, and updated document flow notes; targeted test suite still passing.
+2025-12-04: Lint/docs complete; feature marked DONE.
 
 ## Sub-Features
 

@@ -111,7 +111,10 @@ def _apply_document_to_harness(
                 options_data["color_output_mode"] = ColorOutputMode(com_value)
             except Exception:
                 options_data["color_output_mode"] = com_value
-        harness.options = PageOptions(**options_data)
+        if hasattr(harness.options, "model_copy"):
+            harness.options = harness.options.model_copy(update=options_data)
+        else:
+            harness.options = PageOptions(**options_data)
 
     page_types = {getattr(page, "type", None) for page in document.pages}
     if page_types:

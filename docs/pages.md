@@ -54,3 +54,9 @@ If a `*.document.yaml` already exists for the harness (same stem as the harness 
 - Page entries define which pages render; BOM/TSV output is skipped when the document omits a BOM page.
 - Document-requested formats on each page are merged with CLI formats.
 - Locked documents (`document_hashes.yaml` with `allow_override: false`) are respected and not overwritten.
+
+### Quick demo
+
+1. Copy `examples/demo01.document.yaml` alongside the demo harness outputs (e.g., `cp examples/demo01.document.yaml outputs/`).
+2. Run `uv run filare examples/demo01.yml -f hpst -o outputs` to build SVG/PNG/TSV and the document YAML; split pages and index links follow the document.
+3. Edit `outputs/demo01.document.yaml` and rerun to see document-driven rendering; locked files (via `document_hashes.yaml`) are left untouched.
