@@ -34,10 +34,9 @@ class NumberAndUnit(BaseModel):
             try:
                 number = float(number)
             except ValueError:
-                raise Exception(
-                    f"{inp} is not a valid number and unit.\n"
-                    "It must be a number, or a number and unit separated by a space."
-                )
+                from filare.errors import InvalidNumberFormat
+
+                raise InvalidNumberFormat(inp) from None
             else:
                 return cls(number=number, unit=unit)
 

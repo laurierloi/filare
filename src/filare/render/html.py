@@ -169,9 +169,6 @@ def generate_html_output(
     if termination_pages == [] and getattr(options_for_render, "include_termination_diagram", False):
         termination_pages = [("", [])]
 
-    is_title_page = (
-        template_name == "titlepage" or getattr(metadata, "sheet_name", "") == "titlepage"
-    )
     pagination_hints = {
         key: value
         for key, value in {
@@ -184,10 +181,8 @@ def generate_html_output(
         if value
     }
 
-    should_render_index = is_title_page and (
-        options.show_index_table or options.split_index_page
-    )
-    options_for_render.show_index_table = options.show_index_table and is_title_page
+    should_render_index = options.show_index_table or options.split_index_page
+    options_for_render.show_index_table = options.show_index_table
     if should_render_index:
         rendered["index_table"] = IndexTable.from_pages_metadata(
             metadata.pages_metadata,

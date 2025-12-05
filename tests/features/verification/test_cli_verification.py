@@ -2,6 +2,7 @@ import json
 import textwrap
 
 import pytest
+from filare.errors import FilareToolsException
 import yaml
 
 from filare.cli import cli
@@ -362,7 +363,7 @@ def test_shared_bom_missing_multiplier_errors(tmp_path):
     entry.per_harness = {"H1": {"qty": NumberAndUnit(number=1, unit=None)}}
     shared_bom = {hash(entry): entry}
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(FilareToolsException):
         generate_shared_bom(
             output_dir=tmp_path,
             shared_bom=shared_bom,
