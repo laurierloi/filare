@@ -36,3 +36,8 @@ Add `filare drawio <command>` to manage Draw.io integrations, keeping diagram as
 ## Dependencies / Notes
 - Built on Typer hierarchical CLI.
 - Requires defined mapping/validation rule schemas and Draw.io parsing utilities.
+
+## UI Notes
+- Provide before/after and direction (`to-drawio`, `to-harness`) examples, plus default file locations.
+- Keep reports available as both tables and JSON; highlight backup/restore flags prominently.
+- Surface mapping/rules schema references to reduce trial-and-error.

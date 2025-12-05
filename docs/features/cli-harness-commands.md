@@ -32,3 +32,8 @@ Add `filare harness <command>` to build harness artifacts and shared BOM slices,
 ## Dependencies / Notes
 - Integrates with shared BOM logic; reuses multiplier handling.
 - Built on Typer hierarchical CLI.
+
+## UI Notes
+- Document default multiplier filename/path and provide examples for harness-only vs BOM-only runs.
+- Offer JSON outputs for stats/BOM alongside technician-friendly tables.
+- Keep format letters aligned with document/page commands to avoid confusion.
