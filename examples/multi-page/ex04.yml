@@ -73,63 +73,63 @@ connections:
     - J2: [13,14,15,16,17,18,19,20,21,22,23,24]
 
 additional_bom_items:
-  - description: Installation item 01
+  - type: Installation item 01
     qty: 1
-  - description: Installation item 02
+  - type: Installation item 02
     qty: 1
-  - description: Installation item 03
+  - type: Installation item 03
     qty: 1
-  - description: Installation item 04
+  - type: Installation item 04
     qty: 1
-  - description: Installation item 05
+  - type: Installation item 05
     qty: 1
-  - description: Installation item 06
+  - type: Installation item 06
     qty: 1
-  - description: Installation item 07
+  - type: Installation item 07
     qty: 1
-  - description: Installation item 08
+  - type: Installation item 08
     qty: 1
-  - description: Installation item 09
+  - type: Installation item 09
     qty: 1
-  - description: Installation item 10
+  - type: Installation item 10
     qty: 1
-  - description: Installation item 11
+  - type: Installation item 11
     qty: 1
-  - description: Installation item 12
+  - type: Installation item 12
     qty: 1
-  - description: Installation item 13
+  - type: Installation item 13
     qty: 1
-  - description: Installation item 14
+  - type: Installation item 14
     qty: 1
-  - description: Installation item 15
+  - type: Installation item 15
     qty: 1
-  - description: Installation item 16
+  - type: Installation item 16
     qty: 1
-  - description: Installation item 17
+  - type: Installation item 17
     qty: 1
-  - description: Installation item 18
+  - type: Installation item 18
     qty: 1
-  - description: Installation item 19
+  - type: Installation item 19
     qty: 1
-  - description: Installation item 20
+  - type: Installation item 20
     qty: 1
-  - description: Installation item 21
+  - type: Installation item 21
     qty: 1
-  - description: Installation item 22
+  - type: Installation item 22
     qty: 1
-  - description: Installation item 23
+  - type: Installation item 23
     qty: 1
-  - description: Installation item 24
+  - type: Installation item 24
     qty: 1
-  - description: Installation item 25
+  - type: Installation item 25
     qty: 1
-  - description: Installation item 26
+  - type: Installation item 26
     qty: 1
-  - description: Installation item 27
+  - type: Installation item 27
     qty: 1
-  - description: Installation item 28
+  - type: Installation item 28
     qty: 1
-  - description: Installation item 29
+  - type: Installation item 29
     qty: 1
-  - description: Installation item 30
+  - type: Installation item 30
     qty: 1

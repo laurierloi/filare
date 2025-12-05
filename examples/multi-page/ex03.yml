@@ -49,53 +49,53 @@ connections:
     - J2: [11,12,13,14,15,16,17,18,19,20]
 
 additional_bom_items:
-  - description: Field kit 01
+  - type: Field kit 01
     qty: 1
-  - description: Field kit 02
+  - type: Field kit 02
     qty: 1
-  - description: Field kit 03
+  - type: Field kit 03
     qty: 1
-  - description: Field kit 04
+  - type: Field kit 04
     qty: 1
-  - description: Field kit 05
+  - type: Field kit 05
     qty: 1
-  - description: Field kit 06
+  - type: Field kit 06
     qty: 1
-  - description: Field kit 07
+  - type: Field kit 07
     qty: 1
-  - description: Field kit 08
+  - type: Field kit 08
     qty: 1
-  - description: Field kit 09
+  - type: Field kit 09
     qty: 1
-  - description: Field kit 10
+  - type: Field kit 10
     qty: 1
-  - description: Field kit 11
+  - type: Field kit 11
     qty: 1
-  - description: Field kit 12
+  - type: Field kit 12
     qty: 1
-  - description: Field kit 13
+  - type: Field kit 13
     qty: 1
-  - description: Field kit 14
+  - type: Field kit 14
     qty: 1
-  - description: Field kit 15
+  - type: Field kit 15
     qty: 1
-  - description: Field kit 16
+  - type: Field kit 16
     qty: 1
-  - description: Field kit 17
+  - type: Field kit 17
     qty: 1
-  - description: Field kit 18
+  - type: Field kit 18
     qty: 1
-  - description: Field kit 19
+  - type: Field kit 19
     qty: 1
-  - description: Field kit 20
+  - type: Field kit 20
     qty: 1
-  - description: Field kit 21
+  - type: Field kit 21
     qty: 1
-  - description: Field kit 22
+  - type: Field kit 22
     qty: 1
-  - description: Field kit 23
+  - type: Field kit 23
     qty: 1
-  - description: Field kit 24
+  - type: Field kit 24
     qty: 1
-  - description: Field kit 25
+  - type: Field kit 25
     qty: 1

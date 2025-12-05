@@ -49,33 +49,33 @@ connections:
     - J2: [7,8,9,10,11,12]
 
 additional_bom_items:
-  - description: Spare fastener 01
+  - type: Spare fastener 01
     qty: 1
-  - description: Spare fastener 02
+  - type: Spare fastener 02
     qty: 1
-  - description: Spare fastener 03
+  - type: Spare fastener 03
     qty: 1
-  - description: Spare fastener 04
+  - type: Spare fastener 04
     qty: 1
-  - description: Spare fastener 05
+  - type: Spare fastener 05
     qty: 1
-  - description: Spare fastener 06
+  - type: Spare fastener 06
     qty: 1
-  - description: Spare fastener 07
+  - type: Spare fastener 07
     qty: 1
-  - description: Spare fastener 08
+  - type: Spare fastener 08
     qty: 1
-  - description: Spare fastener 09
+  - type: Spare fastener 09
     qty: 1
-  - description: Spare fastener 10
+  - type: Spare fastener 10
     qty: 1
-  - description: Spare fastener 11
+  - type: Spare fastener 11
     qty: 1
-  - description: Spare fastener 12
+  - type: Spare fastener 12
     qty: 1
-  - description: Spare fastener 13
+  - type: Spare fastener 13
     qty: 1
-  - description: Spare fastener 14
+  - type: Spare fastener 14
     qty: 1
-  - description: Spare fastener 15
+  - type: Spare fastener 15
     qty: 1

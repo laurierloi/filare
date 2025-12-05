@@ -49,43 +49,43 @@ connections:
     - J2: [9,10,11,12,13,14,15,16]
 
 additional_bom_items:
-  - description: Accessory 01
+  - type: Accessory 01
     qty: 1
-  - description: Accessory 02
+  - type: Accessory 02
     qty: 1
-  - description: Accessory 03
+  - type: Accessory 03
     qty: 1
-  - description: Accessory 04
+  - type: Accessory 04
     qty: 1
-  - description: Accessory 05
+  - type: Accessory 05
     qty: 1
-  - description: Accessory 06
+  - type: Accessory 06
     qty: 1
-  - description: Accessory 07
+  - type: Accessory 07
     qty: 1
-  - description: Accessory 08
+  - type: Accessory 08
     qty: 1
-  - description: Accessory 09
+  - type: Accessory 09
     qty: 1
-  - description: Accessory 10
+  - type: Accessory 10
     qty: 1
-  - description: Accessory 11
+  - type: Accessory 11
     qty: 1
-  - description: Accessory 12
+  - type: Accessory 12
     qty: 1
-  - description: Accessory 13
+  - type: Accessory 13
     qty: 1
-  - description: Accessory 14
+  - type: Accessory 14
     qty: 1
-  - description: Accessory 15
+  - type: Accessory 15
     qty: 1
-  - description: Accessory 16
+  - type: Accessory 16
     qty: 1
-  - description: Accessory 17
+  - type: Accessory 17
     qty: 1
-  - description: Accessory 18
+  - type: Accessory 18
     qty: 1
-  - description: Accessory 19
+  - type: Accessory 19
     qty: 1
-  - description: Accessory 20
+  - type: Accessory 20
     qty: 1
