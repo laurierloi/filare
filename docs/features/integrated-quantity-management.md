@@ -110,3 +110,8 @@ Fold quantity multiplier management into the main Filare CLI (no separate `filar
 - Reuse shared BOM flow; inject multipliers early and emit per-harness + aggregated reports.
 - Add examples to `examples/` showing multiplier files in each format.
 - Update workflows/tutorials to include the new commands and `--json` reporting for CI.
+
+## UI Notes
+- Surface defaults prominently in help (filename/location, strict vs non-strict) and keep examples copy/paste ready.
+- Ensure `--json` mirrors human table fields to reduce context switching for technicians vs CI.
+- Provide error messages that cite missing/unused keys and suggest next commands (`validate` then `edit`).

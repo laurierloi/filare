@@ -34,3 +34,8 @@ Introduce a unified, multi-level CLI (`filare <domain> <command>`) so users can 
 ## Related
 - docs/features/cli-typer-migration.md
 - docs/issues/cli-subcommand-discovery.md
+
+## UI Notes
+- Add `filare help` command map showing all domains and top tasks, with copy/paste examples.
+- Keep short flags consistent across domains; avoid reusing `-f` for different meanings.
+- Provide per-domain default paths and outputs inline in help (e.g., output dir, multiplier file).

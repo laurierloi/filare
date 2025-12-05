@@ -25,3 +25,8 @@ Adopt Typer for the Filare CLI to enable hierarchical subcommands, richer help/a
 - Update docs, workflows, and tutorials to the new command tree and completions.
 - Validate downstream harness scripts for compatibility; provide migration guidance.
 - Ensure packaging/entrypoints (`filare`, `filare-qty`) point to the Typer app.
+
+## UI Notes
+- Generate shell completions and document how to enable them for bash/zsh/fish.
+- Ensure help text shows defaults inline and provides examples per subcommand.
+- Keep error messages structured (table/JSON) for CI while readable for technicians.

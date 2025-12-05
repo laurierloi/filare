@@ -32,3 +32,8 @@ Add `filare page <command>` to operate on a single page/sheet without full-docum
 ## Dependencies / Notes
 - Built on Typer hierarchical CLI.
 - Shares rendering pipeline with document commands; avoid duplicated logic.
+
+## UI Notes
+- Include quick-start examples for preview vs render, highlighting temp output location.
+- Keep format letter meanings consistent with document commands and surface defaults.
+- Provide `--format json` for `info` to support automation, while retaining readable tables.

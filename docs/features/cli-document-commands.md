@@ -32,3 +32,8 @@ Add `filare document <command>` to manage full-document outputs (HTML/PDF bundle
 ## Dependencies / Notes
 - Works with hierarchical CLI and Typer migration.
 - Share format code table across domains to avoid conflicts.
+
+## UI Notes
+- Show default format codes and expand them inline (`hpstP`) plus an example per common task (HTML+PDF, custom output name).
+- Clarify output locations (default input dir vs `-o`) and bundling order rules.
+- Provide machine-readable inspection output (`--format json`) while keeping table output concise for technicians.
