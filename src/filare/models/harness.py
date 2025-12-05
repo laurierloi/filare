@@ -321,23 +321,28 @@ class Harness:
             # check if provided name is ambiguous
             if via_wire in cable.colors and via_wire in cable.wirelabels:
                 if cable.colors.index(via_wire) != cable.wirelabels.index(via_wire):
-                    raise Exception(
-                        f"{via_name}:{via_wire} is defined both in colors and wirelabels, "
-                        "for different wires."
+                    from filare.errors import CableWireResolutionError
+
+                    raise CableWireResolutionError(
+                        via_name, via_wire, "is defined both in colors and wirelabels, for different wires."
                     )
                 # TODO: Maybe issue a warning if present in both lists
                 # but referencing the same wire?
             if via_wire in cable.colors:
                 if cable.colors.count(via_wire) > 1:
-                    raise Exception(
-                        f"{via_name}:{via_wire} is used for more than one wire."
+                    from filare.errors import CableWireResolutionError
+
+                    raise CableWireResolutionError(
+                        via_name, via_wire, "is used for more than one wire."
                     )
                 # list index starts at 0, wire IDs start at 1
                 via_wire = cable.colors.index(via_wire) + 1
             elif via_wire in cable.wirelabels:
                 if cable.wirelabels.count(via_wire) > 1:
-                    raise Exception(
-                        f"{via_name}:{via_wire} is used for more than one wire."
+                    from filare.errors import CableWireResolutionError
+
+                    raise CableWireResolutionError(
+                        via_name, via_wire, "is used for more than one wire."
                     )
                 via_wire = (
                     cable.wirelabels.index(via_wire) + 1

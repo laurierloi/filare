@@ -195,7 +195,9 @@ class MultiColor:
         elif len(self) == 3:
             out = [color.html for color in self.colors]
         else:
-            raise Exception(f"Padding not supported for len {len(selfq)}")
+            from filare.errors import ColorPaddingUnsupported
+
+            raise ColorPaddingUnsupported(len(self))
         return [str(color) for color in out]
 
     @property

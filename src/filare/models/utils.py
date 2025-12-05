@@ -116,13 +116,14 @@ def smart_file_resolve(filename: Path, possible_paths: (Path, List[Path])) -> Pa
         if filename.exists():
             return filename
         else:
-            raise Exception(f"{filename} does not exist.")
+            from filare.errors import FileResolutionError
+
+            raise FileResolutionError(filename, [])
     else:  # search all possible paths in decreasing order of precedence
         for path in possible_paths:
             combined_path = (path / filename).resolve()
             if combined_path.exists():
                 return combined_path
-        raise Exception(
-            f"{filename} was not found in any of the following locations: \n"
-            + "\n".join(str(p) for p in possible_paths)
-        )
+        from filare.errors import FileResolutionError
+
+        raise FileResolutionError(filename, possible_paths)
