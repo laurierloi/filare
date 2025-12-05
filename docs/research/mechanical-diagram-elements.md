@@ -27,6 +27,21 @@ Identifies the elements and symbology used in mechanical harness diagrams (nailb
   - Protective coverings: hatched or double-line segments; heat-shrink/tape annotated with start/end distances and part.
   - Labels: flag icon or rectangular tag tied to path; text includes ID and sometimes barcode ref.
   - Dimensions: leader lines with measurement text; chain dimensions along path.
+  - Symbol candidates (Unicode-friendly for HTML/SVG legends, with text fallback):
+    - Path node: `●` (fallback: "o"); path direction arrow: `➝`.
+    - Clamp/tie: `⊙` or `⨀` (fallback: "CL"); P-clamp shorthand: `[C]`.
+    - Grommet/bulkhead: `◉` (fallback: "GR").
+    - Splice (inline dot): `•`; splice barrel: `▭` with text "SP".
+  - Junction block: `▭` with ports; fallback text "JB".
+  - Shield to ground: `⏚` (ground) or backshell glyph `⌒`; pigtail branch: short line ending `⏚`.
+  - Covering start/end: `▹` / `◃` markers with hatched segment between.
+  - Label flag: `⚑` (fallback: "LBL").
+  - Dimension: `↔` with text (e.g., `↔ 250 mm`).
+- Icon guidance:
+  - Prefer self-drawn SVG primitives (circles, rectangles, arcs, hatch patterns) for clamps, splices, junctions, coverings, labels, and dimensions; avoids font licensing and keeps style consistent.
+  - Ground/backshell can be drawn with simple shapes mirroring IPC/WHMA/IEC styles (e.g., `⏚`-like ground, arc for backshell).
+  - Reference styles (for consistency, not embedding): IPC/WHMA-A-620 nailboard symbols (clamp circles, splice dots/barrels, grommet rings, shield ground at connector). Use them as visual inspiration but render your own SVG.
+  - Avoid external icon fonts (Font Awesome/Material) for these domain-specific shapes; they add dependencies and don’t match harness drafting conventions.
 - Information captured:
   - Geometry: 2D coordinates in chosen units; orientation of clamps and splice rotation when relevant.
   - Materials: part numbers for clamps, grommets, splices, protective coverings, backshells/boots.
@@ -54,6 +69,28 @@ Identifies the elements and symbology used in mechanical harness diagrams (nailb
 
 ## Feasibility
 - Feasible with an extended mechanical schema and renderer; symbology can be implemented in SVG/DXF without heavy CAD.
+
+## Fit with Existing Filare Models
+- Current fit:
+  - Connectors/cables/connections already model electrical nets; `additional_components` can carry clamps/wraps as BOM-only items but lack geometry/placement.
+  - `metadata/options` can store drawing-level info but not geometry.
+  - Graphviz/HTML renderers are logical-only, so mechanical elements are currently unrendered.
+- Gaps: No place for 2D geometry (board outline, paths), feature placement (clamps/grommets/splices), covering intervals, or dimensions. No linkage from mechanical items to nets beyond informal notes.
+- Proposed schema additions (compatible path):
+  - Add optional top-level `mechanical:` block with: units, datum/grid, outline, reference holes; `paths` with point lists and per-segment metadata; `features` (clamp/tie/grommet/splice/bulkhead/strain-relief) with positions and part refs; `coverings` with start/end distances and material refs; `annotations` for labels/dimensions/notes; `shield_terminations` to locate style/target.
+  - Mechanical items reference existing components via IDs (connector, cable, wire, splice id) to correlate mechanical placement to electrical nets/BOM.
+  - BOM linkage: features/coverings carry part refs and qty multipliers (length-based or count-based) similar to `additional_components`.
+- Alternative implementations:
+  - Alt A (inline): Single YAML with `mechanical` block coexisting with existing `connectors/cables`; renderers detect and produce extra SVG/DXF plus HTML embed. Easiest for authors (one file), optional and ignore-safe.
+  - Alt B (sidecar): Allow `mechanical:` to accept file refs (include) so large mechanical data can live in a sidecar YAML while core nets stay small. Useful when mechanical data is auto-generated.
+  - Alt C (hybrid BOM-only): Keep geometry in an external tool; only attach mechanical part refs as `additional_components` and hyperlink to an external mechanical drawing. Minimal change but loses render integration.
+- Renderer integration:
+  - New mechanical renderer writes SVG (and optional DXF) alongside existing outputs; HTML includes a tab/section for mechanical view.
+  - Symbols table/legend added to HTML for user clarity; defaults chosen to match Filare style.
+- User impact:
+  - Backward compatibility: existing YAMLs unaffected; `mechanical` is optional.
+  - Authoring complexity: adds coordinate entry and feature definitions; mitigated by templates/examples and optional sidecar flow.
+  - Output: users gain mechanical SVG/DXF plus legend; may need to learn symbol mapping but aligns with industry nailboard drawings.
 
 ## Required Work
 - REWORK tasks: Define mechanical entities (path, feature, protective segment, splice, label, dimension) and their relationships to electrical components.
