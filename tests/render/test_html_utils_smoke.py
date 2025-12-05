@@ -26,3 +26,22 @@ def test_table_adds_multiple_rows():
     table.contents.append(html_utils.Tr(html_utils.Td("b")))
     rendered = str(table)
     assert rendered.count("<tr>") >= 2
+
+
+def test_html_utils_custom_attrs_and_defaults():
+    img = html_utils.Img(src="pic.png")
+    assert "pic.png" in str(img)
+    # Td defaults colspan/rowspan to None and omits when falsey
+    td = html_utils.Td("x", colspan=None, rowspan=None, align="center")
+    assert 'colspan="' not in str(td)
+    # Table renders attributes passed via kwargs
+    table = html_utils.Table(contents=[td], border=0, cellpadding=2)
+    rendered = str(table)
+    assert 'cellpadding="2"' in rendered
+
+
+def test_html_utils_update_and_empty_tags():
+    td = html_utils.Td(contents=None, delete_if_empty=True)
+    assert str(td) == ""
+    td.update_attribs(colspan=2)
+    assert 'colspan="2"' in str(td.__class__("val", colspan=2))
