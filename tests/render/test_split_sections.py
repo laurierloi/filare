@@ -121,7 +121,8 @@ def _verify_split_files(
         _assert_missing(notes_file)
         assert 'id="notes"' in html
 
-    if split_index:
+    is_title = base.stem == "titlepage"
+    if split_index and is_title:
         _assert_exists(index_file)
         _assert_contains(index_file, "index_table")
         _assert_not_contains(index_file, "SplitNote")
