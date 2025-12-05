@@ -140,8 +140,8 @@ def generate_html_output(
         if value
     }
 
-    should_render_index = options.split_index_page or (
-        is_title_page and options.show_index_table
+    should_render_index = is_title_page and (
+        options.show_index_table or options.split_index_page
     )
     options_for_render.show_index_table = (
         options.show_index_table and is_title_page
