@@ -2,7 +2,7 @@
 
 ## Status
 
-IN_PROGRESS
+DONE
 
 ## Summary
 
@@ -25,13 +25,14 @@ Add BOM pagination controls and new derivative diagrams (wire cut and terminatio
 - [x] Implement wire cut diagram generation with pagination.
 - [x] Implement termination diagram generation with pagination and termination BaseModel.
 - [x] Update tests, examples/tutorials, and docs to cover the new outputs and configuration.
-- [ ] Validate renders/regressions and finalize feature documentation.
+- [x] Validate renders/regressions and finalize feature documentation.
 
 ## Progress Log
 
 2025-12-04: Created feature file from RefactorPlan step 11 and marked IN_PROGRESS with requirements and steps.
 2025-12-04: Added shared table pagination helpers, BOM/cut/termination pagination with lettered suffix handling, and sheet suffix support.
-2025-12-04: Added pagination regression tests and documented new pagination options; examples/tutorial outputs still pending.
+2025-12-04: Added pagination regression tests and documented new pagination options.
+2025-12-04: Ran pagination regressions (`tests/features/bom_pagination`, `tests/flows/test_examples_and_tutorial.py`, `tests/render/test_split_sections.py`) and marked feature DONE.
 
 ## Sub-Features
 
