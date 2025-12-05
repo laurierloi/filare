@@ -1,12 +1,16 @@
 import json
 import textwrap
 
+import pytest
 import yaml
 
 from filare.cli import cli
 from filare.models.bom import BomEntry
+from filare.models.harness import Harness
 from filare.models.numbers import NumberAndUnit
+from filare.models.options import PageOptions
 from filare.models.partnumber import PartNumberInfo
+from filare.models.notes import Notes
 from filare.render.html import generate_shared_bom
 
 
@@ -15,11 +19,13 @@ def _write_metadata(path, pn="VERIF-HARNESS"):
         textwrap.dedent(
             f"""\
             metadata:
+              title: Verification Harness
               pn: {pn}
               company: TestCo
               address: Test Street
               authors: {{}}
-              revisions: {{}}
+              revisions:
+                A: {{name: init, date: 2024-01-01, changelog: created}}
               template:
                 name: din-6771
                 sheetsize: A4
@@ -123,3 +129,226 @@ def test_shared_bom_respects_quantity_multipliers(tmp_path):
     tsv = (tmp_path / "shared_bom.tsv").read_text()
     assert "Test component" in tsv
     assert "H1:3" in tsv.replace(" ", ""), "Per-harness quantity should scale"
+
+
+def test_multi_harness_html_and_shared_outputs(tmp_path):
+    output_dir = tmp_path / "out"
+    output_dir.mkdir()
+
+    metadata_path = tmp_path / "metadata.yml"
+    harness_a = tmp_path / "h1.yml"
+    harness_b = tmp_path / "h2.yml"
+
+    _write_metadata(metadata_path, pn="MULTI")
+    _write_simple_harness(harness_a)
+    _write_simple_harness(harness_b)
+
+    cli.callback(  # type: ignore[attr-defined]
+        files=(harness_a, harness_b),
+        formats="hb",
+        components=(),
+        metadata=(metadata_path,),
+        output_dir=output_dir,
+        output_name=None,
+        version=False,
+        use_qty_multipliers=False,
+        multiplier_file_name="quantity_multipliers.txt",
+    )
+
+    expected_files = [
+        output_dir / "titlepage.html",
+        output_dir / "h1.html",
+        output_dir / "h2.html",
+        output_dir / "shared_bom.tsv",
+    ]
+    for f in expected_files:
+        assert f.exists(), f"Missing expected output {f}"
+
+    shared_bom = (output_dir / "shared_bom.tsv").read_text()
+    assert "MULTI-h1" in shared_bom and "MULTI-h2" in shared_bom
+
+
+def test_cli_skips_bom_when_disabled(tmp_path):
+    output_dir = tmp_path / "out"
+    output_dir.mkdir()
+
+    metadata_path = tmp_path / "metadata.yml"
+    harness_path = tmp_path / "no_bom.yml"
+    _write_metadata(metadata_path, pn="NOBOM")
+    harness_path.write_text(
+        textwrap.dedent(
+            """\
+            options:
+              include_bom: false
+            connectors:
+              J1: {pincount: 1}
+              J2: {pincount: 1}
+            cables:
+              W1: {wirecount: 1}
+            connections:
+              -
+                - J1: 1
+                - W1: 1
+                - J2: 1
+            """
+        )
+    )
+
+    cli.callback(  # type: ignore[attr-defined]
+        files=(harness_path,),
+        formats="th",
+        components=(),
+        metadata=(metadata_path,),
+        output_dir=output_dir,
+        output_name=None,
+        version=False,
+        use_qty_multipliers=False,
+        multiplier_file_name="quantity_multipliers.txt",
+    )
+
+    assert not (output_dir / "no_bom.tsv").exists()
+    assert (output_dir / "no_bom.html").exists()
+
+
+def test_cli_split_sections_emit_split_files(tmp_path):
+    output_dir = tmp_path / "out"
+    output_dir.mkdir()
+
+    metadata_path = tmp_path / "metadata.yml"
+    harness_path = tmp_path / "split.yml"
+    _write_metadata(metadata_path, pn="SPLIT")
+    harness_path.write_text(
+        textwrap.dedent(
+            """\
+            options:
+              split_bom_page: true
+              split_notes_page: true
+              split_index_page: true
+            notes:
+              - SplitNote
+            connectors:
+              J1: {pincount: 1}
+              J2: {pincount: 1}
+            cables:
+              W1: {wirecount: 1}
+            connections:
+              -
+                - J1: 1
+                - W1: 1
+                - J2: 1
+            """
+        )
+    )
+
+    cli.callback(  # type: ignore[attr-defined]
+        files=(harness_path,),
+        formats="h",
+        components=(),
+        metadata=(metadata_path,),
+        output_dir=output_dir,
+        output_name=None,
+        version=False,
+        use_qty_multipliers=False,
+        multiplier_file_name="quantity_multipliers.txt",
+    )
+
+    base = output_dir / "split"
+    for suffix in (".html", ".bom.html", ".notes.html", ".index.html"):
+        assert base.with_suffix(suffix).exists(), f"Missing split output {suffix}"
+
+    notes_html = base.with_suffix(".notes.html").read_text()
+    assert "SplitNote" in notes_html
+
+
+def test_shared_bom_missing_multiplier_errors(tmp_path):
+    multiplier_file = tmp_path / "quantity_multipliers.txt"
+    multiplier_file.write_text(json.dumps({}))
+    harness_file = tmp_path / "H1.yml"
+    harness_file.write_text("connectors: {}")
+
+    entry = BomEntry(
+        qty=NumberAndUnit(number=1, unit=None),
+        partnumbers=PartNumberInfo(pn="PN-ERR"),
+        description="Test component",
+        category="CON",
+        designators=["J1"],
+    )
+    entry.per_harness = {"H1": {"qty": NumberAndUnit(number=1, unit=None)}}
+    shared_bom = {hash(entry): entry}
+
+    with pytest.raises(AssertionError):
+        generate_shared_bom(
+            output_dir=tmp_path,
+            shared_bom=shared_bom,
+            use_qty_multipliers=True,
+            files=[harness_file],
+            multiplier_file_name=multiplier_file.name,
+        )
+
+    assert not (tmp_path / "shared_bom.tsv").exists()
+
+
+def test_orient_connectors_overview_sets_ports(basic_metadata):
+    harness = Harness(
+        metadata=basic_metadata,
+        options=PageOptions(),
+        notes=Notes(),
+        shared_bom={},
+    )
+    harness.add_connector("X1", pincount=1)
+    harness.add_connector("X2", pincount=1)
+    harness.add_cable("W1", wirecount=1)
+    harness.connect("X1", 1, "W1", 1, "X2", 1)
+
+    harness.orient_connectors_overview()
+
+    assert harness.connectors["X1"].ports_right is True
+    assert harness.connectors["X1"].ports_left is False
+    assert harness.connectors["X2"].ports_left is True
+    assert harness.connectors["X2"].ports_right is False
+
+
+def test_cli_additional_bom_items_included(tmp_path):
+    output_dir = tmp_path / "out"
+    output_dir.mkdir()
+
+    metadata_path = tmp_path / "metadata.yml"
+    harness_path = tmp_path / "with_additional.yml"
+    _write_metadata(metadata_path, pn="ADD")
+    harness_path.write_text(
+        textwrap.dedent(
+            """\
+            connectors:
+              J1: {pincount: 1}
+              J2: {pincount: 1}
+            cables:
+              W1: {wirecount: 1}
+            connections:
+              -
+                - J1: 1
+                - W1: 1
+                - J2: 1
+            additional_bom_items:
+              - type: Sleeve
+                qty: 2
+                pn: SLV-1
+            """
+        )
+    )
+
+    cli.callback(  # type: ignore[attr-defined]
+        files=(harness_path,),
+        formats="tb",
+        components=(),
+        metadata=(metadata_path,),
+        output_dir=output_dir,
+        output_name=None,
+        version=False,
+        use_qty_multipliers=False,
+        multiplier_file_name="quantity_multipliers.txt",
+    )
+
+    bom_text = (output_dir / "with_additional.tsv").read_text()
+    shared_bom_text = (output_dir / "shared_bom.tsv").read_text()
+    assert "Sleeve" in bom_text
+    assert "Sleeve" in shared_bom_text
