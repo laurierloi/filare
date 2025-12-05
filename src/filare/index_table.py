@@ -94,6 +94,7 @@ class IndexTable:
         )
 
         # harness and split rows
+        has_split = False
         for index, row in enumerate(metadata.output_names, start=2):
             base_link = str(Path(row).with_suffix(".html"))
             base_row = IndexTableRow(

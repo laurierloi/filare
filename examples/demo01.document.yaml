@@ -1,0 +1,41 @@
+metadata:
+  title: Demo Harness Document
+  pn: DEMO-01
+  company: Example Corp
+  address: 1 Demo Road
+  sheet_total: 2
+  sheet_current: 1
+  sheet_name: demo01
+  output_dir: .
+  titlepage: titlepage
+  output_names:
+    - titlepage
+    - demo01
+  files:
+    - demo01.yml
+  use_qty_multipliers: false
+  multiplier_file_name: quantity_multipliers.txt
+
+pages:
+  - type: title
+    name: titlepage
+  - type: harness
+    name: DEMO01
+    formats: [html, svg]
+  - type: bom
+    name: bom
+    formats: [tsv]
+  - type: cut
+    name: cut
+  - type: termination
+    name: termination
+
+extras:
+  options:
+    include_bom: true
+    include_cut_diagram: true
+    include_termination_diagram: true
+    split_bom_page: true
+    split_notes_page: true
+    split_index_page: true
+    template_separator: "."
