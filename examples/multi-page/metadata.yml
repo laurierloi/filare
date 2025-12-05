@@ -1,0 +1,27 @@
+metadata:
+
+  title: Multi-page examples
+  pn: mp-examples
+  company: ACME Wiring
+  address: 1 Cable Way
+
+  authors:
+    created:
+      name: tester
+      date: 2024-01-01
+    reviewed:
+      name: n/a
+      date: n/a
+
+  revisions:
+    a:
+      name: tester
+      date: 2024-01-01
+      changelog: initial release
+
+  template:
+    name: din-6771
+    sheetsize: A3
+
+notes:
+  - Multi-page pagination examples for BOM, cut, and termination tables.
