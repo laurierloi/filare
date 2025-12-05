@@ -8,8 +8,10 @@ metadata:
   sheet_name: ex04
   output_dir: .
   titlepage: titlepage
-  output_names: [ex04]
-  files: [ex04.yml]
+  output_names:
+  - ex04
+  files:
+  - ex04.yml
   use_qty_multipliers: false
   multiplier_file_name: qty.txt
   revisions:
@@ -17,7 +19,6 @@ metadata:
       name: tester
       date: 2024-01-01
       changelog: init
-
 options:
   include_bom: true
   split_bom_page: true
@@ -27,109 +28,210 @@ options:
   cut_rows_per_page: 12
   include_termination_diagram: true
   termination_rows_per_page: 8
-
 connectors:
   J1:
     pincount: 24
+    pn: J1-PN
   J2:
     pincount: 24
-
+    pn: J2-PN
 cables:
   C1:
     wirecount: 24
     length: 10
     colors:
-      - RD
-      - BK
-      - GN
-      - WH
-      - BU
-      - YE
-      - VT
-      - GY
-      - OG
-      - BN
-      - PK
-      - SR
-      - RDWH
-      - BKWH
-      - GNWH
-      - BUWH
-      - OGWH
-      - BNWH
-      - PKWH
-      - RDYE
-      - BKYE
-      - GNYE
-      - BUYE
-      - TQ
-
+    - RD
+    - BK
+    - GN
+    - WH
+    - BU
+    - YE
+    - VT
+    - GY
+    - OG
+    - BN
+    - PK
+    - SR
+    - RDWH
+    - BKWH
+    - GNWH
+    - BUWH
+    - OGWH
+    - BNWH
+    - PKWH
+    - RDYE
+    - BKYE
+    - GNYE
+    - BUYE
+    - TQ
+    pn: C1-PN
 connections:
-  - - J1: [1,2,3,4,5,6,7,8,9,10,11,12]
-    - C1: [1,2,3,4,5,6,7,8,9,10,11,12]
-    - J2: [1,2,3,4,5,6,7,8,9,10,11,12]
-  - - J1: [13,14,15,16,17,18,19,20,21,22,23,24]
-    - C1: [13,14,15,16,17,18,19,20,21,22,23,24]
-    - J2: [13,14,15,16,17,18,19,20,21,22,23,24]
-
+- - J1:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+  - C1:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+  - J2:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+- - J1:
+    - 13
+    - 14
+    - 15
+    - 16
+    - 17
+    - 18
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+  - C1:
+    - 13
+    - 14
+    - 15
+    - 16
+    - 17
+    - 18
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+  - J2:
+    - 13
+    - 14
+    - 15
+    - 16
+    - 17
+    - 18
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
 additional_bom_items:
-  - type: Installation item 01
-    qty: 1
-  - type: Installation item 02
-    qty: 1
-  - type: Installation item 03
-    qty: 1
-  - type: Installation item 04
-    qty: 1
-  - type: Installation item 05
-    qty: 1
-  - type: Installation item 06
-    qty: 1
-  - type: Installation item 07
-    qty: 1
-  - type: Installation item 08
-    qty: 1
-  - type: Installation item 09
-    qty: 1
-  - type: Installation item 10
-    qty: 1
-  - type: Installation item 11
-    qty: 1
-  - type: Installation item 12
-    qty: 1
-  - type: Installation item 13
-    qty: 1
-  - type: Installation item 14
-    qty: 1
-  - type: Installation item 15
-    qty: 1
-  - type: Installation item 16
-    qty: 1
-  - type: Installation item 17
-    qty: 1
-  - type: Installation item 18
-    qty: 1
-  - type: Installation item 19
-    qty: 1
-  - type: Installation item 20
-    qty: 1
-  - type: Installation item 21
-    qty: 1
-  - type: Installation item 22
-    qty: 1
-  - type: Installation item 23
-    qty: 1
-  - type: Installation item 24
-    qty: 1
-  - type: Installation item 25
-    qty: 1
-  - type: Installation item 26
-    qty: 1
-  - type: Installation item 27
-    qty: 1
-  - type: Installation item 28
-    qty: 1
-  - type: Installation item 29
-    qty: 1
-  - type: Installation item 30
-    qty: 1
+- type: Installation item 01
+  qty: 1
+  pn: MP-EX04-ITEM-01
+- type: Installation item 02
+  qty: 1
+  pn: MP-EX04-ITEM-02
+- type: Installation item 03
+  qty: 1
+  pn: MP-EX04-ITEM-03
+- type: Installation item 04
+  qty: 1
+  pn: MP-EX04-ITEM-04
+- type: Installation item 05
+  qty: 1
+  pn: MP-EX04-ITEM-05
+- type: Installation item 06
+  qty: 1
+  pn: MP-EX04-ITEM-06
+- type: Installation item 07
+  qty: 1
+  pn: MP-EX04-ITEM-07
+- type: Installation item 08
+  qty: 1
+  pn: MP-EX04-ITEM-08
+- type: Installation item 09
+  qty: 1
+  pn: MP-EX04-ITEM-09
+- type: Installation item 10
+  qty: 1
+  pn: MP-EX04-ITEM-10
+- type: Installation item 11
+  qty: 1
+  pn: MP-EX04-ITEM-11
+- type: Installation item 12
+  qty: 1
+  pn: MP-EX04-ITEM-12
+- type: Installation item 13
+  qty: 1
+  pn: MP-EX04-ITEM-13
+- type: Installation item 14
+  qty: 1
+  pn: MP-EX04-ITEM-14
+- type: Installation item 15
+  qty: 1
+  pn: MP-EX04-ITEM-15
+- type: Installation item 16
+  qty: 1
+  pn: MP-EX04-ITEM-16
+- type: Installation item 17
+  qty: 1
+  pn: MP-EX04-ITEM-17
+- type: Installation item 18
+  qty: 1
+  pn: MP-EX04-ITEM-18
+- type: Installation item 19
+  qty: 1
+  pn: MP-EX04-ITEM-19
+- type: Installation item 20
+  qty: 1
+  pn: MP-EX04-ITEM-20
+- type: Installation item 21
+  qty: 1
+  pn: MP-EX04-ITEM-21
+- type: Installation item 22
+  qty: 1
+  pn: MP-EX04-ITEM-22
+- type: Installation item 23
+  qty: 1
+  pn: MP-EX04-ITEM-23
+- type: Installation item 24
+  qty: 1
+  pn: MP-EX04-ITEM-24
+- type: Installation item 25
+  qty: 1
+  pn: MP-EX04-ITEM-25
+- type: Installation item 26
+  qty: 1
+  pn: MP-EX04-ITEM-26
+- type: Installation item 27
+  qty: 1
+  pn: MP-EX04-ITEM-27
+- type: Installation item 28
+  qty: 1
+  pn: MP-EX04-ITEM-28
+- type: Installation item 29
+  qty: 1
+  pn: MP-EX04-ITEM-29
+- type: Installation item 30
+  qty: 1
+  pn: MP-EX04-ITEM-30

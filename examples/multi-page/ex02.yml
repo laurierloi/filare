@@ -8,8 +8,10 @@ metadata:
   sheet_name: ex02
   output_dir: .
   titlepage: titlepage
-  output_names: [ex02]
-  files: [ex02.yml]
+  output_names:
+  - ex02
+  files:
+  - ex02.yml
   use_qty_multipliers: false
   multiplier_file_name: qty.txt
   revisions:
@@ -17,7 +19,6 @@ metadata:
       name: tester
       date: 2024-01-01
       changelog: init
-
 options:
   include_bom: true
   split_bom_page: true
@@ -27,65 +28,148 @@ options:
   cut_rows_per_page: 12
   include_termination_diagram: true
   termination_rows_per_page: 8
-
 connectors:
   J1:
     pincount: 16
+    pn: J1-PN
   J2:
     pincount: 16
-
+    pn: J2-PN
 cables:
   C1:
     wirecount: 16
     length: 7
-    colors: [RD, BK, GN, WH, BU, YE, VT, GY, OG, BN, PK, RDWH, BKWH, GNWH, BUWH, OGWH]
-
+    colors:
+    - RD
+    - BK
+    - GN
+    - WH
+    - BU
+    - YE
+    - VT
+    - GY
+    - OG
+    - BN
+    - PK
+    - RDWH
+    - BKWH
+    - GNWH
+    - BUWH
+    - OGWH
+    pn: C1-PN
 connections:
-  - - J1: [1,2,3,4,5,6,7,8]
-    - C1: [1,2,3,4,5,6,7,8]
-    - J2: [1,2,3,4,5,6,7,8]
-  - - J1: [9,10,11,12,13,14,15,16]
-    - C1: [9,10,11,12,13,14,15,16]
-    - J2: [9,10,11,12,13,14,15,16]
-
+- - J1:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+  - C1:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+  - J2:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+- - J1:
+    - 9
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+  - C1:
+    - 9
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+  - J2:
+    - 9
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
 additional_bom_items:
-  - type: Accessory 01
-    qty: 1
-  - type: Accessory 02
-    qty: 1
-  - type: Accessory 03
-    qty: 1
-  - type: Accessory 04
-    qty: 1
-  - type: Accessory 05
-    qty: 1
-  - type: Accessory 06
-    qty: 1
-  - type: Accessory 07
-    qty: 1
-  - type: Accessory 08
-    qty: 1
-  - type: Accessory 09
-    qty: 1
-  - type: Accessory 10
-    qty: 1
-  - type: Accessory 11
-    qty: 1
-  - type: Accessory 12
-    qty: 1
-  - type: Accessory 13
-    qty: 1
-  - type: Accessory 14
-    qty: 1
-  - type: Accessory 15
-    qty: 1
-  - type: Accessory 16
-    qty: 1
-  - type: Accessory 17
-    qty: 1
-  - type: Accessory 18
-    qty: 1
-  - type: Accessory 19
-    qty: 1
-  - type: Accessory 20
-    qty: 1
+- type: Accessory 01
+  qty: 1
+  pn: MP-EX02-ITEM-01
+- type: Accessory 02
+  qty: 1
+  pn: MP-EX02-ITEM-02
+- type: Accessory 03
+  qty: 1
+  pn: MP-EX02-ITEM-03
+- type: Accessory 04
+  qty: 1
+  pn: MP-EX02-ITEM-04
+- type: Accessory 05
+  qty: 1
+  pn: MP-EX02-ITEM-05
+- type: Accessory 06
+  qty: 1
+  pn: MP-EX02-ITEM-06
+- type: Accessory 07
+  qty: 1
+  pn: MP-EX02-ITEM-07
+- type: Accessory 08
+  qty: 1
+  pn: MP-EX02-ITEM-08
+- type: Accessory 09
+  qty: 1
+  pn: MP-EX02-ITEM-09
+- type: Accessory 10
+  qty: 1
+  pn: MP-EX02-ITEM-10
+- type: Accessory 11
+  qty: 1
+  pn: MP-EX02-ITEM-11
+- type: Accessory 12
+  qty: 1
+  pn: MP-EX02-ITEM-12
+- type: Accessory 13
+  qty: 1
+  pn: MP-EX02-ITEM-13
+- type: Accessory 14
+  qty: 1
+  pn: MP-EX02-ITEM-14
+- type: Accessory 15
+  qty: 1
+  pn: MP-EX02-ITEM-15
+- type: Accessory 16
+  qty: 1
+  pn: MP-EX02-ITEM-16
+- type: Accessory 17
+  qty: 1
+  pn: MP-EX02-ITEM-17
+- type: Accessory 18
+  qty: 1
+  pn: MP-EX02-ITEM-18
+- type: Accessory 19
+  qty: 1
+  pn: MP-EX02-ITEM-19
+- type: Accessory 20
+  qty: 1
+  pn: MP-EX02-ITEM-20

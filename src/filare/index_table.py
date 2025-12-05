@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
 from filare.models.metadata import PagesMetadata
+from filare.models.table_models import letter_suffix
 from filare.models.harness_quantity import HarnessQuantity
 from filare.render.templates import get_template
 
@@ -69,7 +70,9 @@ class IndexTable:
 
     # TODO: how do we actually want to support this?
     @classmethod
-    def from_pages_metadata(cls, metadata: PagesMetadata):
+    def from_pages_metadata(
+        cls, metadata: PagesMetadata, options=None, paginated_pages: Dict[str, List[str]] = None
+    ):
         # detect split pages
         split_types = [
             ("bom", "BOM"),
@@ -80,6 +83,9 @@ class IndexTable:
         ]
         has_split = False
         rows = []
+        use_letters = (
+            getattr(options, "table_page_suffix_letters", True) if options else True
+        )
 
         # titlepage row
         rows.append(
@@ -108,17 +114,52 @@ class IndexTable:
             )
             rows.append(base_row)
             for suffix, label in split_types:
-                candidate = metadata.output_dir / f"{row}.{suffix}.html"
-                if candidate.exists():
-                    has_split = True
+                planned_suffixes = (
+                    (paginated_pages or {}).get(suffix, None)
+                    if paginated_pages is not None
+                    else None
+                )
+                candidates: List[Union[Path, str]] = []
+                if planned_suffixes:
+                    candidates = [
+                        f"{row}.{suffix}"
+                        + ("" if idx == 0 else f".{page_suffix or letter_suffix(idx)}")
+                        + ".html"
+                        for idx, page_suffix in enumerate(planned_suffixes)
+                    ]
+                else:
+                    candidates = sorted(
+                        metadata.output_dir.glob(f"{row}.{suffix}*.html"),
+                        key=lambda p: (
+                            0 if p.stem == f"{row}.{suffix}" else 1,
+                            p.stem,
+                        ),
+                    )
+                if not candidates:
+                    continue
+                has_split = True
+                total = len(candidates)
+                for idx, candidate in enumerate(candidates):
+                    suffix_letter = (
+                        letter_suffix(idx) if use_letters and total > 1 else ""
+                    )
+                    page_name = (
+                        f"{row}.{suffix}"
+                        + (f".{suffix_letter}" if suffix_letter else "")
+                    )
+                    link = (
+                        str(candidate)
+                        if isinstance(candidate, str)
+                        else str(candidate.relative_to(metadata.output_dir))
+                    )
                     rows.append(
                         IndexTableRow(
                             sheet=index,
-                            page=f"{row}.{suffix}",
+                            page=page_name,
                             notes="",
                             use_quantity=False,
                             content=label,
-                            link=str(candidate.relative_to(metadata.output_dir)),
+                            link=link,
                         )
                     )
 
