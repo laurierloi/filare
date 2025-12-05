@@ -45,7 +45,9 @@ class PartNumberInfo(BaseModel):
     @field_validator("pn", "manufacturer", "mpn", "supplier", "spn", mode="before")
     def _clean_arg(cls, v):
         if isinstance(v, list):
-            raise ValueError(f"pn ({v}) should not be a list")
+            from filare.errors import PartNumberValidationError
+
+            raise PartNumberValidationError(v)
         return remove_links("" if v is None else str(v))
 
     @property

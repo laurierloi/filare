@@ -49,7 +49,9 @@ class AuthorSignature(BaseModel):
             try:
                 return datetime.strptime(value, date_format)
             except Exception as err:
-                raise ValueError(
+                from filare.errors import MetadataValidationError
+
+                raise MetadataValidationError(
                     f'date ({value}) should be parsable with format ({date_format}) or set to "n/a" or "TBD"'
                 ) from err
         return value

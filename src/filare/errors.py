@@ -123,3 +123,25 @@ class UnsupportedLoopSide(FilareRenderException):
 
     def __init__(self):
         super().__init__("No side for loops")
+
+
+class PinResolutionError(FilareModelException):
+    """Raised when a connector pin cannot be resolved from label/number."""
+
+    def __init__(self, connector: str, message: str):
+        self.connector = connector
+        super().__init__(f"{connector}: {message}")
+
+
+class MetadataValidationError(FilareModelException):
+    """Raised for invalid metadata values."""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+
+
+class PartNumberValidationError(FilareModelException):
+    """Raised when part number fields are malformed."""
+
+    def __init__(self, value):
+        super().__init__(f"pn ({value}) should not be a list")
