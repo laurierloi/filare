@@ -48,11 +48,13 @@ class PinClass:
     # TODO: support a "crimp" defined by parent
 
     def __post_init__(self):
+        """Normalize labels that embed pin numbers (e.g., 'SIG__1')."""
         if self.label and "__" in self.label:
             self.label, pin = self.label.split("__")
             self.index = int(pin) - 1
 
     def __str__(self):
+        """Return a compact identifier: designator:id:label."""
         snippets = [  # use str() for each in case they are int or other non-str
             str(self.parent) if not self._anonymous else "",
             str(self.id) if not self._anonymous and not self._simple else "",
@@ -62,10 +64,12 @@ class PinClass:
 
     @property
     def pin(self):
+        """1-based pin number."""
         return self.index + 1
 
     @property
     def category(self):
+        """BOM category for pins (always PIN)."""
         return BomCategory.PIN
 
 
