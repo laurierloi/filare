@@ -46,6 +46,34 @@ pages:
 
 User edits to the document YAML are preserved (hash-guarded). Delete `*.document.yaml` and `document_hashes.yaml` to regenerate from the harness if needed.
 
+### Minimal cut/termination example
+
+Enable optional cut/termination pages via harness options:
+
+```yaml
+metadata:
+  title: Example with cut/termination
+options:
+  include_cut_diagram: true
+  include_termination_diagram: true
+connectors:
+  X1:
+    type: D-Sub
+    pincount: 3
+  X2:
+    type: D-Sub
+    pincount: 3
+cables:
+  W1:
+    wirecount: 3
+connections:
+  - - X1: [1-3]
+    - W1: [1-3]
+    - X2: [1-3]
+```
+
+Run `uv run filare example.yml -o outputs` to emit `example.document.yaml` and page stubs for cut/termination alongside the regular title/harness/BOM. The cut/termination tables are currently minimal; use them to list lengths, colors, and pin ends until richer layouts arrive.
+
 ### Using an existing document representation
 
 If a `*.document.yaml` already exists for the harness (same stem as the harness file, located in the output directory), Filare will load it and drive generation from it:
