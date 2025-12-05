@@ -26,6 +26,7 @@ nav:
       - Mermaid Check: mermaid.md
   - Dev:
       - Metadata Guide: dev/metadata_guide.md
+      - GitHub CLI: dev/github.md
       - Tasks: tasks.md
   - Changelog: CHANGELOG.md
   - Contributing: CONTRIBUTING.md

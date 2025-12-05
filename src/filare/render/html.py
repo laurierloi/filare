@@ -2,6 +2,7 @@
 
 import logging
 import re
+import copy
 from dataclasses import asdict, dataclass, field, fields
 from pathlib import Path
 from typing import Dict, List
@@ -62,8 +63,13 @@ def generate_html_output(
     assert metadata and isinstance(metadata, Metadata), "metadata should be defiend"
     template_name = metadata.template.name
 
-    if rendered is None:
-        rendered = {}
+    options_for_render = (
+        options.model_copy(deep=True)
+        if hasattr(options, "model_copy")
+        else copy.deepcopy(options)
+    )
+
+    rendered = {} if rendered is None else dict(rendered)
 
     if bom_render_options is None:
         bom_render_options = BomRenderOptions(
@@ -74,15 +80,26 @@ def generate_html_output(
         )
 
     bom_render = BomContent(bom).get_bom_render(options=bom_render_options)
+    options_for_render.bom_rows = len(bom_render.rows)
     options.bom_rows = len(bom_render.rows)
     rendered["bom"] = bom_render.render(
-        page_options=options, bom_options=bom_render_options
+        page_options=options_for_render, bom_options=bom_render_options
     )
 
-    if options.show_index_table or options.split_index_page:
+    is_title_page = (
+        getattr(metadata.template, "name", None) == "titlepage"
+        or getattr(metadata, "sheet_name", "") == "titlepage"
+    )
+    should_render_index = is_title_page and (
+        options.show_index_table or options.split_index_page
+    )
+    options_for_render.show_index_table = (
+        options.show_index_table and should_render_index
+    )
+    if should_render_index:
         rendered["index_table"] = IndexTable.from_pages_metadata(
             metadata.pages_metadata
-        ).render(options)
+        ).render(options_for_render)
 
     # TODO: instead provide a PageOption to generate or not the svg
     svgdata = None
@@ -102,12 +119,21 @@ def generate_html_output(
     else:
         harness_number = int(match[0])
 
-    partno = f"{metadata.pn}-{metadata.revision}"
+    revision = ""
+    try:
+        revision = metadata.revision
+    except Exception:
+        revision = ""
+    partno = metadata.pn if not revision else f"{metadata.pn}-{revision}"
     if template_name != "titlepage":
-        partno += f"-{harness_number}"
+        partno = (
+            f"{partno}-{harness_number}"
+            if revision
+            else f"{metadata.pn}-{harness_number}"
+        )
 
     replacements = {
-        "options": options,
+        "options": options_for_render,
         "diagram": svgdata,
         "metadata": metadata,
         "notes": notes,
@@ -125,13 +151,13 @@ def generate_html_output(
 
     filtered = dict(rendered)
     if options.split_bom_page:
-        options.show_bom = False
+        options_for_render.show_bom = False
         filtered["bom"] = ""
     if options.split_notes_page:
-        options.show_notes = False
+        options_for_render.show_notes = False
         filtered["notes"] = ""
     if options.split_index_page:
-        options.show_index_table = False
+        options_for_render.show_index_table = False
         filtered["index_table"] = ""
 
     # generate page template
@@ -193,7 +219,11 @@ def _write_aux_pages(
     aux_pages = []
     if getattr(options, "include_cut_diagram", False):
         aux_pages.append(
-            ("cut", get_template("cut", ".html"), {"cut_table": rendered.get("cut_table", "")})
+            (
+                "cut",
+                get_template("cut", ".html"),
+                {"cut_table": rendered.get("cut_table", "")},
+            )
         )
     if getattr(options, "include_termination_diagram", False):
         aux_pages.append(

@@ -1,6 +1,13 @@
+import shutil
 from pathlib import Path
 
+import pytest
+
 from filare.flows.build_harness import build_harness_from_files
+
+pytestmark = pytest.mark.skipif(
+    shutil.which("dot") is None, reason="Graphviz dot executable not found"
+)
 
 
 def _write_minimal(tmp_path: Path, with_cut: bool, with_term: bool):

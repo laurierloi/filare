@@ -469,13 +469,17 @@ class Harness:
         if "html" in fmt:
             bom_for_html = self.bom if self.options.include_bom else {}
             rendered = {}
-            if settings.enable_cut_termination:
-                if getattr(self.options, "include_cut_diagram", False):
-                    rendered["cut_table"] = _build_cut_table(self)
-                if getattr(self.options, "include_termination_diagram", False):
-                    rendered["termination_table"] = _build_termination_table(self)
+            if getattr(self.options, "include_cut_diagram", False):
+                rendered["cut_table"] = _build_cut_table(self)
+            if getattr(self.options, "include_termination_diagram", False):
+                rendered["termination_table"] = _build_termination_table(self)
             generate_html_output(
-                filename, bom_for_html, self.metadata, self.options, self.notes, rendered
+                filename,
+                bom_for_html,
+                self.metadata,
+                self.options,
+                self.notes,
+                rendered,
             )
         if "pdf" in fmt:
             generate_pdf_output(filename)
@@ -495,9 +499,13 @@ def _build_cut_table(harness) -> str:
             if idx in seen:
                 continue
             seen.add(idx)
-            color = getattr(wire.color, "code_en", None) or getattr(
-                wire.color, "html", ""
-            ) or ",".join(wire.color) if hasattr(wire, "color") else ""
+            color = (
+                getattr(wire.color, "code_en", None)
+                or getattr(wire.color, "html", "")
+                or ",".join(wire.color)
+                if hasattr(wire, "color")
+                else ""
+            )
             length = getattr(wire, "length", None) or getattr(cable, "length", "")
             rows.append(
                 {
