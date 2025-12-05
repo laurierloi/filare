@@ -23,6 +23,7 @@ from filare.models.utils import html_line_breaks, remove_links
 
 
 def gv_node_connector(connector: Connector) -> Table:
+    """Render a connector node as an HTML-like table for Graphviz."""
     # TODO: extend connector style support
     params = {"component": connector, "suppress_images": True}
     is_simple_connector = connector.style == "simple"
@@ -36,6 +37,7 @@ def gv_node_connector(connector: Connector) -> Table:
 
 
 def gv_node_cable(cable: Cable) -> Table:
+    """Render a cable node as an HTML-like table for Graphviz."""
     # TODO: support multicolor cables
     # TODO: extend cable style support
     params = {"component": cable, "suppress_images": True}
@@ -46,6 +48,7 @@ def gv_node_cable(cable: Cable) -> Table:
 
 
 def _node_image_attrs(image: Optional[Image]) -> dict:
+    """Build Graphviz image attributes for a node image, resolving paths."""
     if not image:
         return {}
     src_path = Path(image.src)
@@ -61,6 +64,7 @@ def _node_image_attrs(image: Optional[Image]) -> dict:
 
 
 def gv_connector_loops(connector: Connector) -> List:
+    """Return loop edges for a connector with placement hints."""
     loop_edges = []
     if connector.ports_left:
         loop_side = "l"
@@ -91,6 +95,7 @@ def gv_connector_loops(connector: Connector) -> List:
 
 
 def gv_edge_wire(harness, cable, connection) -> (str, str, str):
+    """Return Graphviz edge descriptors for a connection through a wire/shield."""
     if connection.via.color:
         # check if it's an actual wire and not a shield
         color = f"#000000:{connection.via.color.html_padded}:#000000"
