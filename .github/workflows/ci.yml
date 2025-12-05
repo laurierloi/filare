@@ -1,4 +1,4 @@
-name: Filare CI
+name: Filare Main CI (release path)
 
 on:
   push:
