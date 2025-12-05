@@ -413,6 +413,15 @@ image:
 
 For more fine grained control over the image parameters, please see [`advanced_image_usage.md`](advanced_image_usage.md).
 
+## Quantity multipliers (shared BOM scaling)
+
+When generating a shared BOM across multiple harnesses, you can scale quantities with a multiplier file:
+
+1. Run `uv run filare-qty <harness.yml> [--multiplier-file-name <path>] [--force-new]` to create or update a JSON file (default `quantity_multipliers.txt`) with `{<harness_name>: <int>}` entries.
+2. Run `uv run filare <harness.yml> --use-qty-multipliers [--multiplier-file-name <path>] ...` to apply those multipliers while building `shared_bom.tsv`.
+
+If the multiplier file is missing, `filare-qty` prompts for integer values. To protect an existing file, omit `--force-new`. Place the multiplier file alongside your harnesses or point `--multiplier-file-name` to a shared location (e.g., `outputs/quantity_multipliers.txt`).
+
 ## Multiline strings
 
 The following attributes accept multiline strings:

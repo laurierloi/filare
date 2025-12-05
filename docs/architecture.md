@@ -77,3 +77,28 @@ flowchart TD
 - Build document YAML only (no render): `uv run --no-sync filare examples/ex01.yml -d examples/metadata.yml -f "" -o outputs` (document YAML and hashes are emitted alongside outputs).
 - Force a document YAML refresh: remove `*.document.yaml` and `document_hashes.yaml` before rerun, or edit the YAML to keep your changes (hash guard prevents overwrite).
 - Page types: see `docs/pages.md` for the list of page types (title, harness, bom, cut, termination) and their roles; enable cut/termination via `options.include_cut_diagram` / `options.include_termination_diagram`.
+
+## Document representation and hash guard
+
+Filare writes a pre-render document snapshot (`<output_name>.document.yaml`) before producing SVG/HTML/TSV assets. It captures:
+
+- `metadata`: merged metadata for the harness
+- `pages`: page definitions (title/harness/bom/cut/termination) with names and format hints
+- `notes` and `extras`: freeform blocks carried into the final render
+- `bom`: tabular data if BOM generation is enabled
+
+A registry file `document_hashes.yaml` sits next to the outputs and tracks SHA-256 hashes of each generated document along with an `allow_override` flag:
+
+```yaml
+demo01.document.yaml:
+  hash: 123abc...
+  allow_override: true
+```
+
+Workflow:
+
+1. On each run, Filare computes a hash of the generated document representation.
+2. If `allow_override` is `false` and the stored hash differs, Filare warns and keeps the existing `*.document.yaml` (assumes manual edits).
+3. If `allow_override` is `true` (default) or the file is new, Filare overwrites the document YAML and updates the hash registry.
+
+To freeze a document after manual edits, set `allow_override: false` for that entry in `document_hashes.yaml`. Delete the entry (or the entire file) to allow regeneration.
