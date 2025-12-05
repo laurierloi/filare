@@ -423,7 +423,9 @@ def _write_aux_pages(
             table_html = (
                 table_template.render({"rows": rows}) if rows else default_html
             )
-            suffix_for_file = "" if idx == 0 else f".{page_suffix or letter_suffix(idx)}"
+            suffix_for_file = (
+                f".{page_suffix or letter_suffix(idx)}" if total_pages > 1 else ""
+            )
             target = filename.with_suffix(f".{suffix}{suffix_for_file}.html")
             sheet_suffix = (
                 page_suffix if (total_pages > 1 and page_suffix is not None) else ""

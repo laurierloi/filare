@@ -123,7 +123,11 @@ class IndexTable:
                 if planned_suffixes:
                     candidates = [
                         f"{row}.{suffix}"
-                        + ("" if idx == 0 else f".{page_suffix or letter_suffix(idx)}")
+                        + (
+                            f".{page_suffix or letter_suffix(idx)}"
+                            if len(planned_suffixes) > 1
+                            else ""
+                        )
                         + ".html"
                         for idx, page_suffix in enumerate(planned_suffixes)
                     ]

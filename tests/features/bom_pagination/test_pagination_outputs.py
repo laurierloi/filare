@@ -106,11 +106,11 @@ def test_cut_pagination_adds_lettered_pages_and_sheet_suffix(tmp_path):
         "  table_page_suffix_letters: true\n",
     )
 
-    assert base.with_suffix(".cut.html").exists()
+    assert base.with_suffix(".cut.a.html").exists()
     assert base.with_suffix(".cut.b.html").exists()
     assert base.with_suffix(".cut.c.html").exists()
 
-    cut_html = base.with_suffix(".cut.html").read_text(encoding="utf-8")
+    cut_html = base.with_suffix(".cut.a.html").read_text(encoding="utf-8")
     assert "Sheet 1a" in cut_html
 
     index_html = base.with_suffix(".index.html").read_text(encoding="utf-8")
