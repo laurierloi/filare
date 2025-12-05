@@ -140,12 +140,11 @@ def generate_html_output(
         if value
     }
 
-    should_render_index = is_title_page and (
-        options.show_index_table or options.split_index_page
+    should_render_index = (
+        (is_title_page and (options.show_index_table or options.split_index_page))
+        or (options.split_index_page and pagination_hints)
     )
-    options_for_render.show_index_table = (
-        options.show_index_table and is_title_page
-    )
+    options_for_render.show_index_table = options.show_index_table and is_title_page
     if should_render_index:
         rendered["index_table"] = IndexTable.from_pages_metadata(
             metadata.pages_metadata,
