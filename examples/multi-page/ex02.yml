@@ -24,9 +24,9 @@ options:
   bom_rows_per_page: 10
   table_page_suffix_letters: true
   include_cut_diagram: true
-  cut_rows_per_page: 10
+  cut_rows_per_page: 12
   include_termination_diagram: true
-  termination_rows_per_page: 10
+  termination_rows_per_page: 8
 
 connectors:
   J1:
