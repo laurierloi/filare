@@ -7,6 +7,7 @@ from filare.errors import (
     FileResolutionError,
     InvalidNumberFormat,
     UnsupportedLoopSide,
+    FilareToolsException,
 )
 from filare.models.colors import MultiColor
 from filare.models.numbers import NumberAndUnit
@@ -39,3 +40,13 @@ def test_unsupported_loop_side():
     )()
     with pytest.raises(UnsupportedLoopSide):
         gv_connector_loops(dummy)
+
+
+def test_harness_qty_multiplier_read_error(tmp_path, monkeypatch):
+    file = tmp_path / "qty.txt"
+    file.write_text("{bad json")
+    from filare.models.harness_quantity import HarnessQuantity
+
+    hq = HarnessQuantity([tmp_path / "h.yml"], str(file))
+    with pytest.raises(FilareToolsException):
+        hq.fetch_qty_multipliers_from_file()

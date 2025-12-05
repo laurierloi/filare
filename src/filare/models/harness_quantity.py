@@ -56,9 +56,11 @@ class HarnessQuantity(BaseModel):
                 try:
                     self.multipliers = json.load(f)
                 except json.decoder.JSONDecodeError as err:
-                    raise ValueError(
+                    from filare.errors import FilareToolsException
+
+                    raise FilareToolsException(
                         f"Invalid format for file {self.qty_multipliers}, error: {err}"
-                    )
+                    ) from err
         else:
             self.get_qty_multipliers_from_user()
             self.save_qty_multipliers_to_file()
@@ -66,9 +68,12 @@ class HarnessQuantity(BaseModel):
 
     def check_all_multipliers_defined(self):
         for name in self.harness_names:
-            assert (
-                name in self.multipliers
-            ), f"No multiplier defined for harness {name}, maybe delete the multiplier_file {self.qty_multipliers}"
+            if name not in self.multipliers:
+                from filare.errors import FilareToolsException
+
+                raise FilareToolsException(
+                    f"No multiplier defined for harness {name}, maybe delete the multiplier_file {self.qty_multipliers}"
+                )
 
     def get_qty_multipliers_from_user(self):
         for name in self.harness_names:
@@ -77,8 +82,9 @@ class HarnessQuantity(BaseModel):
                     input("Quantity multiplier for {}? ".format(name))
                 )
             except ValueError:
-                logging.warning("Quantity multiplier must be an integer!")
-                break
+                from filare.errors import FilareToolsException
+
+                raise FilareToolsException("Quantity multiplier must be an integer!")
 
     def save_qty_multipliers_to_file(self):
         with open(self.qty_multipliers, "w") as f:

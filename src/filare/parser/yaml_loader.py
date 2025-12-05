@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 import yaml
+from filare.errors import FilareParserException
 
 
 def merge_item(x, y):
@@ -26,7 +27,7 @@ def merge_item(x, y):
                 elif k in y:
                     new_dict[k] = y[k]
                 else:
-                    raise RuntimeError(
+                    raise FilareParserException(
                         f"Key {k} not in x or y, this should never happen!"
                     )
             ret = new_dict
