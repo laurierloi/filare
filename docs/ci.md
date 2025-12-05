@@ -31,28 +31,32 @@ This repository uses:
    - Runs `filare` to generate outputs from examples/tutorials.
    - Uploads `outputs/` as an artifact for later stages.
 
-4. **Docs / gh-pages (main only)**
+4. **Text overlap check (pushes only)**
+   - Uses Playwright/Chromium (container image) to detect overlapping text across generated HTML outputs.
+   - Runs only on pushes (not PRs); uses `filare-check-overlap` with warning/error thresholds and optional ignores.
+
+5. **Docs / gh-pages (main only)**
    - Copies `docs/` into `site/` and includes built example artifacts if present.
    - Publishes `site/` to GitHub Pages via `peaceiris/actions-gh-pages`.
 
-5. **Document representation build (planned)**
+6. **Document representation build (planned)**
    - Build up to `DocumentRepresentation` YAML (with hashes) without rendering final assets, to validate graph/document assembly.
    - Useful for faster CI checks before full render/publish steps.
 
-6. **Release (semantic-release, main only)**
+7. **Release (semantic-release, main only)**
    - Uses `python-semantic-release` to bump the version, update `VERSION`, and publish release assets.
    - Gating: downstream publish/verify/container steps run only if either the `VERSION` file changed or a new tag was created during the run (prevents double-publishing).
    - Generates/updates `CHANGELOG.md` automatically and commits it with the release bump.
    - Needs `GH_TOKEN` (GitHub token) and `PYPI_TOKEN` (if publishing to PyPI through semantic-release).
 
-7. **Publish to PyPI (main only)**
+8. **Publish to PyPI (main only)**
    - Builds the distribution (`python -m build`).
    - Uploads via `twine` using `PYPI_TOKEN`.
 
-8. **Verify PyPI**
+9. **Verify PyPI**
    - Installs `filare` from PyPI and checks `filare --help`.
 
-9. **Container (GHCR)**
+10. **Container (GHCR)**
    - Builds a Docker image and pushes to `ghcr.io/${{ github.repository }}:latest`.
    - Uses `GITHUB_TOKEN` for registry auth.
 
@@ -75,5 +79,5 @@ This repository uses:
 
 1. Edit `.github/workflows/ci.yml` to adjust stages, Python/Node versions, or paths.
 2. Ensure secrets (`PYPI_TOKEN`) are set in the repo settings.
-3. Push to `beta` or `main` to exercise lint/tests/examples; push to `main` to run docs/publish/release. PRs to `beta` run the dedicated beta PR lint/test workflow; PRs to `main` run the full CI.
+3. Push to `beta` or `main` to exercise lint/tests/examples and text-overlap checks; push to `main` to run docs/publish/release. PRs to `beta` run the dedicated beta PR lint/test workflow; PRs to `main` run the full CI.
 4. For gh-pages, confirm Pages is enabled for the `gh-pages` branch.
