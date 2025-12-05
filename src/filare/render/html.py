@@ -323,15 +323,6 @@ def _write_split_sections(
                 wrapped = _wrap_section_html(title or section, page.html)
                 target.write_text(wrapped, encoding="utf-8")
                 logging.info("Wrote paginated %s page to %s", section, target)
-                if has_letters and idx == 0:
-                    legacy_target = filename.with_suffix(".bom.html")
-                    if legacy_target != target:
-                        legacy_target.write_text(wrapped, encoding="utf-8")
-                        logging.info(
-                            "Wrote legacy first paginated %s page to %s",
-                            section,
-                            legacy_target,
-                        )
             continue
 
         content = rendered.get(section if section != "index" else "index_table")
