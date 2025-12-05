@@ -11,6 +11,7 @@ from filare.models.utils import awg_equiv, mm2_equiv, remove_links
 
 class PartNumberInfo(BaseModel):
     """Container for part-identifying metadata used in BOM output."""
+
     pn: Optional[str] = ""
     manufacturer: Optional[str] = ""
     mpn: Optional[str] = ""

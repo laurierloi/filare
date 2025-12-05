@@ -338,7 +338,9 @@ class Harness:
                     from filare.errors import CableWireResolutionError
 
                     raise CableWireResolutionError(
-                        via_name, via_wire, "is defined both in colors and wirelabels, for different wires."
+                        via_name,
+                        via_wire,
+                        "is defined both in colors and wirelabels, for different wires.",
                     )
                 # TODO: Maybe issue a warning if present in both lists
                 # but referencing the same wire?

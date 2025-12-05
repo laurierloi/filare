@@ -166,7 +166,9 @@ def generate_html_output(
     )
     if cut_pages == [] and getattr(options_for_render, "include_cut_diagram", False):
         cut_pages = [("", [])]
-    if termination_pages == [] and getattr(options_for_render, "include_termination_diagram", False):
+    if termination_pages == [] and getattr(
+        options_for_render, "include_termination_diagram", False
+    ):
         termination_pages = [("", [])]
 
     pagination_hints = {
@@ -252,9 +254,7 @@ def generate_html_output(
 
     # save generated file
     filename.with_suffix(".html").open("w").write(page_rendered)
-    _write_split_sections(
-        filename, metadata, options, rendered, bom_pages=bom_pages
-    )
+    _write_split_sections(filename, metadata, options, rendered, bom_pages=bom_pages)
     _write_aux_pages(
         filename,
         metadata,
@@ -300,12 +300,16 @@ def _render_bom_section(
             pagination, page_options=options, bom_options=bom_render_options
         )
         if not bom_pages:
-            bom_html = bom_render.render(page_options=options, bom_options=bom_render_options)
+            bom_html = bom_render.render(
+                page_options=options, bom_options=bom_render_options
+            )
             bom_pages = [TablePage(index=0, suffix="", rows=[], html=bom_html)]
         else:
             bom_html = bom_pages[0].html
     else:
-        bom_html = bom_render.render(page_options=options, bom_options=bom_render_options)
+        bom_html = bom_render.render(
+            page_options=options, bom_options=bom_render_options
+        )
     return (bom_html, bom_rows, bom_pages)
 
 
@@ -317,7 +321,9 @@ def _derive_harness_number(filename: Path, sheet_current: int) -> int:
     return int(match[0])
 
 
-def _build_part_number(pn: str, revision: str, harness_number: int, template_name: str) -> str:
+def _build_part_number(
+    pn: str, revision: str, harness_number: int, template_name: str
+) -> str:
     """Compose part number string used on rendered pages."""
     base = pn if not revision else f"{pn}-{revision}"
     if template_name != "titlepage":
@@ -337,7 +343,9 @@ def _load_svg_diagram(filename: Path) -> str:
         )
 
 
-def _filtered_sections(options: PageOptions, rendered: Dict[str, str]) -> Dict[str, str]:
+def _filtered_sections(
+    options: PageOptions, rendered: Dict[str, str]
+) -> Dict[str, str]:
     """Hide sections when split pages are requested while preserving source content."""
     filtered = dict(rendered)
     if options.split_bom_page:
@@ -368,7 +376,9 @@ def _write_split_sections(
     splits = {
         "bom": options.split_bom_page and "bom" in rendered,
         "notes": options.split_notes_page and "notes" in rendered,
-        "index": options.split_index_page and "index_table" in rendered and is_titlepage,
+        "index": options.split_index_page
+        and "index_table" in rendered
+        and is_titlepage,
     }
     for section, should_write in splits.items():
         if not should_write:
@@ -493,9 +503,7 @@ def _write_aux_pages(
             pages = [("", [])]
         total_pages = len(pages)
         for idx, (page_suffix, rows) in enumerate(pages):
-            table_html = (
-                table_template.render({"rows": rows}) if rows else default_html
-            )
+            table_html = table_template.render({"rows": rows}) if rows else default_html
             suffix_for_file = (
                 f".{page_suffix or letter_suffix(idx)}" if total_pages > 1 else ""
             )

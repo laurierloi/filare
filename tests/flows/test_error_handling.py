@@ -6,7 +6,10 @@ from filare.errors import (
     MultipleSeparatorError,
     FilareFlowException,
 )
-from filare.flows.build_harness import _normalize_connection_set, build_harness_from_files
+from filare.flows.build_harness import (
+    _normalize_connection_set,
+    build_harness_from_files,
+)
 
 
 def test_build_harness_requires_outputs_or_returns(tmp_path):

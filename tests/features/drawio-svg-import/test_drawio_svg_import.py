@@ -17,7 +17,9 @@ def test_resolves_imported_svg_path(tmp_path):
     assert Path(options.diagram_svg.src) == svg_path
 
 
-def test_imported_svg_is_embedded_in_outputs(tmp_path, basic_metadata, basic_page_options):
+def test_imported_svg_is_embedded_in_outputs(
+    tmp_path, basic_metadata, basic_page_options
+):
     class DummyGraph:
         def __init__(self, content: str):
             self.format = "svg"
@@ -63,7 +65,9 @@ def test_imported_svg_is_embedded_in_outputs(tmp_path, basic_metadata, basic_pag
     assert "translate(5mm" in html_output
 
 
-def test_png_is_skipped_when_diagram_svg_set(tmp_path, basic_metadata, basic_page_options):
+def test_png_is_skipped_when_diagram_svg_set(
+    tmp_path, basic_metadata, basic_page_options
+):
     calls = {"render_png": 0}
 
     class DummyGraph:
@@ -78,7 +82,7 @@ def test_png_is_skipped_when_diagram_svg_set(tmp_path, basic_metadata, basic_pag
             return str(filename)
 
     svg_src = tmp_path / "diagram.svg"
-    svg_src.write_text("<svg width=\"10\" height=\"10\"/>")
+    svg_src.write_text('<svg width="10" height="10"/>')
     options: PageOptions = basic_page_options
     options.diagram_svg = ImportedSVGOptions(src=str(svg_src))
     harness = Harness(metadata=basic_metadata, options=options, notes=Notes([]))
@@ -90,13 +94,15 @@ def test_png_is_skipped_when_diagram_svg_set(tmp_path, basic_metadata, basic_pag
     assert not (tmp_path / "out.png").exists()
 
 
-def test_simple_template_wraps_imported_svg(tmp_path, basic_metadata, basic_page_options):
+def test_simple_template_wraps_imported_svg(
+    tmp_path, basic_metadata, basic_page_options
+):
     # Force simple template to ensure wrapper variables work everywhere
     metadata = basic_metadata.model_copy(
         update={"template": PageTemplateConfig(name=PageTemplateTypes.simple)}
     )
     svg_src = tmp_path / "diagram.svg"
-    svg_src.write_text("<svg width=\"40\" height=\"20\"/>")
+    svg_src.write_text('<svg width="40" height="20"/>')
     options: PageOptions = basic_page_options
     options.diagram_svg = ImportedSVGOptions(src=str(svg_src), align="right")
     harness = Harness(metadata=metadata, options=options, notes=Notes([]))
@@ -123,7 +129,9 @@ def test_prepare_imported_svg_adds_viewbox(tmp_path):
     from filare.render.imported_svg import prepare_imported_svg
 
     svg_src = tmp_path / "diagram.svg"
-    svg_src.write_text('<svg width="200" height="100"><rect width="200" height="100"/></svg>')
+    svg_src.write_text(
+        '<svg width="200" height="100"><rect width="200" height="100"/></svg>'
+    )
     spec = ImportedSVGOptions(src=str(svg_src), width="100%")
 
     svg_out = prepare_imported_svg(spec)

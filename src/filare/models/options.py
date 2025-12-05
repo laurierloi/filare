@@ -112,7 +112,11 @@ class PageOptions(BaseModel):
     @model_validator(mode="after")
     def _normalize_row_counts(self):
         """Normalize row count fields to ints when provided as strings."""
-        for field in ("bom_rows_per_page", "cut_rows_per_page", "termination_rows_per_page"):
+        for field in (
+            "bom_rows_per_page",
+            "cut_rows_per_page",
+            "termination_rows_per_page",
+        ):
             value = getattr(self, field)
             if isinstance(value, str):
                 try:

@@ -1,9 +1,15 @@
 # Template: Approvals / Signoff Page
+
 ## Category
+
 UI — Importance: High
+
 ## Proposal
+
 Add an approvals/signoff template for engineering release packets. The page captures designer/reviewer (and optional approver) signatures with dates and comments, without diagrams/BOM.
+
 ## Model
+
 ```python
 class ApprovalSlot(BaseModel):
     role: str           # e.g., Designer, Reviewer, Approver
@@ -18,11 +24,15 @@ class ApprovalPageContext(BaseModel):
     notes: Optional[str]      # optional release note/summary
     options: PageOptions      # fonts/colors/page size
 ```
+
 ## Template Content
+
 - Based on `page.html` sizing, with no diagram/BOM.
 - Header showing part number, revision, title, and company.
 - Two or three signature blocks (Designer, Reviewer, optional Approver) with printed name, date, comment, and signature image placeholder line if no image provided.
 - Optional notes section for release rationale or scope.
+
 ## Where Used
+
 - Release/QA packages requiring explicit signoff from designer and reviewer.
 - Front-matter page in bundled PDFs for compliance workflows.

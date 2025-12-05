@@ -103,5 +103,8 @@ def test_from_pages_metadata_with_split_pages(tmp_path):
 
     assert table.header == ("Name", "Content", "Page")
     assert [row.content for row in table.rows] == ["Index page", "Harness", "BOM"]
-    assert table.rows[0].get_formatted_page(for_pdf=False) == "<a href=titlepage.html>titlepage.html</a>"
+    assert (
+        table.rows[0].get_formatted_page(for_pdf=False)
+        == "<a href=titlepage.html>titlepage.html</a>"
+    )
     assert table.rows[2].link == "h1.bom.html"

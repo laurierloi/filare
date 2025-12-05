@@ -57,8 +57,9 @@ This repository uses:
    - Installs `filare` from PyPI and checks `filare --help`.
 
 10. **Container (GHCR)**
-   - Builds a Docker image and pushes to `ghcr.io/${{ github.repository }}:latest`.
-   - Uses `GITHUB_TOKEN` for registry auth.
+
+- Builds a Docker image and pushes to `ghcr.io/${{ github.repository }}:latest`.
+- Uses `GITHUB_TOKEN` for registry auth.
 
 ## Required Secrets
 

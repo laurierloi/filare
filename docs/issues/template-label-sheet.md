@@ -1,9 +1,15 @@
 # Template: Label Sheet (Wire/Connector Tags)
+
 ## Category
+
 UI — Importance: Medium
+
 ## Proposal
+
 Add a label-sheet template to generate printable tags for wires/connectors. Users can print adhesive labels with designator, pin, color, and optional QR/shortcode.
+
 ## Model
+
 ```python
 class LabelEntry(BaseModel):
     ref: str            # e.g., W1, J2-3
@@ -21,10 +27,14 @@ class LabelSheetContext(BaseModel):
     cell_width_mm: float = 60
     cell_height_mm: float = 20
 ```
+
 ## Template Content
+
 - Grid layout with configurable rows/columns and cell dimensions.
 - Each cell shows ref, text, color swatch, optional QR/shortcode block.
 - Minimal borders for cutting; supports repeating labels per `qty`.
+
 ## Where Used
+
 - Printing wire/connector markers for assembly.
 - Providing quick ID stickers for QA/testing.

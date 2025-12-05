@@ -66,7 +66,9 @@ class IgnoreRules:
 
 
 def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Detect overlapping text in rendered HTML.")
+    parser = argparse.ArgumentParser(
+        description="Detect overlapping text in rendered HTML."
+    )
     parser.add_argument(
         "paths",
         nargs="+",
@@ -128,16 +130,22 @@ def load_ignore_config(path: Path) -> dict:
         return yaml.safe_load(fh) or {}
 
 
-def compile_ignores(config: dict, extra_selectors: List[str], extra_text: List[str], page_path: Path) -> IgnoreRules:
+def compile_ignores(
+    config: dict, extra_selectors: List[str], extra_text: List[str], page_path: Path
+) -> IgnoreRules:
     selectors = list(config.get("selectors", [])) + extra_selectors
-    text_patterns = [re.compile(p) for p in config.get("text_patterns", []) + extra_text]
+    text_patterns = [
+        re.compile(p) for p in config.get("text_patterns", []) + extra_text
+    ]
 
     pages = config.get("pages", {}) or {}
     page_str = str(page_path)
     for pattern, page_rules in pages.items():
         if fnmatch.fnmatch(page_str, pattern):
             selectors.extend(page_rules.get("selectors", []))
-            text_patterns.extend(re.compile(p) for p in page_rules.get("text_patterns", []))
+            text_patterns.extend(
+                re.compile(p) for p in page_rules.get("text_patterns", [])
+            )
 
     return IgnoreRules(selectors=selectors, text_patterns=text_patterns)
 
@@ -145,7 +153,11 @@ def compile_ignores(config: dict, extra_selectors: List[str], extra_text: List[s
 def discover_files(patterns: Iterable[str]) -> List[Path]:
     files: List[Path] = []
     for pattern in patterns:
-        paths = list(Path().glob(pattern)) if any(ch in pattern for ch in "*?[]") else [Path(pattern)]
+        paths = (
+            list(Path().glob(pattern))
+            if any(ch in pattern for ch in "*?[]")
+            else [Path(pattern)]
+        )
         for path in paths:
             if path.is_file() and path.suffix.lower() == ".html":
                 files.append(path)
@@ -208,7 +220,9 @@ def gather_nodes(page: Page, ignore_selectors: List[str]) -> List[Node]:
     ]
 
 
-def filter_nodes_by_text(nodes: List[Node], text_patterns: List[re.Pattern]) -> List[Node]:
+def filter_nodes_by_text(
+    nodes: List[Node], text_patterns: List[re.Pattern]
+) -> List[Node]:
     if not text_patterns:
         return nodes
     filtered = []
@@ -219,7 +233,9 @@ def filter_nodes_by_text(nodes: List[Node], text_patterns: List[re.Pattern]) -> 
     return filtered
 
 
-def compute_overlaps(nodes: List[Node], warn_threshold: float, error_threshold: float) -> List[Overlap]:
+def compute_overlaps(
+    nodes: List[Node], warn_threshold: float, error_threshold: float
+) -> List[Overlap]:
     overlaps: List[Overlap] = []
     for i, a in enumerate(nodes):
         for b in nodes[i + 1 :]:
@@ -267,15 +283,21 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        context = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
+        context = browser.new_context(
+            viewport={"width": viewport[0], "height": viewport[1]}
+        )
         for file_path in html_files:
             page = context.new_page()
             url = file_path.resolve().as_uri()
             page.goto(url)
-            rules = compile_ignores(config, args.ignore_selector, args.ignore_text, file_path)
+            rules = compile_ignores(
+                config, args.ignore_selector, args.ignore_text, file_path
+            )
             nodes = gather_nodes(page, rules.selectors)
             nodes = filter_nodes_by_text(nodes, rules.text_patterns)
-            overlaps = compute_overlaps(nodes, args.warn_threshold, args.error_threshold)
+            overlaps = compute_overlaps(
+                nodes, args.warn_threshold, args.error_threshold
+            )
             errors = [o for o in overlaps if o.severity == "error"]
             any_errors = any_errors or bool(errors)
             file_entry = {
@@ -284,8 +306,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                     {
                         "severity": o.severity,
                         "depth": o.depth,
-                        "a": {"text": o.a.text, "selector": node_hint(o.a), "rect": o.a.rect.__dict__},
-                        "b": {"text": o.b.text, "selector": node_hint(o.b), "rect": o.b.rect.__dict__},
+                        "a": {
+                            "text": o.a.text,
+                            "selector": node_hint(o.a),
+                            "rect": o.a.rect.__dict__,
+                        },
+                        "b": {
+                            "text": o.b.text,
+                            "selector": node_hint(o.b),
+                            "rect": o.b.rect.__dict__,
+                        },
                     }
                     for o in overlaps
                 ],
@@ -296,9 +326,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.json_path:
         Path(args.json_path).write_text(json.dumps(report, indent=2), encoding="utf-8")
 
-    total_warn = sum(len([o for o in f["overlaps"] if o["severity"] == "warning"]) for f in report["files"])
-    total_err = sum(len([o for o in f["overlaps"] if o["severity"] == "error"]) for f in report["files"])
-    print(f"Checked {len(html_files)} HTML file(s); warnings: {total_warn}, errors: {total_err}")
+    total_warn = sum(
+        len([o for o in f["overlaps"] if o["severity"] == "warning"])
+        for f in report["files"]
+    )
+    total_err = sum(
+        len([o for o in f["overlaps"] if o["severity"] == "error"])
+        for f in report["files"]
+    )
+    print(
+        f"Checked {len(html_files)} HTML file(s); warnings: {total_warn}, errors: {total_err}"
+    )
     if total_warn:
         print("Warnings detected (overlaps above warn threshold).")
     if total_err:

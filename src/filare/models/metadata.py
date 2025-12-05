@@ -18,6 +18,7 @@ MetadataKeys = PlainText  # Literal['title', 'description', 'notes', ...]
 
 class DocumentInfo(BaseModel):
     """Minimal document identity (title and PN)."""
+
     title: str
     pn: str
 
@@ -26,6 +27,7 @@ class DocumentInfo(BaseModel):
 
 class CompanyInfo(BaseModel):
     """Company identity block for title pages."""
+
     company: str
     address: str
 
@@ -34,6 +36,7 @@ class CompanyInfo(BaseModel):
 
 class AuthorSignature(BaseModel):
     """Signature block for authors/reviewers with optional date."""
+
     name: str = ""
     date: Optional[object] = None
 
@@ -64,21 +67,25 @@ class AuthorSignature(BaseModel):
 
 class AuthorRole(AuthorSignature):
     """Author signature enriched with a role label."""
+
     role: str = ""
 
 
 class RevisionSignature(AuthorSignature):
     """Signature for a single revision entry with changelog text."""
+
     changelog: str = ""
 
 
 class RevisionInfo(RevisionSignature):
     """Revision entry with explicit revision ID."""
+
     revision: str = ""
 
 
 class OutputMetadata(BaseModel):
     """Paths/names for output artifacts."""
+
     output_dir: Path
     output_name: str
 
@@ -87,6 +94,7 @@ class OutputMetadata(BaseModel):
 
 class SheetMetadata(BaseModel):
     """Sheet numbering metadata for paginated outputs."""
+
     sheet_total: int
     sheet_current: int
     sheet_name: str
@@ -97,6 +105,7 @@ class SheetMetadata(BaseModel):
 
 class PagesMetadata(BaseModel):
     """Metadata needed to render pages and shared assets."""
+
     titlepage: Path
     output_names: List[str]
     files: List[Union[str, Path]]
@@ -127,6 +136,7 @@ class Orientations(str, Enum):
 
 class PageTemplateConfig(BaseModel):
     """Configuration for page template, size, and orientation."""
+
     name: PageTemplateTypes = PageTemplateTypes.din_6771
     sheetsize: SheetSizes = SheetSizes.A3
     orientation: Optional[Orientations] = None

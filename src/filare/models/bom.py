@@ -18,6 +18,7 @@ from filare.render.templates import get_template
 
 class BomEntryBase(BaseModel):
     """Base BOM entry with quantities, identifiers, and formatting helpers."""
+
     qty: NumberAndUnit
     partnumbers: PartNumberInfo
     id: str = ""

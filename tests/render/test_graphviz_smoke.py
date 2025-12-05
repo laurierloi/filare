@@ -142,7 +142,15 @@ def test_set_dot_basics_respects_engine(monkeypatch):
             elif section == "edge":
                 self.edge_attrs.append(kwargs)
 
-    options = type("Opts", (), {"bgcolor": SingleColor("WH"), "bgcolor_node": SingleColor("BK"), "fontname": "Arial"})
+    options = type(
+        "Opts",
+        (),
+        {
+            "bgcolor": SingleColor("WH"),
+            "bgcolor_node": SingleColor("BK"),
+            "fontname": "Arial",
+        },
+    )
     monkeypatch.setattr("filare.render.graphviz.settings.graphviz_engine", "neato")
     dot = DummyDot()
     gv.set_dot_basics(dot, options)

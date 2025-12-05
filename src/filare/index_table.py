@@ -75,7 +75,10 @@ class IndexTable:
     # TODO: how do we actually want to support this?
     @classmethod
     def from_pages_metadata(
-        cls, metadata: PagesMetadata, options=None, paginated_pages: Dict[str, List[str]] = None
+        cls,
+        metadata: PagesMetadata,
+        options=None,
+        paginated_pages: Dict[str, List[str]] = None,
     ):
         """Construct an index table from rendered pages metadata."""
         # detect split pages
@@ -152,9 +155,8 @@ class IndexTable:
                     suffix_letter = (
                         letter_suffix(idx) if use_letters and total > 1 else ""
                     )
-                    page_name = (
-                        f"{row}.{suffix}"
-                        + (f".{suffix_letter}" if suffix_letter else "")
+                    page_name = f"{row}.{suffix}" + (
+                        f".{suffix_letter}" if suffix_letter else ""
                     )
                     link = (
                         str(candidate)
