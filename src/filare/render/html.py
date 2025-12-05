@@ -137,7 +137,13 @@ def generate_html_output(
         if value
     }
 
-    should_render_index = options.show_index_table or options.split_index_page
+    has_paginated_tables = bom_pages or cut_pages or termination_pages
+    is_title_page = template_name == "titlepage" or getattr(metadata, "sheet_name", "") == "titlepage"
+    should_render_index = (
+        (options.show_index_table or options.split_index_page)
+        and not has_paginated_tables
+        and is_title_page
+    )
     options_for_render.show_index_table = options.show_index_table
     if should_render_index:
         rendered["index_table"] = IndexTable.from_pages_metadata(

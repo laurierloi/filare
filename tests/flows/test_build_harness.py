@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+from filare.errors import FilareFlowException
 from filare.flows.build_harness import (
     _build_metadata,
     _collect_templates,
@@ -273,7 +274,7 @@ def test_metadata_typeerror_branch(monkeypatch, tmp_path, extra_metadata):
         raise TypeError("bad metadata")
 
     monkeypatch.setattr("filare.flows.build_harness._build_metadata", boom)
-    with pytest.raises(TypeError):
+    with pytest.raises(FilareFlowException):
         build_harness_from_files(
             inp=[harness],
             metadata_files=[meta],
