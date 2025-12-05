@@ -3,9 +3,9 @@
 import logging
 import re
 import copy
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+from pydantic import BaseModel, ConfigDict
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
 from filare.models.metadata import Metadata
@@ -47,8 +47,7 @@ def generate_shared_bom(
     return shared_bom_base
 
 
-@dataclass
-class _RenderReplacements:
+class _RenderReplacements(BaseModel):
     """Container for template replacement values."""
 
     options: PageOptions
@@ -56,6 +55,8 @@ class _RenderReplacements:
     metadata: Metadata
     notes: Notes
     partno: str
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def as_mapping(self) -> Dict[str, object]:
         return {
