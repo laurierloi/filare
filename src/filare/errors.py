@@ -29,13 +29,18 @@ class MissingOutputSpecification(FilareFlowException):
         super().__init__("No output formats or return types specified")
 
 
-class MultipleSeparatorError(FilareFlowException):
+class MultipleSeparatorError(FilareFlowException, ValueError):
     """Designator contained more than one separator character."""
 
-    def __init__(self, value: str, separator: str) -> None:
+    def __init__(self, value: str, separator: str, idx: int = None) -> None:
         self.value = value
         self.separator = separator
-        super().__init__(f"{value} - Found more than one separator ({separator})")
+        suffix = (
+            f"connections[{idx}]: entry '{value}' has more than one separator '{separator}'"
+            if idx is not None
+            else f"{value} - Found more than one separator ({separator})"
+        )
+        super().__init__(suffix)
 
 
 class ConnectionCountMismatchError(FilareFlowException):

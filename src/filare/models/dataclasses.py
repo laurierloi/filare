@@ -777,7 +777,10 @@ class Cable(WireClass):
             elif self.color_code:
                 # use standard color palette (partly or looped if needed)
                 if self.color_code not in COLOR_CODES:
-                    raise ComponentValidationError("Unknown color code")
+                    raise ValueError(
+                        f"Cable {self.designator}: unknown color code '{self.color_code}'. "
+                        f"Valid codes: {', '.join(sorted(COLOR_CODES))}"
+                    )
                 self.colors = [
                     get_color_by_colorcode_index(self.color_code, i)
                     for i in range(self.wirecount)

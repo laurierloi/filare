@@ -73,9 +73,9 @@ def gv_connector_loops(connector: Connector) -> List:
         loop_side = "r"
         loop_dir = "e"
     else:
-        from filare.errors import UnsupportedLoopSide
-
-        raise UnsupportedLoopSide()
+        raise ValueError(
+            f"Connector {connector.designator}: no side set for loops; set ports_left/ports_right or loop side."
+        )
     for loop in connector.loops:
         this_loop_side = loop_side
         this_loop_dir = loop_dir
