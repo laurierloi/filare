@@ -764,8 +764,12 @@ class Cable(WireClass):
         # allow gauge, length, and other fields to be lists too (like part numbers),
         # and assign them the same way to bundles.
 
-        self.gauge = NumberAndUnit.to_number_and_unit(self.gauge, "mm2")
-        self.length = NumberAndUnit.to_number_and_unit(self.length, "m")
+        self.gauge = NumberAndUnit.to_number_and_unit(
+            self.gauge, "mm2", context=f"cable {self.designator} gauge"
+        )
+        self.length = NumberAndUnit.to_number_and_unit(
+            self.length, "m", context=f"cable {self.designator} length"
+        )
         self.amount = self.length  # for BOM
 
         if self.wirecount:  # number of wires explicitly defined
@@ -777,7 +781,10 @@ class Cable(WireClass):
             elif self.color_code:
                 # use standard color palette (partly or looped if needed)
                 if self.color_code not in COLOR_CODES:
-                    raise ComponentValidationError("Unknown color code")
+                    raise ValueError(
+                        f"Cable {self.designator}: unknown color code '{self.color_code}'. "
+                        f"Valid codes: {', '.join(sorted(COLOR_CODES))}"
+                    )
                 self.colors = [
                     get_color_by_colorcode_index(self.color_code, i)
                     for i in range(self.wirecount)
@@ -808,12 +815,12 @@ class Cable(WireClass):
                 if self.is_bundle:
                     # check the length
                     if len(idfield) != self.wirecount:
-                        raise ComponentValidationError(
-                            "lists of part data must match wirecount"
+                        raise ValueError(
+                            f"Cable {self.designator}: part data list length {len(idfield)} must match wirecount {self.wirecount}"
                         )
                 else:
-                    raise ComponentValidationError(
-                        "lists of part data are only supported for bundles"
+                    raise ValueError(
+                        f"Cable {self.designator}: part data lists only supported for bundles (wirecount {self.wirecount})"
                     )
 
         # all checks have passed

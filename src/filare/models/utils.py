@@ -140,3 +140,6 @@ def smart_file_resolve(filename: Path, possible_paths: (Path, List[Path])) -> Pa
         from filare.errors import FileResolutionError
 
         raise FileResolutionError(filename, possible_paths)
+        from filare.errors import FileResolutionError
+
+        raise FileResolutionError(filename, possible_paths)

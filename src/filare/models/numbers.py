@@ -17,6 +17,7 @@ class NumberAndUnit(BaseModel):
         inp: Any,
         default_unit: Union[str, None] = None,
         default_value: Union[float, None] = None,
+        context: str = "",
     ):
         if inp is None:
             if default_value is not None:
@@ -33,10 +34,10 @@ class NumberAndUnit(BaseModel):
                 number, unit = inp, default_unit
             try:
                 number = float(number)
-            except ValueError:
+            except ValueError as err:
                 from filare.errors import InvalidNumberFormat
 
-                raise InvalidNumberFormat(inp) from None
+                raise InvalidNumberFormat(inp, context=context) from err
             else:
                 return cls(number=number, unit=unit)
 

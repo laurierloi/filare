@@ -29,13 +29,18 @@ class MissingOutputSpecification(FilareFlowException):
         super().__init__("No output formats or return types specified")
 
 
-class MultipleSeparatorError(FilareFlowException):
+class MultipleSeparatorError(FilareFlowException, ValueError):
     """Designator contained more than one separator character."""
 
-    def __init__(self, value: str, separator: str) -> None:
+    def __init__(self, value: str, separator: str, idx: int = None) -> None:
         self.value = value
         self.separator = separator
-        super().__init__(f"{value} - Found more than one separator ({separator})")
+        suffix = (
+            f"connections[{idx}]: entry '{value}' has more than one separator '{separator}'"
+            if idx is not None
+            else f"{value} - Found more than one separator ({separator})"
+        )
+        super().__init__(suffix)
 
 
 class ConnectionCountMismatchError(FilareFlowException):
@@ -70,18 +75,20 @@ class UnknownTemplateDesignator(FilareFlowException):
         super().__init__(f"{template} is an unknown template/designator")
 
 
-class InvalidNumberFormat(FilareModelException):
+class InvalidNumberFormat(FilareModelException, ValueError):
     """Raised when a number/unit string cannot be parsed."""
 
-    def __init__(self, value: str):
+    def __init__(self, value: str, context: str = ""):
         self.value = value
+        self.context = context
+        prefix = f"{context}: " if context else ""
         super().__init__(
-            f"{value} is not a valid number and unit.\n"
+            f"{prefix}{value} is not a valid number and unit.\n"
             "It must be a number, or a number and unit separated by a space."
         )
 
 
-class ComponentValidationError(FilareModelException):
+class ComponentValidationError(FilareModelException, ValueError):
     """Generic component/model validation error."""
 
     def __init__(self, message: str):
@@ -106,7 +113,7 @@ class ColorPaddingUnsupported(FilareModelException):
         super().__init__(f"Padding not supported for len {length}")
 
 
-class FileResolutionError(FilareToolsException):
+class FileResolutionError(FilareToolsException, FileNotFoundError):
     """Raised when a file cannot be resolved in allowed search paths."""
 
     def __init__(self, filename, search_paths):
@@ -118,11 +125,13 @@ class FileResolutionError(FilareToolsException):
         super().__init__(f"{filename} was not found in: \n{paths_display}")
 
 
-class UnsupportedLoopSide(FilareRenderException):
+class UnsupportedLoopSide(FilareRenderException, ValueError):
     """Raised when loop rendering cannot determine a connector side."""
 
-    def __init__(self):
-        super().__init__("No side for loops")
+    def __init__(self, designator: str):
+        super().__init__(
+            f"Connector {designator}: no side set for loops; set ports_left/ports_right or loop side."
+        )
 
 
 class PinResolutionError(FilareModelException):
