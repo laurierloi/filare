@@ -10,6 +10,6 @@ REWORK
 - No documented guideline for when to log-and-raise versus raise-only.
 
 ## Next Steps
-1. Decide on a single pattern (e.g., only log at call sites, not inside helpers; or log once at top-level flows).
+1. Adopt: only log at top-level call sites where errors are handled; do not log inside helpers that immediately re-raise.
 2. Apply consistently across flow/model/parser/render/tool layers.
 3. Document the pattern in developer docs and add a lint/checklist entry.

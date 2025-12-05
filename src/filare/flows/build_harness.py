@@ -340,10 +340,9 @@ def build_harness_from_files(
             yaml_file, yaml_data, extra_metadata, metadata_output_name
         )
     except TypeError as exc:
-        logging.error(
-            "Metadata definition is missing an argument, refer to trace for which one\n\tsee src/filaree/metdata.py for a definition of the metadata fields"
-        )
-        raise FilareFlowException(str(exc)) from exc
+        raise FilareFlowException(
+            "Metadata definition is missing an argument, refer to trace for which one; see src/filare/metadata.py for field definitions"
+        ) from exc
 
     harness = Harness(
         metadata=metadata,
