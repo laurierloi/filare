@@ -13,7 +13,7 @@ from filare.models.options import PageOptions, get_page_options
 from filare.models.connector import ConnectorModel
 from filare.models.cable import CableModel
 from filare.models.component import ComponentModel
-from filare.models.colors import ColorOutputMode
+from filare.models.colors import ColorOutputMode, SingleColor
 from filare.models.page import (
     BOMPage,
     CutPage,
@@ -111,6 +111,25 @@ def _apply_document_to_harness(
                 options_data["color_output_mode"] = ColorOutputMode(com_value)
             except Exception:
                 options_data["color_output_mode"] = com_value
+        color_fields = [
+            "bgcolor",
+            "bgcolor_node",
+            "bgcolor_connector",
+            "bgcolor_cable",
+            "bgcolor_bundle",
+        ]
+        for field in color_fields:
+            value = options_data.get(field)
+            if isinstance(value, dict):
+                try:
+                    options_data[field] = SingleColor(**value)
+                except Exception:
+                    pass
+        int_fields = ["bom_rows", "titleblock_rows", "pad"]
+        for field in int_fields:
+            value = options_data.get(field)
+            if isinstance(value, str) and value.isdigit():
+                options_data[field] = int(value)
         if hasattr(harness.options, "model_copy"):
             harness.options = harness.options.model_copy(update=options_data)
         else:
