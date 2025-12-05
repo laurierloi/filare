@@ -3,7 +3,8 @@ from pathlib import Path
 import graphviz
 import pytest
 
-from filare.models.dataclasses import Connector, Cable, WireClass, Side, Loop
+from filare.models.dataclasses import Connector, Cable, WireClass, Loop
+from filare.models.types import Side
 from filare.models.colors import SingleColor
 from filare.render import graphviz as gv
 
