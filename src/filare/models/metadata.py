@@ -80,6 +80,7 @@ class SheetMetadata(BaseModel):
     sheet_total: int
     sheet_current: int
     sheet_name: str
+    sheet_suffix: str = ""
 
     model_config = {"frozen": True}
 

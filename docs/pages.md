@@ -17,6 +17,12 @@ Filare assembles engineering documents as a set of page types. Each page carries
 - BOM inclusion can be turned off with `options.include_bom`.
 - The index table is generated only on the title page. When split output is requested, the title page excludes the index content and writes `titlepage.index.html` instead.
 
+## Pagination and split tables
+
+- Set `options.split_bom_page: true` and `options.bom_rows_per_page` to paginate the BOM into multiple HTML pages. The first page writes to `<harness>.bom.html`; subsequent pages use lettered suffixes (`<harness>.bom.b.html`, `<harness>.bom.c.html`, …). `options.bom_force_single_page` keeps everything on one page even if `bom_rows_per_page` is set.
+- Cut and termination tables also paginate when `cut_rows_per_page` / `termination_rows_per_page` are set alongside their respective `include_*_diagram` toggles. Additional pages use the same lettered suffix scheme.
+- When pagination is active and `options.table_page_suffix_letters` is true (default), the index table lists lettered page names (e.g., `h.bom.a`, `h.cut.b`) and cut/termination title blocks display the letter suffix next to the sheet number.
+
 ## Data provided
 
 - **Title**: Metadata (PN, revision, company, address, authors, revisions, git status).
