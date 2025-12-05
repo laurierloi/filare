@@ -1,4 +1,5 @@
 from filare.models.connector import ConnectorModel
+from filare.models.image import Image
 from filare.models.types import BomCategory
 
 
@@ -52,3 +53,25 @@ def test_connector_model_simple_style_and_pinlabels_dict():
     assert conn.style == "simple"
     assert conn.pinlabels == ["A"]
     assert conn.pincolors[0] == "RD"
+
+
+def test_graphical_component_validators_and_images():
+    model = ConnectorModel(
+        designator="G1",
+        type=None,
+        notes=None,
+        bgcolor={"custom": "color"},
+        bgcolor_title="blue",
+        image={"src": "example.png", "height": 1, "width": 1},
+        category=BomCategory.CONNECTOR,
+        pins=[{"label": "1"}],
+    )
+    assert isinstance(model.image, Image)
+    assert model.bgcolor.html
+    assert model.bgcolor_title.html
+    gc = model.to_graphical_component()
+    assert gc.designator == "G1"
+    assert gc.category.name.upper() == "CONNECTOR"
+
+    other = ConnectorModel(designator="G2", category="unknown", pins=["1"])
+    assert other.category == "unknown"
