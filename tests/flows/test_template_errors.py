@@ -1,6 +1,7 @@
 import pytest
 
 from filare.flows.build_harness import build_harness_from_files
+from filare.errors import UnknownTemplateDesignator
 
 
 def test_unknown_template_reports_known_options(tmp_path):
@@ -20,7 +21,7 @@ def test_unknown_template_reports_known_options(tmp_path):
         "use_qty_multipliers": False,
         "multiplier_file_name": "quantity_multipliers.txt",
     }
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(UnknownTemplateDesignator) as excinfo:
         build_harness_from_files(
             inp=[bad_yaml],
             metadata_files=[],

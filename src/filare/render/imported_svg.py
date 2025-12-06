@@ -8,6 +8,7 @@ from typing import Optional
 
 from filare.models.options import ImportedSVGOptions
 from filare.render.assets import embed_svg_images
+from filare.errors import InvalidSVGRoot
 
 SVG_DECLARATION_PATTERN = re.compile(
     r"(?mis)^<[?]xml[^>]*>\s*|^<!DOCTYPE[^>]*>\s*", re.MULTILINE
@@ -76,7 +77,7 @@ def prepare_imported_svg(spec: ImportedSVGOptions) -> str:
     svg_path = Path(spec.src)
     svg_text = strip_svg_declarations(svg_path.read_text(encoding="utf-8"))
     if not SVG_TAG_PATTERN.search(svg_text):
-        raise ValueError(f"File {svg_path} does not contain a root <svg> element.")
+        raise InvalidSVGRoot(svg_path)
     svg_text = embed_svg_images(svg_text, svg_path.parent)
 
     style_bits = []

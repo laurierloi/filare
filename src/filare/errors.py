@@ -18,7 +18,7 @@ class FilareRenderException(FilareBaseException):
     """Raised for rendering errors."""
 
 
-class FilareToolsException(FilareBaseException, ValueError):
+class FilareToolsException(FilareBaseException):
     """Raised for tooling/utility errors."""
 
 
@@ -29,7 +29,28 @@ class MissingOutputSpecification(FilareFlowException):
         super().__init__("No output formats or return types specified")
 
 
-class MultipleSeparatorError(FilareFlowException, ValueError):
+class MissingConnectionCountError(FilareFlowException):
+    """Connection set lacked any discernible connection count."""
+
+    def __init__(self) -> None:
+        super().__init__("No connection count found in connection set")
+
+
+class RedefinedDesignatorError(FilareFlowException):
+    """Raised when a designator is assigned multiple templates."""
+
+    def __init__(
+        self, designator: str, previous_template: str, new_template: str
+    ) -> None:
+        self.designator = designator
+        self.previous_template = previous_template
+        self.new_template = new_template
+        super().__init__(
+            f"Trying to redefine {designator} from {previous_template} to {new_template}"
+        )
+
+
+class MultipleSeparatorError(FilareFlowException):
     """Designator contained more than one separator character."""
 
     def __init__(self, value: str, separator: str, idx: int = None) -> None:
@@ -70,12 +91,17 @@ class ComponentTypeMismatch(FilareFlowException):
 class UnknownTemplateDesignator(FilareFlowException):
     """Raised when a template/designator cannot be resolved."""
 
-    def __init__(self, template: str):
+    def __init__(
+        self, template: str, known_connectors: str = "", known_cables: str = ""
+    ):
         self.template = template
-        super().__init__(f"{template} is an unknown template/designator")
+        suffix = (
+            f" (known connectors: {known_connectors or 'none'}; known cables: {known_cables or 'none'})"
+        )
+        super().__init__(f"Unknown template/designator '{template}'{suffix}")
 
 
-class InvalidNumberFormat(FilareModelException, ValueError):
+class InvalidNumberFormat(FilareModelException):
     """Raised when a number/unit string cannot be parsed."""
 
     def __init__(self, value: str, context: str = ""):
@@ -88,11 +114,18 @@ class InvalidNumberFormat(FilareModelException, ValueError):
         )
 
 
-class ComponentValidationError(FilareModelException, ValueError):
+class ComponentValidationError(FilareModelException):
     """Generic component/model validation error."""
 
     def __init__(self, message: str):
         super().__init__(message)
+
+
+class UnitMismatchError(FilareModelException):
+    """Raised when arithmetic is attempted on incompatible units."""
+
+    def __init__(self, left_value, right_value):
+        super().__init__(f"Cannot add {left_value} and {right_value}, units not matching")
 
 
 class CableWireResolutionError(FilareModelException):
@@ -129,13 +162,27 @@ class FileResolutionError(FilareToolsException, FileNotFoundError):
         return self.message
 
 
-class UnsupportedLoopSide(FilareRenderException, ValueError):
+class ViewportParseError(FilareToolsException):
+    """Raised when viewport strings cannot be parsed."""
+
+    def __init__(self, value: str):
+        super().__init__(f"Viewport must be WIDTHxHEIGHT, e.g., 1280x720 (got {value})")
+
+
+class UnsupportedLoopSide(FilareRenderException):
     """Raised when loop rendering cannot determine a connector side."""
 
     def __init__(self, designator: str):
         super().__init__(
             f"Connector {designator}: no side set for loops; set ports_left/ports_right or loop side."
         )
+
+
+class InvalidSVGRoot(FilareRenderException):
+    """Raised when an imported SVG is missing the root <svg> element."""
+
+    def __init__(self, svg_path):
+        super().__init__(f"File {svg_path} does not contain a root <svg> element.")
 
 
 class PinResolutionError(FilareModelException):
@@ -146,15 +193,31 @@ class PinResolutionError(FilareModelException):
         super().__init__(f"{connector}: {message}")
 
 
-class MetadataValidationError(FilareModelException, ValueError):
+class MetadataValidationError(FilareModelException):
     """Raised for invalid metadata values."""
 
     def __init__(self, message: str):
         super().__init__(message)
 
 
-class PartNumberValidationError(FilareModelException, ValueError):
+class PartNumberValidationError(FilareModelException):
     """Raised when part number fields are malformed."""
 
     def __init__(self, value):
         super().__init__(f"pn ({value}) should not be a list")
+
+
+class BomEntryHashError(FilareModelException):
+    """Raised when BOM entry hashes are not stable."""
+
+    def __init__(self, entry):
+        super().__init__(
+            f"BomEntry's hash is not persistent: h1:{hash(entry)} h2:{hash(entry)}\n\tentry: {entry}"
+        )
+
+
+class UnsupportedModelOperation(FilareModelException):
+    """Raised when a model operation is not supported."""
+
+    def __init__(self, operation: str):
+        super().__init__(operation)

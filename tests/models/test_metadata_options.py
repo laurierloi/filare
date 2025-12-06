@@ -3,6 +3,7 @@ from datetime import datetime
 
 from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
 from filare.models.options import get_page_options
+from filare.errors import MetadataValidationError
 
 
 def test_metadata_builds_authors_and_revisions(basic_metadata):
@@ -59,7 +60,7 @@ def test_author_signature_date_parsing():
     assert AuthorSignature(name="A", date="n/a").date == "n/a"
     # unsupported type passes through unchanged
     assert AuthorSignature(name="A", date=123).date == 123
-    with pytest.raises(ValueError):
+    with pytest.raises(MetadataValidationError):
         AuthorSignature(name="A", date="01/01/2024")
 
 

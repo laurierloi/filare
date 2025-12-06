@@ -20,6 +20,7 @@ from filare.models.component import ComponentModel
 from filare.models.metadata import Metadata
 from filare.models.notes import Notes
 from filare.models.options import PageOptions
+from filare.errors import BomEntryHashError
 from filare.render.assets import embed_svg_images, embed_svg_images_file
 from filare.render.graphviz import (
     gv_connector_loops,
@@ -168,9 +169,7 @@ class Harness:
             try:
                 self.bom[hash(entry)]
             except KeyError:
-                raise RuntimeError(
-                    f"BomEntry's hash is not persitent: h1:{hash(entry)} h2:{hash(entry)}\n\tentry: {entry}\n\titem:{item}"
-                )
+                raise BomEntryHashError(entry)
 
         # add items to BOM
         for item in all_bom_relevant_items:
