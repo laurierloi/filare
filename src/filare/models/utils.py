@@ -124,7 +124,8 @@ def clean_whitespace(inp):
 
 
 def smart_file_resolve(
-    filename: Union[Path, str], possible_paths: Union[Path, str, Sequence[Union[Path, str]]]
+    filename: Union[Path, str],
+    possible_paths: Union[Path, str, Sequence[Union[Path, str]]],
 ) -> Path:
     if isinstance(filename, str):
         filename = Path(filename)
