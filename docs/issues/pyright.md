@@ -26,10 +26,15 @@ Pyright currently reports ~262 errors across CLI, flows, models, render, and too
 - [ ] Step 1: CLI/entrypoints
 - [ ] Step 2: Flows/build_harness
 - [ ] Step 3: Parser
-- [ ] Step 4: Models (BOM/partnumber/cable/component)
+- [ ] Step 4: Models (BOM/partnumber/cable/component) — in progress
 - [ ] Step 5: Render
 - [ ] Step 6: Harness/index_table
 - [ ] Step 7: Final sweep (pyright + pytest)
+
+### Models progress (Step 4)
+- Adjusted `models/bom.py` qty_multiplier typing and added logging import.
+- Updated `models/utils.py` signature for `smart_file_resolve` (broader path types).
+- Guarded NumberAndUnit arithmetic against `None`.
 
 ## Notes
 - Use minimal structural changes; prefer explicit casts/narrowing helpers where inputs are permissive.
