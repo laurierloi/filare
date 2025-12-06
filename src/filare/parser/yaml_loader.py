@@ -1,5 +1,6 @@
 """Parse yaml files while supporting updates (newer files modify previous definitions)"""
 
+import logging
 from functools import reduce
 from pathlib import Path
 from typing import Any, Dict, List
@@ -66,11 +67,17 @@ def safe_load_yaml(texts: List[str]) -> List[Dict[str, Any]]:
 def parse_merge_files(files: List[Path]) -> Dict[str, Any]:
     """Load multiple YAML files and merge their content."""
     content = []
+    logging.debug("Merging YAML files: %s", ", ".join(str(f) for f in files))
     return parse_merge_yaml([f.open("r").read() for f in files])
 
 
 def parse_concat_merge_files(concats: List[Path], merge: List[Path]) -> Dict[str, Any]:
     """Concatenate a list of YAML files, then merge with another list."""
+    logging.debug(
+        "Concatenating YAML files: %s; merging with: %s",
+        ", ".join(str(f) for f in concats),
+        ", ".join(str(f) for f in merge),
+    )
     return parse_merge_yaml(
         [
             "\n".join([f.open("r").read() for f in concats]),
