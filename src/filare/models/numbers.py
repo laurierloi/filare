@@ -3,6 +3,8 @@ from typing import Any, Union
 
 from pydantic import BaseModel, ConfigDict
 
+from filare.errors import UnitMismatchError
+
 
 class NumberAndUnit(BaseModel):
     number: float
@@ -46,7 +48,7 @@ class NumberAndUnit(BaseModel):
             return other.unit
 
         if other.unit is not None and self.unit != other.unit:
-            raise ValueError(f"Cannot add {self} and {other}, units not matching")
+            raise UnitMismatchError(self, other)
         return self.unit
 
     @property

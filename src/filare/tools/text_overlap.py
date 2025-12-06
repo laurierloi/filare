@@ -19,6 +19,8 @@ from typing import Iterable, List, Optional, Sequence
 import yaml
 from playwright.sync_api import Page, sync_playwright
 
+from filare.errors import FilareToolsException, ViewportParseError
+
 
 DEFAULT_VIEWPORT = (1280, 720)
 DEFAULT_WARN_THRESHOLD = 1.0
@@ -118,7 +120,7 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
 
 def parse_viewport(value: str) -> tuple[int, int]:
     if "x" not in value:
-        raise ValueError("Viewport must be WIDTHxHEIGHT, e.g., 1280x720")
+        raise ViewportParseError(value)
     w_str, h_str = value.lower().split("x", 1)
     return int(w_str), int(h_str)
 
@@ -267,7 +269,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parse_args(argv)
     try:
         viewport = parse_viewport(args.viewport)
-    except ValueError as exc:
+    except FilareToolsException as exc:
         print(f"Invalid viewport: {exc}", file=sys.stderr)
         return 2
 

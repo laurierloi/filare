@@ -2,6 +2,7 @@
 
 import copy
 import logging
+import logging
 import re
 import filare
 from pathlib import Path
@@ -220,7 +221,11 @@ def generate_html_output(
     revision = ""
     try:
         revision = metadata.revision
-    except Exception:
+    except Exception as exc:
+        logging.debug(
+            "Missing or invalid revision in metadata; using empty revision. error=%s",
+            exc,
+        )
         revision = ""
     partno = _build_part_number(metadata.pn, revision, harness_number, template_name)
 

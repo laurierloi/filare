@@ -13,6 +13,7 @@ from filare.models.table_models import (
     paginate_rows,
 )
 from filare.models.utils import remove_links
+from filare.errors import UnsupportedModelOperation
 from filare.render.templates import get_template
 
 
@@ -75,7 +76,7 @@ class BomEntryBase(BaseModel):
             self.designators += other.designators
             return self
         else:
-            raise NotImplementedError(f"__add__ for {type(other)}")
+            raise UnsupportedModelOperation(f"__add__ for {type(other)}")
 
     def scale_per_harness(self, multipliers):
         """Apply per-harness multipliers to per_harness qty entries."""

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import logging
 import os
 import sys
 from pathlib import Path
@@ -183,7 +184,14 @@ def _write_document_manifest(output_dir: Path) -> None:
             split_bom = split_bom or bool(opts.get("split_bom_page"))
             split_notes = split_notes or bool(opts.get("split_notes_page"))
             split_index = split_index or bool(opts.get("split_index_page"))
-        except Exception:
+            logging.debug("Loaded document metadata from %s", doc_file)
+        except Exception as exc:
+            logging.warning(
+                "Skipping document metadata from %s due to parse error; "
+                "manifest may be incomplete. Fix the document YAML to include metadata/extras. error=%s",
+                doc_file,
+                exc,
+            )
             if not title_metadata:
                 title_metadata = {}
 
@@ -191,6 +199,7 @@ def _write_document_manifest(output_dir: Path) -> None:
     shared_bom = None
     for candidate in output_dir.rglob("shared_bom*.tsv"):
         shared_bom = str(candidate.relative_to(output_dir))
+        logging.debug("Using shared BOM at %s", shared_bom)
         break
 
     manifest = DocumentManifest(

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Any, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, field_validator
@@ -76,7 +77,10 @@ class LoopModel(BaseModel):
             if name in value_str:
                 try:
                     return Side[name]
-                except Exception:
+                except Exception as exc:
+                    logging.debug(
+                        "Failed to coerce side %r; ignoring. error=%s", value, exc
+                    )
                     continue
         return None
 

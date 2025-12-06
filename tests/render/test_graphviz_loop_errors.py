@@ -1,5 +1,6 @@
 import pytest
 
+from filare.errors import UnsupportedLoopSide
 from filare.models.dataclasses import Connector, Loop, PinClass
 from filare.models.colors import MultiColor
 from filare.render.graphviz import gv_connector_loops
@@ -13,7 +14,7 @@ def test_gv_connector_loops_requires_side():
     pin_b = PinClass(index=1, id="2", label="B", color=MultiColor("BK"), parent="X1")
     connector.loops = [Loop(first=pin_a, second=pin_b, side=None)]
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(UnsupportedLoopSide) as excinfo:
         gv_connector_loops(connector)
 
     assert "X1" in str(excinfo.value)

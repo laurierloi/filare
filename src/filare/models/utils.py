@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import re
 from pathlib import Path
 from typing import List
@@ -139,6 +140,11 @@ def smart_file_resolve(filename: Path, possible_paths: (Path, List[Path])) -> Pa
             combined_path = (path / filename).resolve()
             if combined_path.exists():
                 return combined_path
+            logging.debug(
+                "smart_file_resolve tried %s (exists=%s)",
+                combined_path,
+                combined_path.exists(),
+            )
         from filare.errors import FileResolutionError
 
         raise FileResolutionError(filename, possible_paths)

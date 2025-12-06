@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Any, Dict, List, Optional, Sequence, Union
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
@@ -73,7 +74,12 @@ class GraphicalComponentModel(BaseModel):
             return value
         try:
             return BomCategory(value)
-        except Exception:
+        except Exception as exc:
+            logging.debug(
+                "Connector category %r not recognized; using raw value. error=%s",
+                value,
+                exc,
+            )
             return value
 
     def to_graphical_component(self) -> GraphicalComponent:

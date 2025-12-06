@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import re
 from typing import Any, List, Optional, Union
 
@@ -130,6 +131,13 @@ def gv_edge_wire(harness, cable, connection) -> (str, str, str):
 
 
 def set_dot_basics(dot, options):
+    logging.debug(
+        "Configuring Graphviz graph (engine=%s, font=%s, bgcolor=%s)",
+        settings.graphviz_engine,
+        getattr(options, "fontname", None),
+        getattr(options.bgcolor, "html", options.bgcolor),
+    )
+
     def _coerce_color(value):
         if isinstance(value, dict):
             html = value.get("html") or value.get("code_en") or value

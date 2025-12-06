@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Any, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -59,7 +60,12 @@ class ComponentModel(BaseModel):
             return value
         try:
             return BomCategory(value)
-        except Exception:
+        except Exception as exc:
+            logging.debug(
+                "Component category %r not recognized; using raw value. error=%s",
+                value,
+                exc,
+            )
             return value
 
     @field_validator("qty", "amount", mode="before")

@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import logging
 import re
 from pathlib import Path
 from typing import Optional
 
 from filare.models.options import ImportedSVGOptions
 from filare.render.assets import embed_svg_images
+from filare.errors import InvalidSVGRoot
 
 SVG_DECLARATION_PATTERN = re.compile(
     r"(?mis)^<[?]xml[^>]*>\s*|^<!DOCTYPE[^>]*>\s*", re.MULTILINE
@@ -32,6 +34,12 @@ def _maybe_add_viewbox(attrs: str) -> str:
         width = float(width_match.group(1))
         height = float(height_match.group(1))
     except ValueError:
+        logging.info(
+            "Imported SVG width/height not numeric (width=%r, height=%r); "
+            "skipping viewBox injection. Specify numeric dimensions to embed without scaling issues.",
+            width_match.group(1) if width_match else None,
+            height_match.group(1) if height_match else None,
+        )
         return attrs
     return f'{attrs} viewBox="0 0 {width} {height}"'
 
@@ -76,7 +84,7 @@ def prepare_imported_svg(spec: ImportedSVGOptions) -> str:
     svg_path = Path(spec.src)
     svg_text = strip_svg_declarations(svg_path.read_text(encoding="utf-8"))
     if not SVG_TAG_PATTERN.search(svg_text):
-        raise ValueError(f"File {svg_path} does not contain a root <svg> element.")
+        raise InvalidSVGRoot(svg_path)
     svg_text = embed_svg_images(svg_text, svg_path.parent)
 
     style_bits = []

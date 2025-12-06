@@ -13,6 +13,7 @@ from filare.models.template_inputs import (
     TemplatePin,
     TemplateWire,
 )
+from filare.errors import ComponentValidationError
 
 
 def test_template_connector_from_config(connector_config_data):
@@ -84,7 +85,7 @@ def test_template_wire_validators():
 
 
 def test_template_models_forbid_extra():
-    with pytest.raises(Exception):
+    with pytest.raises(ComponentValidationError):
         TemplateConnector(designator="JX", pins=[], extra="nope")
 
 

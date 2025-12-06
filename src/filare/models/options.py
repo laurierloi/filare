@@ -1,3 +1,4 @@
+import logging
 from typing import List, Optional, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
@@ -122,6 +123,12 @@ class PageOptions(BaseModel):
                 try:
                     setattr(self, field, int(value))
                 except ValueError:
+                    logging.warning(
+                        "Page option %s=%r is not numeric; defaulting to automatic pagination. "
+                        "Set an integer to control rows per page.",
+                        field,
+                        value,
+                    )
                     setattr(self, field, None)
         return self
 
