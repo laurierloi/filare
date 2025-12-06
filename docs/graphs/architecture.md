@@ -22,8 +22,8 @@ flowchart TD
 
   subgraph Render
     R1[graphviz]
-    R2[output (html/pdf/assets)]
-    R3[templates/html_utils]
+    R2["output (HTML/PDF/assets)"]
+    R3["templates/html_utils"]
   end
 
   subgraph CLI
@@ -33,7 +33,7 @@ flowchart TD
   Parser --> Flows
   Models --> Flows
   Flows --> Render
-  Render --> Outputs[SVG/HTML/TSV/PDF]
+  Render --> Outputs["SVG/HTML/TSV/PDF"]
   CLI --> Parser
   CLI --> Flows
 ```
