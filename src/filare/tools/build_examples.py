@@ -184,6 +184,7 @@ def _write_document_manifest(output_dir: Path) -> None:
             split_bom = split_bom or bool(opts.get("split_bom_page"))
             split_notes = split_notes or bool(opts.get("split_notes_page"))
             split_index = split_index or bool(opts.get("split_index_page"))
+            logging.debug("Loaded document metadata from %s", doc_file)
         except Exception as exc:
             logging.warning(
                 "Skipping document metadata from %s due to parse error; "
@@ -198,6 +199,7 @@ def _write_document_manifest(output_dir: Path) -> None:
     shared_bom = None
     for candidate in output_dir.rglob("shared_bom*.tsv"):
         shared_bom = str(candidate.relative_to(output_dir))
+        logging.debug("Using shared BOM at %s", shared_bom)
         break
 
     manifest = DocumentManifest(

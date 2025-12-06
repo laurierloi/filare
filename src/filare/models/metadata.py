@@ -1,3 +1,4 @@
+import logging
 from datetime import date, datetime
 from enum import Enum
 from pathlib import Path
@@ -69,12 +70,16 @@ class AuthorSignature(BaseModel):
             return value
         if isinstance(value, str):
             if value.lower() == "n/a":
+                logging.debug("AuthorSignature date set to 'n/a'")
                 return "n/a"
             if value == "TBD":
+                logging.debug("AuthorSignature date set to 'TBD'")
                 return "TBD"
             date_format = "%Y-%m-%d"
             try:
-                return datetime.strptime(value, date_format)
+                parsed = datetime.strptime(value, date_format)
+                logging.debug("AuthorSignature date parsed as %s", parsed)
+                return parsed
             except Exception as err:
                 raise MetadataValidationError(
                     f'date ({value}) should be parsable with format ({date_format}) or set to "n/a" or "TBD"'

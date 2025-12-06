@@ -127,6 +127,11 @@ def _apply_document_to_harness(
 
     doc_options = document.extras.get("options", {})
     if doc_options:
+        logging.debug(
+            "Applying document options from %s with keys: %s",
+            getattr(document, "metadata", {}).get("output_name", "document"),
+            ", ".join(sorted(doc_options.keys())),
+        )
         options_data = dict(doc_options)
         if "color_output_mode" in options_data:
             com_value = options_data["color_output_mode"]
