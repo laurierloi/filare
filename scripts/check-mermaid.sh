@@ -10,10 +10,13 @@ if ! command -v mmdc >/dev/null 2>&1; then
   exit 1
 fi
 
+# Puppeteer opts: disable sandbox so GitHub-hosted runners (and locked-down containers) can launch Chromium.
 puppeteer_cfg="$tmpdir/puppeteer.json"
 cat >"$puppeteer_cfg" <<'CFG'
 {
-  "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+  "launchOptions": {
+    "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+  }
 }
 CFG
 

@@ -12,6 +12,9 @@ permissions:
   contents: write
   packages: write
 
+env:
+  UV_CACHE_DIR: .uv-cache
+
 jobs:
   lint:
     name: "1) Lint (black, prettier)"
