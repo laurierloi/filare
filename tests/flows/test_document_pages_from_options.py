@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from filare.flows.build_harness import build_harness_from_files
 from filare.models.page import (
     BOMPage,
@@ -49,6 +51,7 @@ def _build_doc(tmp_path: Path, opts: str):
     return ret["document"]
 
 
+@pytest.mark.functional
 def test_document_pages_default(tmp_path: Path):
     doc = _build_doc(tmp_path, "")
     # harness should carry document for downstream flows

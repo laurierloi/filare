@@ -27,6 +27,7 @@ def extra_metadata(tmp_path):
     }
 
 
+@pytest.mark.functional
 def test_build_harness_happy_path(tmp_path, extra_metadata):
     harness = tmp_path / "h.yml"
     meta = tmp_path / "meta.yml"
@@ -143,6 +144,7 @@ connections:
     assert "expected" in str(exc.value).lower()
 
 
+@pytest.mark.functional
 def test_build_harness_overview_sets_styles(tmp_path, extra_metadata):
     harness = tmp_path / "h_overview.yml"
     meta = tmp_path / "meta.yml"
@@ -309,6 +311,7 @@ connections:
         )
 
 
+@pytest.mark.functional
 def test_cable_first_connection_hits_none_branch(tmp_path, extra_metadata):
     harness = tmp_path / "h_cable_first.yml"
     meta = tmp_path / "meta.yml"

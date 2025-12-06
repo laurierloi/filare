@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from filare.flows.build_harness import build_harness_from_files
 
 
@@ -43,6 +45,7 @@ def _run_build(tmp_path: Path, harness_body: str) -> Path:
     return tmp_path / "h"
 
 
+@pytest.mark.functional
 def test_bom_pagination_outputs_lettered_pages(tmp_path):
     base = _run_build(
         tmp_path,
@@ -78,6 +81,7 @@ def test_bom_pagination_outputs_lettered_pages(tmp_path):
     assert not base.with_suffix(".index.html").exists()
 
 
+@pytest.mark.functional
 def test_cut_pagination_adds_lettered_pages_and_sheet_suffix(tmp_path):
     base = _run_build(
         tmp_path,

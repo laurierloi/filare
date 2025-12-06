@@ -1,6 +1,7 @@
 import logging
 from pathlib import Path
 
+import pytest
 import yaml
 
 from filare.flows.build_harness import build_harness_from_files
@@ -52,7 +53,10 @@ def test_document_representation_written(tmp_path: Path, caplog):
     assert registry.exists()
 
 
-def test_document_representation_not_overwritten_on_user_edit(tmp_path: Path, caplog):
+@pytest.mark.functional
+def test_document_representation_not_overwritten_on_user_edit(
+    tmp_path: Path, caplog
+):
     caplog.set_level(logging.WARNING)
     harness_path = tmp_path / "h.yml"
     metadata_path = tmp_path / "m.yml"

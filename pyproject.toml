@@ -87,6 +87,8 @@ addopts = "--maxfail=1 -ra --cov=filare --cov-report=term-missing --cov-report=h
 markers = [
     "examples: slow example generation",
     "tutorial: slow tutorial generation",
+    "functional: slow functional/integration tests (>10s)",
+    "unit: fast unit tests",
 ]
 
 [tool.coverage.run]

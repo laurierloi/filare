@@ -5,6 +5,7 @@ import pytest
 from filare.cli import cli
 
 
+@pytest.mark.functional
 @pytest.mark.parametrize("formats", ["tb"])
 def test_shared_bom_contains_both_harnesses(tmp_path, formats):
     pn = "TEST-DOC"
