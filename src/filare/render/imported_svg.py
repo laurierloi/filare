@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import re
 from pathlib import Path
 from typing import Optional
@@ -33,6 +34,12 @@ def _maybe_add_viewbox(attrs: str) -> str:
         width = float(width_match.group(1))
         height = float(height_match.group(1))
     except ValueError:
+        logging.info(
+            "Imported SVG width/height not numeric (width=%r, height=%r); "
+            "skipping viewBox injection. Specify numeric dimensions to embed without scaling issues.",
+            width_match.group(1) if width_match else None,
+            height_match.group(1) if height_match else None,
+        )
         return attrs
     return f'{attrs} viewBox="0 0 {width} {height}"'
 

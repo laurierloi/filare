@@ -134,7 +134,13 @@ def _apply_document_to_harness(
                 com_value = int(com_value)
             try:
                 options_data["color_output_mode"] = ColorOutputMode(com_value)
-            except Exception:
+            except Exception as exc:
+                logging.warning(
+                    "Document options color_output_mode %r could not be parsed; "
+                    "using it verbatim. Set a valid ColorOutputMode value to control output colors. error=%s",
+                    com_value,
+                    exc,
+                )
                 options_data["color_output_mode"] = com_value
         color_fields = [
             "bgcolor",
@@ -148,8 +154,14 @@ def _apply_document_to_harness(
             if isinstance(value, dict):
                 try:
                     options_data[field] = SingleColor(**value)
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logging.warning(
+                        "Document options %s=%r is invalid; ignoring override. "
+                        "Use a valid SingleColor mapping to customize backgrounds. error=%s",
+                        field,
+                        value,
+                        exc,
+                    )
         int_fields = [
             "bom_rows",
             "titleblock_rows",
