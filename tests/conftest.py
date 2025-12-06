@@ -31,9 +31,8 @@ def pytest_configure(config):
 def pytest_collection_modifyitems(config, items):
     include_functional = config.getoption("--include-functional")
     markexpr = (config.option.markexpr or "").lower()
-    explicit_functional = (
-        include_functional
-        or ("functional" in markexpr and "not functional" not in markexpr)
+    explicit_functional = include_functional or (
+        "functional" in markexpr and "not functional" not in markexpr
     )
     for item in items:
         path = Path(item.fspath)

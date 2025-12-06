@@ -54,9 +54,7 @@ def test_document_representation_written(tmp_path: Path, caplog):
 
 
 @pytest.mark.functional
-def test_document_representation_not_overwritten_on_user_edit(
-    tmp_path: Path, caplog
-):
+def test_document_representation_not_overwritten_on_user_edit(tmp_path: Path, caplog):
     caplog.set_level(logging.WARNING)
     harness_path = tmp_path / "h.yml"
     metadata_path = tmp_path / "m.yml"
