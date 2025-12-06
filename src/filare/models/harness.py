@@ -4,7 +4,7 @@ import logging
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 from graphviz import Graph
 
@@ -79,7 +79,7 @@ class Harness:
             cable = Cable(**cable_model)
         self.cables[cable.designator] = cable
 
-    def add_additional_bom_item(self, item: dict) -> None:
+    def add_additional_bom_item(self, item: Union[dict, ComponentModel]) -> None:
         if isinstance(item, ComponentModel):
             new_item = item.to_component()
         else:

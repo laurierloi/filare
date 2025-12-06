@@ -3,7 +3,7 @@
 import logging
 import re
 from pathlib import Path
-from typing import List
+from typing import List, Sequence, Union
 
 awg_equiv_table = {
     "0.09": "28",
@@ -123,11 +123,15 @@ def clean_whitespace(inp):
     return " ".join(inp.split()).replace(" ,", ",") if isinstance(inp, str) else inp
 
 
-def smart_file_resolve(filename: Path, possible_paths: (Path, List[Path])) -> Path:
+def smart_file_resolve(
+    filename: Union[Path, str],
+    possible_paths: Union[Path, str, Sequence[Union[Path, str]]],
+) -> Path:
     if isinstance(filename, str):
         filename = Path(filename)
-    if isinstance(possible_paths, Path) or isinstance(possible_paths, str):
+    if isinstance(possible_paths, (Path, str)):
         possible_paths = [possible_paths]
+    possible_paths = [Path(p) for p in possible_paths]
     if filename.is_absolute():
         if filename.exists():
             return filename

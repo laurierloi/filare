@@ -1,5 +1,7 @@
 from typing import ClassVar, Dict, List, Union
 
+import logging
+
 import tabulate as tabulate_module
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 

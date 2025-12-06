@@ -55,6 +55,7 @@ dev = [
     "mkdocs>=1.6.1",
     "mkdocs-material>=9.5.34",
     "playwright>=1.45.0",
+    "pyright>=1.1.370",
 ]
 
 [dependency-groups]
@@ -68,6 +69,7 @@ dev = [
     "mkdocs>=1.6.1",
     "mkdocs-material>=9.5.34",
     "playwright>=1.45.0",
+    "pyright>=1.1.370",
 ]
 
 [tool.setuptools]
@@ -104,6 +106,16 @@ skip_covered = false
 
 [tool.coverage.html]
 directory = "report/coverage"
+
+[tool.pyright]
+pythonVersion = "3.9"
+venvPath = "."
+venv = ".venv"
+include = ["src"]
+exclude = ["report", "outputs", ".uv-cache", ".venv"]
+typeCheckingMode = "basic"
+reportMissingImports = "warning"
+useLibraryCodeForTypes = true
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
