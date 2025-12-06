@@ -38,7 +38,8 @@ def generate_shared_bom(
     print(f"Generating shared bom at {shared_bom_base}")
 
     if use_qty_multipliers:
-        harnesses = HarnessQuantity(files, multiplier_file_name, output_dir=output_dir)
+        harnesses = HarnessQuantity(
+            files, multiplier_file_name, output_dir=output_dir)
         harnesses.fetch_qty_multipliers_from_file()
         print(f"Using quantity multipliers: {harnesses.multipliers}")
         for bom_item in shared_bom.values():
@@ -126,7 +127,8 @@ def generate_html_output(
     bom_render_options: BomRenderOptions = None,
 ):
     print("Generating html output")
-    assert metadata and isinstance(metadata, Metadata), "metadata should be defiend"
+    assert metadata and isinstance(
+        metadata, Metadata), "metadata should be defiend"
     template_name = metadata.template.name
 
     options_for_render = (
@@ -172,6 +174,10 @@ def generate_html_output(
     ):
         termination_pages = [("", [])]
 
+    is_title_page = (
+        template_name == "titlepage"
+        or getattr(metadata, "sheet_name", "") == "titlepage"
+    )
     pagination_hints = {
         key: value
         for key, value in {
@@ -197,11 +203,13 @@ def generate_html_output(
     diagram_container_style = ""
     svgdata = rendered.get("diagram")
     if template_name != "titlepage" and svgdata is None:
-        svgdata = strip_svg_declarations(filename.with_suffix(".svg").read_text())
+        svgdata = strip_svg_declarations(
+            filename.with_suffix(".svg").read_text())
 
     if getattr(options, "diagram_svg", None):
         diagram_container_class = "diagram-has-import"
-        diagram_container_style = build_import_container_style(options.diagram_svg)
+        diagram_container_style = build_import_container_style(
+            options.diagram_svg)
         if svgdata is None:
             svgdata = prepare_imported_svg(options.diagram_svg)
         inner_style = build_import_inner_style(options.diagram_svg)
@@ -227,7 +235,8 @@ def generate_html_output(
             exc,
         )
         revision = ""
-    partno = _build_part_number(metadata.pn, revision, harness_number, template_name)
+    partno = _build_part_number(
+        metadata.pn, revision, harness_number, template_name)
 
     replacements = _RenderReplacements.from_render_context(
         options=options_for_render,
@@ -242,7 +251,8 @@ def generate_html_output(
     # TODO: all rendering should be done within their respective classes
 
     # prepare titleblock
-    rendered["titleblock"] = get_template("titleblock.html").render(replacements)
+    rendered["titleblock"] = get_template(
+        "titleblock.html").render(replacements)
 
     if replacements.get("notes") and replacements["notes"].notes:
         rendered["notes"] = get_template("notes.html").render(replacements)
@@ -259,7 +269,8 @@ def generate_html_output(
 
     # save generated file
     filename.with_suffix(".html").open("w").write(page_rendered)
-    _write_split_sections(filename, metadata, options, rendered, bom_pages=bom_pages)
+    _write_split_sections(filename, metadata, options,
+                          rendered, bom_pages=bom_pages)
     _write_aux_pages(
         filename,
         metadata,
@@ -409,7 +420,8 @@ def _write_split_sections(
                 logging.info("Wrote paginated %s page to %s", section, target)
             continue
 
-        content = rendered.get(section if section != "index" else "index_table")
+        content = rendered.get(section if section !=
+                               "index" else "index_table")
         if not content:
             continue
         title_bits = [getattr(metadata, "title", ""), section]
@@ -447,7 +459,7 @@ def _chunk_rows(
         return [("", rows)]
     per_page = int(rows_per_page)
     chunks: List[List[Dict[str, str]]] = [
-        rows[i : i + per_page] for i in range(0, len(rows), per_page)
+        rows[i: i + per_page] for i in range(0, len(rows), per_page)
     ]
     suffixes: List[str] = (
         [letter_suffix(idx) for idx in range(len(chunks))]
@@ -508,13 +520,15 @@ def _write_aux_pages(
             pages = [("", [])]
         total_pages = len(pages)
         for idx, (page_suffix, rows) in enumerate(pages):
-            table_html = table_template.render({"rows": rows}) if rows else default_html
+            table_html = table_template.render(
+                {"rows": rows}) if rows else default_html
             suffix_for_file = (
                 f".{page_suffix or letter_suffix(idx)}" if total_pages > 1 else ""
             )
             target = filename.with_suffix(f".{suffix}{suffix_for_file}.html")
             sheet_suffix = (
-                page_suffix if (total_pages > 1 and page_suffix is not None) else ""
+                page_suffix if (
+                    total_pages > 1 and page_suffix is not None) else ""
             )
             page_metadata = (
                 metadata.model_copy(update={"sheet_suffix": sheet_suffix})
