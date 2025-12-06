@@ -78,7 +78,9 @@ class LoopModel(BaseModel):
                 try:
                     return Side[name]
                 except Exception as exc:
-                    logging.debug("Failed to coerce side %r; ignoring. error=%s", value, exc)
+                    logging.debug(
+                        "Failed to coerce side %r; ignoring. error=%s", value, exc
+                    )
                     continue
         return None
 

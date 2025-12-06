@@ -137,6 +137,7 @@ def set_dot_basics(dot, options):
         getattr(options, "fontname", None),
         getattr(options.bgcolor, "html", options.bgcolor),
     )
+
     def _coerce_color(value):
         if isinstance(value, dict):
             html = value.get("html") or value.get("code_en") or value

@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict
 
 from filare.errors import UnitMismatchError
 
+
 class NumberAndUnit(BaseModel):
     number: float
     unit: Union[str, None] = None

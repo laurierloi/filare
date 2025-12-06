@@ -141,7 +141,9 @@ def smart_file_resolve(filename: Path, possible_paths: (Path, List[Path])) -> Pa
             if combined_path.exists():
                 return combined_path
             logging.debug(
-                "smart_file_resolve tried %s (exists=%s)", combined_path, combined_path.exists()
+                "smart_file_resolve tried %s (exists=%s)",
+                combined_path,
+                combined_path.exists(),
             )
         from filare.errors import FileResolutionError
 

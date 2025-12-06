@@ -95,9 +95,7 @@ class UnknownTemplateDesignator(FilareFlowException):
         self, template: str, known_connectors: str = "", known_cables: str = ""
     ):
         self.template = template
-        suffix = (
-            f" (known connectors: {known_connectors or 'none'}; known cables: {known_cables or 'none'})"
-        )
+        suffix = f" (known connectors: {known_connectors or 'none'}; known cables: {known_cables or 'none'})"
         super().__init__(f"Unknown template/designator '{template}'{suffix}")
 
 
@@ -125,7 +123,9 @@ class UnitMismatchError(FilareModelException):
     """Raised when arithmetic is attempted on incompatible units."""
 
     def __init__(self, left_value, right_value):
-        super().__init__(f"Cannot add {left_value} and {right_value}, units not matching")
+        super().__init__(
+            f"Cannot add {left_value} and {right_value}, units not matching"
+        )
 
 
 class CableWireResolutionError(FilareModelException):

@@ -630,7 +630,9 @@ class WireClass(GraphicalComponent):
         color = self.get_belden_color(str(self.color))
 
         if not color:
-            raise ComponentValidationError(f"Failed to find a color for property: {self}")
+            raise ComponentValidationError(
+                f"Failed to find a color for property: {self}"
+            )
 
         # Create the list of mpn
         roll_length = 100

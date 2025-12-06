@@ -450,7 +450,9 @@ def build_harness_from_files(
                     known_connectors = ", ".join(sorted(template_connectors))
                     known_cables = ", ".join(sorted(template_cables))
                     raise UnknownTemplateDesignator(
-                        template, known_connectors=known_connectors, known_cables=known_cables
+                        template,
+                        known_connectors=known_connectors,
+                        known_cables=known_cables,
                     )
 
             alternate_type()
