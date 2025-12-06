@@ -52,3 +52,7 @@ Add a tooling-only check that fails when rendered text in generated HTML overlap
 - Confirm whether any additional ignore file defaults are needed beyond `.filare-overlap-ignore.yml`.
 - Confirm whether page-scoped ignores should support advanced glob features (current plan: glob).
 - Decide whether to add a follow-up feature to manage ignore baselines (e.g., auto-suggest ignores when overlaps are deemed acceptable).
+- Which pages to check by default (all generated examples, docs, specific outputs)?
+- Should small overlaps (e.g., 1–2 px touch) be tolerated via a threshold?
+- Do we need per-viewport checks (desktop + mobile), or is desktop-only sufficient initially?
+- Preferred ignore mechanism (selectors vs. text regex) and how to store project-wide ignores (config file vs. CLI flags).
