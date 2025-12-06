@@ -1,5 +1,6 @@
 import textwrap
 
+import pytest
 from click.testing import CliRunner
 
 from filare import APP_NAME, __version__
@@ -68,6 +69,7 @@ def test_cli_version_prints(tmp_path):
     assert __version__ in result.output
 
 
+@pytest.mark.functional
 def test_cli_generates_outputs(tmp_path):
     runner = CliRunner()
     harness_path, metadata_path = _write_minimal_files(tmp_path)

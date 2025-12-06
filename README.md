@@ -162,6 +162,8 @@ Then open http://localhost:9000.
   ```
   uv run --no-sync pytest
   ```
+  (default run executes unit tests; to include slow documentation/functional tests use `uv run --no-sync pytest -m "unit or functional" --include-functional` or just `uv run --no-sync pytest -m functional --include-functional`.)
+  ```
 
 ### Documentation (MkDocs + optional Sphinx)
 

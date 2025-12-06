@@ -64,7 +64,7 @@ jobs:
           uv venv
           uv sync --group dev
       - name: Pytest
-        run: uv run --no-sync pytest --cov=filare --cov-report=term --cov-report=xml --junitxml=junit.xml -o junit_family=legacy
+        run: uv run --no-sync pytest -m unit --cov=filare --cov-report=term --cov-report=xml --junitxml=junit.xml -o junit_family=legacy
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
         uses: codecov/test-results-action@v1

@@ -59,6 +59,7 @@ def _write_simple_harness(path):
     )
 
 
+@pytest.mark.functional
 def test_cli_generates_bom_and_document_representation(tmp_path):
     output_dir = tmp_path / "out"
     output_dir.mkdir()
@@ -102,6 +103,7 @@ def test_cli_generates_bom_and_document_representation(tmp_path):
     assert any("verification" in name for name in doc_data["metadata"]["files"])
 
 
+@pytest.mark.functional
 def test_shared_bom_respects_quantity_multipliers(tmp_path):
     multiplier_file = tmp_path / "quantity_multipliers.txt"
     multiplier_file.write_text(json.dumps({"h1": 3}))
@@ -132,6 +134,7 @@ def test_shared_bom_respects_quantity_multipliers(tmp_path):
     assert "h1:3" in tsv.lower().replace(" ", ""), "Per-harness quantity should scale"
 
 
+@pytest.mark.functional
 def test_cli_shared_bom_scales_with_multiplier_file(tmp_path):
     output_dir = tmp_path / "out"
     output_dir.mkdir()
@@ -188,6 +191,7 @@ def test_cli_shared_bom_scales_with_multiplier_file(tmp_path):
     assert "sleeve" in normalized
 
 
+@pytest.mark.functional
 def test_multi_harness_html_and_shared_outputs(tmp_path):
     output_dir = tmp_path / "out"
     output_dir.mkdir()
@@ -225,6 +229,7 @@ def test_multi_harness_html_and_shared_outputs(tmp_path):
     assert "MULTI-h1" in shared_bom and "MULTI-h2" in shared_bom
 
 
+@pytest.mark.functional
 def test_multi_harness_pdf_bundle(tmp_path):
     pytest.importorskip("weasyprint")
 
@@ -255,6 +260,7 @@ def test_multi_harness_pdf_bundle(tmp_path):
     assert pdf_path.exists(), f"Expected combined PDF {pdf_path}"
 
 
+@pytest.mark.functional
 def test_cli_skips_bom_when_disabled(tmp_path):
     output_dir = tmp_path / "out"
     output_dir.mkdir()
@@ -297,6 +303,7 @@ def test_cli_skips_bom_when_disabled(tmp_path):
     assert (output_dir / "no_bom.html").exists()
 
 
+@pytest.mark.functional
 def test_cli_split_sections_emit_split_files(tmp_path):
     output_dir = tmp_path / "out"
     output_dir.mkdir()
@@ -395,6 +402,7 @@ def test_orient_connectors_overview_sets_ports(basic_metadata):
     assert harness.connectors["X2"].ports_right is False
 
 
+@pytest.mark.functional
 def test_cli_additional_bom_items_included(tmp_path):
     output_dir = tmp_path / "out"
     output_dir.mkdir()
