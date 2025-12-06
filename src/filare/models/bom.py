@@ -26,7 +26,7 @@ class BomEntryBase(BaseModel):
     partnumbers: PartNumberInfo
     id: str = ""
     amount: Union[NumberAndUnit, None] = None
-    qty_multiplier: Union[int, float] = 1
+    qty_multiplier: Union[int, float, object] = 1
     description: str = ""
     category: str = ""
     ignore_in_bom: bool = False

@@ -36,7 +36,7 @@ class CableModel(GraphicalComponentModel):
             return []
         if isinstance(value, str):
             return [value]
-        return list(value)
+        return [str(v) for v in value]
 
     @field_validator("wirelabels", mode="before")
     def _coerce_wirelabels(cls, value: Any) -> List[Any]:
@@ -60,8 +60,8 @@ class CableModel(GraphicalComponentModel):
 
     @model_validator(mode="after")
     def _ensure_colors(self):
-        colors = self.colors or []
-        wirecount = self.wirecount
+        colors: List[str] = list(self.colors or [])
+        wirecount = self.wirecount or (len(colors) if colors else None)
         color_code = self.color_code
         color = self.color
         if not colors and wirecount:
@@ -72,7 +72,7 @@ class CableModel(GraphicalComponentModel):
                 ]
             elif color:
                 multicolor = MultiColor(color)
-                colors = [multicolor[i] for i in range(wirecount)]
+                colors = [str(multicolor[i]) for i in range(wirecount)]
             else:
                 colors = ["" for _ in range(wirecount)]
         self.colors = colors

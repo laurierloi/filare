@@ -28,7 +28,7 @@ class Image:
     width: int = 0
     height: int = 0
     fixedsize: bool = False
-    bgcolor: SingleColor = None
+    bgcolor: Optional[SingleColor] = None
     # Contents of the text cell <td> just below the image cell:
     caption: Optional[MultilineHypertext] = None
     # See also HTML doc at https://graphviz.org/doc/info/shapes.html#html
@@ -38,7 +38,8 @@ class Image:
         self.width = int(self.width)
         self.height = int(self.height)
 
-        self.bgcolor = SingleColor(self.bgcolor)
+        if self.bgcolor is not None:
+            self.bgcolor = SingleColor(self.bgcolor)
 
         if not self.fixedsize:
             # Default True if any dimension specified unless self.scale also is specified.

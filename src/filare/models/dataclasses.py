@@ -99,14 +99,14 @@ class Component:
     amount: Optional[NumberAndUnit] = None
     ignore_in_bom: bool = False
     id: Optional[str] = None  # to be filled after harness is built
-    designators: [List] = field(
+    designators: List[str] = field(
         default_factory=list
     )  # Used only for additional components
 
     # Utility
     parent: Optional = None
     additional_components: Optional[List] = field(default_factory=list)
-    qty_multiplier: Union[QtyMultiplierConnector, QtyMultiplierCable, int] = 1
+    qty_multiplier: Union[QtyMultiplierConnector, QtyMultiplierCable, int, float] = 1
     _qty_multiplier_computed: Union[int, float] = 1
 
     # style
@@ -495,7 +495,7 @@ class WireClass(GraphicalComponent):
         self.category = BomCategory.WIRE
         super().__post_init__()
 
-    def wireinfo(self, parent_is_bundle=False):
+    def wireinfo(self, parent_is_bundle: bool = False):
         wireinfo = []
         if not parent_is_bundle and not self.is_shield:
             wireinfo.append(self.id)
@@ -896,9 +896,9 @@ class Cable(WireClass):
 
     def _connect(
         self,
-        from_pin_obj: [PinClass],
+        from_pin_obj: PinClass,
         via_wire_id: str,
-        to_pin_obj: [PinClass],
+        to_pin_obj: PinClass,
     ) -> None:
         via_wire_obj = self.wire_objects[via_wire_id]
         self._connections.append(Connection(from_pin_obj, via_wire_obj, to_pin_obj))
