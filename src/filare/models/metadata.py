@@ -1,9 +1,17 @@
+import logging
 from datetime import date, datetime
 from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    ValidationError,
+    field_validator,
+    model_validator,
+)
 
 USING_PYDANTIC_V1 = False
 
@@ -11,6 +19,7 @@ USING_PYDANTIC_V1 = False
 import filare  # for doing filare.__file__
 
 from filare.models.types import PlainText
+from filare.errors import MetadataValidationError
 
 # Metadata can contain whatever is needed by the HTML generation/template.
 MetadataKeys = PlainText  # Literal['title', 'description', 'notes', ...]
@@ -40,6 +49,19 @@ class AuthorSignature(BaseModel):
     name: str = ""
     date: Optional[object] = None
 
+    @classmethod
+    def model_validate(cls, *args, **kwargs):
+        try:
+            return super().model_validate(*args, **kwargs)
+        except ValidationError as exc:
+            raise MetadataValidationError(f"{cls.__name__}: {exc}") from exc
+
+    def __init__(self, **data):
+        try:
+            super().__init__(**data)
+        except ValidationError as exc:
+            raise MetadataValidationError(f"{self.__class__.__name__}: {exc}") from exc
+
     @field_validator("date", mode="before")
     def _coerce_date(cls, value):
         if value is None:
@@ -48,15 +70,17 @@ class AuthorSignature(BaseModel):
             return value
         if isinstance(value, str):
             if value.lower() == "n/a":
+                logging.debug("AuthorSignature date set to 'n/a'")
                 return "n/a"
             if value == "TBD":
+                logging.debug("AuthorSignature date set to 'TBD'")
                 return "TBD"
             date_format = "%Y-%m-%d"
             try:
-                return datetime.strptime(value, date_format)
+                parsed = datetime.strptime(value, date_format)
+                logging.debug("AuthorSignature date parsed as %s", parsed)
+                return parsed
             except Exception as err:
-                from filare.errors import MetadataValidationError
-
                 raise MetadataValidationError(
                     f'date ({value}) should be parsable with format ({date_format}) or set to "n/a" or "TBD"'
                 ) from err

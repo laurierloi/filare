@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import re
 from pathlib import Path
-from typing import List
+from typing import List, Sequence, Union
 
 awg_equiv_table = {
     "0.09": "28",
@@ -122,11 +123,15 @@ def clean_whitespace(inp):
     return " ".join(inp.split()).replace(" ,", ",") if isinstance(inp, str) else inp
 
 
-def smart_file_resolve(filename: Path, possible_paths: (Path, List[Path])) -> Path:
+def smart_file_resolve(
+    filename: Union[Path, str],
+    possible_paths: Union[Path, str, Sequence[Union[Path, str]]],
+) -> Path:
     if isinstance(filename, str):
         filename = Path(filename)
-    if isinstance(possible_paths, Path) or isinstance(possible_paths, str):
+    if isinstance(possible_paths, (Path, str)):
         possible_paths = [possible_paths]
+    possible_paths = [Path(p) for p in possible_paths]
     if filename.is_absolute():
         if filename.exists():
             return filename
@@ -139,6 +144,11 @@ def smart_file_resolve(filename: Path, possible_paths: (Path, List[Path])) -> Pa
             combined_path = (path / filename).resolve()
             if combined_path.exists():
                 return combined_path
+            logging.debug(
+                "smart_file_resolve tried %s (exists=%s)",
+                combined_path,
+                combined_path.exists(),
+            )
         from filare.errors import FileResolutionError
 
         raise FileResolutionError(filename, possible_paths)

@@ -23,7 +23,7 @@ This repository uses:
 
 2. **Tests**
    - Installs graphviz and project + dev deps.
-   - Runs `pytest`.
+   - Runs unit suite only: `pytest -m unit` (functional/documentation tests are opt-in).
    - Uses the same Python version as lint.
 
 3. **Build examples/templates**
@@ -71,7 +71,7 @@ This repository uses:
 ## Local Reproduction
 
 - Lint: `black --check src tests` and `prettier --check "docs/**/*.{md,html}" "src/filare/templates/**/*.html"`.
-- Tests: `pytest` (ensure `graphviz` is installed).
+- Tests: `pytest -m unit` (use `pytest -m "unit or functional" --include-functional` to add slow documentation/functional tests; ensure `graphviz` is installed).
 - Examples: `filare -f hs -o outputs/examples examples/demo01.yml`.
 - Build dist: `python -m build`.
 - Docker: `docker build -t filare-local .`.

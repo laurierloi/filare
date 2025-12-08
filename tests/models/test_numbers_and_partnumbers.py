@@ -6,6 +6,11 @@ from filare.models.partnumber import (
     PartnumberInfoList,
     partnumbers2list,
 )
+from filare.errors import (
+    UnitMismatchError,
+    UnsupportedModelOperation,
+    PartNumberValidationError,
+)
 
 
 def test_number_and_unit_add_mul_and_to_number():
@@ -15,7 +20,7 @@ def test_number_and_unit_add_mul_and_to_number():
     assert c.number == 5 and c.unit == "m"
     d = a * 2
     assert d.number == 4 and d.unit == "m"
-    with pytest.raises(ValueError):
+    with pytest.raises(UnitMismatchError):
         _ = a + NumberAndUnit(1, "kg")
 
 
@@ -56,7 +61,7 @@ def test_partnumberinfo_clear_per_field_and_copy():
     assert cleared_eq.manufacturer == "" and cleared_eq.pn == "A"
     cleared_neq = a.clear_per_field("!=", b)
     assert cleared_neq.pn == "" and cleared_neq.manufacturer == "M"
-    with pytest.raises(NotImplementedError):
+    with pytest.raises(UnsupportedModelOperation):
         a.clear_per_field(">", b)
     # list case routing
     list_case = PartNumberInfo(pn="L1", manufacturer="M1", is_list=True)
@@ -98,7 +103,7 @@ def test_partnumbers2list_merging_parents_and_children():
 
 
 def test_partnumberinfo_validators_and_accessors():
-    with pytest.raises(ValueError):
+    with pytest.raises(PartNumberValidationError):
         PartNumberInfo(pn=["bad"])
     pn = PartNumberInfo(pn="X", manufacturer="M")
     pn["mpn"] = "MP"

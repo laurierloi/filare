@@ -7,6 +7,7 @@ from filare.models.dataclasses import Connector, Cable, WireClass, Loop
 from filare.models.types import Side
 from filare.models.colors import SingleColor
 from filare.render import graphviz as gv
+from filare.errors import UnsupportedLoopSide
 
 
 def make_connector(designator: str, pins: int, style: str = "default") -> Connector:
@@ -73,7 +74,7 @@ def test_connector_loops_right_and_missing_side():
     assert loops[0][1].endswith(":p1r:e")
 
     c.ports_right = False
-    with pytest.raises(Exception):
+    with pytest.raises(UnsupportedLoopSide):
         gv.gv_connector_loops(c)
 
 

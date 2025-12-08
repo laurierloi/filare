@@ -29,8 +29,11 @@ from filare.models.utils import expand, get_single_key_and_value, smart_file_res
 from filare.errors import (
     ConnectionCountMismatchError,
     ComponentTypeMismatch,
+    MissingConnectionCountError,
     MissingOutputSpecification,
     MultipleSeparatorError,
+    RedefinedDesignatorError,
+    UnknownTemplateDesignator,
     FilareFlowException,
 )
 
@@ -124,6 +127,11 @@ def _apply_document_to_harness(
 
     doc_options = document.extras.get("options", {})
     if doc_options:
+        logging.debug(
+            "Applying document options from %s with keys: %s",
+            getattr(document, "metadata", {}).get("output_name", "document"),
+            ", ".join(sorted(doc_options.keys())),
+        )
         options_data = dict(doc_options)
         if "color_output_mode" in options_data:
             com_value = options_data["color_output_mode"]
@@ -131,7 +139,13 @@ def _apply_document_to_harness(
                 com_value = int(com_value)
             try:
                 options_data["color_output_mode"] = ColorOutputMode(com_value)
-            except Exception:
+            except Exception as exc:
+                logging.warning(
+                    "Document options color_output_mode %r could not be parsed; "
+                    "using it verbatim. Set a valid ColorOutputMode value to control output colors. error=%s",
+                    com_value,
+                    exc,
+                )
                 options_data["color_output_mode"] = com_value
         color_fields = [
             "bgcolor",
@@ -145,8 +159,14 @@ def _apply_document_to_harness(
             if isinstance(value, dict):
                 try:
                     options_data[field] = SingleColor(**value)
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logging.warning(
+                        "Document options %s=%r is invalid; ignoring override. "
+                        "Use a valid SingleColor mapping to customize backgrounds. error=%s",
+                        field,
+                        value,
+                        exc,
+                    )
         int_fields = [
             "bom_rows",
             "titleblock_rows",
@@ -260,9 +280,8 @@ def _normalize_connection_set(
                 )
             if designator in designators_and_templates:
                 if designators_and_templates[designator] != template:
-                    raise ValueError(
-                        f"Trying to redefine {designator}"
-                        f" from {designators_and_templates[designator]} to {template}"
+                    raise RedefinedDesignatorError(
+                        designator, designators_and_templates[designator], template
                     )
             else:
                 designators_and_templates[designator] = template
@@ -282,7 +301,7 @@ def _normalize_connection_set(
             connectioncount.append(len(expand(list(entry.values())[0])))
 
     if not any(connectioncount):
-        raise ValueError("No connection count found in connection set")
+        raise MissingConnectionCountError()
 
     if len(set(connectioncount)) > 1:
         pretty_sets = [
@@ -430,9 +449,10 @@ def build_harness_from_files(
                 else:
                     known_connectors = ", ".join(sorted(template_connectors))
                     known_cables = ", ".join(sorted(template_cables))
-                    raise ValueError(
-                        f"Unknown template/designator '{template}' "
-                        f"(known connectors: {known_connectors or 'none'}; known cables: {known_cables or 'none'})"
+                    raise UnknownTemplateDesignator(
+                        template,
+                        known_connectors=known_connectors,
+                        known_cables=known_cables,
                     )
 
             alternate_type()

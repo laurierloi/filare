@@ -1,11 +1,12 @@
 from functools import reduce
 from typing import Any, ClassVar, Dict, List, Optional, Tuple, Union
 
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict, ValidationError, field_validator
 
 USING_PYDANTIC_V1 = False
 
 
+from filare.errors import PartNumberValidationError, UnsupportedModelOperation
 from filare.models.utils import awg_equiv, mm2_equiv, remove_links
 
 
@@ -38,6 +39,31 @@ class PartNumberInfo(BaseModel):
 
     def __eq__(self, other):
         return hash(self) == hash(other)
+
+    @classmethod
+    def model_validate(cls, *args, **kwargs):
+        try:
+            return super().model_validate(*args, **kwargs)
+        except ValidationError as exc:
+            value = None
+            errors = exc.errors()
+            if errors:
+                value = errors[0].get("input", value)
+            raise PartNumberValidationError(
+                value if value is not None else exc
+            ) from exc
+
+    def __init__(self, **data):
+        try:
+            super().__init__(**data)
+        except ValidationError as exc:
+            value = None
+            errors = exc.errors()
+            if errors:
+                value = errors[0].get("input", value)
+            raise PartNumberValidationError(
+                value if value is not None else exc
+            ) from exc
 
     def __getitem__(self, key):
         return getattr(self, key)
@@ -107,7 +133,7 @@ class PartNumberInfo(BaseModel):
             elif op == "!=":
                 return None
             else:
-                raise NotImplementedError(f"op {op} not supported")
+                raise UnsupportedModelOperation(f"op {op} not supported")
 
         if other.is_list:
             for item in other.pn_list:
@@ -121,7 +147,7 @@ class PartNumberInfo(BaseModel):
                     if part[k] != other[k]:
                         part[k] = ""
                 else:
-                    raise NotImplementedError(f"op {op} not supported")
+                    raise UnsupportedModelOperation(f"op {op} not supported")
         return part
 
     def keep_only_eq(self, other):

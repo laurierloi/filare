@@ -8,6 +8,9 @@ permissions:
   contents: read
   pull-requests: read
 
+env:
+  UV_CACHE_DIR: .uv-cache
+
 jobs:
   lint:
     name: "PR Lint (beta)"
@@ -59,4 +62,4 @@ jobs:
           uv venv
           uv sync --group dev
       - name: Pytest
-        run: uv run --no-sync pytest --cov=filare --cov-report=term --cov-report=xml --junitxml=junit.xml -o junit_family=legacy
+        run: uv run --no-sync pytest -m unit --cov=filare --cov-report=term --cov-report=xml --junitxml=junit.xml -o junit_family=legacy

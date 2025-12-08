@@ -5,6 +5,7 @@ from filare.models.bom import BomContent, BomEntry, BomRenderOptions, BomRender
 from filare.models.partnumber import PartNumberInfo
 from filare.models.numbers import NumberAndUnit
 from filare.models.types import BomCategory
+from filare.errors import UnsupportedModelOperation
 
 
 def test_bom_entry_scale_per_harness(bom_entry_sample):
@@ -55,7 +56,7 @@ def test_bom_entry_add_and_designators_str():
     a += b
     assert a.qty.number == 3
     assert a.designators_str.endswith("(...)")
-    with pytest.raises(NotImplementedError):
+    with pytest.raises(UnsupportedModelOperation):
         a.__add__(object())
     assert (a == []) is False
     assert (a == 123) is None

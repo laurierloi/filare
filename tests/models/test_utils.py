@@ -2,6 +2,7 @@ import pytest
 from pathlib import Path
 
 from filare.models import utils
+from filare.errors import FileResolutionError
 
 
 def test_expand_ranges_and_numbers():
@@ -41,5 +42,5 @@ def test_smart_file_resolve(tmp_path):
     # absolute that exists
     assert utils.smart_file_resolve(target, [base]) == target
     # missing file raises
-    with pytest.raises(Exception):
+    with pytest.raises(FileResolutionError):
         utils.smart_file_resolve(Path("missing.txt"), [base])

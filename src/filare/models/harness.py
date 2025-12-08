@@ -4,7 +4,7 @@ import logging
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 from graphviz import Graph
 
@@ -20,6 +20,7 @@ from filare.models.component import ComponentModel
 from filare.models.metadata import Metadata
 from filare.models.notes import Notes
 from filare.models.options import PageOptions
+from filare.errors import BomEntryHashError
 from filare.render.assets import embed_svg_images, embed_svg_images_file
 from filare.render.graphviz import (
     gv_connector_loops,
@@ -78,7 +79,7 @@ class Harness:
             cable = Cable(**cable_model)
         self.cables[cable.designator] = cable
 
-    def add_additional_bom_item(self, item: dict) -> None:
+    def add_additional_bom_item(self, item: Union[dict, ComponentModel]) -> None:
         if isinstance(item, ComponentModel):
             new_item = item.to_component()
         else:
@@ -168,9 +169,7 @@ class Harness:
             try:
                 self.bom[hash(entry)]
             except KeyError:
-                raise RuntimeError(
-                    f"BomEntry's hash is not persitent: h1:{hash(entry)} h2:{hash(entry)}\n\tentry: {entry}\n\titem:{item}"
-                )
+                raise BomEntryHashError(entry)
 
         # add items to BOM
         for item in all_bom_relevant_items:

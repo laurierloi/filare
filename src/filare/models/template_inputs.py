@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Sequence, Union
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
 from filare.models.configs import (
     CableConfig,
@@ -11,12 +11,29 @@ from filare.models.configs import (
     WireConfig,
 )
 from filare.models.numbers import NumberAndUnit
+from filare.errors import ComponentValidationError
 
 
 class TemplateBaseModel(BaseModel):
     """Base class for template-facing inputs."""
 
     model_config = ConfigDict(extra="forbid", arbitrary_types_allowed=True)
+
+    @classmethod
+    def model_validate(cls, *args, **kwargs):
+        try:
+            return super().model_validate(*args, **kwargs)
+        except ValidationError as exc:
+            raise ComponentValidationError(f"{cls.__name__}: {exc}") from exc
+
+    def __init__(self, **data):
+        try:
+            super().__init__(**data)
+        except ValidationError as exc:
+            errors = exc.errors()
+            message = errors[0].get("msg", str(exc)) if errors else str(exc)
+            message = f"{self.__class__.__name__}: {message}"
+            raise ComponentValidationError(message) from exc
 
 
 class TemplatePin(TemplateBaseModel):

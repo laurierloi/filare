@@ -171,6 +171,10 @@ def generate_html_output(
     ):
         termination_pages = [("", [])]
 
+    is_title_page = (
+        template_name == "titlepage"
+        or getattr(metadata, "sheet_name", "") == "titlepage"
+    )
     pagination_hints = {
         key: value
         for key, value in {
@@ -220,7 +224,11 @@ def generate_html_output(
     revision = ""
     try:
         revision = metadata.revision
-    except Exception:
+    except Exception as exc:
+        logging.debug(
+            "Missing or invalid revision in metadata; using empty revision. error=%s",
+            exc,
+        )
         revision = ""
     partno = _build_part_number(metadata.pn, revision, harness_number, template_name)
 

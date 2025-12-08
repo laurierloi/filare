@@ -21,7 +21,11 @@ from filare.models.primitives import (
 )
 from filare.models.hypertext import MultilineHypertext
 from filare.models.image import Image
-from filare.errors import ComponentValidationError
+from filare.errors import (
+    ComponentValidationError,
+    PartNumberValidationError,
+    PinResolutionError,
+)
 from filare.models.numbers import NumberAndUnit
 from filare.models.partnumber import PartNumberInfo, PartnumberInfoList
 from filare.models.bom import BomEntry, BomEntryBase
@@ -95,14 +99,14 @@ class Component:
     amount: Optional[NumberAndUnit] = None
     ignore_in_bom: bool = False
     id: Optional[str] = None  # to be filled after harness is built
-    designators: [List] = field(
+    designators: List[str] = field(
         default_factory=list
     )  # Used only for additional components
 
     # Utility
     parent: Optional = None
     additional_components: Optional[List] = field(default_factory=list)
-    qty_multiplier: Union[QtyMultiplierConnector, QtyMultiplierCable, int] = 1
+    qty_multiplier: Union[QtyMultiplierConnector, QtyMultiplierCable, int, float] = 1
     _qty_multiplier_computed: Union[int, float] = 1
 
     # style
@@ -132,7 +136,7 @@ class Component:
                 pass
 
         if isinstance(self.pn, list):
-            raise RuntimeError(f"PN ({self.pn}) should not be a list")
+            raise PartNumberValidationError(self.pn)
 
         for i, item in enumerate(self.additional_components):
             if isinstance(item, Component):
@@ -142,12 +146,12 @@ class Component:
                     **item, category=BomCategory.ADDITIONAL, parent=self
                 )
             else:
-                raise ValueError(
+                raise ComponentValidationError(
                     f"additional component {item} should be a Component or a dict, is {type(item)}"
                 )
 
         if self.category is None:
-            raise RuntimeError(f"category should be defined for {self}")
+            raise ComponentValidationError(f"category should be defined for {self}")
 
     def compute_qty_multipliers(self):
         pass
@@ -369,11 +373,15 @@ class Connector(GraphicalComponent):
             try:
                 value = int(value)
             except ValueError as exc:
-                raise ValueError(f"{err} and is not an int")
+                raise PinResolutionError(
+                    self.designator, f"{err} and is not an int"
+                ) from exc
 
             pin_match_id = [p for p in self.pin_objects.values() if p.id == value]
             if not pin_match_id:
-                raise ValueError(f"{err} and is not one of the pins {self.pins}")
+                raise PinResolutionError(
+                    self.designator, f"{err} and is not one of the pins {self.pins}"
+                )
             return pin_match_id[0]
 
         normalized_loops = []
@@ -391,7 +399,7 @@ class Connector(GraphicalComponent):
             elif isinstance(loop, dict):
                 normalized_loops.append(loop)
             else:
-                raise ValueError(f"Unsupported loop definition: {loop}")
+                raise ComponentValidationError(f"Unsupported loop definition: {loop}")
 
         self.loops = [
             Loop(
@@ -449,7 +457,7 @@ class Connector(GraphicalComponent):
             ):
                 computed_factor = subitem.qty_multiplier
             else:
-                raise ValueError(
+                raise ComponentValidationError(
                     f'Unexpected qty multiplier "{subitem.qty_multiplier}"'
                 )
             subitem._qty_multiplier_computed = computed_factor
@@ -487,7 +495,7 @@ class WireClass(GraphicalComponent):
         self.category = BomCategory.WIRE
         super().__post_init__()
 
-    def wireinfo(self, parent_is_bundle=False):
+    def wireinfo(self, parent_is_bundle: bool = False):
         wireinfo = []
         if not parent_is_bundle and not self.is_shield:
             wireinfo.append(self.id)
@@ -615,14 +623,16 @@ class WireClass(GraphicalComponent):
         try:
             parts = self.belden_tfe_base_mpn[self.gauge_str]
         except KeyError:
-            raise ValueError(
+            raise ComponentValidationError(
                 f"Couldn't find a belden TFE wire for wire of {self.gauge_str}"
             )
 
         color = self.get_belden_color(str(self.color))
 
         if not color:
-            raise ValueError(f"Failed to find a color for property: {self}")
+            raise ComponentValidationError(
+                f"Failed to find a color for property: {self}"
+            )
 
         # Create the list of mpn
         roll_length = 100
@@ -781,7 +791,7 @@ class Cable(WireClass):
             elif self.color_code:
                 # use standard color palette (partly or looped if needed)
                 if self.color_code not in COLOR_CODES:
-                    raise ValueError(
+                    raise ComponentValidationError(
                         f"Cable {self.designator}: unknown color code '{self.color_code}'. "
                         f"Valid codes: {', '.join(sorted(COLOR_CODES))}"
                     )
@@ -815,11 +825,11 @@ class Cable(WireClass):
                 if self.is_bundle:
                     # check the length
                     if len(idfield) != self.wirecount:
-                        raise ValueError(
+                        raise ComponentValidationError(
                             f"Cable {self.designator}: part data list length {len(idfield)} must match wirecount {self.wirecount}"
                         )
                 else:
-                    raise ValueError(
+                    raise ComponentValidationError(
                         f"Cable {self.designator}: part data lists only supported for bundles (wirecount {self.wirecount})"
                     )
 
@@ -886,9 +896,9 @@ class Cable(WireClass):
 
     def _connect(
         self,
-        from_pin_obj: [PinClass],
+        from_pin_obj: PinClass,
         via_wire_id: str,
-        to_pin_obj: [PinClass],
+        to_pin_obj: PinClass,
     ) -> None:
         via_wire_obj = self.wire_objects[via_wire_id]
         self._connections.append(Connection(from_pin_obj, via_wire_obj, to_pin_obj))
