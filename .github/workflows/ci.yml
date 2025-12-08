@@ -105,7 +105,16 @@ jobs:
           uv sync --group dev
       - name: Build examples
         run: |
-          uv run --no-sync python src/filare/tools/build_examples.py --output-dir outputs
+          uv run --no-sync python src/filare/tools/build_examples.py --output-dir outputs --group examples
+      - name: Build tutorials
+        run: |
+          uv run --no-sync python src/filare/tools/build_examples.py --output-dir outputs --group tutorial
+      - name: Build demos
+        run: |
+          uv run --no-sync python src/filare/tools/build_examples.py --output-dir outputs --group demos
+      - name: Build multi-page
+        run: |
+          uv run --no-sync python src/filare/tools/build_examples.py --output-dir outputs --group multi-page
       - name: Upload example artifacts
         uses: actions/upload-artifact@v4
         with:
