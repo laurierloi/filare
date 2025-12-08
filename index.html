@@ -386,6 +386,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#quick-install-uv-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick install (uv, recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#container-ubuntu-2404-uv-graphviz-prettier" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -483,23 +494,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Installing the development version">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#installing-filare-within-a-virtual-env" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Installing Filare within a virtual env
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
         
       </ul>
@@ -544,6 +538,17 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quantity-multipliers-filare-qty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantity multipliers (filare-qty)
+      
+    </span>
+  </a>
   
 </li>
         
@@ -1110,6 +1115,62 @@
   
   
     <li class="md-nav__item">
+      <a href="dev/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dev/text_overlap_checker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Text Overlap Checker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="tasks/" class="md-nav__link">
         
   
@@ -1134,6 +1195,33 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="collisions/summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1352,6 +1440,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#quick-install-uv-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick install (uv, recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#container-ubuntu-2404-uv-graphviz-prettier" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1449,23 +1548,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Installing the development version">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#installing-filare-within-a-virtual-env" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Installing Filare within a virtual env
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
         
       </ul>
@@ -1510,6 +1592,17 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quantity-multipliers-filare-qty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantity multipliers (filare-qty)
+      
+    </span>
+  </a>
   
 </li>
         
@@ -1660,13 +1753,19 @@
 <p><img alt="" src="examples/demo02.png" /></p>
 <p><a href="examples/demo02.yml">Source</a> - <a href="examples/demo02.tsv">Bill of Materials</a></p>
 <h3 id="syntax-tutorial-and-example-gallery">Syntax, tutorial and example gallery<a class="headerlink" href="#syntax-tutorial-and-example-gallery" title="Permanent link">&para;</a></h3>
-<p>Read the <a href="syntax/">syntax description</a> to learn about Filare's features and how to use them.</p>
+<p>Read the <a href="docs/syntax.md">syntax description</a> to learn about Filare's features and how to use them.</p>
 <p>See the <a href="tutorial/readme/">tutorial page</a> for sample code, as well as the <a href="examples/readme/">example gallery</a> to see more of what Filare can do.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h3>
 <p>Filare requires Python 3.9 or later.</p>
 <p>Filare requires GraphViz to be installed in order to work. See the <a href="https://graphviz.org/download/">GraphViz download page</a> for OS-specific instructions.</p>
 <p><em>Note</em>: Ubuntu 18.04 LTS users in particular may need to separately install Python 3.7 or above, as that comes with Python 3.6 as the included system Python install. The option to generate pdf is not supported for python 3.7, so it might not be possible to use with this version of Ubuntu. If you are forced to use Ubuntu 18.04 for some reason, fill up an issue/MR and I can provide a Docker image to perform the generation.</p>
+<h3 id="quick-install-uv-recommended">Quick install (uv, recommended)<a class="headerlink" href="#quick-install-uv-recommended" title="Permanent link">&para;</a></h3>
+<p>Filare uses the <a href="https://docs.astral.sh/uv/">uv</a> workflow for dependency management and command execution.</p>
+<div class="highlight"><pre><span></span><code>uv venv
+uv sync
+uv run filare --help
+</code></pre></div>
 <h3 id="container-ubuntu-2404-uv-graphviz-prettier">Container (Ubuntu 24.04, uv, graphviz, prettier)<a class="headerlink" href="#container-ubuntu-2404-uv-graphviz-prettier" title="Permanent link">&para;</a></h3>
 <p>A Docker image is provided to avoid local dependency setup:</p>
 <div class="highlight"><pre><span></span><code>docker build -t filare:latest .
@@ -1686,7 +1785,7 @@
   <div class="highlight"><pre><span></span><code>docker run --rm -v &quot;$PWD&quot;:/app filare ./scripts/lint.sh
 </code></pre></div></li>
 <li>Build and serve docs (port 9000):
-  <div class="highlight"><pre><span></span><code>docker run --rm -p 9000:9000 -v &quot;$PWD&quot;:/app filare bash -lc &#39;cd /app &amp;&amp; uv run --no-sync mkdocs build &amp;&amp; cd site &amp;&amp; python3 -m http.server 9000&#39;
+  <div class="highlight"><pre><span></span><code>docker run --rm -p 9000:9000 -v &quot;$PWD&quot;:/app filare bash -lc &#39;cd /app &amp;&amp; uv run --no-sync mkdocs build &amp;&amp; cd site &amp;&amp; uv run --no-sync python -m http.server 9000&#39;
 </code></pre></div></li>
 <li>Regenerate document YAMLs (document representations) and control overwrites:</li>
 <li>By default generated <code>*.document.yaml</code> files can be overwritten on rebuild. To freeze a document, set <code>allow_override: false</code> for that entry in <code>outputs/*/document_hashes.yaml</code>; reruns will then warn and keep your manual edits.</li>
@@ -1695,13 +1794,15 @@
 <h2 id="building-docs-locally-without-docker">Building docs locally (without Docker)<a class="headerlink" href="#building-docs-locally-without-docker" title="Permanent link">&para;</a></h2>
 <p>From the project root:</p>
 <div class="highlight"><pre><span></span><code>uv run --no-sync mkdocs build
-python3 -m http.server 9000 --directory site
+uv run --no-sync python -m http.server 9000 --directory site
 </code></pre></div>
 <p>Then open http://localhost:9000.</p>
 <ul>
 <li>Run tests:
-  <div class="highlight"><pre><span></span><code>docker run --rm -v &quot;$PWD&quot;:/app filare uv run --no-sync pytest
-</code></pre></div></li>
+  <div class="highlight"><pre><span></span><code>uv run --no-sync pytest
+</code></pre></div>
+  (default run executes unit tests; to include slow documentation/functional tests use <code>uv run --no-sync pytest -m "unit or functional" --include-functional</code> or just <code>uv run --no-sync pytest -m functional --include-functional</code>.)
+  ```</li>
 </ul>
 <h3 id="documentation-mkdocs-optional-sphinx">Documentation (MkDocs + optional Sphinx)<a class="headerlink" href="#documentation-mkdocs-optional-sphinx" title="Permanent link">&para;</a></h3>
 <ul>
@@ -1722,29 +1823,22 @@ python3 -m http.server 9000 --directory site
 <h4 id="pango-only-for-weasyprint-pdf-generation">Pango (only for weasyprint pdf generation)<a class="headerlink" href="#pango-only-for-weasyprint-pdf-generation" title="Permanent link">&para;</a></h4>
 <p>See https://pango.gnome.org/</p>
 <h3 id="installing-the-latest-release">Installing the latest release<a class="headerlink" href="#installing-the-latest-release" title="Permanent link">&para;</a></h3>
-<p>The latest Filare release can be downloaded from <a href="https://pypi.org/project/filare/">PyPI</a> with the following command:</p>
-<div class="highlight"><pre><span></span><code>pip3 install filare
+<p>Install from <a href="https://pypi.org/project/filare/">PyPI</a> using uv:</p>
+<div class="highlight"><pre><span></span><code>uv venv
+uv pip install filare
+uv run filare --version
 </code></pre></div>
 <h3 id="installing-the-development-version">Installing the development version<a class="headerlink" href="#installing-the-development-version" title="Permanent link">&para;</a></h3>
-<p>Access to the current state of the development branch can be gained by cloning the repo and installing manually.</p>
-<p>We suggest always installing Filare within a python virtualenv. This avoids many issues caused by
-dependencies management.</p>
-<h4 id="installing-filare-within-a-virtual-env">Installing Filare within a virtual env<a class="headerlink" href="#installing-filare-within-a-virtual-env" title="Permanent link">&para;</a></h4>
+<p>Access to the current state of the development branch by cloning the repo and syncing dependencies with uv:</p>
 <div class="highlight"><pre><span></span><code># Cloning the repository
-git clone git+https://github.com/laurierloi/Filare
-cd Filare
+git clone https://github.com/laurierloi/filare
+cd filare
 
-# Setup virtualenv
-python3 -m pip install --user virtualenv
-python3 -m virtualenv venv-filare
-source venv-filare/bin/activate
-
-# Installing/Upgrading dependencies
-pip install -U pip setuptools wheel
-
-# Installing with local modification tracking
-pip install -e .
+# Setup env and install dependencies
+uv venv
+uv sync
 </code></pre></div>
+<p>Avoid mixing <code>pip</code> and <code>uv</code> inside the same environment to prevent dependency drift. If you prefer a one-off install without a venv, use the container workflow above instead of system-wide <code>pip</code>.</p>
 <p>If you would like to contribute to this project, make sure you read the <a href="CONTRIBUTING/">contribution guidelines</a>!</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <h3 id="how-to-run">How to run<a class="headerlink" href="#how-to-run" title="Permanent link">&para;</a></h3>
@@ -1752,7 +1846,7 @@ pip install -e .
 To do so, a shared metadata file (or multiple) must be provided to the <code>filare</code> command.
 Then, a list of harnesses to include within the document should also be provided.
 In the simplest case, 1 harness can be provided.</p>
-<div class="highlight"><pre><span></span><code>$ filare -d ~/path/to/file/metadata.yml ~/path/to/file/myharness1.yml ~/path/to/file/myharness2.yml
+<div class="highlight"><pre><span></span><code>$ uv run filare -d ~/path/to/file/metadata.yml ~/path/to/file/myharness1.yml ~/path/to/file/myharness2.yml
 </code></pre></div>
 <p>Depending on the options specified, this will output some or all of the following files:</p>
 <div class="highlight"><pre><span></span><code>titlepage.html            Titlepage document. It has links to the different harness for easy navigation
@@ -1763,16 +1857,25 @@ myharness{1,2}.png        Wiring diagram as raster image
 myharness{1,2}.bom.tsv    BOM (bill of materials) as tab-separated text file
 myharness{1,2}.html       HTML page with wiring diagram and BOM embedded
 </code></pre></div>
-<p>Wildcars in the file path are also supported to process multiple files at once, e.g.:</p>
-<div class="highlight"><pre><span></span><code>$ filare ~/path/to/files/*.yml
+<p>Wildcards in the file path are also supported to process multiple files at once, e.g.:</p>
+<div class="highlight"><pre><span></span><code>$ uv run filare ~/path/to/files/*.yml
 </code></pre></div>
 <p>To see how to specify the output formats, as well as additional options, run:</p>
-<div class="highlight"><pre><span></span><code>$ filare --help
+<div class="highlight"><pre><span></span><code>$ uv run filare --help
 </code></pre></div>
 <h4 id="sample-run-all-examples">Sample run all examples<a class="headerlink" href="#sample-run-all-examples" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code>$ filare -d examples/metadata.yml examples/ex*.yml
+<div class="highlight"><pre><span></span><code>$ uv run filare -d examples/metadata.yml examples/ex*.yml
 </code></pre></div>
 <p>Then open <code>examples/titlepage.html</code> to open the document root</p>
+<h3 id="quantity-multipliers-filare-qty">Quantity multipliers (<code>filare-qty</code>)<a class="headerlink" href="#quantity-multipliers-filare-qty" title="Permanent link">&para;</a></h3>
+<p>Use <code>filare-qty</code> to capture per-harness quantity multipliers before generating a shared BOM with <code>filare</code>.</p>
+<div class="highlight"><pre><span></span><code># Prompt for multipliers (or reuse an existing quantity_multipliers.txt)
+$ uv run filare-qty tests/bom/bomqty.yml
+
+# Apply the multipliers when building the shared BOM
+$ uv run filare tests/bom/bomqty.yml --use-qty-multipliers
+</code></pre></div>
+<p>By default the multipliers are stored as JSON in <code>quantity_multipliers.txt</code> next to the harness file; override the path with <code>--multiplier-file-name</code> and re-prompt with <code>--force-new</code>.</p>
 <h3 id="re-building-the-example-projects">(Re-)Building the example projects<a class="headerlink" href="#re-building-the-example-projects" title="Permanent link">&para;</a></h3>
 <p>Please see the <a href="buildscript/">documentation</a> of the <code>build_examples.py</code> script for info on building the demos, examples and tutorial.</p>
 <h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h2>

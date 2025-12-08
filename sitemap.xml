@@ -2,110 +2,574 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://laurierloi.github.io/Filare/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/CHANGELOG/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/CONTRIBUTING/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/advanced_image_usage/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/agents/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/architecture/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/brand/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/buildscript/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/ci/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/docs_improvement/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/mermaid/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/pages/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/refactor/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/syntax/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/tasks/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/collisions/summary/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/dev/github/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/dev/logging-sources/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/dev/metadata_guide/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/dev/pyright/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/dev/text_overlap_checker/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/examples/readme/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/bom_pagination/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/features/cavities-terminal-seal-support/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/cli-document-commands/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/cli-drawio-commands/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/cli-harness-commands/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/cli-hierarchical-commands/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/cli-metadata-commands/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/cli-page-commands/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/cli-settings-commands/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/cli-typer-migration/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/document-representation/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/drawio-integration/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/drawio-svg-import/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/filare-model-graph-base/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/integrated-quantity-management/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/mechanical-cad-linkage/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/mechanical-view-2d/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/features/shield-termination-metadata/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/features/standard-harness-component-support/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/text-overlap-check/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/cut/cut-list-outputs/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/cut/cut-list-schema/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/cut/cut-list-template/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/bom-from-graph/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/bundle-model/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/cable-as-part/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/colors-in-graph/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/connections-in-graph/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/connector-cable-connector-in-graph/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/cut-diagram-from-graph/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/parts-and-components-links/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/parts-list-export/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/pin-ordering-parser/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/pins-in-graph/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/pins-terminations-in-graph/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/render-metadata-separation/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/termination-diagram-from-graph/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/graph/wires-in-graph/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/interface/interface-general-idea/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/mechanical/base-schema-and-paths/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/mechanical/features-and-coverings/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/mechanical/labels-and-dimensions/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/mechanical/splices-and-shielding/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/parts/octopart-ingestion/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/performance-tools/cprofile-support/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/performance-tools/memray-support/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/performance-tools/perf-ci-workflow/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/performance-tools/performance-tooling-platform/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/performance-tools/py-spy-support/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/performance-tools/scalene-support/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/termination/termination-outputs/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/termination/termination-schema/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/features/termination/termination-template/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/graphs/architecture/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/graphs/data_flow/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/graphs/document_flow/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/graphs/models/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/align-installation-instructions-with-uv/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/clarify-connector-loops-docs/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/issues/cli-help-defaults-and-examples/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/cli-subcommand-discovery/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/color-and-part-validation-error-messages/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/connection-parsing-error-messages/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/dataclass-migration-plan/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/document-filare-qty-cli/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/error-logging-patterns/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/error-raises-consistency/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/external-tool-error-handling/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/issues/filare-qty-help-context/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/fix-readme-link-targets/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/log-handling-configuration/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/loop-and-graphviz-error-messages/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/multi-page-sheet-numbering/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/number-unit-error-messages/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/path-and-component-validation-errors/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/pyright/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/quantity-workflow-integration/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-approvals/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-bom-procurement/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-checklist/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-connector-pinout-summary/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-cut-table-basemodel/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-grid-border/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-image-gallery/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-label-sheet/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-notes-changelog/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-simple-din6771-basemodel/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-termination-table-basemodel/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/template-wirelist/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/termination-pin-labels/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/titleblock-formatting-titlepage/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/titlepage-bom-pagination/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/titlepage-contents-pagination/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/issues/titlepage-harness-content/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/projects/part-ingestion/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/belden-cable-ingestion/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/cut-diagram-requirements/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/research/harness-diagram-components/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/mechanical-diagram-elements/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/mechanical-harness-diagrams/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/parts-databases/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/performance-tools/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/termination-diagram-requirements/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/vendor-parts-ingestion/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/vendor-parts-integration/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/architecture/caching-incremental-builds/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/architecture/configuration-layer-unification/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/architecture/error-logging-unification/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/architecture/metadata-configuration-harmonization/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/architecture/packaging-runtime-layout/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/architecture/pipeline-context-refactor/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/architecture/renderer-plugin-registry/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/research/architecture/validation-contract-layer/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/tutorial/readme/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/ui/cli-help-review/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/ui/cli-subcommand-ergonomics/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/ui/quantity-workflow-ux/</loc>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/ui/templates-overview/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
     <url>
          <loc>https://laurierloi.github.io/Filare/workflows/basic-output-generation/</loc>
-         <lastmod>2025-12-04</lastmod>
+         <lastmod>2025-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://laurierloi.github.io/Filare/workflows/quantity-multipliers-current/</loc>
+         <lastmod>2025-12-08</lastmod>
     </url>
 </urlset>

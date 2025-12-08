@@ -615,6 +615,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#importing-external-svg-diagrams-drawio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Importing external SVG diagrams (DrawIO)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -655,6 +672,17 @@
     <span class="md-ellipsis">
       
         Images
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quantity-multipliers-shared-bom-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantity multipliers (shared BOM scaling)
       
     </span>
   </a>
@@ -1028,6 +1056,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../dev/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev/text_overlap_checker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Text Overlap Checker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../tasks/" class="md-nav__link">
         
   
@@ -1052,6 +1136,33 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collisions/summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1300,6 +1411,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#importing-external-svg-diagrams-drawio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Importing external SVG diagrams (DrawIO)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1340,6 +1468,17 @@
     <span class="md-ellipsis">
       
         Images
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quantity-multipliers-shared-bom-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantity multipliers (shared BOM scaling)
       
     </span>
   </a>
@@ -1453,54 +1592,66 @@
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </code></pre></div>
 <h2 id="connector-attributes">Connector attributes<a class="headerlink" href="#connector-attributes" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;str&gt;   </span><span class="p">:</span><span class="w">  </span><span class="c1"># unique connector designator/name</span>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;str&gt;</span><span class="p">:</span><span class="w"> </span><span class="c1"># unique connector designator/name</span>
 <span class="w">  </span><span class="c1"># general information about a connector (all optional)</span>
 <span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span>
 <span class="w">  </span><span class="nt">subtype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span>
-<span class="w">  </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w">  </span><span class="c1"># see below</span>
-<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;image&gt;</span><span class="w">  </span><span class="c1"># see below</span>
+<span class="w">  </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># see below</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;image&gt;</span><span class="w"> </span><span class="c1"># see below</span>
 <span class="w">  </span><span class="nt">notes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span>
 
 <span class="w">  </span><span class="c1"># product information (all optional)</span>
-<span class="w">  </span><span class="nt">ignore_in_bom</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w">  </span><span class="c1"># if set to true the connector is not added to the BOM</span>
-<span class="w">  </span><span class="nt">pn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w">              </span><span class="c1"># [internal] part number</span>
-<span class="w">  </span><span class="nt">manufacturer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w">    </span><span class="c1"># manufacturer name</span>
-<span class="w">  </span><span class="nt">mpn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w">             </span><span class="c1"># manufacturer part number</span>
-<span class="w">  </span><span class="nt">supplier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w">        </span><span class="c1"># supplier name</span>
-<span class="w">  </span><span class="nt">spn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w">             </span><span class="c1"># supplier part number</span>
+<span class="w">  </span><span class="nt">ignore_in_bom</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># if set to true the connector is not added to the BOM</span>
+<span class="w">  </span><span class="nt">pn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># [internal] part number</span>
+<span class="w">  </span><span class="nt">manufacturer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># manufacturer name</span>
+<span class="w">  </span><span class="nt">mpn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># manufacturer part number</span>
+<span class="w">  </span><span class="nt">supplier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># supplier name</span>
+<span class="w">  </span><span class="nt">spn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;str&gt;</span><span class="w"> </span><span class="c1"># supplier part number</span>
 <span class="w">  </span><span class="nt">additional_components</span><span class="p">:</span><span class="w"> </span><span class="c1"># additional components</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;additional-component&gt;</span><span class="w"> </span><span class="c1"># additional component (see below)</span>
 
 <span class="w">  </span><span class="c1"># pinout information</span>
 <span class="w">  </span><span class="c1"># at least one of the following must be specified</span>
-<span class="w">  </span><span class="nt">pincount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;int&gt;</span><span class="w">    </span><span class="c1"># if omitted, is set to length of specified list(s)</span>
-<span class="w">  </span><span class="nt">pins</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span><span class="w">       </span><span class="c1"># if omitted, is autofilled with [1, 2, ..., pincount]</span>
-<span class="w">  </span><span class="nt">pinlabels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span><span class="w">  </span><span class="c1"># if omitted, is autofilled with blanks</span>
+<span class="w">  </span><span class="nt">pincount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;int&gt;</span><span class="w"> </span><span class="c1"># if omitted, is set to length of specified list(s)</span>
+<span class="w">  </span><span class="nt">pins</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span><span class="w"> </span><span class="c1"># if omitted, is autofilled with [1, 2, ..., pincount]</span>
+<span class="w">  </span><span class="nt">pinlabels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span><span class="w"> </span><span class="c1"># if omitted, is autofilled with blanks</span>
 
 <span class="w">  </span><span class="c1"># pin color marks (optional)</span>
-<span class="w">  </span><span class="nt">pincolors</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span><span class="w">  </span><span class="c1"># list of colors to be assigned to the respective pins;</span>
-<span class="w">                     </span><span class="c1"># if list length is lower than connector pinout,</span>
-<span class="w">                     </span><span class="c1"># no color marks will be added to remaining pins</span>
+<span class="w">  </span><span class="nt">pincolors</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&lt;List&gt;</span><span class="w"> </span><span class="c1"># list of colors to be assigned to the respective pins;</span>
+<span class="w">    </span><span class="c1"># if list length is lower than connector pinout,</span>
+<span class="w">    </span><span class="c1"># no color marks will be added to remaining pins</span>
 
 <span class="w">  </span><span class="c1"># rendering information (all optional)</span>
-<span class="w">  </span><span class="nt">bgcolor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w">       </span><span class="c1"># Background color of diagram connector box</span>
+<span class="w">  </span><span class="nt">bgcolor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Background color of diagram connector box</span>
 <span class="w">  </span><span class="nt">bgcolor_title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># Background color of title in diagram connector box</span>
-<span class="w">  </span><span class="nt">style</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;style&gt;</span><span class="w">         </span><span class="c1"># may be set to simple for single pin connectors</span>
-<span class="w">  </span><span class="nt">show_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w">      </span><span class="c1"># defaults to true for regular connectors,</span>
-<span class="w">                         </span><span class="c1"># false for simple connectors</span>
-<span class="w">  </span><span class="nt">show_pincount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w">  </span><span class="c1"># defaults to true for regular connectors</span>
-<span class="w">                         </span><span class="c1"># false for simple connectors</span>
-<span class="w">  </span><span class="nt">hide_disconnected_pins</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w">  </span><span class="c1"># defaults to false</span>
+<span class="w">  </span><span class="nt">style</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;style&gt;</span><span class="w"> </span><span class="c1"># may be set to simple for single pin connectors</span>
+<span class="w">  </span><span class="nt">show_name</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># defaults to true for regular connectors,</span>
+<span class="w">    </span><span class="c1"># false for simple connectors</span>
+<span class="w">  </span><span class="nt">show_pincount</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># defaults to true for regular connectors</span>
+<span class="w">    </span><span class="c1"># false for simple connectors</span>
+<span class="w">  </span><span class="nt">hide_disconnected_pins</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># defaults to false</span>
 
 <span class="w">  </span><span class="c1"># loops</span>
-<span class="w">  </span><span class="nt">loops</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;List[loop]&gt;</span><span class="w">  </span><span class="c1"># every list item is a loop object representing two pins</span>
-<span class="w">                 </span><span class="c1"># on the connector that are to be shorted</span>
-<span class="w">      </span><span class="nt">loop</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;first&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the first &lt;pin&gt; of the loop</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;second&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the second &lt;pin&gt; of the loop</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">&lt;side&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">either &quot;LEFT&quot; or &quot;RIGHT&quot;</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">show_label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt; defaults to true, will show the loop label</span>
+<span class="w">  </span><span class="nt">loops</span><span class="p">:</span><span class="w"> </span><span class="c1"># each item shorts two pins on the connector</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;pin&gt;</span><span class="w"> </span><span class="c1"># pin number or pin label</span>
+<span class="w">      </span><span class="nt">second</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;pin&gt;</span><span class="w"> </span><span class="c1"># pin number or pin label</span>
+<span class="w">      </span><span class="nt">side</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;LEFT|RIGHT|null&gt;</span><span class="w"> </span><span class="c1"># optional; anchor the loop to a side</span>
+<span class="w">      </span><span class="nt">show_label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># defaults to true; hide the label when false</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;color&gt;</span><span class="w"> </span><span class="c1"># optional stroke color</span>
+<span class="w">    </span><span class="c1"># shorthand tuple/list form is also allowed:</span>
+<span class="w">    </span><span class="c1"># - [&lt;pin&gt;, &lt;pin&gt;]  # treated as {first: &lt;pin&gt;, second: &lt;pin&gt;}</span>
+
+<span class="w">  </span><span class="c1"># example:</span>
+<span class="w">  </span><span class="c1"># loops:</span>
+<span class="w">  </span><span class="c1">#   - first: 1</span>
+<span class="w">  </span><span class="c1">#     second: 2</span>
+<span class="w">  </span><span class="c1">#     side: LEFT</span>
+<span class="w">  </span><span class="c1">#   - [3, 4]  # uses default side/label/color</span>
 </code></pre></div>
+<p>Loops mark both pins as connected and render a short jumper on the chosen side (when provided). If <code>side</code> is omitted, Filare chooses a side based on the connector layout. Set <code>show_label: false</code> to hide the loop label for purely visual jumpers, and use <code>color</code> to highlight the jumper trace.</p>
 <h2 id="cable-attributes">Cable attributes<a class="headerlink" href="#cable-attributes" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;str&gt;</span><span class="p">:</span><span class="w"> </span><span class="c1"># unique cable designator/name</span>
 <span class="w">  </span><span class="c1"># general information about a connector (all optional)</span>
@@ -1685,7 +1836,37 @@
 <span class="c1"># about additional components inside the diagram node (connector/cable box).</span>
 <span class="c1"># If False, show all info about additional components inside the diagram node.</span>
 <span class="nt">mini_bom_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># Default = True</span>
+
+<span class="c1"># BOM rendering and pagination</span>
+<span class="nt">include_bom</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># Default = True</span>
+<span class="nt">split_bom_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># Default = False; when true, BOM renders to &lt;name&gt;.bom.html</span>
+<span class="nt">bom_rows_per_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;int&gt;</span><span class="w"> </span><span class="c1"># Optional; when set with split_bom_page, paginate BOM rows with lettered suffixes</span>
+<span class="nt">bom_force_single_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># Default = False; keep BOM on a single page even if bom_rows_per_page is set</span>
+
+<span class="c1"># Split tables and index</span>
+<span class="nt">split_notes_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># Default = False; split notes into &lt;name&gt;.notes.html</span>
+<span class="nt">split_index_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># Default = False; split index table into &lt;name&gt;.index.html</span>
+<span class="nt">table_page_suffix_letters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># Default = True; use a/b/c suffixes when pagination produces multiple pages</span>
+
+<span class="c1"># Cut and termination diagrams</span>
+<span class="nt">include_cut_diagram</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># Default = False</span>
+<span class="nt">include_termination_diagram</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w"> </span><span class="c1"># Default = False</span>
+<span class="nt">cut_rows_per_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;int&gt;</span><span class="w"> </span><span class="c1"># Optional; paginate cut tables when set</span>
+<span class="nt">termination_rows_per_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;int&gt;</span><span class="w"> </span><span class="c1"># Optional; paginate termination tables when set</span>
 </code></pre></div>
+<h3 id="importing-external-svg-diagrams-drawio">Importing external SVG diagrams (DrawIO)<a class="headerlink" href="#importing-external-svg-diagrams-drawio" title="Permanent link">&para;</a></h3>
+<p>You can replace the auto-generated diagram with a DrawIO-exported SVG and control how it is placed on the page:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">diagram_svg</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">src</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diagrams/power-page.svg</span><span class="w"> </span><span class="c1"># path to the DrawIO-exported SVG</span>
+<span class="w">    </span><span class="nt">width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">90%</span><span class="w"> </span><span class="c1"># optional; defaults to 95% max width</span>
+<span class="w">    </span><span class="nt">height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180mm</span><span class="w"> </span><span class="c1"># optional max/fixed height</span>
+<span class="w">    </span><span class="nt">align</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">left</span><span class="w"> </span><span class="c1"># left, center (default), or right</span>
+<span class="w">    </span><span class="nt">offset_x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5mm</span><span class="w"> </span><span class="c1"># optional translation on the page</span>
+<span class="w">    </span><span class="nt">offset_y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">    </span><span class="nt">preserve_aspect_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># set to false to allow stretching</span>
+</code></pre></div>
+<p>Relative <code>src</code> paths are resolved from the harness YAML file location (and any <code>options.image_paths</code>). The SVG is inlined (including linked images) and used for both HTML and SVG outputs; PDFs generated from HTML will include the imported diagram as well. When <code>diagram_svg</code> is set, PNG output is skipped to avoid mixing Graphviz and DrawIO renders.</p>
 <h2 id="bom-items-and-additional-components">BOM items and additional components<a class="headerlink" href="#bom-items-and-additional-components" title="Permanent link">&para;</a></h2>
 <p>Connectors (both regular, and auto-generated), cables, and wires of a bundle are automatically added to the BOM,
 unless the <code>ignore_in_bom</code> attribute is set to <code>true</code>.
@@ -1785,6 +1966,13 @@ Remember quoting strings containing a <code>#</code> in the YAML file.</p>
 <span class="w">  </span><span class="c1"># if both width and height are specified, the image is stretched to fit.</span>
 </code></pre></div>
 <p>For more fine grained control over the image parameters, please see <a href="../advanced_image_usage/"><code>advanced_image_usage.md</code></a>.</p>
+<h2 id="quantity-multipliers-shared-bom-scaling">Quantity multipliers (shared BOM scaling)<a class="headerlink" href="#quantity-multipliers-shared-bom-scaling" title="Permanent link">&para;</a></h2>
+<p>When generating a shared BOM across multiple harnesses, you can scale quantities with a multiplier file:</p>
+<ol>
+<li>Run <code>uv run filare-qty &lt;harness.yml&gt; [--multiplier-file-name &lt;path&gt;] [--force-new]</code> to create or update a JSON file (default <code>quantity_multipliers.txt</code>) with <code>{&lt;harness_name&gt;: &lt;int&gt;}</code> entries.</li>
+<li>Run <code>uv run filare &lt;harness.yml&gt; --use-qty-multipliers [--multiplier-file-name &lt;path&gt;] ...</code> to apply those multipliers while building <code>shared_bom.tsv</code>.</li>
+</ol>
+<p>If the multiplier file is missing, <code>filare-qty</code> prompts for integer values. To protect an existing file, omit <code>--force-new</code>. Place the multiplier file alongside your harnesses or point <code>--multiplier-file-name</code> to a shared location (e.g., <code>outputs/quantity_multipliers.txt</code>).</p>
 <h2 id="multiline-strings">Multiline strings<a class="headerlink" href="#multiline-strings" title="Permanent link">&para;</a></h2>
 <p>The following attributes accept multiline strings:</p>
 <ul>

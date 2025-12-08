@@ -744,6 +744,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dev/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/text_overlap_checker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Text Overlap Checker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tasks/" class="md-nav__link">
         
   
@@ -768,6 +824,33 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../collisions/summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -922,6 +1005,7 @@
 <li><code>DocumentRepresentation</code> captures metadata, page stubs, notes, BOM (if enabled), and options.</li>
 <li>Written to <code>*.document.yaml</code> with hash tracking in <code>document_hashes.yaml</code>; user edits are preserved (no overwrite if hash changes).</li>
 <li>Rendering still operates on the harness; the document YAML is a pre-render view for inspection or manual tweaking.</li>
+<li>If a matching <code>*.document.yaml</code> already exists, it is loaded to drive options/page selection and merged formats before rendering. A companion <code>document_hashes.yaml</code> controls overwrite/lock behavior.</li>
 </ul>
 
 

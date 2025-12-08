@@ -56,7 +56,7 @@ graph {
           <td>
 <table border="0" cellborder="0" cellpadding="3" cellspacing="0" >
   <tr>
-    <td balign="left" sides="TLR"><img scale="false" src="/home/runner/work/filare/filare/examples/resources/stereo-phone-plug-TRS.png" /></td>
+    <td balign="left" sides="TLR"><img scale="false" src="/app/examples/resources/stereo-phone-plug-TRS.png" /></td>
   </tr>
   <tr>
     <td balign="left" sides="BLR">
@@ -229,7 +229,7 @@ graph {
     <td balign="left">
       <table border="0" cellborder="0" cellpadding="0" cellspacing="0" >
         <tr>
-          <td width="70.0" height="70" fixedsize="true"><img scale="true" src="/home/runner/work/filare/filare/examples/resources/cable-WH+BN+GN+shield.png" /></td>
+          <td width="70.0" height="70" fixedsize="true"><img scale="true" src="/app/examples/resources/cable-WH+BN+GN+shield.png" /></td>
         </tr>
       </table>
     </td>

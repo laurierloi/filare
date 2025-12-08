@@ -352,6 +352,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#document-representation-and-hash-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Document representation and hash guard
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -839,6 +850,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../dev/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev/text_overlap_checker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Text Overlap Checker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../tasks/" class="md-nav__link">
         
   
@@ -863,6 +930,33 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collisions/summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1018,6 +1112,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#document-representation-and-hash-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Document representation and hash guard
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1112,6 +1217,26 @@
 <li>Force a document YAML refresh: remove <code>*.document.yaml</code> and <code>document_hashes.yaml</code> before rerun, or edit the YAML to keep your changes (hash guard prevents overwrite).</li>
 <li>Page types: see <code>docs/pages.md</code> for the list of page types (title, harness, bom, cut, termination) and their roles; enable cut/termination via <code>options.include_cut_diagram</code> / <code>options.include_termination_diagram</code>.</li>
 </ul>
+<h2 id="document-representation-and-hash-guard">Document representation and hash guard<a class="headerlink" href="#document-representation-and-hash-guard" title="Permanent link">&para;</a></h2>
+<p>Filare writes a pre-render document snapshot (<code>&lt;output_name&gt;.document.yaml</code>) before producing SVG/HTML/TSV assets. It captures:</p>
+<ul>
+<li><code>metadata</code>: merged metadata for the harness</li>
+<li><code>pages</code>: page definitions (title/harness/bom/cut/termination) with names and format hints</li>
+<li><code>notes</code> and <code>extras</code>: freeform blocks carried into the final render</li>
+<li><code>bom</code>: tabular data if BOM generation is enabled</li>
+</ul>
+<p>A registry file <code>document_hashes.yaml</code> sits next to the outputs and tracks SHA-256 hashes of each generated document along with an <code>allow_override</code> flag:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">demo01.document.yaml</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">123abc...</span>
+<span class="w">  </span><span class="nt">allow_override</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Workflow:</p>
+<ol>
+<li>On each run, Filare computes a hash of the generated document representation.</li>
+<li>If <code>allow_override</code> is <code>false</code> and the stored hash differs, Filare warns and keeps the existing <code>*.document.yaml</code> (assumes manual edits).</li>
+<li>If <code>allow_override</code> is <code>true</code> (default) or the file is new, Filare overwrites the document YAML and updates the hash registry.</li>
+</ol>
+<p>To freeze a document after manual edits, set <code>allow_override: false</code> for that entry in <code>document_hashes.yaml</code>. Delete the entry (or the entire file) to allow regeneration.</p>
 
 
 

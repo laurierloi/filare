@@ -1,0 +1,1301 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://laurierloi.github.io/Filare/research/vendor-parts-integration/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Vendor and Manufacturer Parts Integration - Filare Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vendor-and-manufacturer-parts-integration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Filare Docs" class="md-header__button md-logo" aria-label="Filare Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Filare Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Vendor and Manufacturer Parts Integration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/laurierloi/Filare" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    laurierloi/Filare
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Filare Docs" class="md-nav__button md-logo" aria-label="Filare Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Filare Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/laurierloi/Filare" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    laurierloi/Filare
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Graphs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graphs/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graphs/data_flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graphs/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorial/readme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/readme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced_image_usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced Images
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../buildscript/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Script
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ci/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mermaid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mermaid Check
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dev
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dev
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/metadata_guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metadata Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/text_overlap_checker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Text Overlap Checker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../collisions/summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHANGELOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../brand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-cases-for-filare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Cases for Filare
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical Evaluation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complexity-score-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complexity Score (1–5)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintenance-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintenance Risk
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#industry-business-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Industry / Business Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-uses-it-why-it-works-for-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who Uses It &amp; Why It Works for Them
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feasibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feasibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#required-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required Work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommendation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommendation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#models-suggested" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models (Suggested)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-appendix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional Appendix
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="vendor-and-manufacturer-parts-integration">Vendor and Manufacturer Parts Integration<a class="headerlink" href="#vendor-and-manufacturer-parts-integration" title="Permanent link">&para;</a></h1>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>Explores how to represent and integrate manufacturer/supplier parts in Filare so harness BOMs can carry rich metadata (technical attributes, sourcing, pricing, alternates, families). Covers common part types (connectors, terminals/crimps, tools, wires/cables, coverings, labels, protection) and suggests fields to track per type.</p>
+<h2 id="use-cases-for-filare">Use Cases for Filare<a class="headerlink" href="#use-cases-for-filare" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Generate procurement-ready BOMs with manufacturer/supplier links, pricing, and approved alternates.</li>
+<li>Validate part compatibility (wire gauge to terminal, connector family to accessories).</li>
+<li>Support service/field teams with consistent part IDs, datasheets, and ordering links.</li>
+<li>Enable future inventory overlays (stock counts, preferred supplier) without breaking schema.</li>
+</ul>
+<h2 id="technical-evaluation">Technical Evaluation<a class="headerlink" href="#technical-evaluation" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Part types to model:</li>
+<li>Connectors (housings, genders, pin count, family, accessories/back-shells).</li>
+<li>Terminals/crimps and seals/plugs (wire gauge range, plating, tool spec).</li>
+<li>Tools (crimp tools, applicators, extraction tools).</li>
+<li>Wires (single conductor): gauge, insulation, color, stranding, temp rating, voltage rating, roll length, OD, approvals.</li>
+<li>Cables (bundles): wire count, color map, shield/twist/grouping, impedance/spec (Ethernet, SpaceWire, CameraLink), jacket, bend radius, OD.</li>
+<li>Coverings: conduit/braid/tape/heat-shrink, ID/OD range, shrink ratio, temp rating.</li>
+<li>Labels/markers: size, material, printable format.</li>
+<li>Protection: fuses/breakers inline; boots/backshells; grommets.</li>
+<li>Families/kits: connector families (D-sub, MicroFit, Deutsch), matched terminals/seals, accessory sets.</li>
+<li>Common fields (core):</li>
+<li><code>category</code>, <code>type/subtype</code>, <code>family</code>.</li>
+<li><code>pn</code>, <code>mpn</code>, <code>manufacturer</code>, <code>datasheet_url</code>, <code>description</code>.</li>
+<li>Supplier entries: <code>supplier</code>, <code>spn</code>, <code>url</code>, <code>price</code>, <code>currency</code>, <code>qty_break</code>, <code>moq</code>, <code>lead_time</code>.</li>
+<li><code>alternates</code>: list of equivalent <code>mpn</code>/supplier refs with notes.</li>
+<li><code>notes</code>, <code>status</code> (active/EOL/NRND), <code>lifecycle_source</code>.</li>
+<li>Technical fields by type:</li>
+<li>Connectors: <code>pin_count</code>, <code>gender</code>, <code>keying</code>, <code>mount</code> (panel/in-line), <code>termination</code> (crimp/solder/poke), <code>accessories</code> (backshell/boot/cap), <code>family</code>, <code>seal_rating</code>, <code>temp_rating</code>, <code>current_rating</code>, <code>voltage_rating</code>, <code>mating_cycles</code>.</li>
+<li>Terminals/seals/plugs: <code>wire_gauge_range</code>, <code>material/plating</code>, <code>insulation_support</code>, <code>crimp_tool</code>, <code>extraction_tool</code>, <code>seal_size</code>, <code>cavity_family</code>.</li>
+<li>Tools: <code>tool_type</code> (crimp/applicator/extractor), <code>compatible_families</code>, <code>gauge_range</code>, <code>die/locator</code>.</li>
+<li>Wires: <code>gauge</code> (AWG/mm2), <code>stranding</code>, <code>color</code>, <code>insulation_material</code>, <code>temp_rating</code>, <code>voltage_rating</code>, <code>outer_diameter</code>, <code>roll_length</code>, <code>standards</code> (UL/ISO), <code>shield</code> (bool/type/drain).</li>
+<li>Cables: <code>wire_count</code>, <code>colors</code>, <code>twist</code> (pairing), <code>shield</code> (type/coverage/drain), <code>impedance</code>, <code>category/protocol</code> (Ethernet Cat5e/Cat6, SpaceWire, CameraLink), <code>jacket_material</code>, <code>outer_diameter</code>, <code>min_bend_radius</code>, <code>length_unit</code>, <code>approval</code>.</li>
+<li>Coverings: <code>inner_diameter</code>, <code>outer_diameter</code>, <code>shrink_ratio</code>, <code>temp_rating</code>, <code>material</code>, <code>color</code>, <code>length_unit</code>.</li>
+<li>Labels: <code>size</code>, <code>material</code>, <code>adhesive</code>, <code>print_method</code>.</li>
+<li>Protection/accessories: <code>current_rating</code> (fuse/breaker), <code>ingress</code> (cap/boot), <code>backshell_thread</code>, <code>grommet_size</code>.</li>
+<li>Data links:</li>
+<li>URLs: <code>datasheet_url</code>, <code>manufacturer_url</code>, <code>supplier_urls</code> (list with price/qty).</li>
+<li>Families/aliases: <code>family</code>, <code>series</code>, <code>accessories</code> referencing other part records.</li>
+<li>Alternates: list with <code>mpn</code>, <code>manufacturer</code>, <code>supplier</code> entry, <code>notes</code>.</li>
+<li>Pricing:</li>
+<li>Optional per supplier: <code>price</code>, <code>currency</code>, <code>qty_break</code>/<code>moq</code>, <code>lead_time</code>.</li>
+<li>Keep as informational; avoid computations in core schema.</li>
+<li>Inventory (optional future):</li>
+<li>Separate overlay: <code>location</code>, <code>on_hand</code>, <code>lot</code>, <code>expires</code>, <code>reserved</code>; keep out of core part definition to avoid coupling usage with stock.</li>
+</ul>
+<h2 id="complexity-score-15">Complexity Score (1–5)<a class="headerlink" href="#complexity-score-15" title="Permanent link">&para;</a></h2>
+<p>3 — Adds structured part metadata and supplier/alternate links; schema extensions and BOM rendering changes are needed but no deep architectural change.</p>
+<h2 id="maintenance-risk">Maintenance Risk<a class="headerlink" href="#maintenance-risk" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Part data changes often (pricing/availability); risk mitigated by treating supplier info as optional and by allowing alternates.</li>
+<li>Families and compatibility tables need maintenance but change slowly.</li>
+<li>URL rot; need permissive handling when links are absent.</li>
+</ul>
+<h2 id="industry-business-usage">Industry / Business Usage<a class="headerlink" href="#industry-business-usage" title="Permanent link">&para;</a></h2>
+<ul>
+<li>OEM and supplier BOMs list MPN, supplier SKU, alternates, pricing breaks, lifecycle status.</li>
+<li>Harness teams track gauge/tool compatibility for crimps and terminals.</li>
+<li>Procurement/service need datasheet links and clear family naming (e.g., D-sub, MicroFit, Deutsch DT/DRC).</li>
+</ul>
+<h2 id="who-uses-it-why-it-works-for-them">Who Uses It &amp; Why It Works for Them<a class="headerlink" href="#who-uses-it-why-it-works-for-them" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Procurement: sourcing links, alternates, pricing.</li>
+<li>Manufacturing/QA: crimp/tool compatibility, gauge ranges, accessories.</li>
+<li>Service: clear part IDs, families, and URLs for replacements.</li>
+</ul>
+<h2 id="feasibility">Feasibility<a class="headerlink" href="#feasibility" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Feasible as optional part metadata extensions and richer <code>additional_components</code>/BOM rendering; inventory can stay a separate overlay.</li>
+</ul>
+<h2 id="required-work">Required Work<a class="headerlink" href="#required-work" title="Permanent link">&para;</a></h2>
+<ul>
+<li>REWORK tasks: Define part data model (common fields + type-specific attributes); align with existing BOM/additional_components shape.</li>
+<li>FEATURE tasks: Extend schema to accept part metadata and alternates; add supplier list support; display key fields in BOM and HTML outputs; allow part families/aliases.</li>
+<li>TOOLS tasks: Optional part library ingestion (CSV/JSON) and validation for compatibility (gauge vs terminal); optional URL checker.</li>
+<li>DOCUMENTATION tasks: Syntax examples for part metadata, alternates, supplier/pricing fields; guidance on families and accessories.</li>
+<li>COVERAGE tasks: Regression YAMLs with parts spanning connectors, terminals, wires, cables, coverings, and alternates; verify BOM output.</li>
+</ul>
+<h2 id="recommendation">Recommendation<a class="headerlink" href="#recommendation" title="Permanent link">&para;</a></h2>
+<p>ADOPT_LATER — Add optional part metadata, supplier/alternate fields, and families, keeping inventory as a future overlay.</p>
+<h2 id="models-suggested">Models (Suggested)<a class="headerlink" href="#models-suggested" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Core Part Model:</li>
+<li><code>category</code>, <code>type/subtype</code>, <code>family/series</code>, <code>pn/mpn/manufacturer</code>, <code>description</code>, <code>datasheet_url</code>, <code>manufacturer_url</code>, <code>status/lifecycle</code>.</li>
+<li>Supplier list: <code>[ {supplier, spn, url, price, currency, qty_break, moq, lead_time} ]</code>.</li>
+<li><code>alternates</code>: <code>[ {mpn, manufacturer, supplier?, spn?, notes} ]</code>.</li>
+<li><code>notes</code>.</li>
+<li>Type-specific extensions:</li>
+<li>Connector: <code>pin_count</code>, <code>gender</code>, <code>keying</code>, <code>mount</code>, <code>termination</code>, <code>seal_rating</code>, <code>temp_rating</code>, <code>current_rating</code>, <code>voltage_rating</code>, <code>mating_cycles</code>, <code>accessories</code>.</li>
+<li>Terminal/Seal/Plug: <code>wire_gauge_range</code>, <code>material/plating</code>, <code>insulation_support</code>, <code>crimp_tool</code>, <code>extraction_tool</code>, <code>seal_size</code>, <code>cavity_family</code>.</li>
+<li>Tool: <code>tool_type</code>, <code>compatible_families</code>, <code>gauge_range</code>, <code>die/locator</code>.</li>
+<li>Wire: <code>gauge</code>, <code>stranding</code>, <code>color</code>, <code>insulation_material</code>, <code>temp_rating</code>, <code>voltage_rating</code>, <code>outer_diameter</code>, <code>roll_length</code>, <code>standards</code>, <code>shield</code>.</li>
+<li>Cable: <code>wire_count</code>, <code>colors</code>, <code>twist/pairs</code>, <code>shield</code> (type/coverage/drain), <code>impedance</code>, <code>protocol/category</code>, <code>jacket_material</code>, <code>outer_diameter</code>, <code>min_bend_radius</code>, <code>length_unit</code>.</li>
+<li>Covering: <code>inner_diameter</code>, <code>outer_diameter</code>, <code>shrink_ratio</code>, <code>temp_rating</code>, <code>material</code>, <code>color</code>, <code>length_unit</code>.</li>
+<li>Label: <code>size</code>, <code>material</code>, <code>adhesive</code>, <code>print_method</code>.</li>
+<li>Protection/accessory: <code>current_rating</code>, <code>ingress</code>, <code>backshell_thread</code>, <code>grommet_size</code>.</li>
+<li>Correlations:</li>
+<li>Connectors ↔ terminals/seals via <code>family/cavity_family</code>.</li>
+<li>Terminals ↔ wires via <code>wire_gauge_range</code>.</li>
+<li>Accessories (backshells/boots/grommets) ↔ connectors via <code>family/thread</code>.</li>
+<li>Protocol cables ↔ logical signals via <code>protocol/category</code>.</li>
+</ul>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Typical OEM/Supplier BOM fields (MPN, supplier SKU, lifecycle, alternates, pricing).</li>
+<li>Crimp/terminal selection guides (gauge/tool compatibility).</li>
+<li>Ethernet/SpaceWire/CameraLink cable specs (impedance, shielding, twist).</li>
+</ul>
+<h2 id="optional-appendix">Optional Appendix<a class="headerlink" href="#optional-appendix" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Inventory overlay suggestion: keep <code>inventory</code> as a separate dataset keyed by part id (location, on_hand, lot, expires) to avoid coupling stock with design files.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.instant", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../../javascripts/mermaid.js"></script>
+      
+    
+  </body>
+</html>

@@ -760,6 +760,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dev/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/text_overlap_checker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Text Overlap Checker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tasks/" class="md-nav__link">
         
   
@@ -784,6 +840,33 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../collisions/summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -909,17 +992,17 @@
 
 <h1 id="data-flow-mermaid">Data Flow (Mermaid)<a class="headerlink" href="#data-flow-mermaid" title="Permanent link">&para;</a></h1>
 <pre class="mermaid"><code>flowchart LR
-  Y[YAML harness files] --&gt; P1[parser.yamlloader\nparse_concat_merge_files]
-  M[Metadata YAML] --&gt; P1
-  P1 --&gt; F1[flows.build_harness\n(metadata, options, notes)]
+  Y["YAML harness files"] --&gt; P1["parser.yamlloader&lt;br/&gt;parse_concat_merge_files"]
+  M["Metadata YAML"] --&gt; P1
+  P1 --&gt; F1["flows.build_harness&lt;br/&gt;(metadata, options, notes)"]
   F1 --&gt;|Harness model| H[Harness]
-  F1 --&gt;|DocumentRepresentation YAML| D1[document.yaml + hashes]
-  H --&gt;|Graph| R1[render.graphviz\n(node/edge templates)]
-  H --&gt;|BOM| R2[render.output\nBOM render]
+  F1 --&gt;|DocumentRepresentation YAML| D1["document.yaml + hashes"]
+  H --&gt;|Graph| R1["render.graphviz&lt;br/&gt;(node/edge templates)"]
+  H --&gt;|BOM| R2["render.output&lt;br/&gt;BOM render"]
   R1 --&gt; SVG[SVG]
   R1 --&gt; PNG[PNG]
-  R2 --&gt; TSV[BOM TSV]
-  R2 --&gt; HTML[HTML\n(titleblock + diagram embed)]
+  R2 --&gt; TSV["BOM TSV"]
+  R2 --&gt; HTML["HTML&lt;br/&gt;(titleblock + diagram embed)"]
   subgraph Shared BOM
     F3[flows.shared_bom] --&gt; S1[render.output.generate_shared_bom]
     S1 --&gt; SharedTSV[shared_bom.tsv]

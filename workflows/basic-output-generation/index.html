@@ -744,6 +744,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dev/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/text_overlap_checker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Text Overlap Checker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tasks/" class="md-nav__link">
         
   
@@ -768,6 +824,33 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../collisions/summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1013,11 +1096,12 @@
 <li>Render a harness with default formats: <code>uv run filare examples/demo01.yml -o outputs</code></li>
 <li>Change the base output name (if desired): <code>uv run filare examples/demo01.yml -O demo01_run1 -o outputs</code></li>
 <li>Generate and apply quantity multipliers (shared BOM scaling):</li>
-<li><code>uv run filare-qty tests/bom/bomqty.yml -f</code></li>
-<li><code>uv run filare examples/demo01.yml -u -m quantity_multipliers.txt -o outputs</code></li>
+<li><code>uv run filare-qty tests/bom/bomqty.yml --multiplier-file-name outputs/quantity_multipliers.txt</code></li>
+<li><code>uv run filare tests/bom/bomqty.yml --use-qty-multipliers --multiplier-file-name outputs/quantity_multipliers.txt -o outputs</code></li>
+<li>When prompted, enter the per-harness quantities (stored as JSON); reruns reuse the file unless <code>--force-new</code> is passed.</li>
 </ol>
 <h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
-<p>Minimal harness example:
+<p>Minimal harness example:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">parts</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">connector_a</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">connector</span>
@@ -1033,17 +1117,17 @@
 <span class="w">    </span><span class="nt">to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">connector_b.1</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">connector_a.2</span>
 <span class="w">    </span><span class="nt">to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">connector_b.2</span>
-</code></pre></div></p>
+</code></pre></div>
 <h2 id="commands">Commands<a class="headerlink" href="#commands" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Default render: <code>uv run filare examples/demo01.yml -f hpst -o outputs</code></li>
 <li>With custom formats (HTML + PDF): <code>uv run filare examples/demo01.yml -f hP -o outputs</code></li>
-<li>Force new multipliers: <code>uv run filare-qty tests/bom/bomqty.yml -f</code></li>
+<li>Force new multipliers: <code>uv run filare-qty tests/bom/bomqty.yml --force-new</code></li>
 </ul>
 <h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
 <ul>
 <li>HTML/PNG/SVG/TSV files in <code>outputs/</code> (or the input file’s directory if <code>-o</code> is omitted).</li>
-<li><code>quantity_multipliers.txt</code> created or updated when running <code>filare-qty</code>.</li>
+<li><code>quantity_multipliers.txt</code> created or updated when running <code>filare-qty</code> (path configurable via <code>--multiplier-file-name</code>).</li>
 <li>Optional PDF bundle if format string includes <code>P</code>.</li>
 </ul>
 <h2 id="common-mistakes">Common Mistakes<a class="headerlink" href="#common-mistakes" title="Permanent link">&para;</a></h2>
@@ -1057,7 +1141,7 @@
 <ul>
 <li>“No such file” → check the harness path and that you are in the repository root.</li>
 <li>Missing expected format output → verify the <code>-f</code> letters and retry.</li>
-<li>Multiplier file not found → confirm <code>quantity_multipliers.txt</code> exists in the working directory or pass <code>-m</code> with the correct path.</li>
+<li>Multiplier file not found → confirm <code>quantity_multipliers.txt</code> exists in the working directory or pass <code>-m/--multiplier-file-name</code> with the correct path.</li>
 </ul>
 <h2 id="related-features">Related Features<a class="headerlink" href="#related-features" title="Permanent link">&para;</a></h2>
 <ul>
