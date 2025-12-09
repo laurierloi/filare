@@ -76,7 +76,16 @@ def test_cli_generates_outputs(tmp_path):
 
     result = runner.invoke(
         cli,
-        ["run", str(harness_path), "-d", str(metadata_path), "-f", "t", "-o", str(tmp_path)],
+        [
+            "run",
+            str(harness_path),
+            "-d",
+            str(metadata_path),
+            "-f",
+            "t",
+            "-o",
+            str(tmp_path),
+        ],
     )
 
     assert result.exit_code == 0, result.output
