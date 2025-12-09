@@ -109,9 +109,7 @@ def build_generated(groupkeys, output_base=None):
                 ]
             )
         except BaseException as e:
-            if str(e) != "0" and not isinstance(
-                e, (typer.Exit, SystemExit)
-            ):
+            if str(e) != "0" and not isinstance(e, (typer.Exit, SystemExit)):
                 raise
 
         if build_readme:
