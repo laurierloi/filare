@@ -2,7 +2,7 @@
 
 from collections.abc import Iterable
 from dataclasses import dataclass, field
-from typing import Dict
+from typing import Dict, Optional, cast
 
 indent_count = 1
 
@@ -25,7 +25,7 @@ class Attribs(Dict):
 class Tag:
     contents = None
     attribs: Attribs = field(default_factory=Attribs)
-    flat: bool = None
+    flat: Optional[bool] = None
     delete_if_empty: bool = False
 
     def __init__(self, contents, flat=None, delete_if_empty=False, **kwargs):
@@ -68,10 +68,11 @@ class Tag:
         """Render child contents, honoring flat/indent settings."""
         separator = "" if self.auto_flat or force_flat else "\n"
         if _is_iterable_not_str(self.contents):
+            contents_iter = cast(Iterable, self.contents)
             return separator.join(
                 [
                     self.indent_lines(str(c), force_flat)
-                    for c in self.contents
+                    for c in contents_iter
                     if c is not None
                 ]
             )
@@ -103,7 +104,7 @@ class TagSingleton(Tag):
         return f"<{self.tagname}{str(self.attribs)} />"
 
 
-def _is_iterable_not_str(inp):
+def _is_iterable_not_str(inp: object) -> bool:
     # str is iterable, but should be treated as not iterable
     return isinstance(inp, Iterable) and not isinstance(inp, str)
 

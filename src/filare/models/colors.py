@@ -179,7 +179,7 @@ class MultiColor:
 
     @property
     def html(self):
-        return ":".join([color.html for color in self.colors])
+        return ":".join([color.html or "" for color in self.colors])
 
     @property
     def html_padded_list(self):

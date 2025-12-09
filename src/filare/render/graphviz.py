@@ -3,7 +3,7 @@
 import logging
 import re
 from pathlib import Path
-from typing import Any, List, Optional, Union
+from typing import Any, List, Optional, Tuple, Union
 
 from filare import APP_NAME, APP_URL, __version__
 from filare.errors import UnsupportedLoopSide
@@ -34,7 +34,7 @@ def gv_node_connector(connector: Connector) -> Table:
 
     rendered = get_template(template_name).render(params)
     cleaned_render = "\n".join([l.rstrip() for l in rendered.split("\n") if l.strip()])
-    return cleaned_render
+    return Table(cleaned_render)
 
 
 def gv_node_cable(cable: Cable) -> Table:
@@ -45,7 +45,7 @@ def gv_node_cable(cable: Cable) -> Table:
     template_name = "cable.html"
     rendered = get_template(template_name).render(params)
     cleaned_render = "\n".join([l.rstrip() for l in rendered.split("\n") if l.strip()])
-    return cleaned_render
+    return Table(cleaned_render)
 
 
 def _node_image_attrs(image: Optional[Image]) -> dict:
@@ -95,7 +95,9 @@ def gv_connector_loops(connector: Connector) -> List:
     return loop_edges
 
 
-def gv_edge_wire(harness, cable, connection) -> (str, str, str):
+def gv_edge_wire(
+    harness, cable, connection
+) -> Tuple[str, Optional[str], Optional[str], Optional[str], Optional[str]]:
     """Return Graphviz edge descriptors for a connection through a wire/shield."""
     if connection.via.color:
         # check if it's an actual wire and not a shield

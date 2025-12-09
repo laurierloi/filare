@@ -4,7 +4,7 @@ import logging
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from graphviz import Graph
 
@@ -59,24 +59,30 @@ class Harness:
         conn = Connector(designator=designator, *args, **kwargs)
         self.connectors[designator] = conn
 
-    def add_connector_model(self, connector_model: ConnectorModel) -> None:
+    def add_connector_model(
+        self, connector_model: Union[ConnectorModel, Dict[str, Any]]
+    ) -> None:
         """Accept a ConnectorModel (or similar with to_connector()) and store the dataclass."""
-        if hasattr(connector_model, "to_connector"):
+        if isinstance(connector_model, dict):
+            conn = Connector(**connector_model)
+        elif isinstance(connector_model, ConnectorModel):
             conn = connector_model.to_connector()
         else:
-            conn = Connector(**connector_model)
+            raise TypeError("connector_model must be ConnectorModel or dict")
         self.connectors[conn.designator] = conn
 
     def add_cable(self, designator: str, *args, **kwargs) -> None:
         cbl = Cable(designator=designator, *args, **kwargs)
         self.cables[designator] = cbl
 
-    def add_cable_model(self, cable_model: CableModel) -> None:
+    def add_cable_model(self, cable_model: Union[CableModel, Dict[str, Any]]) -> None:
         """Accept a CableModel (or similar with to_cable()) and store the dataclass."""
-        if hasattr(cable_model, "to_cable"):
+        if isinstance(cable_model, dict):
+            cable = Cable(**cable_model)
+        elif isinstance(cable_model, CableModel):
             cable = cable_model.to_cable()
         else:
-            cable = Cable(**cable_model)
+            raise TypeError("cable_model must be CableModel or dict")
         self.cables[cable.designator] = cable
 
     def add_additional_bom_item(self, item: Union[dict, ComponentModel]) -> None:
@@ -454,8 +460,9 @@ class Harness:
 
     @property
     def svg(self):
-        if getattr(self.options, "diagram_svg", None):
-            return prepare_imported_svg(self.options.diagram_svg)
+        diagram_svg_options = getattr(self.options, "diagram_svg", None)
+        if diagram_svg_options:
+            return prepare_imported_svg(diagram_svg_options)
         graph = self.graph
         return embed_svg_images(graph.pipe(format="svg").decode("utf-8"), Path.cwd())
 
@@ -468,8 +475,9 @@ class Harness:
     ) -> None:
         fmt_list = list(fmt)
         imported_svg_markup = None
-        if getattr(self.options, "diagram_svg", None):
-            imported_svg_markup = prepare_imported_svg(self.options.diagram_svg)
+        diagram_svg_options = getattr(self.options, "diagram_svg", None)
+        if diagram_svg_options:
+            imported_svg_markup = prepare_imported_svg(diagram_svg_options)
             if "png" in fmt_list:
                 logging.info(
                     "diagram_svg set; skipping PNG generation (SVG/HTML will use imported asset)"

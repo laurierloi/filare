@@ -3,7 +3,7 @@
 
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
 from filare.flows import build_harness_from_files
 from filare.models.document import DocumentRepresentation
@@ -11,6 +11,7 @@ from filare.models.page import (
     BOMPage,
     CutPage,
     HarnessPage,
+    PageBase,
     PageType,
     TerminationPage,
     TitlePage,
@@ -18,16 +19,16 @@ from filare.models.page import (
 
 
 def parse(
-    inp: List[Path],
-    metadata_files: List[Path],
-    return_types: Union[None, str, Tuple[str]] = None,
-    output_formats: Union[None, str, Tuple[str]] = None,
-    output_dir: Path = None,
+    inp: Sequence[Path],
+    metadata_files: Sequence[Path],
+    return_types: Union[None, str, Sequence[str]] = None,
+    output_formats: Union[None, str, Sequence[str]] = None,
+    output_dir: Optional[Path] = None,
     extra_metadata: Dict = {},
     shared_bom: Dict = {},
-    output_name_override: str = None,
+    output_name_override: Optional[str] = None,
     connector_view: str = "detailed",
-    metadata_output_name: str = None,
+    metadata_output_name: Optional[str] = None,
     update_shared_bom: bool = True,
 ) -> Any:
     """
@@ -64,6 +65,8 @@ def _build_document_representation(harness) -> DocumentRepresentation:
         elif hasattr(harness.metadata, "dict"):
             metadata_dict = harness.metadata.dict()
         metadata_dict = _make_jsonable(metadata_dict)
+    if not isinstance(metadata_dict, dict):
+        metadata_dict = {}
     notes_text = str(harness.notes) if getattr(harness, "notes", None) else None
     options_dict = {}
     if hasattr(harness, "options"):
@@ -72,11 +75,24 @@ def _build_document_representation(harness) -> DocumentRepresentation:
         elif hasattr(harness.options, "dict"):
             options_dict = harness.options.dict()
         options_dict = _make_jsonable(options_dict)
-    pages = [
+    if not isinstance(options_dict, dict):
+        options_dict = {}
+    formats_value = options_dict.get("formats")
+    if isinstance(formats_value, list):
+        page_formats = formats_value
+    elif isinstance(formats_value, tuple):
+        page_formats = list(formats_value)
+    elif isinstance(formats_value, str):
+        page_formats = [formats_value]
+    else:
+        page_formats = []
+    page_formats = [str(fmt) for fmt in page_formats]
+
+    pages: List[PageBase] = [
         HarnessPage(
             type=PageType.harness,
             name=getattr(getattr(harness, "metadata", None), "name", ""),
-            formats=options_dict.get("formats", []),
+            formats=page_formats,
         )
     ]
     pages.append(TitlePage(type=PageType.title, name="titlepage"))

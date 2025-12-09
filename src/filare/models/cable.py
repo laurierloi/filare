@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Sequence, Union
+from typing import Any, Dict, List, Optional, Sequence, Union, cast
 
 from pydantic import Field, field_validator, model_validator
 
@@ -15,6 +15,7 @@ from filare.models.dataclasses import (  # noqa: F401
     WireClass,
 )
 from filare.models.hypertext import MultilineHypertext
+from filare.models.image import Image
 from filare.models.numbers import NumberAndUnit
 from filare.models.types import BomCategory, QtyMultiplierCable  # noqa: F401
 
@@ -79,30 +80,42 @@ class CableModel(GraphicalComponentModel):
         return self
 
     def to_cable(self) -> Cable:
-        kwargs = dict(
+        type_value = cast(Optional[MultilineHypertext], self.type)
+        subtype_value = cast(Optional[MultilineHypertext], self.subtype)
+        color_value = cast(Optional[MultiColor], self.color)
+        image_value = cast(Optional[Image], self.image)
+        notes_value = cast(Optional[MultilineHypertext], self.notes)
+        additional_components = cast(List[Any], self.additional_components)
+        bgcolor_value = cast(Optional[SingleColor], self.bgcolor)
+        bgcolor_title_value = cast(Optional[SingleColor], self.bgcolor_title)
+        show_name_value = cast(Optional[bool], self.show_name)
+        shield_value: Union[bool, MultiColor] = (
+            self.shield
+            if isinstance(self.shield, (bool, MultiColor))
+            else MultiColor(self.shield)
+        )
+        return Cable(
             designator=self.designator,
-            type=self.type,
-            subtype=self.subtype,
-            color=self.color,
-            image=self.image,
-            notes=self.notes,
-            additional_components=self.additional_components,
-            bgcolor=self.bgcolor,
-            bgcolor_title=self.bgcolor_title,
-            show_name=self.show_name,
+            type=type_value,
+            subtype=subtype_value,
+            color=color_value,
+            image=image_value,
+            notes=notes_value,
+            additional_components=additional_components,
+            bgcolor=bgcolor_value,
+            bgcolor_title=bgcolor_title_value,
+            show_name=show_name_value,
             wirecount=self.wirecount,
-            shield=self.shield,
+            shield=shield_value,
             colors=self.colors,
             color_code=self.color_code,
             wirelabels=self.wirelabels,
-            gauge=self.gauge,
-            length=self.length,
+            gauge=cast(Optional[NumberAndUnit], self.gauge),
+            length=cast(Optional[NumberAndUnit], self.length),
             show_wirecount=self.show_wirecount,
             show_equiv=self.show_equiv,
+            category=BomCategory.CABLE,
         )
-        # defaults to cable category
-        kwargs["category"] = BomCategory.CABLE
-        return Cable(**kwargs)
 
 
 __all__ = [
