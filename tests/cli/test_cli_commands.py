@@ -1,7 +1,7 @@
 import textwrap
 
 import pytest
-from click.testing import CliRunner
+from typer.testing import CliRunner
 
 from filare import APP_NAME, __version__
 from filare.cli import cli
@@ -107,10 +107,10 @@ def test_cli_pdf_and_shared_bom_flow(monkeypatch, tmp_path):
     def fake_pdf_bundle(paths):
         calls["pdf_bundle"] = list(paths)
 
-    monkeypatch.setattr("filare.cli.wv.parse", fake_parse)
-    monkeypatch.setattr("filare.cli.build_shared_bom", fake_shared_bom)
-    monkeypatch.setattr("filare.cli.build_titlepage", fake_titlepage)
-    monkeypatch.setattr("filare.cli.build_pdf_bundle", fake_pdf_bundle)
+    monkeypatch.setattr("filare.cli.render.wv.parse", fake_parse)
+    monkeypatch.setattr("filare.cli.render.build_shared_bom", fake_shared_bom)
+    monkeypatch.setattr("filare.cli.render.build_titlepage", fake_titlepage)
+    monkeypatch.setattr("filare.cli.render.build_pdf_bundle", fake_pdf_bundle)
 
     result = runner.invoke(
         cli,

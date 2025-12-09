@@ -2,7 +2,7 @@ import textwrap
 
 import pytest
 
-from filare.cli import cli
+from filare.cli import cli, render_callback
 
 
 @pytest.mark.functional
@@ -73,7 +73,7 @@ def test_shared_bom_contains_both_harnesses(tmp_path, formats):
         )
     )
 
-    cli.callback(  # type: ignore[attr-defined]
+    render_callback(
         files=(harness_a, harness_b),
         formats=formats,
         components=(),

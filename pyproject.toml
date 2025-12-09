@@ -37,11 +37,12 @@ dependencies = [
     "weasyprint",
     "pydantic>=2,<3",
     "pydantic-settings>=2,<3",
+    "typer>=0.20.0",
 ]
 
 [project.scripts]
 filare = "filare.cli:cli"
-filare-qty = "filare.models.harness_quantity:qty_multipliers"
+filare-qty = "filare.cli.qty:cli"
 filare-check-overlap = "filare.tools.text_overlap:main"
 
 [project.optional-dependencies]

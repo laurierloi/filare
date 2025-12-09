@@ -6,7 +6,7 @@ from typing import Iterable, List, Optional
 import pytest
 import yaml
 
-from filare.cli import cli
+from filare.cli import cli, render_callback
 
 pytestmark = pytest.mark.skipif(
     shutil.which("dot") is None, reason="Graphviz dot executable not found"
@@ -55,7 +55,7 @@ def run_filare_cli(
                 link_target = scratch_dir / resources_dir.name
                 if not link_target.exists():
                     link_target.symlink_to(resources_dir.resolve())
-    cli.callback(  # type: ignore[attr-defined]
+    render_callback(
         files=tuple(files),
         formats=formats,
         components=(),

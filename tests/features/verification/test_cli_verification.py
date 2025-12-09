@@ -4,7 +4,7 @@ import textwrap
 import pytest
 import yaml
 
-from filare.cli import cli
+from filare.cli import cli, render_callback
 from filare.errors import FilareToolsException
 from filare.models.bom import BomEntry
 from filare.models.harness import Harness
@@ -69,7 +69,7 @@ def test_cli_generates_bom_and_document_representation(tmp_path):
     _write_metadata(metadata_path, pn="VERIF")
     _write_simple_harness(harness_path)
 
-    cli.callback(  # type: ignore[attr-defined]
+    render_callback(
         files=(harness_path,),
         formats="tb",  # harness BOM + shared BOM
         components=(),
@@ -173,7 +173,7 @@ def test_cli_shared_bom_scales_with_multiplier_file(tmp_path):
         )
     )
 
-    cli.callback(  # type: ignore[attr-defined]
+    render_callback(
         files=(harness_path,),
         formats="tb",
         components=(),
@@ -204,7 +204,7 @@ def test_multi_harness_html_and_shared_outputs(tmp_path):
     _write_simple_harness(harness_a)
     _write_simple_harness(harness_b)
 
-    cli.callback(  # type: ignore[attr-defined]
+    render_callback(
         files=(harness_a, harness_b),
         formats="hb",
         components=(),
@@ -244,7 +244,7 @@ def test_multi_harness_pdf_bundle(tmp_path):
     _write_simple_harness(harness_a)
     _write_simple_harness(harness_b)
 
-    cli.callback(  # type: ignore[attr-defined]
+    render_callback(
         files=(harness_a, harness_b),
         formats="hP",
         components=(),
@@ -287,7 +287,7 @@ def test_cli_skips_bom_when_disabled(tmp_path):
         )
     )
 
-    cli.callback(  # type: ignore[attr-defined]
+    render_callback(
         files=(harness_path,),
         formats="th",
         components=(),
@@ -334,7 +334,7 @@ def test_cli_split_sections_emit_split_files(tmp_path):
         )
     )
 
-    cli.callback(  # type: ignore[attr-defined]
+    render_callback(
         files=(harness_path,),
         formats="h",
         components=(),
@@ -431,7 +431,7 @@ def test_cli_additional_bom_items_included(tmp_path):
         )
     )
 
-    cli.callback(  # type: ignore[attr-defined]
+    render_callback(
         files=(harness_path,),
         formats="tb",
         components=(),
