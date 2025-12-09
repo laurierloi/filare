@@ -29,7 +29,7 @@ epilog = (
     + f", ".join([f"{key} ({value.upper()})" for key, value in format_codes.items()])
 )
 
-app = typer.Typer(
+run_app = typer.Typer(
     add_completion=True,
     no_args_is_help=True,
     context_settings={
@@ -162,8 +162,8 @@ def render_callback(
     )
 
 
-@app.callback(invoke_without_command=True)
-def render(
+@run_app.callback(invoke_without_command=True)
+def run(
     files: List[Path] = typer.Argument(
         ...,
         exists=True,
@@ -247,4 +247,4 @@ def render(
     )
 
 
-cli = app
+cli = run_app

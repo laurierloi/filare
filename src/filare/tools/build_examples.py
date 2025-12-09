@@ -99,6 +99,7 @@ def build_generated(groupkeys, output_base=None):
         try:
             cli(
                 [
+                    "run",
                     "--formats",
                     "ghpstb",  # no pdf for now
                     "--metadata",

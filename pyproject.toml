@@ -42,7 +42,7 @@ dependencies = [
 
 [project.scripts]
 filare = "filare.cli:cli"
-filare-qty = "filare.cli.qty:cli"
+filare-qty = "filare.cli:qty"
 filare-check-overlap = "filare.tools.text_overlap:main"
 
 [project.optional-dependencies]

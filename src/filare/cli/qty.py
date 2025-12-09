@@ -9,7 +9,7 @@ import typer
 
 from filare.models.harness_quantity import HarnessQuantity
 
-app = typer.Typer(
+qty_app = typer.Typer(
     add_completion=True,
     no_args_is_help=True,
     context_settings={"help_option_names": ["-h", "--help"]},
@@ -17,7 +17,7 @@ app = typer.Typer(
 )
 
 
-@app.callback(invoke_without_command=True)
+@qty_app.callback(invoke_without_command=True)
 def qty_multipliers(
     files: List[Path] = typer.Argument(
         ...,
@@ -48,4 +48,5 @@ def qty_multipliers(
     return harnesses.multipliers
 
 
-cli = app
+cli = qty_app
+app = qty_app
