@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import typer
 
-from . import qty as qty_module, render
+from . import qty as qty_module
+from . import render
 
 app = typer.Typer(
     name="filare",
