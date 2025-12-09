@@ -37,10 +37,21 @@ export XDG_CONFIG_HOME="${repo_root}/.config"
 mkdir -p "$XDG_CONFIG_HOME"
 echo "XDG_CONFIG_HOME set to: $XDG_CONFIG_HOME"
 
+export XDG_CACHE_HOME="${repo_root}/.cache"
+mkdir -p "$XDG_CACHE_HOME"
+echo "XDG_CACHE_HOME set to: $XDG_CACHE_HOME"
+
 # Make it super explicit for gh
 export GH_CONFIG_DIR="${XDG_CONFIG_HOME}/gh"
 mkdir -p "$GH_CONFIG_DIR"
 echo "GH_CONFIG_DIR set to: $GH_CONFIG_DIR"
+
+# Make it super explicit for pre-commit
+export PRE_COMMIT_HOME="${XDG_CONFIG_HOME}/pre-commit"
+mkdir -p "$PRE_COMMIT_HOME"
+echo "PRE_COMMIT_HOME set to: $PRE_COMMIT_HOME"
+
+
 
 # Resolve env file path
 if [[ -z "$ENV_FILE_ARG" ]]; then
@@ -65,7 +76,8 @@ source "$ENV_FILE"
 set +a
 
 # --- UV: ensure that the cache is always the same
-export UV_CACHE_DIR="${repo_root}/.uv-cache"
+UV_CACHE_DIR="${repo_root}/.uv-cache"
+export UV_CACHE_DIR
 mkdir -p "$UV_CACHE_DIR"
 echo "UV cache directory set to: $UV_CACHE_DIR"
 

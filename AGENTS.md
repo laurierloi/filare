@@ -80,24 +80,24 @@ As an agent, you MUST NOT run `uv venv` or `uv sync`.
 ### Add packages
 
 ```bash
-uv add <package>
+source scripts/agent-setup.sh >/dev/null && uv add <package>
 ```
 
 ### Add dev package
 
-uv add --group dev <package>
+source scripts/agent-setup.sh >/dev/null && uv add --group dev <package>
 
 ### Run commands
 
 ```bash
-uv run filare <file>
-uv run pytest
+source scripts/agent-setup.sh >/dev/null && uv run filare <file>
+source scripts/agent-setup.sh >/dev/null && uv run pytest
 ```
 
 ### Build examples
 
 ```bash
-uv run python src/filare/tools/build_examples.py
+source scripts/agent-setup.sh >/dev/null && uv run python src/filare/tools/build_examples.py
 ```
 
 ### Restricted Commands
@@ -195,9 +195,9 @@ The commit message should be structured as follows:
   - Run a Python entrypoint or script: `uv run <command>`
   - Run tests/coverage: `uv run pytest`
   - Avoid `pip`, `python -m venv`, or direct `python`/`pytest` calls; route everything through `uv venv`/`uv run`.
-- Quick sanity run: `uv venv; uv sync; uv run filare examples/demo01.yml -f hpst -o outputs` (HTML/PNG/SVG/TSV). Add `-c examples/components.yml` or `-d metadata.yml` as needed.
-- For manual BOM scaling checks: `uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
-- Before committing, generate all examples/tutorials via the script used in CI: `uv run --no-sync python src/filare/tools/build_examples.py` (then stage the regenerated outputs if needed).
+- Quick sanity run: `source scripts/agent-setup.sh >/dev/null && uv run filare examples/demo01.yml -f hpst -o outputs` (HTML/PNG/SVG/TSV). Add `-c examples/components.yml` or `-d metadata.yml` as needed.
+- For manual BOM scaling checks: `source scripts/agent-setup.sh >/dev/null && uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
+- Before committing, generate all examples/tutorials via the script used in CI: `source scripts/agent-setup.sh >/dev/null && uv run --no-sync python src/filare/tools/build_examples.py` (then stage the regenerated outputs if needed).
 - When you change tests, rerun the relevant pytest suite before committing to keep coverage green.
 - Keep `RefactorPlan.txt` up to date: cross out tasks when fully done, add follow-up tasks when work is partial, and record any new features/requests the operator suggests.
 - When doing a series of change, track them in <change_name>.temp and keep that file updated as you
@@ -206,7 +206,6 @@ The commit message should be structured as follows:
 ## Coding Style & Naming Conventions
 
 - Python 3.9+; 4-space indentation; follow existing naming (modules, lowercase functions).
-- Format with Black and organize imports with isort. Run `./cleanup.sh` to apply autoflake + isort + black across `src/filare/`.
 - Docstrings follow Google style; keep CLI help strings succinct and user-facing.
 - Template and asset names stay lowercase with hyphens or underscores; keep YAML keys lowercase.
 - Keep docs coherent with code: when modifying metadata, flows, parser, or render behavior, update `docs/`, `docs/dev/`, and `docs/graphs/` accordingly (metadata guides, syntax, diagrams).
@@ -224,15 +223,14 @@ Here is the **short, imperative, agent-style version** to paste directly into **
 
 You MUST run:
 
-````bash
-./agent_setup.sh [env_file]
+```bash
+source scripts/agent-setup.sh
+```
 before executing any Git or GitHub commands.
 
-If no env_file is given, it defaults to .env at the repo root.
+The env file <.env> MUST exist and SHOULD define GH_TOKEN for GitHub CLI auth.
 
-The env file MUST exist and SHOULD define GH_TOKEN for GitHub CLI auth.
-
-If agent_setup.sh fails, you MUST NOT proceed with any Git or GitHub operations.
+If `source scripts/agent-setup.sh` fails, you MUST NOT proceed with any Git or GitHub operations.
 
 This enforces a non-interactive, editorless Git configuration.
 
@@ -241,20 +239,20 @@ This enforces a non-interactive, editorless Git configuration.
 - You MUST provide commit messages explicitly:
 
   ```bash
-  git commit -m "<message>"
+  source scripts/agent-setup.sh >/dev/null && git commit -m "<message>"
 ````
 
 - You MUST merge without opening an editor:
 
   ```bash
-  git merge <branch> --no-edit
+  source scripts/agent-setup.sh >/dev/null && git merge <branch> --no-edit
   ```
 
 - You MUST NOT use interactive rebases (`-i`).
   Use:
 
   ```bash
-  git rebase <base> --no-edit
+  source scripts/agent-setup.sh >/dev/null && git rebase <base> --no-edit
   ```
 
 ### Forbidden Behavior
@@ -272,8 +270,8 @@ If a Git command may open an editor, you MUST rewrite it to a non-interactive fo
 - When executing a multi-step plan, complete and commit each step. If no operator input is needed and steps remain, proceed directly to the next step after each commit.
 - PR creation flow (target `beta`):
   - Rebase on `origin/beta`, push your branch (`<role>/<desc>`).
-  - Ensure that `source scripts/agent-setup.sh` has been sourced
-  - Create PR: `gh pr create --base beta --head <branch> --title "<type>: <summary>" --body-file pr_body_<branch>.md.temp`.
+  - Ensure that `source scripts/agent-setup.sh` is sourced in the same command
+  - Create PR: `source scripts/agent-setup.sh >/dev/null && gh pr create --base beta --head <branch> --title "<type>: <summary>" --body-file pr_body_<branch>.md.temp`.
   - `main` is only for promotion PRs from `beta` after validation; add the `validated` label for beta→main promotion.
 
 ## Branding Notes
@@ -360,3 +358,5 @@ Do **not**:
 This base file is shared by all agents. Role-specific guides extend this one.
 The role-specific guide is found in agents/AGENT.<ROLE>.md
 If you do not know your role, always ask the operator
+
+ALWAYS `source scripts/agent-setup.sh >/dev/null && <your command>` when running a command. It ensures the environment is properly setup for the agent command.
