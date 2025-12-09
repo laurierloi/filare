@@ -69,6 +69,19 @@ else
   echo "gh: GitHub CLI not found; skipping GitHub authentication."
 fi
 
+# --- UV: ensure that the cache is always the same
+export UV_CACHE_DIR="${repo_root}/.uv-cache"
+mkdir -p "$UV_CACHE_DIR"
+echo "UV cache directory set to: $UV_CACHE_DIR"
+
+# --- UV: ensure that the environment is configured
+if [[ ! -d ".venv"  ]]; then
+  echo "No .venv found. Initializing environment with uv sync..."
+  uv sync --group dev
+else
+  echo ".venv already present. Skipping uv sync."
+fi
+
+
 # --- Pre-commit: ensure that it is setup
-uv sync --group dev
 uv run pre-commit install

@@ -52,29 +52,40 @@ Always use uv for Python commands in this project (virtualenv, installs, running
 
 Never write to or rely on the user’s global cache (e.g. /home/<user>/.cache/uv).
 
-When you call uv, always set a project-local cache directory:
+### UV Cache Handling (MANDATORY)
 
-Example (preferred):
+The UV cache directory is **preconfigured** by `scripts/agent-setup.sh`.
 
-export UV_CACHE_DIR="${PWD}/.uv-cache"
-or prefix commands with:
-UV_CACHE_DIR=.uv-cache uv run …
+You MUST NOT:
+
+- Set `UV_CACHE_DIR`
+- Override `UV_CACHE_DIR`
+- Prefix commands with any custom cache path
+- Write to `$HOME/.cache/uv`
+
+You MUST rely entirely on the cache configured by:
+
+```bash
+scripts/agent-setup.sh
+```
+
+All `uv run` commands automatically use this configured cache.
 
 Do not use sudo and do not try to fix permissions in $HOME (e.g. /home/<user>/.cache/uv). If you hit a
 permission error there, stop and report it.
 
-### Setup
-
-```bash
-uv venv
-uv sync
-```
+The environment is assumed to be already bootstrapped (`.venv` created and synced).
+As an agent, you MUST NOT run `uv venv` or `uv sync`.
 
 ### Add packages
 
 ```bash
 uv add <package>
 ```
+
+### Add dev package
+
+uv add --group dev <package>
 
 ### Run commands
 
@@ -86,9 +97,17 @@ uv run pytest
 ### Build examples
 
 ```bash
-uv sync --group dev
-uv run --no-sync python src/filare/tools/build_examples.py
+uv run python src/filare/tools/build_examples.py
 ```
+
+### Restricted Commands
+
+You MUST NEVER:
+
+- Call `uv pip install`
+- Call `uv venv`
+- Call `uv sync`
+- Call `uv sync --group dev` or `--all-groups`
 
 ## 4. Coding Style & Conventions
 
@@ -182,7 +201,7 @@ The commit message should be structured as follows:
 - When you change tests, rerun the relevant pytest suite before committing to keep coverage green.
 - Keep `RefactorPlan.txt` up to date: cross out tasks when fully done, add follow-up tasks when work is partial, and record any new features/requests the operator suggests.
 - When doing a series of change, track them in <change_name>.temp and keep that file updated as you
-	progress
+  progress
 
 ## Coding Style & Naming Conventions
 
