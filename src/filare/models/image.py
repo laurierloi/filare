@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from filare.models.hypertext import MultilineHypertext
 from filare.models.colors import SingleColor
+from filare.models.hypertext import MultilineHypertext
 
 
 def aspect_ratio(image_src):
@@ -25,8 +25,8 @@ class Image:
     src: str
     scale: str = ""
     # Attributes of the image cell <td> containing the image:
-    width: int = 0
-    height: int = 0
+    width: Union[int, float] = 0
+    height: Union[int, float] = 0
     fixedsize: bool = False
     bgcolor: Optional[SingleColor] = None
     # Contents of the text cell <td> just below the image cell:
@@ -43,7 +43,10 @@ class Image:
 
         if not self.fixedsize:
             # Default True if any dimension specified unless self.scale also is specified.
-            self.fixedsize = (self.width or self.height) and self.scale in ["", None]
+            self.fixedsize = bool(self.width or self.height) and self.scale in [
+                "",
+                None,
+            ]
 
         if self.scale in [None, ""]:
             if not self.width and not self.height:

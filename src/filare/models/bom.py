@@ -1,10 +1,10 @@
-from typing import ClassVar, Dict, List, Union
-
 import logging
+from typing import ClassVar, Dict, List, SupportsFloat, Union
 
 import tabulate as tabulate_module
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from filare.errors import UnsupportedModelOperation
 from filare.models.numbers import NumberAndUnit
 from filare.models.partnumber import PartNumberInfo
 from filare.models.table_models import (
@@ -15,7 +15,6 @@ from filare.models.table_models import (
     paginate_rows,
 )
 from filare.models.utils import remove_links
-from filare.errors import UnsupportedModelOperation
 from filare.render.templates import get_template
 
 
@@ -26,7 +25,7 @@ class BomEntryBase(BaseModel):
     partnumbers: PartNumberInfo
     id: str = ""
     amount: Union[NumberAndUnit, None] = None
-    qty_multiplier: Union[int, float, object] = 1
+    qty_multiplier: Union[int, float, SupportsFloat] = 1
     description: str = ""
     category: str = ""
     ignore_in_bom: bool = False

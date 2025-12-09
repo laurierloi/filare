@@ -2,11 +2,11 @@ import logging
 from dataclasses import asdict, dataclass, field, fields
 from enum import Enum
 from pathlib import Path
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union, cast
 
+from filare.models.harness_quantity import HarnessQuantity
 from filare.models.metadata import PagesMetadata
 from filare.models.table_models import letter_suffix
-from filare.models.harness_quantity import HarnessQuantity
 from filare.render.templates import get_template
 
 TABLE_COLUMNS = ["sheet", "page", "quantity", "notes"]
@@ -55,32 +55,36 @@ class IndexTableRow:
 @dataclass(frozen=True)
 class IndexTable:
     rows: List[IndexTableRow]
-    header: Tuple[str]
+    header: Tuple[str, ...]
 
     @staticmethod
-    def use_quantity_column(metadata: PagesMetadata):
+    def use_quantity_column(metadata: Optional[PagesMetadata]):
         """Return True if quantity column should be shown (qty multipliers enabled)."""
         return metadata is not None and metadata.use_qty_multipliers
 
     @staticmethod
-    def get_index_table_header(metadata: PagesMetadata = None, include_content=False):
+    def get_index_table_header(
+        metadata: Optional[PagesMetadata] = None, include_content: bool = False
+    ) -> Tuple[str, ...]:
         """Build the header tuple, optionally skipping quantity or adding content."""
         if include_content:
             return ("Name", "Content", "Page")
         skip = []
         if not IndexTable.use_quantity_column(metadata):
             skip.append("quantity")
-        return (s.capitalize() for s in TABLE_COLUMNS if s not in skip)
+        return tuple(s.capitalize() for s in TABLE_COLUMNS if s not in skip)
 
     # TODO: how do we actually want to support this?
     @classmethod
     def from_pages_metadata(
         cls,
-        metadata: PagesMetadata,
+        metadata: Optional[PagesMetadata],
         options=None,
-        paginated_pages: Dict[str, List[str]] = None,
-    ):
+        paginated_pages: Optional[Dict[str, List[str]]] = None,
+    ) -> "IndexTable":
         """Construct an index table from rendered pages metadata."""
+        if metadata is None:
+            return cls(rows=[], header=cls.get_index_table_header())
         # detect split pages
         split_types = [
             ("bom", "BOM"),
@@ -110,12 +114,13 @@ class IndexTable:
         # harness and split rows
         has_split = False
         for index, row in enumerate(metadata.output_names, start=2):
-            base_link = str(Path(row).with_suffix(".html"))
+            row_name = str(row)
+            base_link = str(Path(row_name).with_suffix(".html"))
             base_row = IndexTableRow(
                 sheet=index,
-                page=row,
+                page=row_name,
                 quantity=1,
-                notes=metadata.pages_notes.get(row, ""),
+                notes=metadata.pages_notes.get(row_name, ""),
                 use_quantity=cls.use_quantity_column(metadata),
                 content="Harness",
                 link=base_link,
@@ -127,23 +132,26 @@ class IndexTable:
                     if paginated_pages is not None
                     else None
                 )
-                candidates: List[Union[Path, str]] = []
+                candidates: List[Path] = []
                 if planned_suffixes:
                     candidates = [
-                        f"{row}.{suffix}"
-                        + (
-                            f".{page_suffix or letter_suffix(idx)}"
-                            if len(planned_suffixes) > 1
-                            else ""
+                        metadata.output_dir
+                        / (
+                            f"{row_name}.{suffix}"
+                            + (
+                                f".{page_suffix or letter_suffix(idx)}"
+                                if len(planned_suffixes) > 1
+                                else ""
+                            )
+                            + ".html"
                         )
-                        + ".html"
                         for idx, page_suffix in enumerate(planned_suffixes)
                     ]
                 else:
                     candidates = sorted(
-                        metadata.output_dir.glob(f"{row}.{suffix}*.html"),
+                        metadata.output_dir.glob(f"{row_name}.{suffix}*.html"),
                         key=lambda p: (
-                            0 if p.stem == f"{row}.{suffix}" else 1,
+                            0 if p.stem == f"{row_name}.{suffix}" else 1,
                             p.stem,
                         ),
                     )
@@ -155,14 +163,10 @@ class IndexTable:
                     suffix_letter = (
                         letter_suffix(idx) if use_letters and total > 1 else ""
                     )
-                    page_name = f"{row}.{suffix}" + (
+                    page_name = f"{row_name}.{suffix}" + (
                         f".{suffix_letter}" if suffix_letter else ""
                     )
-                    link = (
-                        str(candidate)
-                        if isinstance(candidate, str)
-                        else str(candidate.relative_to(metadata.output_dir))
-                    )
+                    link = str(candidate.relative_to(metadata.output_dir))
                     rows.append(
                         IndexTableRow(
                             sheet=index,
@@ -176,7 +180,7 @@ class IndexTable:
 
         if not has_split:
             header = cls.get_index_table_header(metadata, include_content=False)
-            qty_multipliers = None
+            qty_multipliers: Optional[Dict[str, int]] = None
             if cls.use_quantity_column(metadata):
                 harnesses = HarnessQuantity(
                     metadata.files,
@@ -184,28 +188,33 @@ class IndexTable:
                     output_dir=metadata.output_dir,
                 )
                 harnesses.fetch_qty_multipliers_from_file()
-                qty_multipliers = harnesses.multipliers
+                qty_multipliers = cast(Dict[str, int], harnesses.multipliers)
 
             rows = []
             for index, row in enumerate(metadata.output_names):
-                if str(row) == "titlepage":
+                row_name = str(row)
+                if row_name == "titlepage":
                     rows.append(
                         IndexTableRow(
                             sheet=1,
-                            page=metadata.titlepage,
+                            page=str(metadata.titlepage),
                             quantity="",
                             notes="",
                             use_quantity=cls.use_quantity_column(metadata),
                         )
                     )
                     continue
-                quantity = qty_multipliers[row] if qty_multipliers is not None else 1
+                quantity = (
+                    qty_multipliers.get(row_name, 1)
+                    if qty_multipliers is not None
+                    else 1
+                )
                 rows.append(
                     IndexTableRow(
                         sheet=index + 1,
-                        page=row,
+                        page=row_name,
                         quantity=quantity,
-                        notes=metadata.pages_notes.get(row, ""),
+                        notes=metadata.pages_notes.get(row_name, ""),
                         use_quantity=cls.use_quantity_column(metadata),
                     )
                 )

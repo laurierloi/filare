@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from click.testing import CliRunner
+from typer.testing import CliRunner
 
-from filare.models.harness_quantity import qty_multipliers
+from filare.cli.qty import app as qty_multipliers
 
 
 def test_qty_multipliers_cli_reads_existing(tmp_path: Path):

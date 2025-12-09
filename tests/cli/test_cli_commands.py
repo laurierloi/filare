@@ -1,7 +1,7 @@
 import textwrap
 
 import pytest
-from click.testing import CliRunner
+from typer.testing import CliRunner
 
 from filare import APP_NAME, __version__
 from filare.cli import cli
@@ -53,7 +53,7 @@ def _write_minimal_files(tmp_path):
 
 def test_cli_help_succeeds():
     runner = CliRunner()
-    result = runner.invoke(cli, ["--help"])
+    result = runner.invoke(cli, ["run", "--help"])
     assert result.exit_code == 0
     assert "Output formats" in result.output
 
@@ -63,7 +63,7 @@ def test_cli_version_prints(tmp_path):
     dummy_file = tmp_path / "dummy.yml"
     dummy_file.write_text("connectors: {}")  # satisfies required files arg
 
-    result = runner.invoke(cli, ["-V", str(dummy_file)])
+    result = runner.invoke(cli, ["run", "-V", str(dummy_file)])
     assert result.exit_code == 0
     assert APP_NAME in result.output
     assert __version__ in result.output
@@ -76,7 +76,16 @@ def test_cli_generates_outputs(tmp_path):
 
     result = runner.invoke(
         cli,
-        [str(harness_path), "-d", str(metadata_path), "-f", "t", "-o", str(tmp_path)],
+        [
+            "run",
+            str(harness_path),
+            "-d",
+            str(metadata_path),
+            "-f",
+            "t",
+            "-o",
+            str(tmp_path),
+        ],
     )
 
     assert result.exit_code == 0, result.output
@@ -107,14 +116,15 @@ def test_cli_pdf_and_shared_bom_flow(monkeypatch, tmp_path):
     def fake_pdf_bundle(paths):
         calls["pdf_bundle"] = list(paths)
 
-    monkeypatch.setattr("filare.cli.wv.parse", fake_parse)
-    monkeypatch.setattr("filare.cli.build_shared_bom", fake_shared_bom)
-    monkeypatch.setattr("filare.cli.build_titlepage", fake_titlepage)
-    monkeypatch.setattr("filare.cli.build_pdf_bundle", fake_pdf_bundle)
+    monkeypatch.setattr("filare.cli.render.wv.parse", fake_parse)
+    monkeypatch.setattr("filare.cli.render.build_shared_bom", fake_shared_bom)
+    monkeypatch.setattr("filare.cli.render.build_titlepage", fake_titlepage)
+    monkeypatch.setattr("filare.cli.render.build_pdf_bundle", fake_pdf_bundle)
 
     result = runner.invoke(
         cli,
         [
+            "run",
             str(harness_path),
             "-f",
             "Phb",

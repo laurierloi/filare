@@ -2,9 +2,9 @@ from pathlib import Path
 
 from filare.flows.build_harness import _resolve_diagram_svg
 from filare.models.harness import Harness
+from filare.models.metadata import PageTemplateConfig, PageTemplateTypes
 from filare.models.notes import Notes
 from filare.models.options import ImportedSVGOptions, PageOptions
-from filare.models.metadata import PageTemplateConfig, PageTemplateTypes
 
 
 def test_resolves_imported_svg_path(tmp_path):

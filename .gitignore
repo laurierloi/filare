@@ -3,6 +3,9 @@
 desktop.ini
 Thumbs.db
 
+# Secrets
+.env*
+
 # Development aids
 .idea/
 temp/
@@ -12,6 +15,8 @@ tags
 .coverage
 .temp
 *.temp
+.config/
+.cache/
 
 # Build/compile/release artifacts
 build/

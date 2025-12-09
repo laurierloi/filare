@@ -1,5 +1,5 @@
-from filare.models.connector import GraphicalComponentModel
 from filare.models.colors import MultiColor
+from filare.models.connector import GraphicalComponentModel
 
 
 def test_graphical_component_model_to_dataclass():

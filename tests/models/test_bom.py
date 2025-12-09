@@ -1,11 +1,13 @@
-import pytest
 import logging
 
-from filare.models.bom import BomContent, BomEntry, BomRenderOptions, BomRender
-from filare.models.partnumber import PartNumberInfo
-from filare.models.numbers import NumberAndUnit
-from filare.models.types import BomCategory
+import pytest
+from pydantic import ValidationError
+
 from filare.errors import UnsupportedModelOperation
+from filare.models.bom import BomContent, BomEntry, BomRender, BomRenderOptions
+from filare.models.numbers import NumberAndUnit
+from filare.models.partnumber import PartNumberInfo
+from filare.models.types import BomCategory
 
 
 def test_bom_entry_scale_per_harness(bom_entry_sample):
@@ -32,14 +34,13 @@ def test_bom_content_render_filters_columns():
 
 
 def test_bom_entry_scale_qty_invalid_multiplier_and_amount():
-    entry = BomEntry(
-        qty=NumberAndUnit(2, None),
-        amount=NumberAndUnit(3, "m"),
-        partnumbers=PartNumberInfo(pn="PN"),
-        qty_multiplier="bad",  # falls back to 1
-    )
-    assert entry.qty.number == 2
-    assert entry.amount.number == 3
+    with pytest.raises(ValidationError):
+        entry = BomEntry(
+            qty=NumberAndUnit(2, None),
+            amount=NumberAndUnit(3, "m"),
+            partnumbers=PartNumberInfo(pn="PN"),
+            qty_multiplier="bad",
+        )
 
 
 def test_bom_entry_add_and_designators_str():

@@ -21,7 +21,6 @@ from playwright.sync_api import Page, sync_playwright
 
 from filare.errors import FilareToolsException, ViewportParseError
 
-
 DEFAULT_VIEWPORT = (1280, 720)
 DEFAULT_WARN_THRESHOLD = 1.0
 DEFAULT_ERROR_THRESHOLD = 2.0

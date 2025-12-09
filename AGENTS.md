@@ -52,49 +52,68 @@ Always use uv for Python commands in this project (virtualenv, installs, running
 
 Never write to or rely on the user’s global cache (e.g. /home/<user>/.cache/uv).
 
-When you call uv, always set a project-local cache directory:
+### UV Cache Handling (MANDATORY)
 
-Example (preferred):
+The UV cache directory is **preconfigured** by `source scripts/agent-setup.sh`.
 
-export UV_CACHE_DIR="${PWD}/.uv-cache"
-or prefix commands with:
-UV_CACHE_DIR=.uv-cache uv run …
+You MUST NOT:
+
+- Set `UV_CACHE_DIR`
+- Override `UV_CACHE_DIR`
+- Prefix commands with any custom cache path
+- Write to `$HOME/.cache/uv`
+
+You MUST rely entirely on the cache configured by.
+
+```bash
+source scripts/agent-setup.sh
+```
+
+All `uv run` commands automatically use this configured cache.
 
 Do not use sudo and do not try to fix permissions in $HOME (e.g. /home/<user>/.cache/uv). If you hit a
 permission error there, stop and report it.
 
-### Setup
-
-```bash
-uv venv
-uv sync
-```
+The environment is assumed to be already bootstrapped (`.venv` created and synced).
+As an agent, you MUST NOT run `uv venv` or `uv sync`.
 
 ### Add packages
 
 ```bash
-uv add <package>
+source scripts/agent-setup.sh >/dev/null && uv add <package>
 ```
+
+### Add dev package
+
+source scripts/agent-setup.sh >/dev/null && uv add --group dev <package>
 
 ### Run commands
 
 ```bash
-uv run filare <file>
-uv run pytest
+source scripts/agent-setup.sh >/dev/null && uv run filare <file>
+source scripts/agent-setup.sh >/dev/null && uv run pytest
 ```
 
 ### Build examples
 
 ```bash
-uv sync --group dev
-uv run --no-sync python src/filare/tools/build_examples.py
+source scripts/agent-setup.sh >/dev/null && uv run python src/filare/tools/build_examples.py
 ```
+
+### Restricted Commands
+
+You MUST NEVER:
+
+- Call `uv pip install`
+- Call `uv venv`
+- Call `uv sync`
+- Call `uv sync --group dev` or `--all-groups`
 
 ## 4. Coding Style & Conventions
 
 - Python 3.9+
 - 4-space indentation
-- Black + isort via `./scripts/pre-commit.sh`
+- Black + isort via pre-commit
 - Google-style docstrings
 - Lowercase module/function names
 - Update docs when behaviors change
@@ -151,14 +170,15 @@ The commit message should be structured as follows:
 ### Repository
 
 - Remote lives on github
-- url is  https://github.com/laurierloi/filare
+- url is https://github.com/laurierloi/filare
 - page is https://laurierloi.github.io/filare/
-   - it is deployed from the gh-pages branch of the repo
+  - it is deployed from the gh-pages branch of the repo
 - pypi package is found at: https://pypi.org/project/filare/
 
 # Repository Guidelines
 
 ## Project Structure & Module Organization
+
 - Core library and CLI live in `src/filare/`; `cli.py` exposes `filare`/`filare-qty`, with rendering and BOM logic in `render/graphviz.py`, `render/html.py`, `render/output.py`, and helpers under `tools/`.
 - Documentation is under `docs/` (see `docs/README.md` and `docs/syntax.md`), with walkthroughs in `tutorial/` and ready-made YAML inputs in `examples/`.
 - Architecture/data-flow/model diagrams live in `docs/graphs/`; update the Mermaid sources and regenerate rendered outputs when code structure changes.
@@ -166,6 +186,7 @@ The commit message should be structured as follows:
 - Harness definitions for XSC live next door in `../xsc-harnesses`; treat them as downstream consumers built with the same Filare venv.
 
 ## Build, Test, and Development Commands
+
 - Always use the uv package manager for Python (env, installs, and command execution):
   - First-time bootstrap (or when deps change): `uv venv; uv sync`
   - Create venv: `uv venv` # Create venv before running any other command
@@ -174,39 +195,87 @@ The commit message should be structured as follows:
   - Run a Python entrypoint or script: `uv run <command>`
   - Run tests/coverage: `uv run pytest`
   - Avoid `pip`, `python -m venv`, or direct `python`/`pytest` calls; route everything through `uv venv`/`uv run`.
-- Quick sanity run: `uv venv; uv sync; uv run filare examples/demo01.yml -f hpst -o outputs` (HTML/PNG/SVG/TSV). Add `-c examples/components.yml` or `-d metadata.yml` as needed.
-- For manual BOM scaling checks: `uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
-- Keep `scripts/pre-commit.sh` aligned with CI: it must build a fresh uv venv, install deps, run black, prettier, pytest, and the example builds before you commit.
-- Before committing, generate all examples/tutorials via the script used in CI: `uv venv; uv sync --group dev; uv run --no-sync python src/filare/tools/build_examples.py` (then stage the regenerated outputs if needed).
-- Always run lint locally before committing; use `scripts/lint.sh` (black + prettier) so changes are applied, not just checked.
+- Quick sanity run: `source scripts/agent-setup.sh >/dev/null && uv run filare examples/demo01.yml -f hpst -o outputs` (HTML/PNG/SVG/TSV). Add `-c examples/components.yml` or `-d metadata.yml` as needed.
+- For manual BOM scaling checks: `source scripts/agent-setup.sh >/dev/null && uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
+- Before committing, generate all examples/tutorials via the script used in CI: `source scripts/agent-setup.sh >/dev/null && uv run --no-sync python src/filare/tools/build_examples.py` (then stage the regenerated outputs if needed).
 - When you change tests, rerun the relevant pytest suite before committing to keep coverage green.
 - Keep `RefactorPlan.txt` up to date: cross out tasks when fully done, add follow-up tasks when work is partial, and record any new features/requests the operator suggests.
+- When doing a series of change, track them in <change_name>.temp and keep that file updated as you
+  progress
 
 ## Coding Style & Naming Conventions
+
 - Python 3.9+; 4-space indentation; follow existing naming (modules, lowercase functions).
-- Format with Black and organize imports with isort. Run `./cleanup.sh` to apply autoflake + isort + black across `src/filare/`.
 - Docstrings follow Google style; keep CLI help strings succinct and user-facing.
 - Template and asset names stay lowercase with hyphens or underscores; keep YAML keys lowercase.
 - Keep docs coherent with code: when modifying metadata, flows, parser, or render behavior, update `docs/`, `docs/dev/`, and `docs/graphs/` accordingly (metadata guides, syntax, diagrams).
 
 ## Testing Guidelines
+
 - No full automated test harness is wired up; use YAMLs in `tests/` and `examples/` to spot rendering/BOM regressions.
 - Add a minimal YAML in `tests/rendering/` or `tests/bom/` for new behavior; keep file names numeric-prefixed (`04_newfeature.yml`).
 - Also build the XSC harness suite with the project venv (`cd ../xsc-harnesses && WIREVIZ=../Filare-codex1/venv-filare/bin/filare make`) to catch downstream breakage.
 - Ensure GraphViz (`dot -V`) and required fonts are available before debugging rendering differences.
 
+Here is the **short, imperative, agent-style version** to paste directly into **AGENTS.md**:
+
+## Non-Interactive Git Rules (MANDATORY)
+
+You MUST run:
+
+```bash
+source scripts/agent-setup.sh
+```
+before executing any Git or GitHub commands.
+
+The env file <.env> MUST exist and SHOULD define GH_TOKEN for GitHub CLI auth.
+
+If `source scripts/agent-setup.sh` fails, you MUST NOT proceed with any Git or GitHub operations.
+
+This enforces a non-interactive, editorless Git configuration.
+
+### Required Behavior
+
+- You MUST provide commit messages explicitly:
+
+  ```bash
+  source scripts/agent-setup.sh >/dev/null && git commit -m "<message>"
+````
+
+- You MUST merge without opening an editor:
+
+  ```bash
+  source scripts/agent-setup.sh >/dev/null && git merge <branch> --no-edit
+  ```
+
+- You MUST NOT use interactive rebases (`-i`).
+  Use:
+
+  ```bash
+  source scripts/agent-setup.sh >/dev/null && git rebase <base> --no-edit
+  ```
+
+### Forbidden Behavior
+
+- Opening any editor (vim, commit message editor, merge editor, rebase todo).
+- Running Git commands that rely on prompts or interactive editing.
+
+If a Git command may open an editor, you MUST rewrite it to a non-interactive form.
+
 ## Commit & Pull Request Guidelines
+
 - Open an issue first, then branch from `beta`. Use imperative, concise commit subjects and reference the issue number in the body when applicable.
 - Base PRs on `beta`; describe the user-visible change, mention new YAML examples/tests (including any XSC harness updates), and link related issues. Update `docs/syntax.md` when altering the YAML schema or outputs.
 - Avoid committing generated artifacts (diagrams, PDFs, tutorials) unless required; keep PRs focused and rebased for a clean history.
 - When executing a multi-step plan, complete and commit each step. If no operator input is needed and steps remain, proceed directly to the next step after each commit.
 - PR creation flow (target `beta`):
   - Rebase on `origin/beta`, push your branch (`<role>/<desc>`).
-  - Authenticate `gh` (`gh auth login --hostname github.com --git-protocol ssh --web` or `gh auth login --with-token <<<"$GH_TOKEN"` with a PAT that has `repo` scope; keep tokens only in untracked files like `.env`).
-  - Create PR: `gh pr create --base beta --head <branch> --title "<type>: <summary>" --body-file /tmp/body.md` (or use `gh api repos/<owner>/<repo>/pulls -f base=beta -f head=<branch> -f title=... -f body@path`).
+  - Ensure that `source scripts/agent-setup.sh` is sourced in the same command
+  - Create PR: `source scripts/agent-setup.sh >/dev/null && gh pr create --base beta --head <branch> --title "<type>: <summary>" --body-file pr_body_<branch>.md.temp`.
   - `main` is only for promotion PRs from `beta` after validation; add the `validated` label for beta→main promotion.
 
 ## Branding Notes
+
 - Use the Filare brand in user-facing text, CLI help, docs, and examples; keep legacy `filare` names only where required for compatibility.
 - Align naming, colors, and tone with `docs/brand.md`; refresh that file alongside any brand-affecting changes.
 
@@ -289,3 +358,5 @@ Do **not**:
 This base file is shared by all agents. Role-specific guides extend this one.
 The role-specific guide is found in agents/AGENT.<ROLE>.md
 If you do not know your role, always ask the operator
+
+ALWAYS `source scripts/agent-setup.sh >/dev/null && <your command>` when running a command. It ensures the environment is properly setup for the agent command.

@@ -4,14 +4,14 @@ from typing import List, Optional, Sequence, Union
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
+from filare.errors import ComponentValidationError
 from filare.models.configs import (
     CableConfig,
-    ConnectorConfig,
     ConnectionConfig,
+    ConnectorConfig,
     WireConfig,
 )
 from filare.models.numbers import NumberAndUnit
-from filare.errors import ComponentValidationError
 
 
 class TemplateBaseModel(BaseModel):
@@ -36,18 +36,22 @@ class TemplateBaseModel(BaseModel):
             raise ComponentValidationError(message) from exc
 
 
+def _to_color_list(value: Optional[Union[str, Sequence[str]]]) -> List[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [value]
+    return list(value)
+
+
 class TemplatePin(TemplateBaseModel):
     label: Optional[str] = None
     color: List[str] = Field(default_factory=list)
     id: Optional[str] = None
 
     @field_validator("color", mode="before")
-    def _coerce_color(cls, value: Union[str, Sequence[str]]) -> List[str]:
-        if value is None:
-            return []
-        if isinstance(value, str):
-            return [value]
-        return list(value)
+    def _coerce_color(cls, value: Optional[Union[str, Sequence[str]]]) -> List[str]:
+        return _to_color_list(value)
 
 
 class TemplateConnector(TemplateBaseModel):
@@ -62,14 +66,18 @@ class TemplateConnector(TemplateBaseModel):
         pins: List[TemplatePin] = []
         if cfg.pins:
             pins = [
-                TemplatePin(label=p.label, color=p.color or [], id=p.id)
+                TemplatePin(label=p.label, color=_to_color_list(p.color), id=p.id)
                 for p in cfg.pins
             ]
         elif cfg.pinlabels:
             colors = cfg.pincolors or []
+            if isinstance(colors, dict):
+                color_values = list(colors.values())
+            else:
+                color_values = colors
             for idx, label in enumerate(cfg.pinlabels):
-                color = colors[idx] if idx < len(colors) else []
-                pins.append(TemplatePin(label=label, color=color))
+                color_entry = color_values[idx] if idx < len(color_values) else []
+                pins.append(TemplatePin(label=label, color=_to_color_list(color_entry)))
         return cls(
             designator=cfg.designator,
             pins=pins,
@@ -85,12 +93,8 @@ class TemplateWire(TemplateBaseModel):
     length: Optional[NumberAndUnit] = None
 
     @field_validator("color", mode="before")
-    def _coerce_color(cls, value: Union[str, Sequence[str]]) -> List[str]:
-        if value is None:
-            return []
-        if isinstance(value, str):
-            return [value]
-        return list(value)
+    def _coerce_color(cls, value: Optional[Union[str, Sequence[str]]]) -> List[str]:
+        return _to_color_list(value)
 
     @field_validator("length", mode="before")
     def _coerce_length(
@@ -115,13 +119,13 @@ class TemplateCable(TemplateBaseModel):
                 wires.append(
                     TemplateWire(
                         label=wire.label,
-                        color=wire.color or [],
+                        color=_to_color_list(wire.color),
                         length=wire.length,
                     )
                 )
         elif cfg.colors:
             for color in cfg.colors:
-                wires.append(TemplateWire(color=color))
+                wires.append(TemplateWire(color=_to_color_list(color)))
         return cls(
             designator=cfg.designator,
             wires=wires,
@@ -142,13 +146,13 @@ class TemplateConnection(TemplateBaseModel):
         return list(value)
 
     @field_validator("color", mode="before")
-    def _coerce_color(cls, value: Union[str, Sequence[str]]) -> List[str]:
-        if value is None:
-            return []
-        if isinstance(value, str):
-            return [value]
-        return list(value)
+    def _coerce_color(cls, value: Optional[Union[str, Sequence[str]]]) -> List[str]:
+        return _to_color_list(value)
 
     @classmethod
     def from_config(cls, cfg: ConnectionConfig) -> "TemplateConnection":
-        return cls(endpoints=cfg.endpoints, net=cfg.net, color=cfg.color or [])
+        return cls(
+            endpoints=cfg.endpoints,
+            net=cfg.net,
+            color=_to_color_list(cfg.color),
+        )

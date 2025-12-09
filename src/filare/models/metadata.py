@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import logging
 from datetime import date, datetime
 from enum import Enum
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import (
     BaseModel,
@@ -17,9 +19,8 @@ USING_PYDANTIC_V1 = False
 
 
 import filare  # for doing filare.__file__
-
-from filare.models.types import PlainText
 from filare.errors import MetadataValidationError
+from filare.models.types import PlainText
 
 # Metadata can contain whatever is needed by the HTML generation/template.
 MetadataKeys = PlainText  # Literal['title', 'description', 'notes', ...]
@@ -158,6 +159,16 @@ class Orientations(str, Enum):
     portrait = "portrait"
 
 
+def _attach_default_orientation(values: Dict[str, Any]) -> Dict[str, Any]:
+    data = dict(values or {})
+    if data.get("orientation") is None:
+        size = data.get("sheetsize")
+        data["orientation"] = (
+            Orientations.portrait if size == SheetSizes.A4 else Orientations.landscape
+        )
+    return data
+
+
 class PageTemplateConfig(BaseModel):
     """Configuration for page template, size, and orientation."""
 
@@ -183,29 +194,14 @@ class PageTemplateConfig(BaseModel):
     if not USING_PYDANTIC_V1:
 
         @model_validator(mode="before")
-        def _default_orientation(cls, values):
-            data = dict(values or {})
-            if data.get("orientation") is None:
-                size = data.get("sheetsize")
-                data["orientation"] = (
-                    Orientations.portrait
-                    if size == SheetSizes.A4
-                    else Orientations.landscape
-                )
-            return data
+        def _default_orientation_before(cls, values: Dict[str, Any]) -> Dict[str, Any]:
+            return _attach_default_orientation(values)
 
     else:
 
-        @model_validator
-        def _default_orientation(cls, values):
-            if values.get("orientation") is None:
-                size = values.get("sheetsize")
-                values["orientation"] = (
-                    Orientations.portrait
-                    if size == SheetSizes.A4
-                    else Orientations.landscape
-                )
-            return values
+        @model_validator  # type: ignore[reportCallIssue]
+        def _default_orientation_after(cls, values: Dict[str, Any]) -> Dict[str, Any]:
+            return _attach_default_orientation(values)
 
     def has_bom_reversed(self):
         return self.name == PageTemplateTypes.din_6771

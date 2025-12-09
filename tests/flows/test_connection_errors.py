@@ -1,7 +1,7 @@
 import pytest
 
-from filare.flows.build_harness import _normalize_connection_set
 from filare.errors import MultipleSeparatorError
+from filare.flows.build_harness import _normalize_connection_set
 
 
 def test_connection_set_multiple_separators_error():

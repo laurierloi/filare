@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, List, Optional, Union
+from typing import Any, List, Optional, Union, cast
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from filare.models.colors import SingleColor
 from filare.models.dataclasses import Component, GraphicalComponent  # noqa: F401
 from filare.models.hypertext import MultilineHypertext
 from filare.models.numbers import NumberAndUnit
@@ -18,26 +19,25 @@ from filare.models.types import (  # noqa: F401
     QtyMultiplierConnector,
     Side,
 )
-from filare.models.colors import SingleColor
 
 
 class ComponentModel(BaseModel):
     """Pydantic representation of a Component with conversion helpers."""
 
     category: Optional[Union[BomCategory, str]] = None
-    type: Optional[Union[MultilineHypertext, str, List[str]]] = None
-    subtype: Optional[Union[MultilineHypertext, str, List[str]]] = None
+    type: Optional[MultilineHypertext] = None
+    subtype: Optional[MultilineHypertext] = None
     pn: Optional[str] = None
     manufacturer: Optional[str] = None
     mpn: Optional[str] = None
     supplier: Optional[str] = None
     spn: Optional[str] = None
-    qty: NumberAndUnit = NumberAndUnit(number=1, unit=None)
+    qty: Optional[NumberAndUnit] = NumberAndUnit(number=1, unit=None)
     amount: Optional[NumberAndUnit] = None
     ignore_in_bom: bool = False
     id: Optional[str] = None
     designators: List[str] = Field(default_factory=list)
-    parent: Optional[str] = None
+    parent: Optional[Union[str, int, float]] = None
     additional_components: List[Any] = Field(default_factory=list)
     qty_multiplier: Union[
         QtyMultiplierConnector, QtyMultiplierCable, int, float, str
@@ -79,6 +79,14 @@ class ComponentModel(BaseModel):
         if value is None:
             return None
         return SingleColor(value)
+
+    @field_validator("parent", mode="before")
+    def _coerce_parent(cls, value: Any) -> Optional[str]:
+        if value is None:
+            return None
+        if isinstance(value, (int, float)):
+            return str(value)
+        return value
 
     @field_validator("additional_components", mode="before")
     def _coerce_additional(cls, value: Any):
@@ -148,7 +156,7 @@ class ComponentModel(BaseModel):
             id=self.id,
             designators=list(self.designators),
             parent=self.parent,
-            additional_components=additional,
+            additional_components=list(cast(List[Component], additional)),
             qty_multiplier=self.qty_multiplier,
             bgcolor=self.bgcolor,
         )

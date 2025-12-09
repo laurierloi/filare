@@ -3,8 +3,8 @@ from pathlib import Path
 from filare.flows.render_outputs import render_harness_outputs
 from filare.models.harness import Harness
 from filare.models.metadata import Metadata, PageTemplateConfig
-from filare.models.options import PageOptions
 from filare.models.notes import Notes
+from filare.models.options import PageOptions
 
 
 def test_render_harness_outputs_generates_files(tmp_path):

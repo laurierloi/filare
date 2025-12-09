@@ -2,8 +2,8 @@ import json
 
 import pytest
 
-from filare.models.harness_quantity import HarnessQuantity
 from filare.errors import FilareToolsException
+from filare.models.harness_quantity import HarnessQuantity
 
 
 def test_quantity_multiplier_bad_json_includes_path(tmp_path):

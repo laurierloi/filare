@@ -17,7 +17,7 @@ class PinModel(BaseModel):
 
     index: Optional[int] = None
     id: Optional[Union[int, str]] = None
-    label: str = ""
+    label: Optional[str] = None
     color: Optional[MultiColor] = None
     parent: Optional[str] = None
     _anonymous: bool = False
@@ -46,10 +46,10 @@ class PinModel(BaseModel):
     def to_pinclass(self) -> PinClass:
         return PinClass(
             index=self.index or 0,
-            id=self.id or "",
+            id=self.id,
             label=self.label,
             color=self.color,
-            parent=self.parent or "",
+            parent=self.parent,
             _anonymous=self._anonymous,
             _simple=self._simple,
         )
@@ -60,7 +60,7 @@ class LoopModel(BaseModel):
 
     first: Union[PinModel, PinClass, Any]
     second: Union[PinModel, PinClass, Any]
-    side: Optional[Union[Side, str]] = None
+    side: Optional[Side] = None
     show_label: bool = True
     color: Optional[MultiColor] = None
 
@@ -111,11 +111,10 @@ class LoopModel(BaseModel):
             if isinstance(self.second, PinModel)
             else self.second
         )
-        side_val = self.side.name if isinstance(self.side, Side) else self.side
         return Loop(
             first=first_pin,
             second=second_pin,
-            side=side_val,
+            side=self.side,
             show_label=self.show_label,
             color=self.color,
         )
@@ -123,8 +122,8 @@ class LoopModel(BaseModel):
     @classmethod
     def from_loop(cls, loop: Loop) -> "LoopModel":
         return cls(
-            first=PinModel.from_pinclass(loop.first),
-            second=PinModel.from_pinclass(loop.second),
+            first=PinModel.from_pinclass(loop.first) if loop.first else None,
+            second=PinModel.from_pinclass(loop.second) if loop.second else None,
             side=loop.side,
             show_label=loop.show_label,
             color=loop.color,
@@ -168,12 +167,17 @@ class ConnectionModel(BaseModel):
 
     @classmethod
     def from_connection(cls, connection: Connection) -> "ConnectionModel":
+        def _to_model(value: Any):
+            if value is None:
+                return None
+            if isinstance(value, PinClass):
+                return PinModel.from_pinclass(value)
+            return value
+
         return cls(
-            from_=(
-                PinModel.from_pinclass(connection.from_) if connection.from_ else None
-            ),
-            via=(PinModel.from_pinclass(connection.via) if connection.via else None),
-            to=PinModel.from_pinclass(connection.to) if connection.to else None,
+            from_=_to_model(connection.from_),
+            via=_to_model(connection.via),
+            to=_to_model(connection.to),
         )
 
 

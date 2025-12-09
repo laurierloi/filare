@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from pathlib import Path
-from typing import List
+from typing import Any, List, Sequence, cast
 
 from weasyprint import HTML
 
 
-def generate_pdf_output(
-    filename_list: List[Path],
-):
+def generate_pdf_output(filename_list: Sequence[Path]):
     """Render a list of HTML files into a single PDF.
 
     Args:
@@ -22,17 +20,19 @@ def generate_pdf_output(
         FileNotFoundError: If an input HTML file is missing.
         Exception: If WeasyPrint fails to render or write the PDF.
     """
-    if isinstance(filename_list, Path):
-        filename_list = [filename_list]
-        output_path = filename_list[0].with_suffix(".pdf")
+    files: List[Path] = list(filename_list)
+    if not files:
+        return
+    if len(files) == 1:
+        output_path = files[0].with_suffix(".pdf")
     else:
-        output_dir = filename_list[0].parent
+        output_dir = files[0].parent
         output_path = (output_dir / output_dir.name).with_suffix(".pdf")
 
-    filepath_list = [f.with_suffix(".html") for f in filename_list]
+    filepath_list = [f.with_suffix(".html") for f in files]
 
     print(f"Generating pdf output: {output_path}")
     files_html = [HTML(path) for path in filepath_list]
     documents = [f.render() for f in files_html]
     all_pages = [p for doc in documents for p in doc.pages]
-    documents[0].copy(all_pages).write_pdf(output_path)
+    cast(Any, documents[0]).copy(all_pages).write_pdf(output_path)

@@ -221,6 +221,18 @@ Avoid mixing `pip` and `uv` inside the same environment to prevent dependency dr
 
 If you would like to contribute to this project, make sure you read the [contribution guidelines](CONTRIBUTING.md)!
 
+### Setting up pre-commit hooks (uv)
+
+Install the dev dependencies and register the hooks with uv (keeps cache local to the repo):
+
+```
+uv venv
+uv sync --group dev
+uv run pre-commit install
+```
+
+You can check the hooks locally with `uv run pre-commit run --all-files`.
+
 ## Usage
 
 ### How to run

@@ -2,9 +2,9 @@ import pytest
 
 from filare.errors import (
     ConnectionCountMismatchError,
+    FilareFlowException,
     MissingOutputSpecification,
     MultipleSeparatorError,
-    FilareFlowException,
 )
 from filare.flows.build_harness import (
     _normalize_connection_set,

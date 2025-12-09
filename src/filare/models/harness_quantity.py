@@ -3,8 +3,7 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional
 
-import click
-from pydantic import BaseModel, Field, ConfigDict, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class HarnessQuantity(BaseModel):
@@ -101,40 +100,3 @@ class HarnessQuantity(BaseModel):
     def retrieve_harness_qty_multiplier(self, bom_file):
         """Return the multiplier for the harness associated with a BOM file path."""
         return int(self[Path(Path(bom_file).stem).stem])
-
-
-@click.command(no_args_is_help=True)
-@click.argument(
-    "files",
-    type=click.Path(
-        exists=True,
-        readable=True,
-        dir_okay=False,
-        path_type=Path,
-    ),
-    nargs=-1,
-    required=True,
-)
-@click.option(
-    "-m",
-    "--multiplier-file-name",
-    default="quantity_multipliers.txt",
-    type=str,
-    help="name of file used to fetch or save the qty_multipliers",
-)
-@click.option(
-    "-f",
-    "--force-new",
-    is_flag=True,
-    type=bool,
-    help="if set, will always ask for new multipliers",
-)
-def qty_multipliers(files, multiplier_file_name, force_new):
-    """Click entrypoint to collect per-harness quantity multipliers."""
-    harnesses = HarnessQuantity(files, multiplier_file_name)
-    if force_new:
-        harnesses.qty_multipliers.unlink(missing_ok=True)
-
-    harnesses.fetch_qty_multipliers_from_file()
-    qty_multipliers = harnesses.multipliers
-    return

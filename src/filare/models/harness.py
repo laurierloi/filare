@@ -4,23 +4,23 @@ import logging
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Sequence, Union
 
 from graphviz import Graph
 
 from filare import APP_NAME, APP_URL, __version__
+from filare.errors import BomEntryHashError
 from filare.models import colors
 from filare.models.bom import BomContent, BomEntry, BomEntryBase, BomRenderOptions
-from filare.models.document import DocumentRepresentation
-from filare.models.dataclasses import Cable, Component, Connector
-from filare.models.types import BomCategory, Side
-from filare.models.connector import ConnectorModel
 from filare.models.cable import CableModel
 from filare.models.component import ComponentModel
+from filare.models.connector import ConnectorModel
+from filare.models.dataclasses import Cable, Component, Connector
+from filare.models.document import DocumentRepresentation
 from filare.models.metadata import Metadata
 from filare.models.notes import Notes
 from filare.models.options import PageOptions
-from filare.errors import BomEntryHashError
+from filare.models.types import BomCategory, Side
 from filare.render.assets import embed_svg_images, embed_svg_images_file
 from filare.render.graphviz import (
     gv_connector_loops,
@@ -29,8 +29,8 @@ from filare.render.graphviz import (
     gv_node_connector,
     set_dot_basics,
 )
-from filare.render.imported_svg import prepare_imported_svg
 from filare.render.html import generate_html_output
+from filare.render.imported_svg import prepare_imported_svg
 from filare.render.pdf import generate_pdf_output
 from filare.render.templates import get_template
 from filare.settings import settings
@@ -59,24 +59,30 @@ class Harness:
         conn = Connector(designator=designator, *args, **kwargs)
         self.connectors[designator] = conn
 
-    def add_connector_model(self, connector_model: ConnectorModel) -> None:
+    def add_connector_model(
+        self, connector_model: Union[ConnectorModel, Dict[str, Any]]
+    ) -> None:
         """Accept a ConnectorModel (or similar with to_connector()) and store the dataclass."""
-        if hasattr(connector_model, "to_connector"):
+        if isinstance(connector_model, dict):
+            conn = Connector(**connector_model)
+        elif isinstance(connector_model, ConnectorModel):
             conn = connector_model.to_connector()
         else:
-            conn = Connector(**connector_model)
+            raise TypeError("connector_model must be ConnectorModel or dict")
         self.connectors[conn.designator] = conn
 
     def add_cable(self, designator: str, *args, **kwargs) -> None:
         cbl = Cable(designator=designator, *args, **kwargs)
         self.cables[designator] = cbl
 
-    def add_cable_model(self, cable_model: CableModel) -> None:
+    def add_cable_model(self, cable_model: Union[CableModel, Dict[str, Any]]) -> None:
         """Accept a CableModel (or similar with to_cable()) and store the dataclass."""
-        if hasattr(cable_model, "to_cable"):
+        if isinstance(cable_model, dict):
+            cable = Cable(**cable_model)
+        elif isinstance(cable_model, CableModel):
             cable = cable_model.to_cable()
         else:
-            cable = Cable(**cable_model)
+            raise TypeError("cable_model must be CableModel or dict")
         self.cables[cable.designator] = cable
 
     def add_additional_bom_item(self, item: Union[dict, ComponentModel]) -> None:
@@ -154,7 +160,18 @@ class Harness:
                 else:
                     maybe_dict = _as_dict(entry)
                     base = BomEntryBase(**maybe_dict)
-                entry = BomEntry(**_as_dict(base))
+                entry = BomEntry(
+                    qty=base.qty,
+                    partnumbers=base.partnumbers,
+                    amount=base.amount,
+                    qty_multiplier=base.qty_multiplier,
+                    description=base.description,
+                    category=base.category,
+                    designators=list(base.designators),
+                    per_harness=dict(base.per_harness),
+                    ignore_in_bom=base.ignore_in_bom,
+                    id=base.id,
+                )
 
             if isinstance(entry, list):
                 for e in entry:
@@ -228,11 +245,11 @@ class Harness:
     def connect(
         self,
         from_name: str,
-        from_pin: (int, str),
+        from_pin: Union[int, str],
         via_name: str,
-        via_wire: (int, str),
+        via_wire: Union[int, str],
         to_name: str,
-        to_pin: (int, str),
+        to_pin: Union[int, str],
     ) -> None:
         def clean_pin(pin):
             """Allow for a pin of the form "PINLABEL__PINNUMBER"
@@ -338,7 +355,7 @@ class Harness:
 
                     raise CableWireResolutionError(
                         via_name,
-                        via_wire,
+                        str(via_wire),
                         "is defined both in colors and wirelabels, for different wires.",
                     )
                 # TODO: Maybe issue a warning if present in both lists
@@ -348,7 +365,7 @@ class Harness:
                     from filare.errors import CableWireResolutionError
 
                     raise CableWireResolutionError(
-                        via_name, via_wire, "is used for more than one wire."
+                        via_name, str(via_wire), "is used for more than one wire."
                     )
                 # list index starts at 0, wire IDs start at 1
                 via_wire = cable.colors.index(via_wire) + 1
@@ -357,19 +374,19 @@ class Harness:
                     from filare.errors import CableWireResolutionError
 
                     raise CableWireResolutionError(
-                        via_name, via_wire, "is used for more than one wire."
+                        via_name, str(via_wire), "is used for more than one wire."
                     )
                 via_wire = (
                     cable.wirelabels.index(via_wire) + 1
                 )  # list index starts at 0, wire IDs start at 1
 
         # perform the actual connection
-        if from_name is not None:
+        if from_name and from_name in self.connectors:
             from_con = self.connectors[from_name]
             from_pin_obj = from_con.pin_objects[from_pin]
         else:
             from_pin_obj = None
-        if to_name is not None:
+        if to_name and to_name in self.connectors:
             to_con = self.connectors[to_name]
             to_pin_obj = to_con.pin_objects[to_pin]
         else:
@@ -427,9 +444,9 @@ class Harness:
             for connection in cable._connections:
                 color, l1, l2, r1, r2 = gv_edge_wire(self, cable, connection)
                 dot.attr("edge", color=color)
-                if not (l1, l2) == (None, None):
+                if l1 is not None and l2 is not None:
                     dot.edge(l1, l2)
-                if not (r1, r2) == (None, None):
+                if r1 is not None and r2 is not None:
                     dot.edge(r1, r2)
 
         return dot
@@ -454,22 +471,24 @@ class Harness:
 
     @property
     def svg(self):
-        if getattr(self.options, "diagram_svg", None):
-            return prepare_imported_svg(self.options.diagram_svg)
+        diagram_svg_options = getattr(self.options, "diagram_svg", None)
+        if diagram_svg_options:
+            return prepare_imported_svg(diagram_svg_options)
         graph = self.graph
         return embed_svg_images(graph.pipe(format="svg").decode("utf-8"), Path.cwd())
 
     def output(
         self,
-        filename: (str, Path),
+        filename: Union[str, Path],
         view: bool = False,
         cleanup: bool = True,
-        fmt: tuple = ("html", "png", "svg", "tsv"),
+        fmt: Sequence[str] = ("html", "png", "svg", "tsv"),
     ) -> None:
         fmt_list = list(fmt)
         imported_svg_markup = None
-        if getattr(self.options, "diagram_svg", None):
-            imported_svg_markup = prepare_imported_svg(self.options.diagram_svg)
+        diagram_svg_options = getattr(self.options, "diagram_svg", None)
+        if diagram_svg_options:
+            imported_svg_markup = prepare_imported_svg(diagram_svg_options)
             if "png" in fmt_list:
                 logging.info(
                     "diagram_svg set; skipping PNG generation (SVG/HTML will use imported asset)"
@@ -478,28 +497,29 @@ class Harness:
 
         graph = self.graph
         rendered = set()
+        filename_path = Path(filename)
         for f in fmt_list:
             if f in ("png", "svg", "html"):
                 render_format = "svg" if f == "html" else f
                 if render_format in rendered:
                     continue
                 graph.format = render_format
-                graph.render(filename=filename, view=view, cleanup=cleanup)
+                graph.render(filename=filename_path, view=view, cleanup=cleanup)
                 rendered.add(render_format)
         if "svg" in fmt_list or "html" in fmt_list:
             if imported_svg_markup:
-                filename.with_suffix(".svg").write_text(imported_svg_markup)
+                filename_path.with_suffix(".svg").write_text(imported_svg_markup)
             else:
-                embed_svg_images_file(filename.with_suffix(".svg"))
+                embed_svg_images_file(filename_path.with_suffix(".svg"))
         if "gv" in fmt_list:
-            graph.save(filename=filename.with_suffix(".gv"))
+            graph.save(filename=filename_path.with_suffix(".gv"))
         if "tsv" in fmt_list and self.options.include_bom:
             bom_render = BomContent(self.bom).get_bom_render(
                 options=BomRenderOptions(
                     restrict_printed_lengths=False,
                 )
             )
-            filename.with_suffix(".tsv").open("w").write(bom_render.as_tsv())
+            filename_path.with_suffix(".tsv").open("w").write(bom_render.as_tsv())
         if "csv" in fmt_list:
             print("CSV output is not yet supported")
         if "html" in fmt_list:
@@ -516,7 +536,7 @@ class Harness:
                 rendered["termination_rows"] = term_rows
                 rendered["termination_table"] = term_html
             generate_html_output(
-                filename,
+                filename_path,
                 bom_for_html,
                 self.metadata,
                 self.options,
@@ -524,9 +544,9 @@ class Harness:
                 rendered,
             )
         if "pdf" in fmt_list:
-            generate_pdf_output(filename)
+            generate_pdf_output([filename_path])
         if "html" in fmt_list and "svg" not in fmt_list:
-            filename.with_suffix(".svg").unlink()
+            filename_path.with_suffix(".svg").unlink()
 
 
 __all__ = ["Harness"]
