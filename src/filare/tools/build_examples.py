@@ -7,14 +7,16 @@ import os
 import sys
 from pathlib import Path
 
-import click
+import typer
 import yaml
 
 script_path = Path(__file__).absolute()
 sys.path.insert(0, str(script_path.parent.parent.parent))  # to find filare module
 
 from filare import APP_NAME, __version__
-from filare.cli import cli
+import filare.cli as filare_cli
+
+cli = filare_cli.cli
 
 base_dir = script_path.parent.parent.parent.parent
 readme = "readme.md"
@@ -97,19 +99,20 @@ def build_generated(groupkeys, output_base=None):
         # collect and iterate input YAML files
         yaml_files = [f for f in collect_filenames("Building", key, input_extensions)]
         try:
-            res = cli(
+            cli(
                 [
+                    "run",
                     "--formats",
                     "ghpstb",  # no pdf for now
                     "--metadata",
-                    yaml_files[0].parent / "metadata.yml",
+                    str(yaml_files[0].parent / "metadata.yml"),
                     "--output-dir",
-                    dest_path,
+                    str(dest_path),
                     *[str(f) for f in yaml_files],
                 ]
             )
         except BaseException as e:
-            if str(e) != "0" and not isinstance(e, (click.ClickException, SystemExit)):
+            if str(e) != "0" and not isinstance(e, (typer.Exit, SystemExit)):
                 raise
 
         if build_readme:
