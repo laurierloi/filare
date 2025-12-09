@@ -496,6 +496,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#setting-up-pre-commit-hooks-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting up pre-commit hooks (uv)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1550,6 +1561,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#setting-up-pre-commit-hooks-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting up pre-commit hooks (uv)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1840,6 +1862,13 @@ uv sync
 </code></pre></div>
 <p>Avoid mixing <code>pip</code> and <code>uv</code> inside the same environment to prevent dependency drift. If you prefer a one-off install without a venv, use the container workflow above instead of system-wide <code>pip</code>.</p>
 <p>If you would like to contribute to this project, make sure you read the <a href="CONTRIBUTING/">contribution guidelines</a>!</p>
+<h3 id="setting-up-pre-commit-hooks-uv">Setting up pre-commit hooks (uv)<a class="headerlink" href="#setting-up-pre-commit-hooks-uv" title="Permanent link">&para;</a></h3>
+<p>Install the dev dependencies and register the hooks with uv (keeps cache local to the repo):</p>
+<div class="highlight"><pre><span></span><code>uv venv
+uv sync --group dev
+uv run pre-commit install
+</code></pre></div>
+<p>You can check the hooks locally with <code>uv run pre-commit run --all-files</code>.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <h3 id="how-to-run">How to run<a class="headerlink" href="#how-to-run" title="Permanent link">&para;</a></h3>
 <p>The Filare CLI (legacy <code>filare</code> alias still available) creates harness documents.

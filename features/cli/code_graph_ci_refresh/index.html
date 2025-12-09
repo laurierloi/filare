@@ -8,28 +8,24 @@
       
       
       
-        <link rel="canonical" href="https://laurierloi.github.io/Filare/architecture/">
+        <link rel="canonical" href="https://laurierloi.github.io/Filare/features/cli/code_graph_ci_refresh/">
       
       
-        <link rel="prev" href="..">
-      
-      
-        <link rel="next" href="../graphs/architecture/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
     
     
       
-        <title>Architecture - Filare Docs</title>
+        <title>CI: refresh code graphs via filare code graph - Filare Docs</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
       
       
 
@@ -48,7 +44,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -66,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#architecture-overview" class="md-skip">
+        <a href="#ci-refresh-code-graphs-via-filare-code-graph" class="md-skip">
           Skip to content
         </a>
       
@@ -82,7 +78,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Filare Docs" class="md-header__button md-logo" aria-label="Filare Docs" data-md-component="logo">
+    <a href="../../.." title="Filare Docs" class="md-header__button md-logo" aria-label="Filare Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -102,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Architecture
+              CI: refresh code graphs via filare code graph
             
           </span>
         </div>
@@ -192,7 +188,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Filare Docs" class="md-nav__button md-logo" aria-label="Filare Docs" data-md-component="logo">
+    <a href="../../.." title="Filare Docs" class="md-nav__button md-logo" aria-label="Filare Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -222,7 +218,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -246,37 +242,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Architecture
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../architecture/" class="md-nav__link">
         
   
   
@@ -292,81 +261,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#main-entry-points" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Main entry points
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#visual-map" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Visual map
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#end-to-end-flow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        End-to-end flow
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#extendingoperating" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Extending/operating
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#document-representation-and-hash-guard" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Document representation and hash guard
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -430,7 +324,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../graphs/architecture/" class="md-nav__link">
+      <a href="../../../graphs/architecture/" class="md-nav__link">
         
   
   
@@ -458,7 +352,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../graphs/data_flow/" class="md-nav__link">
+      <a href="../../../graphs/data_flow/" class="md-nav__link">
         
   
   
@@ -486,7 +380,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../graphs/models/" class="md-nav__link">
+      <a href="../../../graphs/models/" class="md-nav__link">
         
   
   
@@ -521,7 +415,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../syntax/" class="md-nav__link">
+      <a href="../../../syntax/" class="md-nav__link">
         
   
   
@@ -548,7 +442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tutorial/readme/" class="md-nav__link">
+      <a href="../../../tutorial/readme/" class="md-nav__link">
         
   
   
@@ -575,7 +469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/readme/" class="md-nav__link">
+      <a href="../../../examples/readme/" class="md-nav__link">
         
   
   
@@ -602,7 +496,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../advanced_image_usage/" class="md-nav__link">
+      <a href="../../../advanced_image_usage/" class="md-nav__link">
         
   
   
@@ -629,7 +523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../buildscript/" class="md-nav__link">
+      <a href="../../../buildscript/" class="md-nav__link">
         
   
   
@@ -656,7 +550,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ci/" class="md-nav__link">
+      <a href="../../../ci/" class="md-nav__link">
         
   
   
@@ -735,7 +629,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mermaid/" class="md-nav__link">
+      <a href="../../../mermaid/" class="md-nav__link">
         
   
   
@@ -822,7 +716,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dev/metadata_guide/" class="md-nav__link">
+      <a href="../../../dev/metadata_guide/" class="md-nav__link">
         
   
   
@@ -850,7 +744,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dev/github/" class="md-nav__link">
+      <a href="../../../dev/github/" class="md-nav__link">
         
   
   
@@ -878,7 +772,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dev/text_overlap_checker/" class="md-nav__link">
+      <a href="../../../dev/text_overlap_checker/" class="md-nav__link">
         
   
   
@@ -906,7 +800,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tasks/" class="md-nav__link">
+      <a href="../../../tasks/" class="md-nav__link">
         
   
   
@@ -941,7 +835,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../collisions/summary/" class="md-nav__link">
+      <a href="../../../collisions/summary/" class="md-nav__link">
         
   
   
@@ -968,7 +862,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../CHANGELOG/" class="md-nav__link">
+      <a href="../../../CHANGELOG/" class="md-nav__link">
         
   
   
@@ -995,7 +889,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../CONTRIBUTING/" class="md-nav__link">
+      <a href="../../../CONTRIBUTING/" class="md-nav__link">
         
   
   
@@ -1022,7 +916,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../brand/" class="md-nav__link">
+      <a href="../../../brand/" class="md-nav__link">
         
   
   
@@ -1069,10 +963,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#main-entry-points" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Main entry points
+        Summary
       
     </span>
   </a>
@@ -1080,10 +974,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#visual-map" class="md-nav__link">
+  <a href="#motivation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Visual map
+        Motivation
       
     </span>
   </a>
@@ -1091,10 +985,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#end-to-end-flow" class="md-nav__link">
+  <a href="#proposal" class="md-nav__link">
     <span class="md-ellipsis">
       
-        End-to-end flow
+        Proposal
       
     </span>
   </a>
@@ -1102,10 +996,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#extendingoperating" class="md-nav__link">
+  <a href="#acceptance-criteria" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Extending/operating
+        Acceptance Criteria
       
     </span>
   </a>
@@ -1113,10 +1007,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#document-representation-and-hash-guard" class="md-nav__link">
+  <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Document representation and hash guard
+        Notes
       
     </span>
   </a>
@@ -1143,100 +1037,34 @@
   
 
 
-<h1 id="architecture-overview">Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permanent link">&para;</a></h1>
-<p>This page gives a high-level map of how Filare fits together. For visual cheatsheets, see the Mermaid diagrams in <code>docs/graphs/architecture.md</code>, <code>docs/graphs/data_flow.md</code>, and <code>docs/graphs/models.md</code>.</p>
-<h2 id="main-entry-points">Main entry points<a class="headerlink" href="#main-entry-points" title="Permanent link">&para;</a></h2>
+<h1 id="ci-refresh-code-graphs-via-filare-code-graph">CI: refresh code graphs via <code>filare code graph</code><a class="headerlink" href="#ci-refresh-code-graphs-via-filare-code-graph" title="Permanent link">&para;</a></h1>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>Add a CI job to run <code>filare code graph</code> and publish artifacts (JSON/DOT/SVG) for the selected tools, keeping graphs current and downloadable.</p>
+<h2 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h2>
 <ul>
-<li>CLI: <code>src/filare/cli.py</code> (exposed as <code>filare</code> via <code>uv run --no-sync filare ...</code>).</li>
-<li>Example/tutorial builder: <code>src/filare/tools/build_examples.py</code> drives the CLI over the example and tutorial sets.</li>
+<li>Ensure code graph outputs stay in sync with code changes.</li>
+<li>Provide downloadable artifacts for reviewers without running tools locally.</li>
 </ul>
-<h2 id="visual-map">Visual map<a class="headerlink" href="#visual-map" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>flowchart TD
-  subgraph Models
-    A1[models: metadata/options]
-    A2[models: connector/cable/component]
-    A3[models: bom/types]
-    A4[models: document representation]
-  end
-
-  subgraph Parser
-    P1[yaml_loader]
-    P2[harness_parser]
-  end
-
-  subgraph Flows
-    F1[build_harness]
-    F2[render_outputs]
-    F3[shared_bom]
-    F4[index_pages]
-    F5[document representation yaml]
-  end
-
-  subgraph Render
-    R1[graphviz]
-    R2["output (HTML/PDF/assets)"]
-    R3[templates/html_utils]
-  end
-
-  subgraph CLI
-    C1[cli]
-  end
-
-  Parser --&gt; Flows
-  Models --&gt; Flows
-  Flows --&gt; F5
-  F5 --&gt; Render
-  Render --&gt; Outputs["SVG, HTML, TSV, PDF"]
-  CLI --&gt; Parser
-  CLI --&gt; Flows
-  CLI --&gt; F5</code></pre>
-<h2 id="end-to-end-flow">End-to-end flow<a class="headerlink" href="#end-to-end-flow" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>Input ingestion</strong>
-   YAML harness files (plus optional metadata) are loaded and merged via <code>parser/yaml_loader.py</code> and parsed into Python structures by <code>parser/harness_parser.py</code>.</li>
-<li><strong>Model construction</strong>
-   <code>flows/build_harness.py</code> turns parsed data into the core models in <code>filare.models</code> (<code>Harness</code>, <code>Connector</code>, <code>Cable</code>, <code>Component</code>, BOM entries, page options, metadata).</li>
-<li><strong>Rendering</strong>
-   <code>flows/render_outputs.py</code> hands the assembled <code>Harness</code> to renderers:</li>
-<li>Graph output: <code>render/graphviz.py</code> builds DOT nodes/edges (including node images) and invokes GraphViz for SVG/PNG.</li>
-<li>Tabular/text output: <code>render/output.py</code> writes BOM/TSV and HTML wrappers; <code>render/templates.py</code> provides the Jinja templates and HTML helpers.</li>
-<li><strong>Document representation</strong>
-   <code>flows/build_harness.py</code> now emits a pre-render <code>DocumentRepresentation</code> (YAML) capturing metadata, page stubs, notes, and BOM (if enabled). Hash tracking prevents overwriting user-edited documents.</li>
-<li><strong>Aggregate artifacts</strong></li>
-<li><code>flows/shared_bom.py</code> emits a combined <code>shared_bom.tsv</code>.</li>
-<li><code>flows/index_pages.py</code> builds title pages and PDF bundles.</li>
-<li><strong>Outputs</strong>
-   SVG/PNG diagrams, HTML pages (diagram + title block), TSV BOMs, shared BOM, and optional PDF bundles end up under the requested output directory.</li>
-</ol>
-<h2 id="extendingoperating">Extending/operating<a class="headerlink" href="#extendingoperating" title="Permanent link">&para;</a></h2>
+<h2 id="proposal">Proposal<a class="headerlink" href="#proposal" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Update metadata/templates: tweak <code>examples/metadata.yml</code> or the templates under <code>src/filare/templates/</code>.</li>
-<li>Add formats or post-processing: extend <code>render/output.py</code> and, if needed, <code>flows/render_outputs.py</code>.</li>
-<li>Batch generation: call <code>uv run --no-sync python src/filare/tools/build_examples.py</code> (uses the same pipeline as the CLI).</li>
-<li>Build document YAML only (no render): <code>uv run --no-sync filare examples/ex01.yml -d examples/metadata.yml -f "" -o outputs</code> (document YAML and hashes are emitted alongside outputs).</li>
-<li>Force a document YAML refresh: remove <code>*.document.yaml</code> and <code>document_hashes.yaml</code> before rerun, or edit the YAML to keep your changes (hash guard prevents overwrite).</li>
-<li>Page types: see <code>docs/pages.md</code> for the list of page types (title, harness, bom, cut, termination) and their roles; enable cut/termination via <code>options.include_cut_diagram</code> / <code>options.include_termination_diagram</code>.</li>
+<li>CI job (GitHub Actions) runs after tests, using repo venv and uv commands.</li>
+<li>Steps:</li>
+<li><code>uv run filare code graph --tool grimp --output outputs/code-graph</code> (JSON primary).</li>
+<li>Optionally run <code>--tool pydeps</code> and <code>--tool pyan3</code> when dependencies available (can be matrix or conditional).</li>
+<li>Upload <code>outputs/code-graph/**/*</code> as an artifact; optionally commit to <code>gh-pages</code> if desired.</li>
+<li>Job should fail fast with clear logs if a tool is missing; allow toggling tool list via matrix/inputs.</li>
+<li>Keep runtime reasonable by scoping to <code>src/filare</code> and avoiding expensive formats.</li>
 </ul>
-<h2 id="document-representation-and-hash-guard">Document representation and hash guard<a class="headerlink" href="#document-representation-and-hash-guard" title="Permanent link">&para;</a></h2>
-<p>Filare writes a pre-render document snapshot (<code>&lt;output_name&gt;.document.yaml</code>) before producing SVG/HTML/TSV assets. It captures:</p>
+<h2 id="acceptance-criteria">Acceptance Criteria<a class="headerlink" href="#acceptance-criteria" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>metadata</code>: merged metadata for the harness</li>
-<li><code>pages</code>: page definitions (title/harness/bom/cut/termination) with names and format hints</li>
-<li><code>notes</code> and <code>extras</code>: freeform blocks carried into the final render</li>
-<li><code>bom</code>: tabular data if BOM generation is enabled</li>
+<li>CI pipeline produces artifacts for at least the JSON import graph (grimp) on every push/PR.</li>
+<li>Logs show the exact command invocations; failures mention missing deps plainly.</li>
+<li>No changes to existing test or release jobs; this is additive.</li>
 </ul>
-<p>A registry file <code>document_hashes.yaml</code> sits next to the outputs and tracks SHA-256 hashes of each generated document along with an <code>allow_override</code> flag:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">demo01.document.yaml</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">123abc...</span>
-<span class="w">  </span><span class="nt">allow_override</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</code></pre></div>
-<p>Workflow:</p>
-<ol>
-<li>On each run, Filare computes a hash of the generated document representation.</li>
-<li>If <code>allow_override</code> is <code>false</code> and the stored hash differs, Filare warns and keeps the existing <code>*.document.yaml</code> (assumes manual edits).</li>
-<li>If <code>allow_override</code> is <code>true</code> (default) or the file is new, Filare overwrites the document YAML and updates the hash registry.</li>
-</ol>
-<p>To freeze a document after manual edits, set <code>allow_override: false</code> for that entry in <code>document_hashes.yaml</code>. Delete the entry (or the entire file) to allow regeneration.</p>
+<h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Reuse the same CLI entrypoint as local users; avoid bespoke scripts.</li>
+</ul>
 
 
 
@@ -1286,14 +1114,14 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.instant", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.instant", "toc.follow", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
       
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
-        <script src="../javascripts/mermaid.js"></script>
+        <script src="../../../javascripts/mermaid.js"></script>
       
     
   </body>
