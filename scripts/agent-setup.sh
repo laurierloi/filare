@@ -1,5 +1,26 @@
 #!/usr/bin/env bash
-set -euo pipefail
+
+# Detect if the script is being sourced or executed
+if [ -n "${BASH_SOURCE[0]:-}" ] && [ "${BASH_SOURCE[0]}" != "$0" ]; then
+  _AGENT_SETUP_SOURCED=1
+else
+  _AGENT_SETUP_SOURCED=0
+fi
+
+# Only make the shell strict when the script is executed directly
+if [ "${_AGENT_SETUP_SOURCED}" -eq 0 ]; then
+  set -euo pipefail
+fi
+
+# Safe error function: return when sourced, exit when executed
+_die() {
+  echo "ERROR: $*" >&2
+  if [ "${_AGENT_SETUP_SOURCED}" -eq 1 ]; then
+    return 1
+  else
+    exit 1
+  fi
+}
 
 # Optional first argument: path to env file (relative to repo root or absolute).
 # Defaults to ".env" at the root of the git repo.
@@ -8,8 +29,18 @@ ENV_FILE_ARG="${1:-}"
 # --- Ensure we are inside a git repo and get repo root ---
 if ! repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
   echo "ERROR: agent_setup.sh must be run inside a git repository." >&2
-  exit 1
+  _die
 fi
+
+# --- XDG config directory for this repo (for gh, etc.) ---
+export XDG_CONFIG_HOME="${repo_root}/.config"
+mkdir -p "$XDG_CONFIG_HOME"
+echo "XDG_CONFIG_HOME set to: $XDG_CONFIG_HOME"
+
+# Make it super explicit for gh
+export GH_CONFIG_DIR="${XDG_CONFIG_HOME}/gh"
+mkdir -p "$GH_CONFIG_DIR"
+echo "GH_CONFIG_DIR set to: $GH_CONFIG_DIR"
 
 # Resolve env file path
 if [[ -z "$ENV_FILE_ARG" ]]; then
@@ -24,7 +55,7 @@ fi
 if [[ ! -f "$ENV_FILE" ]]; then
   echo "ERROR: env file '$ENV_FILE' not found." >&2
   echo "       Provide an env file as ./agent_setup.sh [env_file] and ensure it defines GH_TOKEN." >&2
-  exit 1
+  _die
 fi
 
 echo "Loading environment from: $ENV_FILE"
@@ -32,42 +63,6 @@ set -a
 # shellcheck disable=SC1090
 source "$ENV_FILE"
 set +a
-
-# --- Git: force non-interactive, no editors ---
-git config core.editor true
-git config sequence.editor true
-git config merge.autoEdit no
-git config core.pager cat
-
-echo "Git configured for non-interactive, editorless operation in this repo."
-
-# --- GitHub CLI: non-interactive auth setup (optional, if gh is installed) ---
-if command -v gh >/dev/null 2>&1; then
-  export GH_PROMPT_DISABLED=1
-
-  if gh auth status --hostname github.com >/dev/null 2>&1; then
-    echo "gh: already authenticated for github.com."
-  else
-    # Require GH_TOKEN if not already authenticated
-    if [[ -z "${GH_TOKEN-}" ]]; then
-      echo "ERROR: gh is not authenticated for github.com, and GH_TOKEN is not set in '$ENV_FILE'." >&2
-      echo "       Either:" >&2
-      echo "         1) Add GH_TOKEN to '$ENV_FILE', OR" >&2
-      echo "         2) Run 'gh auth login --hostname github.com --git-protocol ssh' manually," >&2
-      echo "            then re-run ./agent_setup.sh." >&2
-      exit 1
-    fi
-
-    echo "gh: logging in to github.com using GH_TOKEN from '$ENV_FILE'..."
-    echo "$GH_TOKEN" | gh auth login \
-      --hostname github.com \
-      --git-protocol ssh \
-      --with-token >/dev/null
-    echo "gh: authentication configured for github.com."
-  fi
-else
-  echo "gh: GitHub CLI not found; skipping GitHub authentication."
-fi
 
 # --- UV: ensure that the cache is always the same
 export UV_CACHE_DIR="${repo_root}/.uv-cache"
@@ -82,6 +77,41 @@ else
   echo ".venv already present. Skipping uv sync."
 fi
 
-
 # --- Pre-commit: ensure that it is setup
 uv run pre-commit install
+
+# --- Git: force non-interactive, no editors ---
+git config core.editor true
+git config sequence.editor true
+git config merge.autoEdit no
+git config core.pager cat
+
+echo "Git configured for non-interactive, editorless operation in this repo."
+#
+# --- GitHub CLI: non-interactive auth setup (optional, if gh is installed) ---
+if command -v gh >/dev/null 2>&1; then
+  export GH_PROMPT_DISABLED=1
+
+  if GH_TOKEN="" gh auth status --hostname github.com >/dev/null 2>&1; then
+    echo "gh: already authenticated for github.com."
+  else
+    # Require GH_TOKEN if not already authenticated
+    if [[ -z "${GH_TOKEN-}" ]]; then
+      echo "ERROR: gh is not authenticated for github.com, and GH_TOKEN is not set in '$ENV_FILE'." >&2
+      echo "       Either:" >&2
+      echo "         1) Add GH_TOKEN to '$ENV_FILE', OR" >&2
+      echo "         2) Run 'gh auth login --hostname github.com --git-protocol ssh' manually," >&2
+      echo "            then re-run ./agent_setup.sh." >&2
+      _die
+    fi
+
+    echo "gh: logging in to github.com using GH_TOKEN from '$ENV_FILE'..."
+    echo "$GH_TOKEN" | gh auth login \
+      --hostname github.com \
+      --git-protocol ssh \
+      --with-token >/dev/null
+    echo "gh: authentication configured for github.com."
+  fi
+else
+  echo "gh: GitHub CLI not found; skipping GitHub authentication."
+fi

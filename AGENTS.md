@@ -54,7 +54,7 @@ Never write to or rely on the user’s global cache (e.g. /home/<user>/.cache/uv
 
 ### UV Cache Handling (MANDATORY)
 
-The UV cache directory is **preconfigured** by `scripts/agent-setup.sh`.
+The UV cache directory is **preconfigured** by `source scripts/agent-setup.sh`.
 
 You MUST NOT:
 
@@ -63,10 +63,10 @@ You MUST NOT:
 - Prefix commands with any custom cache path
 - Write to `$HOME/.cache/uv`
 
-You MUST rely entirely on the cache configured by:
+You MUST rely entirely on the cache configured by.
 
 ```bash
-scripts/agent-setup.sh
+source scripts/agent-setup.sh
 ```
 
 All `uv run` commands automatically use this configured cache.
@@ -272,7 +272,7 @@ If a Git command may open an editor, you MUST rewrite it to a non-interactive fo
 - When executing a multi-step plan, complete and commit each step. If no operator input is needed and steps remain, proceed directly to the next step after each commit.
 - PR creation flow (target `beta`):
   - Rebase on `origin/beta`, push your branch (`<role>/<desc>`).
-  - Ensure that `scripts/agent-setup.sh` has been run
+  - Ensure that `source scripts/agent-setup.sh` has been sourced
   - Create PR: `gh pr create --base beta --head <branch> --title "<type>: <summary>" --body-file pr_body_<branch>.md.temp`.
   - `main` is only for promotion PRs from `beta` after validation; add the `validated` label for beta→main promotion.
 
