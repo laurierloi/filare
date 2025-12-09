@@ -99,7 +99,7 @@ def _render_cli(
             tuple(components_list) + (harness_file,),
             metadata_files=tuple(metadata),
             return_types=("shared_bom"),
-            output_formats=harness_output_formats,
+            output_formats=list(harness_output_formats),
             output_dir=resolved_output_dir,
             extra_metadata=extra_metadata,
             shared_bom=shared_bom,
