@@ -139,9 +139,13 @@ class Component:
         if self.amount is not None:
             self.amount = NumberAndUnit.to_number_and_unit(self.amount)
 
-        if self.type is not None:
+        if self.type is None:
+            self.type = MultilineHypertext("")
+        else:
             self.type = MultilineHypertext.to(self.type)
-        if self.subtype is not None:
+        if self.subtype is None:
+            self.subtype = MultilineHypertext("")
+        else:
             self.subtype = MultilineHypertext.to(self.subtype)
 
         if isinstance(self.qty_multiplier, str):
@@ -240,14 +244,13 @@ class Loop:
 
     def __post_init__(self):
         if self.side is not None:
-            if isinstance(self.side, str):
-                side_str = self.side.upper()
-            else:
-                side_str = str(self.side).upper()
+            if isinstance(self.side, Side):
+                return
+            side_str = str(self.side).upper()
 
-            if side_str == "LEFT":
+            if "LEFT" in side_str:
                 self.side = Side.LEFT
-            elif side_str == "RIGHT":
+            elif "RIGHT" in side_str:
                 self.side = Side.RIGHT
             else:
                 self.side = None
@@ -965,7 +968,13 @@ class Cable(WireClass):
         via_wire_id: str,
         to_pin_obj: PinClass,
     ) -> None:
-        via_wire_obj = self.wire_objects[via_wire_id]
+        wire_key = via_wire_id
+        if wire_key not in self.wire_objects:
+            try:
+                wire_key = int(via_wire_id)
+            except (ValueError, TypeError):
+                pass
+        via_wire_obj = self.wire_objects[wire_key]
         self._connections.append(Connection(from_pin_obj, via_wire_obj, to_pin_obj))
 
     def wire_ins(self, wire_id):

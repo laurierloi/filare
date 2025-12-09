@@ -51,6 +51,12 @@ class PartNumberInfo(BaseModel):
     def __eq__(self, other):
         return hash(self) == hash(other)
 
+    def __getitem__(self, key: str) -> Any:
+        return getattr(self, key)
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        setattr(self, key, value)
+
     @classmethod
     def model_validate(cls, *args, **kwargs):
         try:
@@ -264,23 +270,26 @@ class PartnumberInfoList(BaseModel):
 def partnumbers2list(
     partnumbers: PartNumberInfo,
     parent_partnumbers: Union[PartNumberInfo, PartnumberInfoList, None] = None,
-) -> List[str]:
+) -> Sequence[Union[str, Sequence[str]]]:
     partnumbers_list: List[PartNumberInfo] = (
         partnumbers if isinstance(partnumbers, list) else [partnumbers]
     )
 
     if parent_partnumbers is None:
-        return PartNumberInfo.list_keep_only_eq(partnumbers_list).str_list
+        kept = PartNumberInfo.list_keep_only_eq(partnumbers_list)
+        if kept is None:
+            return []
+        return kept.str_list
 
     parent_list = (
         PartnumberInfoList(pn_list=[parent_partnumbers])
         if isinstance(parent_partnumbers, PartNumberInfo)
         else parent_partnumbers
     )
-    flattened: List[str] = []
+    flattened: List[List[str]] = []
     for pn in parent_list.keep_unique(partnumbers_list):
         if pn is None:
             continue
         pn_info: PartNumberInfo = pn
-        flattened.extend(pn_info.str_list)
+        flattened.append(pn_info.str_list)
     return flattened

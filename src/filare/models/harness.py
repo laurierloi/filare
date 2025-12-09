@@ -4,7 +4,7 @@ import logging
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Sequence, Union
 
 from graphviz import Graph
 
@@ -381,12 +381,12 @@ class Harness:
                 )  # list index starts at 0, wire IDs start at 1
 
         # perform the actual connection
-        if from_name is not None:
+        if from_name and from_name in self.connectors:
             from_con = self.connectors[from_name]
             from_pin_obj = from_con.pin_objects[from_pin]
         else:
             from_pin_obj = None
-        if to_name is not None:
+        if to_name and to_name in self.connectors:
             to_con = self.connectors[to_name]
             to_pin_obj = to_con.pin_objects[to_pin]
         else:
@@ -497,28 +497,29 @@ class Harness:
 
         graph = self.graph
         rendered = set()
+        filename_path = Path(filename)
         for f in fmt_list:
             if f in ("png", "svg", "html"):
                 render_format = "svg" if f == "html" else f
                 if render_format in rendered:
                     continue
                 graph.format = render_format
-                graph.render(filename=filename, view=view, cleanup=cleanup)
+                graph.render(filename=filename_path, view=view, cleanup=cleanup)
                 rendered.add(render_format)
         if "svg" in fmt_list or "html" in fmt_list:
             if imported_svg_markup:
-                filename.with_suffix(".svg").write_text(imported_svg_markup)
+                filename_path.with_suffix(".svg").write_text(imported_svg_markup)
             else:
-                embed_svg_images_file(filename.with_suffix(".svg"))
+                embed_svg_images_file(filename_path.with_suffix(".svg"))
         if "gv" in fmt_list:
-            graph.save(filename=filename.with_suffix(".gv"))
+            graph.save(filename=filename_path.with_suffix(".gv"))
         if "tsv" in fmt_list and self.options.include_bom:
             bom_render = BomContent(self.bom).get_bom_render(
                 options=BomRenderOptions(
                     restrict_printed_lengths=False,
                 )
             )
-            filename.with_suffix(".tsv").open("w").write(bom_render.as_tsv())
+            filename_path.with_suffix(".tsv").open("w").write(bom_render.as_tsv())
         if "csv" in fmt_list:
             print("CSV output is not yet supported")
         if "html" in fmt_list:
@@ -535,7 +536,7 @@ class Harness:
                 rendered["termination_rows"] = term_rows
                 rendered["termination_table"] = term_html
             generate_html_output(
-                filename,
+                filename_path,
                 bom_for_html,
                 self.metadata,
                 self.options,
@@ -543,9 +544,9 @@ class Harness:
                 rendered,
             )
         if "pdf" in fmt_list:
-            generate_pdf_output(filename)
+            generate_pdf_output([filename_path])
         if "html" in fmt_list and "svg" not in fmt_list:
-            filename.with_suffix(".svg").unlink()
+            filename_path.with_suffix(".svg").unlink()
 
 
 __all__ = ["Harness"]
