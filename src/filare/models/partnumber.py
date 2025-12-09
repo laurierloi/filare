@@ -1,5 +1,16 @@
 from functools import reduce
-from typing import Any, ClassVar, Dict, List, Optional, Tuple, Union
+from typing import (
+    Any,
+    ClassVar,
+    Dict,
+    Iterable,
+    Iterator,
+    List,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
 
 from pydantic import BaseModel, ConfigDict, ValidationError, field_validator
 
@@ -28,7 +39,7 @@ class PartNumberInfo(BaseModel):
         "spn": "SPN",
     }
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         """Evaluate truthy if any identifying field is set."""
         return bool(
             self.pn or self.manufacturer or self.mpn or self.supplier or self.spn
@@ -39,6 +50,12 @@ class PartNumberInfo(BaseModel):
 
     def __eq__(self, other):
         return hash(self) == hash(other)
+
+    def __getitem__(self, key: str) -> Any:
+        return getattr(self, key)
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        setattr(self, key, value)
 
     @classmethod
     def model_validate(cls, *args, **kwargs):
@@ -65,12 +82,6 @@ class PartNumberInfo(BaseModel):
                 value if value is not None else exc
             ) from exc
 
-    def __getitem__(self, key):
-        return getattr(self, key)
-
-    def __setitem__(self, key, value):
-        setattr(self, key, value)
-
     @field_validator("pn", "manufacturer", "mpn", "supplier", "spn", mode="before")
     def _clean_arg(cls, v):
         if isinstance(v, list):
@@ -87,7 +98,7 @@ class PartNumberInfo(BaseModel):
     @property
     def bom_dict(self):
         """Return a dict of BOM fields keyed by internal names."""
-        return {k: self[k] for k in self.bom_keys}
+        return {k: getattr(self, k) for k in self.bom_keys}
 
     @property
     def str_list(self):
@@ -95,7 +106,7 @@ class PartNumberInfo(BaseModel):
         l = ["", "", ""]
         if self.pn:
             l[0] = f"P/N: {self.pn}"
-        l[1] = self.manufacturer
+        l[1] = self.manufacturer or ""
         if self.mpn:
             if not l[1]:
                 l[1] = "MPN"
@@ -103,7 +114,7 @@ class PartNumberInfo(BaseModel):
             l[1] += self.mpn
         elif l[1]:
             l[1] = "Manufacturer: " + l[1]
-        l[2] = self.supplier
+        l[2] = self.supplier or ""
         if self.spn:
             if not l[2]:
                 l[2] = "SPN"
@@ -123,7 +134,11 @@ class PartNumberInfo(BaseModel):
             spn=self.spn,
         )
 
-    def clear_per_field(self, op, other):
+    def clear_per_field(
+        self,
+        op: str,
+        other: Optional[Union["PartNumberInfo", "PartnumberInfoList"]],
+    ) -> Optional["PartNumberInfo"]:
         """Clear matching or non-matching fields based on an operator."""
         part = self.copy()
 
@@ -134,32 +149,43 @@ class PartNumberInfo(BaseModel):
                 return None
             else:
                 raise UnsupportedModelOperation(f"op {op} not supported")
+        assert other is not None
 
-        if other.is_list:
+        if isinstance(other, PartnumberInfoList):
             for item in other.pn_list:
+                if part is None:
+                    break
                 part = part.clear_per_field(op, item)
         else:
             for k in ["pn", "manufacturer", "mpn", "supplier", "spn"]:
+                part_value = getattr(part, k)
+                other_value = getattr(other, k)
                 if op == "==":
-                    if part[k] == other[k]:
-                        part[k] = ""
+                    if part_value == other_value:
+                        setattr(part, k, "")
                 elif op == "!=":
-                    if part[k] != other[k]:
-                        part[k] = ""
+                    if part_value != other_value:
+                        setattr(part, k, "")
                 else:
                     raise UnsupportedModelOperation(f"op {op} not supported")
         return part
 
-    def keep_only_eq(self, other):
+    def keep_only_eq(
+        self, other: Optional["PartNumberInfo"]
+    ) -> Optional["PartNumberInfo"]:
         return self.clear_per_field("!=", other)
 
-    def remove_eq(self, other):
+    def remove_eq(self, other: Optional["PartNumberInfo"]):
         return self.clear_per_field("==", other)
 
     @staticmethod
-    def list_keep_only_eq(partnumbers):
-        pn = partnumbers[0]
+    def list_keep_only_eq(
+        partnumbers: Sequence["PartNumberInfo"],
+    ) -> Optional["PartNumberInfo"]:
+        pn: Optional["PartNumberInfo"] = partnumbers[0]
         for p in partnumbers:
+            if pn is None:
+                break
             pn = pn.keep_only_eq(p)
         return pn
 
@@ -177,25 +203,33 @@ class PartnumberInfoList(BaseModel):
     is_list: bool = True
 
     def keep_only_shared(self):
-        uniques = set(tuple(self.pn_list))
+        uniques = list(set(tuple(self.pn_list)))
         if not uniques:
-            return
+            return None
 
-        shared = reduce(lambda x, y: x.keep_only_eq(y), uniques)
+        shared: Optional[PartNumberInfo] = uniques[0]
+        for item in uniques[1:]:
+            if shared is None:
+                break
+            shared = shared.keep_only_eq(item)
         return shared
 
     def as_unique_list(self):
         return list(set(tuple(self.pn_list)))
 
-    def keep_only_eq(self, other):
+    def keep_only_eq(
+        self, other: "PartNumberInfo"
+    ) -> Iterator[Optional[PartNumberInfo]]:
         for pn in self.pn_list:
             yield pn.keep_only_eq(other)
 
-    def remove_eq(self, other):
+    def remove_eq(self, other: "PartNumberInfo"):
         for pn in self.pn_list:
             yield pn.remove_eq(other)
 
-    def keep_unique(self, other):
+    def keep_unique(
+        self, other: Union[List[PartNumberInfo], Iterable[PartNumberInfo]]
+    ) -> Iterator[PartNumberInfo]:
         kept = []
         for pn_1 in self.pn_list:
             for pn_2 in self.pn_list:
@@ -208,13 +242,17 @@ class PartnumberInfoList(BaseModel):
             shared = self.keep_only_shared()
             if shared:
                 for pn in other:
-                    yield pn.remove_eq(shared)
+                    result = pn.remove_eq(shared)
+                    if result:
+                        yield result
             else:
                 yield from other
         else:
             shared = reduce(lambda x, y: x.keep_only_eq(y), kept)
             for pn in other:
-                yield pn.remove_eq(shared)
+                result = pn.remove_eq(shared)
+                if result:
+                    yield result
 
     def as_list(self, parent_partnumbers=None):
         for pn in self.pn_list:
@@ -232,17 +270,26 @@ class PartnumberInfoList(BaseModel):
 def partnumbers2list(
     partnumbers: PartNumberInfo,
     parent_partnumbers: Union[PartNumberInfo, PartnumberInfoList, None] = None,
-) -> List[str]:
-    if not isinstance(partnumbers, list):
-        partnumbers = [partnumbers]
+) -> Sequence[Union[str, Sequence[str]]]:
+    partnumbers_list: List[PartNumberInfo] = (
+        partnumbers if isinstance(partnumbers, list) else [partnumbers]
+    )
 
-    # if there's no parent, fold
     if parent_partnumbers is None:
-        return PartNumberInfo.list_keep_only_eq(partnumbers).str_list
+        kept = PartNumberInfo.list_keep_only_eq(partnumbers_list)
+        if kept is None:
+            return []
+        return kept.str_list
 
-    if parent_partnumbers is not None:
-        if isinstance(parent_partnumbers, PartNumberInfo):
-            parent_partnumbers = PartnumberInfoList([parent_partnumbers])
-    partnumbers = parent_partnumbers.keep_unique(partnumbers)
-
-    return [p.str_list for p in partnumbers if p]
+    parent_list = (
+        PartnumberInfoList(pn_list=[parent_partnumbers])
+        if isinstance(parent_partnumbers, PartNumberInfo)
+        else parent_partnumbers
+    )
+    flattened: List[List[str]] = []
+    for pn in parent_list.keep_unique(partnumbers_list):
+        if pn is None:
+            continue
+        pn_info: PartNumberInfo = pn
+        flattened.append(pn_info.str_list)
+    return flattened

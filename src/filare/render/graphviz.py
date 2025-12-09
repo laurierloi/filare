@@ -3,7 +3,7 @@
 import logging
 import re
 from pathlib import Path
-from typing import Any, List, Optional, Union
+from typing import Any, List, Optional, Tuple, Union
 
 from filare import APP_NAME, APP_URL, __version__
 from filare.errors import UnsupportedLoopSide
@@ -23,7 +23,7 @@ from filare.render.templates import get_template
 from filare.settings import settings
 
 
-def gv_node_connector(connector: Connector) -> Table:
+def gv_node_connector(connector: Connector) -> str:
     """Render a connector node as an HTML-like table for Graphviz."""
     # TODO: extend connector style support
     params = {"component": connector, "suppress_images": True}
@@ -37,7 +37,7 @@ def gv_node_connector(connector: Connector) -> Table:
     return cleaned_render
 
 
-def gv_node_cable(cable: Cable) -> Table:
+def gv_node_cable(cable: Cable) -> str:
     """Render a cable node as an HTML-like table for Graphviz."""
     # TODO: support multicolor cables
     # TODO: extend cable style support
@@ -85,6 +85,8 @@ def gv_connector_loops(connector: Connector) -> List:
             this_loop_side = "l"
             this_loop_dir = "w"
 
+        if loop.first is None or loop.second is None:
+            continue
         head = (
             f"{connector.designator}:p{loop.first.pin}{this_loop_side}:{this_loop_dir}"
         )
@@ -95,7 +97,9 @@ def gv_connector_loops(connector: Connector) -> List:
     return loop_edges
 
 
-def gv_edge_wire(harness, cable, connection) -> (str, str, str):
+def gv_edge_wire(
+    harness, cable, connection
+) -> Tuple[str, Optional[str], Optional[str], Optional[str], Optional[str]]:
     """Return Graphviz edge descriptors for a connection through a wire/shield."""
     if connection.via.color:
         # check if it's an actual wire and not a shield

@@ -50,10 +50,13 @@ class RedefinedDesignatorError(FilareFlowException):
         )
 
 
+from typing import Optional
+
+
 class MultipleSeparatorError(FilareFlowException):
     """Designator contained more than one separator character."""
 
-    def __init__(self, value: str, separator: str, idx: int = None) -> None:
+    def __init__(self, value: str, separator: str, idx: Optional[int] = None) -> None:
         self.value = value
         self.separator = separator
         suffix = (

@@ -4,7 +4,7 @@ import copy
 import logging
 import re
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple, Union
 
 from pydantic import BaseModel, ConfigDict
 
@@ -30,14 +30,15 @@ def generate_shared_bom(
     shared_bom,
     use_qty_multipliers=False,
     files=None,
-    multiplier_file_name=None,
+    multiplier_file_name: Optional[str] = None,
 ):
     shared_bom_base = output_dir / "shared_bom"
     shared_bom_file = shared_bom_base.with_suffix(".tsv")
     print(f"Generating shared bom at {shared_bom_base}")
 
     if use_qty_multipliers:
-        harnesses = HarnessQuantity(files, multiplier_file_name, output_dir=output_dir)
+        multiplier_file = multiplier_file_name or "quantity_multipliers.txt"
+        harnesses = HarnessQuantity(files, multiplier_file, output_dir=output_dir)
         harnesses.fetch_qty_multipliers_from_file()
         print(f"Using quantity multipliers: {harnesses.multipliers}")
         for bom_item in shared_bom.values():
@@ -117,12 +118,12 @@ class _RenderReplacements(BaseModel):
 
 def generate_html_output(
     filename: Path,
-    bom: List[List[str]],
+    bom: Union[Mapping[Any, Any], Sequence[Sequence[str]]],
     metadata: Metadata,
     options: PageOptions,
     notes: Notes,
-    rendered: Dict[str, str] = None,
-    bom_render_options: BomRenderOptions = None,
+    rendered: Optional[Dict[str, str]] = None,
+    bom_render_options: Optional[BomRenderOptions] = None,
 ):
     print("Generating html output")
     assert metadata and isinstance(metadata, Metadata), "metadata should be defiend"
@@ -135,6 +136,13 @@ def generate_html_output(
     )
     rendered = {} if rendered is None else dict(rendered)
 
+    raw_cut_rows = rendered.get("cut_rows")
+    cut_rows = raw_cut_rows if isinstance(raw_cut_rows, list) else None
+    raw_termination_rows = rendered.get("termination_rows")
+    termination_rows = (
+        raw_termination_rows if isinstance(raw_termination_rows, list) else None
+    )
+
     bom_render_options = _ensure_bom_render_options(
         bom_render_options, metadata.template.has_bom_reversed()
     )
@@ -144,8 +152,6 @@ def generate_html_output(
     options_for_render.bom_rows = bom_rows
     options.bom_rows = bom_rows
     rendered["bom"] = bom_html
-    cut_rows = rendered.get("cut_rows")
-    termination_rows = rendered.get("termination_rows")
     cut_pages = (
         _chunk_rows(
             cut_rows,
@@ -202,12 +208,13 @@ def generate_html_output(
     if template_name != "titlepage" and svgdata is None:
         svgdata = strip_svg_declarations(filename.with_suffix(".svg").read_text())
 
-    if getattr(options, "diagram_svg", None):
+    diagram_svg_options = getattr(options, "diagram_svg", None)
+    if diagram_svg_options:
         diagram_container_class = "diagram-has-import"
-        diagram_container_style = build_import_container_style(options.diagram_svg)
+        diagram_container_style = build_import_container_style(diagram_svg_options)
         if svgdata is None:
-            svgdata = prepare_imported_svg(options.diagram_svg)
-        inner_style = build_import_inner_style(options.diagram_svg)
+            svgdata = prepare_imported_svg(diagram_svg_options)
+        inner_style = build_import_inner_style(diagram_svg_options)
         style_attr = f' style="{inner_style}"' if inner_style else ""
         svgdata = f'<div class="diagram-import"{style_attr}>{svgdata}</div>'
     elif svgdata is None:
@@ -247,7 +254,8 @@ def generate_html_output(
     # prepare titleblock
     rendered["titleblock"] = get_template("titleblock.html").render(replacements)
 
-    if replacements.get("notes") and replacements["notes"].notes:
+    notes_candidate = replacements.get("notes")
+    if isinstance(notes_candidate, Notes) and notes_candidate.notes:
         rendered["notes"] = get_template("notes.html").render(replacements)
 
     filtered = _filtered_sections(options_for_render, rendered)
@@ -290,10 +298,10 @@ def _ensure_bom_render_options(
 
 
 def _render_bom_section(
-    bom: List[List[str]],
+    bom: Union[Mapping[Any, Any], Sequence[Sequence[str]]],
     bom_render_options: BomRenderOptions,
     options: PageOptions,
-) -> Tuple[str, int, List]:
+) -> Tuple[str, int, List[TablePage]]:
     """Render BOM HTML snippet and return HTML plus row count and paginated pages."""
     bom_render = BomContent(bom).get_bom_render(options=bom_render_options)
     bom_rows = len(bom_render.rows)
