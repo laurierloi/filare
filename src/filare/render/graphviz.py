@@ -22,6 +22,8 @@ from filare.render.html_utils import Img, Table, Td, Tr
 from filare.render.templates import get_template
 from filare.settings import settings
 
+_TAG_RE = re.compile(r"<(/?)([a-zA-Z]+)")
+
 
 def gv_node_connector(connector: Connector) -> Table:
     """Render a connector node as an HTML-like table for Graphviz."""
@@ -33,8 +35,13 @@ def gv_node_connector(connector: Connector) -> Table:
         template_name = "simple-connector.html"
 
     rendered = get_template(template_name).render(params)
-    cleaned_render = "\n".join([l.rstrip() for l in rendered.split("\n") if l.strip()])
-    return Table(cleaned_render)
+    lines = [l.rstrip() for l in rendered.split("\n") if l.strip()]
+    filtered_lines = [line for line in lines if not line.strip().startswith("<!--")]
+    cleaned_render = "\n".join(filtered_lines)
+    cleaned_render = _TAG_RE.sub(
+        lambda m: f"<{m.group(1)}{m.group(2).upper()}", cleaned_render
+    )
+    return cleaned_render
 
 
 def gv_node_cable(cable: Cable) -> Table:
@@ -44,8 +51,13 @@ def gv_node_cable(cable: Cable) -> Table:
     params = {"component": cable, "suppress_images": True}
     template_name = "cable.html"
     rendered = get_template(template_name).render(params)
-    cleaned_render = "\n".join([l.rstrip() for l in rendered.split("\n") if l.strip()])
-    return Table(cleaned_render)
+    lines = [l.rstrip() for l in rendered.split("\n") if l.strip()]
+    filtered_lines = [line for line in lines if not line.strip().startswith("<!--")]
+    cleaned_render = "\n".join(filtered_lines)
+    cleaned_render = _TAG_RE.sub(
+        lambda m: f"<{m.group(1)}{m.group(2).upper()}", cleaned_render
+    )
+    return cleaned_render
 
 
 def _node_image_attrs(image: Optional[Image]) -> dict:

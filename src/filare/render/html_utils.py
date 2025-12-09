@@ -126,4 +126,7 @@ class Tr(Tag):
 
 
 class Table(Tag):
+    def __getattr__(self, name):
+        return getattr(str(self), name)
+
     pass
