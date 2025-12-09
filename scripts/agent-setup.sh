@@ -70,6 +70,5 @@ else
 fi
 
 # --- Pre-commit: ensure that it is setup
-uv venv
 uv sync --group dev
 uv run pre-commit install
