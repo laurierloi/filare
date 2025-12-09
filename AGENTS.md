@@ -94,7 +94,7 @@ uv run --no-sync python src/filare/tools/build_examples.py
 
 - Python 3.9+
 - 4-space indentation
-- Black + isort via `./scripts/pre-commit.sh`
+- Black + isort via pre-commit
 - Google-style docstrings
 - Lowercase module/function names
 - Update docs when behaviors change
@@ -151,14 +151,15 @@ The commit message should be structured as follows:
 ### Repository
 
 - Remote lives on github
-- url is  https://github.com/laurierloi/filare
+- url is https://github.com/laurierloi/filare
 - page is https://laurierloi.github.io/filare/
-   - it is deployed from the gh-pages branch of the repo
+  - it is deployed from the gh-pages branch of the repo
 - pypi package is found at: https://pypi.org/project/filare/
 
 # Repository Guidelines
 
 ## Project Structure & Module Organization
+
 - Core library and CLI live in `src/filare/`; `cli.py` exposes `filare`/`filare-qty`, with rendering and BOM logic in `render/graphviz.py`, `render/html.py`, `render/output.py`, and helpers under `tools/`.
 - Documentation is under `docs/` (see `docs/README.md` and `docs/syntax.md`), with walkthroughs in `tutorial/` and ready-made YAML inputs in `examples/`.
 - Architecture/data-flow/model diagrams live in `docs/graphs/`; update the Mermaid sources and regenerate rendered outputs when code structure changes.
@@ -166,6 +167,7 @@ The commit message should be structured as follows:
 - Harness definitions for XSC live next door in `../xsc-harnesses`; treat them as downstream consumers built with the same Filare venv.
 
 ## Build, Test, and Development Commands
+
 - Always use the uv package manager for Python (env, installs, and command execution):
   - First-time bootstrap (or when deps change): `uv venv; uv sync`
   - Create venv: `uv venv` # Create venv before running any other command
@@ -176,13 +178,14 @@ The commit message should be structured as follows:
   - Avoid `pip`, `python -m venv`, or direct `python`/`pytest` calls; route everything through `uv venv`/`uv run`.
 - Quick sanity run: `uv venv; uv sync; uv run filare examples/demo01.yml -f hpst -o outputs` (HTML/PNG/SVG/TSV). Add `-c examples/components.yml` or `-d metadata.yml` as needed.
 - For manual BOM scaling checks: `uv run filare-qty tests/bom/bomqty.yml --use-qty-multipliers`.
-- Keep `scripts/pre-commit.sh` aligned with CI: it must build a fresh uv venv, install deps, run black, prettier, pytest, and the example builds before you commit.
-- Before committing, generate all examples/tutorials via the script used in CI: `uv venv; uv sync --group dev; uv run --no-sync python src/filare/tools/build_examples.py` (then stage the regenerated outputs if needed).
-- Always run lint locally before committing; use `scripts/lint.sh` (black + prettier) so changes are applied, not just checked.
+- Before committing, generate all examples/tutorials via the script used in CI: `uv run --no-sync python src/filare/tools/build_examples.py` (then stage the regenerated outputs if needed).
 - When you change tests, rerun the relevant pytest suite before committing to keep coverage green.
 - Keep `RefactorPlan.txt` up to date: cross out tasks when fully done, add follow-up tasks when work is partial, and record any new features/requests the operator suggests.
+- When doing a series of change, track them in <change_name>.temp and keep that file updated as you
+	progress
 
 ## Coding Style & Naming Conventions
+
 - Python 3.9+; 4-space indentation; follow existing naming (modules, lowercase functions).
 - Format with Black and organize imports with isort. Run `./cleanup.sh` to apply autoflake + isort + black across `src/filare/`.
 - Docstrings follow Google style; keep CLI help strings succinct and user-facing.
@@ -190,23 +193,72 @@ The commit message should be structured as follows:
 - Keep docs coherent with code: when modifying metadata, flows, parser, or render behavior, update `docs/`, `docs/dev/`, and `docs/graphs/` accordingly (metadata guides, syntax, diagrams).
 
 ## Testing Guidelines
+
 - No full automated test harness is wired up; use YAMLs in `tests/` and `examples/` to spot rendering/BOM regressions.
 - Add a minimal YAML in `tests/rendering/` or `tests/bom/` for new behavior; keep file names numeric-prefixed (`04_newfeature.yml`).
 - Also build the XSC harness suite with the project venv (`cd ../xsc-harnesses && WIREVIZ=../Filare-codex1/venv-filare/bin/filare make`) to catch downstream breakage.
 - Ensure GraphViz (`dot -V`) and required fonts are available before debugging rendering differences.
 
+Here is the **short, imperative, agent-style version** to paste directly into **AGENTS.md**:
+
+## Non-Interactive Git Rules (MANDATORY)
+
+You MUST run:
+
+````bash
+./agent_setup.sh [env_file]
+before executing any Git or GitHub commands.
+
+If no env_file is given, it defaults to .env at the repo root.
+
+The env file MUST exist and SHOULD define GH_TOKEN for GitHub CLI auth.
+
+If agent_setup.sh fails, you MUST NOT proceed with any Git or GitHub operations.
+
+This enforces a non-interactive, editorless Git configuration.
+
+### Required Behavior
+
+- You MUST provide commit messages explicitly:
+
+  ```bash
+  git commit -m "<message>"
+````
+
+- You MUST merge without opening an editor:
+
+  ```bash
+  git merge <branch> --no-edit
+  ```
+
+- You MUST NOT use interactive rebases (`-i`).
+  Use:
+
+  ```bash
+  git rebase <base> --no-edit
+  ```
+
+### Forbidden Behavior
+
+- Opening any editor (vim, commit message editor, merge editor, rebase todo).
+- Running Git commands that rely on prompts or interactive editing.
+
+If a Git command may open an editor, you MUST rewrite it to a non-interactive form.
+
 ## Commit & Pull Request Guidelines
+
 - Open an issue first, then branch from `beta`. Use imperative, concise commit subjects and reference the issue number in the body when applicable.
 - Base PRs on `beta`; describe the user-visible change, mention new YAML examples/tests (including any XSC harness updates), and link related issues. Update `docs/syntax.md` when altering the YAML schema or outputs.
 - Avoid committing generated artifacts (diagrams, PDFs, tutorials) unless required; keep PRs focused and rebased for a clean history.
 - When executing a multi-step plan, complete and commit each step. If no operator input is needed and steps remain, proceed directly to the next step after each commit.
 - PR creation flow (target `beta`):
   - Rebase on `origin/beta`, push your branch (`<role>/<desc>`).
-  - Authenticate `gh` (`gh auth login --hostname github.com --git-protocol ssh --web` or `gh auth login --with-token <<<"$GH_TOKEN"` with a PAT that has `repo` scope; keep tokens only in untracked files like `.env`).
-  - Create PR: `gh pr create --base beta --head <branch> --title "<type>: <summary>" --body-file /tmp/body.md` (or use `gh api repos/<owner>/<repo>/pulls -f base=beta -f head=<branch> -f title=... -f body@path`).
+  - Ensure that `scripts/agent-setup.sh` has been run
+  - Create PR: `gh pr create --base beta --head <branch> --title "<type>: <summary>" --body-file pr_body_<branch>.md.temp`.
   - `main` is only for promotion PRs from `beta` after validation; add the `validated` label for beta→main promotion.
 
 ## Branding Notes
+
 - Use the Filare brand in user-facing text, CLI help, docs, and examples; keep legacy `filare` names only where required for compatibility.
 - Align naming, colors, and tone with `docs/brand.md`; refresh that file alongside any brand-affecting changes.
 

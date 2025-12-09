@@ -3,6 +3,9 @@
 desktop.ini
 Thumbs.db
 
+# Secrets
+.env*
+
 # Development aids
 .idea/
 temp/
