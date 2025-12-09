@@ -37,3 +37,9 @@ repos:
     hooks:
       - id: black
         files: ^(src|tests|scripts)/.*\.py$
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.407
+    hooks:
+      - id: pyright
+        files: ^(src)/.*\.py$
+        # TODO: add tests to pyright coverage
