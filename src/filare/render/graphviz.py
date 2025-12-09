@@ -23,7 +23,7 @@ from filare.render.templates import get_template
 from filare.settings import settings
 
 
-def gv_node_connector(connector: Connector) -> Table:
+def gv_node_connector(connector: Connector) -> str:
     """Render a connector node as an HTML-like table for Graphviz."""
     # TODO: extend connector style support
     params = {"component": connector, "suppress_images": True}
@@ -34,10 +34,10 @@ def gv_node_connector(connector: Connector) -> Table:
 
     rendered = get_template(template_name).render(params)
     cleaned_render = "\n".join([l.rstrip() for l in rendered.split("\n") if l.strip()])
-    return Table(cleaned_render)
+    return cleaned_render
 
 
-def gv_node_cable(cable: Cable) -> Table:
+def gv_node_cable(cable: Cable) -> str:
     """Render a cable node as an HTML-like table for Graphviz."""
     # TODO: support multicolor cables
     # TODO: extend cable style support
@@ -45,7 +45,7 @@ def gv_node_cable(cable: Cable) -> Table:
     template_name = "cable.html"
     rendered = get_template(template_name).render(params)
     cleaned_render = "\n".join([l.rstrip() for l in rendered.split("\n") if l.strip()])
-    return Table(cleaned_render)
+    return cleaned_render
 
 
 def _node_image_attrs(image: Optional[Image]) -> dict:
