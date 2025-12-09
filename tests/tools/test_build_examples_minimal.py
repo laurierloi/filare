@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import yaml
+
 from filare.tools import build_examples
 
 

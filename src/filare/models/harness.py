@@ -9,18 +9,18 @@ from typing import Dict, List, Optional, Union
 from graphviz import Graph
 
 from filare import APP_NAME, APP_URL, __version__
+from filare.errors import BomEntryHashError
 from filare.models import colors
 from filare.models.bom import BomContent, BomEntry, BomEntryBase, BomRenderOptions
-from filare.models.document import DocumentRepresentation
-from filare.models.dataclasses import Cable, Component, Connector
-from filare.models.types import BomCategory, Side
-from filare.models.connector import ConnectorModel
 from filare.models.cable import CableModel
 from filare.models.component import ComponentModel
+from filare.models.connector import ConnectorModel
+from filare.models.dataclasses import Cable, Component, Connector
+from filare.models.document import DocumentRepresentation
 from filare.models.metadata import Metadata
 from filare.models.notes import Notes
 from filare.models.options import PageOptions
-from filare.errors import BomEntryHashError
+from filare.models.types import BomCategory, Side
 from filare.render.assets import embed_svg_images, embed_svg_images_file
 from filare.render.graphviz import (
     gv_connector_loops,
@@ -29,8 +29,8 @@ from filare.render.graphviz import (
     gv_node_connector,
     set_dot_basics,
 )
-from filare.render.imported_svg import prepare_imported_svg
 from filare.render.html import generate_html_output
+from filare.render.imported_svg import prepare_imported_svg
 from filare.render.pdf import generate_pdf_output
 from filare.render.templates import get_template
 from filare.settings import settings

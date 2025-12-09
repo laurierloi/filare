@@ -5,13 +5,13 @@ import pytest
 import yaml
 
 from filare.flows.build_harness import build_harness_from_files
+from filare.index_table import IndexTable
 from filare.models.document import DocumentRepresentation
 from filare.models.harness import Harness
 from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
 from filare.models.notes import Notes
 from filare.models.options import PageOptions
 from filare.models.page import CutPage, HarnessPage, PageType, TitlePage
-from filare.index_table import IndexTable
 from filare.render.html import generate_html_output
 from filare.settings import settings
 

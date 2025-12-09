@@ -4,9 +4,9 @@ from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
+from filare.models.harness_quantity import HarnessQuantity
 from filare.models.metadata import PagesMetadata
 from filare.models.table_models import letter_suffix
-from filare.models.harness_quantity import HarnessQuantity
 from filare.render.templates import get_template
 
 TABLE_COLUMNS = ["sheet", "page", "quantity", "notes"]

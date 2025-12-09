@@ -1,7 +1,7 @@
 import pytest
 
-from filare.models.cable import Cable
 from filare.errors import ComponentValidationError
+from filare.models.cable import Cable
 
 
 def test_part_data_list_length_matches_wirecount():

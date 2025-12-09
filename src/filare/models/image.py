@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from filare.models.hypertext import MultilineHypertext
 from filare.models.colors import SingleColor
+from filare.models.hypertext import MultilineHypertext
 
 
 def aspect_ratio(image_src):

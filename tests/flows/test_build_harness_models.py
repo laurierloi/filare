@@ -1,7 +1,7 @@
 from filare.flows.build_harness import build_harness_from_models
 from filare.models.cable import CableModel
-from filare.models.connector import ConnectorModel
 from filare.models.component import ComponentModel
+from filare.models.connector import ConnectorModel
 
 
 def test_build_harness_from_models(basic_metadata, basic_page_options):

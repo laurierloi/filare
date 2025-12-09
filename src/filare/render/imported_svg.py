@@ -7,9 +7,9 @@ import re
 from pathlib import Path
 from typing import Optional
 
+from filare.errors import InvalidSVGRoot
 from filare.models.options import ImportedSVGOptions
 from filare.render.assets import embed_svg_images
-from filare.errors import InvalidSVGRoot
 
 SVG_DECLARATION_PATTERN = re.compile(
     r"(?mis)^<[?]xml[^>]*>\s*|^<!DOCTYPE[^>]*>\s*", re.MULTILINE

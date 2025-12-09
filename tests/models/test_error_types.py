@@ -4,10 +4,10 @@ import pytest
 
 from filare.errors import (
     ColorPaddingUnsupported,
+    FilareToolsException,
     FileResolutionError,
     InvalidNumberFormat,
     UnsupportedLoopSide,
-    FilareToolsException,
 )
 from filare.models.colors import MultiColor
 from filare.models.numbers import NumberAndUnit

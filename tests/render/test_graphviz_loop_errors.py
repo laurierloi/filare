@@ -1,8 +1,8 @@
 import pytest
 
 from filare.errors import UnsupportedLoopSide
-from filare.models.dataclasses import Connector, Loop, PinClass
 from filare.models.colors import MultiColor
+from filare.models.dataclasses import Connector, Loop, PinClass
 from filare.render.graphviz import gv_connector_loops
 
 

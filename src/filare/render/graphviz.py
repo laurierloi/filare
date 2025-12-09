@@ -2,10 +2,11 @@
 
 import logging
 import re
+from pathlib import Path
 from typing import Any, List, Optional, Union
 
 from filare import APP_NAME, APP_URL, __version__
-from filare.settings import settings
+from filare.errors import UnsupportedLoopSide
 from filare.models.colors import MultiColor, SingleColor
 from filare.models.dataclasses import (
     Cable,
@@ -14,14 +15,12 @@ from filare.models.dataclasses import (
     ShieldClass,
     WireClass,
 )
-from filare.models.types import Side
-from pathlib import Path
-
-from filare.errors import UnsupportedLoopSide
 from filare.models.image import Image
+from filare.models.types import Side
+from filare.models.utils import html_line_breaks, remove_links
 from filare.render.html_utils import Img, Table, Td, Tr
 from filare.render.templates import get_template
-from filare.models.utils import html_line_breaks, remove_links
+from filare.settings import settings
 
 
 def gv_node_connector(connector: Connector) -> Table:

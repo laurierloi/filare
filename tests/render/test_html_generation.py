@@ -1,13 +1,13 @@
 from pathlib import Path
 
+from filare.models.bom import BomContent, BomEntry, BomRenderOptions
 from filare.models.metadata import Metadata, PageTemplateConfig
-from filare.models.options import PageOptions
 from filare.models.notes import Notes
-from filare.render.output import generate_html_output
-from filare.models.bom import BomRenderOptions, BomEntry, BomContent
 from filare.models.numbers import NumberAndUnit
+from filare.models.options import PageOptions
 from filare.models.partnumber import PartNumberInfo
 from filare.models.types import BomCategory
+from filare.render.output import generate_html_output
 
 
 def test_generate_html_output_creates_file(tmp_path):

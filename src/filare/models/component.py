@@ -7,6 +7,7 @@ from typing import Any, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from filare.models.colors import SingleColor
 from filare.models.dataclasses import Component, GraphicalComponent  # noqa: F401
 from filare.models.hypertext import MultilineHypertext
 from filare.models.numbers import NumberAndUnit
@@ -18,7 +19,6 @@ from filare.models.types import (  # noqa: F401
     QtyMultiplierConnector,
     Side,
 )
-from filare.models.colors import SingleColor
 
 
 class ComponentModel(BaseModel):

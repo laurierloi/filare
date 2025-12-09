@@ -4,14 +4,14 @@ from typing import List, Optional, Sequence, Union
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
+from filare.errors import ComponentValidationError
 from filare.models.configs import (
     CableConfig,
-    ConnectorConfig,
     ConnectionConfig,
+    ConnectorConfig,
     WireConfig,
 )
 from filare.models.numbers import NumberAndUnit
-from filare.errors import ComponentValidationError
 
 
 class TemplateBaseModel(BaseModel):
