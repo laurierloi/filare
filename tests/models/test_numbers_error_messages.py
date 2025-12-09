@@ -1,8 +1,8 @@
 import pytest
 
+from filare.errors import InvalidNumberFormat
 from filare.models.cable import Cable
 from filare.models.numbers import NumberAndUnit
-from filare.errors import InvalidNumberFormat
 
 
 def test_number_and_unit_invalid_string_context():

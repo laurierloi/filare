@@ -1,8 +1,9 @@
-import pytest
 from pathlib import Path
 
-from filare.models import utils
+import pytest
+
 from filare.errors import FileResolutionError
+from filare.models import utils
 
 
 def test_expand_ranges_and_numbers():

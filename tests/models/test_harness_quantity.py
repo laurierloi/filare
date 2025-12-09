@@ -4,8 +4,8 @@ import logging
 
 import pytest
 
-from filare.models.harness_quantity import HarnessQuantity
 from filare.errors import FilareToolsException
+from filare.models.harness_quantity import HarnessQuantity
 
 
 def test_harness_quantity_reads_existing_file(tmp_path):

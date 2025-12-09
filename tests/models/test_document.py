@@ -3,6 +3,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from filare import filare as filare_module
+from filare.filare import _build_document_representation, _make_jsonable
 from filare.models.document import DocumentHashRegistry, DocumentRepresentation
 from filare.models.harness import Harness
 from filare.models.notes import Notes
@@ -15,7 +16,6 @@ from filare.models.page import (
     TerminationPage,
     TitlePage,
 )
-from filare.filare import _build_document_representation, _make_jsonable
 
 
 def test_document_representation_round_trip(tmp_path: Path):

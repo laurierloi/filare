@@ -2,14 +2,7 @@ import pytest
 
 from filare.models.bom import BomEntry
 from filare.models.cable import Cable
-from filare.models.connector import Connector, Loop, PinClass
-from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
-from filare.models.options import PageOptions, get_page_options
-from filare.models.numbers import NumberAndUnit
-from filare.models.partnumber import PartNumberInfo
 from filare.models.colors import MultiColor
-from filare.models.dataclasses import Component
-from filare.models.types import BomCategory, QtyMultiplierCable, QtyMultiplierConnector
 from filare.models.configs import (
     CableConfig,
     ConnectionConfig,
@@ -19,6 +12,13 @@ from filare.models.configs import (
     PinConfig,
     WireConfig,
 )
+from filare.models.connector import Connector, Loop, PinClass
+from filare.models.dataclasses import Component
+from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
+from filare.models.numbers import NumberAndUnit
+from filare.models.options import PageOptions, get_page_options
+from filare.models.partnumber import PartNumberInfo
+from filare.models.types import BomCategory, QtyMultiplierCable, QtyMultiplierConnector
 
 
 @pytest.fixture

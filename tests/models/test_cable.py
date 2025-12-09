@@ -1,6 +1,6 @@
 from filare.models.cable import Cable
-from filare.models.dataclasses import Connection, PinClass
 from filare.models.colors import MultiColor
+from filare.models.dataclasses import Connection, PinClass
 
 
 def test_cable_creates_wire_objects(cable):

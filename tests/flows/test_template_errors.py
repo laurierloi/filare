@@ -1,7 +1,7 @@
 import pytest
 
-from filare.flows.build_harness import build_harness_from_files
 from filare.errors import UnknownTemplateDesignator
+from filare.flows.build_harness import build_harness_from_files
 
 
 def test_unknown_template_reports_known_options(tmp_path):

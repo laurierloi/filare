@@ -3,11 +3,11 @@ from pathlib import Path
 import graphviz
 import pytest
 
-from filare.models.dataclasses import Connector, Cable, WireClass, Loop
-from filare.models.types import Side
-from filare.models.colors import SingleColor
-from filare.render import graphviz as gv
 from filare.errors import UnsupportedLoopSide
+from filare.models.colors import SingleColor
+from filare.models.dataclasses import Cable, Connector, Loop, WireClass
+from filare.models.types import Side
+from filare.render import graphviz as gv
 
 
 def make_connector(designator: str, pins: int, style: str = "default") -> Connector:

@@ -3,12 +3,12 @@
 import copy
 import logging
 import re
-import filare
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from pydantic import BaseModel, ConfigDict
 
+import filare
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
 from filare.models.harness_quantity import HarnessQuantity

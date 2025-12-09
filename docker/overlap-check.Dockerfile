@@ -7,7 +7,7 @@ WORKDIR /workspace
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
     echo "$HOME/.local/bin" >> /etc/environment
 
-COPY pyproject.toml uv.lock ./ 
+COPY pyproject.toml uv.lock ./
 COPY src ./src
 
 RUN uv venv && uv sync --group dev

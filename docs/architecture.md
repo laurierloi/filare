@@ -53,20 +53,20 @@ flowchart TD
 
 ## End-to-end flow
 
-1. **Input ingestion**  
+1. **Input ingestion**
    YAML harness files (plus optional metadata) are loaded and merged via `parser/yaml_loader.py` and parsed into Python structures by `parser/harness_parser.py`.
-2. **Model construction**  
+2. **Model construction**
    `flows/build_harness.py` turns parsed data into the core models in `filare.models` (`Harness`, `Connector`, `Cable`, `Component`, BOM entries, page options, metadata).
-3. **Rendering**  
+3. **Rendering**
    `flows/render_outputs.py` hands the assembled `Harness` to renderers:
    - Graph output: `render/graphviz.py` builds DOT nodes/edges (including node images) and invokes GraphViz for SVG/PNG.
    - Tabular/text output: `render/output.py` writes BOM/TSV and HTML wrappers; `render/templates.py` provides the Jinja templates and HTML helpers.
-4. **Document representation**  
+4. **Document representation**
    `flows/build_harness.py` now emits a pre-render `DocumentRepresentation` (YAML) capturing metadata, page stubs, notes, and BOM (if enabled). Hash tracking prevents overwriting user-edited documents.
 5. **Aggregate artifacts**
    - `flows/shared_bom.py` emits a combined `shared_bom.tsv`.
    - `flows/index_pages.py` builds title pages and PDF bundles.
-6. **Outputs**  
+6. **Outputs**
    SVG/PNG diagrams, HTML pages (diagram + title block), TSV BOMs, shared BOM, and optional PDF bundles end up under the requested output directory.
 
 ## Extending/operating

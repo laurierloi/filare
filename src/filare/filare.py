@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
-
-from enum import Enum
 
 from filare.flows import build_harness_from_files
 from filare.models.document import DocumentRepresentation

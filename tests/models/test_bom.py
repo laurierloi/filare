@@ -1,11 +1,12 @@
-import pytest
 import logging
 
-from filare.models.bom import BomContent, BomEntry, BomRenderOptions, BomRender
-from filare.models.partnumber import PartNumberInfo
-from filare.models.numbers import NumberAndUnit
-from filare.models.types import BomCategory
+import pytest
+
 from filare.errors import UnsupportedModelOperation
+from filare.models.bom import BomContent, BomEntry, BomRender, BomRenderOptions
+from filare.models.numbers import NumberAndUnit
+from filare.models.partnumber import PartNumberInfo
+from filare.models.types import BomCategory
 
 
 def test_bom_entry_scale_per_harness(bom_entry_sample):

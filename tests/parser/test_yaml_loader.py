@@ -1,5 +1,4 @@
 import pytest
-
 import yaml
 
 from filare.parser.yaml_loader import (

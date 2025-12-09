@@ -1,9 +1,10 @@
 import pytest
 
+from filare.errors import ComponentValidationError
 from filare.models.configs import (
     CableConfig,
-    ConnectorConfig,
     ConnectionConfig,
+    ConnectorConfig,
     WireConfig,
 )
 from filare.models.template_inputs import (
@@ -13,7 +14,6 @@ from filare.models.template_inputs import (
     TemplatePin,
     TemplateWire,
 )
-from filare.errors import ComponentValidationError
 
 
 def test_template_connector_from_config(connector_config_data):

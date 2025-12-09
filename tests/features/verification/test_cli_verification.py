@@ -2,16 +2,16 @@ import json
 import textwrap
 
 import pytest
-from filare.errors import FilareToolsException
 import yaml
 
 from filare.cli import cli
+from filare.errors import FilareToolsException
 from filare.models.bom import BomEntry
 from filare.models.harness import Harness
+from filare.models.notes import Notes
 from filare.models.numbers import NumberAndUnit
 from filare.models.options import PageOptions
 from filare.models.partnumber import PartNumberInfo
-from filare.models.notes import Notes
 from filare.render.html import generate_shared_bom
 
 

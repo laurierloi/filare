@@ -1,15 +1,15 @@
 import pytest
 
+from filare.errors import (
+    PartNumberValidationError,
+    UnitMismatchError,
+    UnsupportedModelOperation,
+)
 from filare.models.numbers import NumberAndUnit
 from filare.models.partnumber import (
     PartNumberInfo,
     PartnumberInfoList,
     partnumbers2list,
-)
-from filare.errors import (
-    UnitMismatchError,
-    UnsupportedModelOperation,
-    PartNumberValidationError,
 )
 
 

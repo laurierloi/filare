@@ -420,5 +420,3 @@ additional_bom_items:
 ![](tutorial08.png)
 
 [Source](tutorial08.yml) - [Bill of Materials](tutorial08.bom.tsv)
-
-

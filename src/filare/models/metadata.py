@@ -17,9 +17,8 @@ USING_PYDANTIC_V1 = False
 
 
 import filare  # for doing filare.__file__
-
-from filare.models.types import PlainText
 from filare.errors import MetadataValidationError
+from filare.models.types import PlainText
 
 # Metadata can contain whatever is needed by the HTML generation/template.
 MetadataKeys = PlainText  # Literal['title', 'description', 'notes', ...]

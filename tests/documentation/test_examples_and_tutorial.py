@@ -5,6 +5,7 @@ from typing import Iterable, List, Optional
 
 import pytest
 import yaml
+
 from filare.cli import cli
 
 pytestmark = pytest.mark.skipif(

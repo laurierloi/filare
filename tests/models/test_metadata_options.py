@@ -1,9 +1,10 @@
-import pytest
 from datetime import datetime
 
+import pytest
+
+from filare.errors import MetadataValidationError
 from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
 from filare.models.options import get_page_options
-from filare.errors import MetadataValidationError
 
 
 def test_metadata_builds_authors_and_revisions(basic_metadata):
@@ -65,7 +66,7 @@ def test_author_signature_date_parsing():
 
 
 def test_page_template_config_orientation_defaults():
-    from filare.models.metadata import PageTemplateConfig, SheetSizes, Orientations
+    from filare.models.metadata import Orientations, PageTemplateConfig, SheetSizes
 
     tpl = PageTemplateConfig(sheetsize=SheetSizes.A4)
     assert tpl.orientation == Orientations.portrait
