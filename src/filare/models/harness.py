@@ -408,12 +408,13 @@ class Harness:
         dot = Graph(engine=settings.graphviz_engine or "dot")
         set_dot_basics(dot, self.options)
 
-        dot.attr("node", shape="box", style="filled")
         for connector in self.connectors.values():
             template_html = gv_node_connector(connector)
             dot.node(
                 connector.designator,
-                label=f"<{template_html.strip()}>",
+                label=f"<\n{template_html}\n>",
+                shape="box",
+                style="filled",
             )
             if len(connector.loops) > 0:
                 loops = gv_connector_loops(connector)
@@ -433,10 +434,11 @@ class Harness:
         for cable in self.cables.values():
             template_html = gv_node_cable(cable)
             style = "filled,dashed" if cable.category == "bundle" else "filled"
-            dot.attr("node", style=style)
             dot.node(
                 cable.designator,
-                label=f"<{template_html.strip()}>",
+                label=f"<\n{template_html}\n>",
+                shape="box",
+                style=style,
             )
 
             for connection in cable._connections:
