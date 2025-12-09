@@ -85,6 +85,8 @@ def gv_connector_loops(connector: Connector) -> List:
             this_loop_side = "l"
             this_loop_dir = "w"
 
+        if loop.first is None or loop.second is None:
+            continue
         head = (
             f"{connector.designator}:p{loop.first.pin}{this_loop_side}:{this_loop_dir}"
         )

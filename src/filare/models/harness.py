@@ -160,7 +160,18 @@ class Harness:
                 else:
                     maybe_dict = _as_dict(entry)
                     base = BomEntryBase(**maybe_dict)
-                entry = BomEntry(**_as_dict(base))
+                entry = BomEntry(
+                    qty=base.qty,
+                    partnumbers=base.partnumbers,
+                    amount=base.amount,
+                    qty_multiplier=base.qty_multiplier,
+                    description=base.description,
+                    category=base.category,
+                    designators=list(base.designators),
+                    per_harness=dict(base.per_harness),
+                    ignore_in_bom=base.ignore_in_bom,
+                    id=base.id,
+                )
 
             if isinstance(entry, list):
                 for e in entry:
@@ -234,11 +245,11 @@ class Harness:
     def connect(
         self,
         from_name: str,
-        from_pin: (int, str),
+        from_pin: Union[int, str],
         via_name: str,
-        via_wire: (int, str),
+        via_wire: Union[int, str],
         to_name: str,
-        to_pin: (int, str),
+        to_pin: Union[int, str],
     ) -> None:
         def clean_pin(pin):
             """Allow for a pin of the form "PINLABEL__PINNUMBER"
@@ -344,7 +355,7 @@ class Harness:
 
                     raise CableWireResolutionError(
                         via_name,
-                        via_wire,
+                        str(via_wire),
                         "is defined both in colors and wirelabels, for different wires.",
                     )
                 # TODO: Maybe issue a warning if present in both lists
@@ -354,7 +365,7 @@ class Harness:
                     from filare.errors import CableWireResolutionError
 
                     raise CableWireResolutionError(
-                        via_name, via_wire, "is used for more than one wire."
+                        via_name, str(via_wire), "is used for more than one wire."
                     )
                 # list index starts at 0, wire IDs start at 1
                 via_wire = cable.colors.index(via_wire) + 1
@@ -363,7 +374,7 @@ class Harness:
                     from filare.errors import CableWireResolutionError
 
                     raise CableWireResolutionError(
-                        via_name, via_wire, "is used for more than one wire."
+                        via_name, str(via_wire), "is used for more than one wire."
                     )
                 via_wire = (
                     cable.wirelabels.index(via_wire) + 1
@@ -433,9 +444,9 @@ class Harness:
             for connection in cable._connections:
                 color, l1, l2, r1, r2 = gv_edge_wire(self, cable, connection)
                 dot.attr("edge", color=color)
-                if not (l1, l2) == (None, None):
+                if l1 is not None and l2 is not None:
                     dot.edge(l1, l2)
-                if not (r1, r2) == (None, None):
+                if r1 is not None and r2 is not None:
                     dot.edge(r1, r2)
 
         return dot
@@ -468,10 +479,10 @@ class Harness:
 
     def output(
         self,
-        filename: (str, Path),
+        filename: Union[str, Path],
         view: bool = False,
         cleanup: bool = True,
-        fmt: tuple = ("html", "png", "svg", "tsv"),
+        fmt: Sequence[str] = ("html", "png", "svg", "tsv"),
     ) -> None:
         fmt_list = list(fmt)
         imported_svg_markup = None

@@ -223,7 +223,7 @@ class PartnumberInfoList(BaseModel):
 
     def keep_unique(
         self, other: Union[List[PartNumberInfo], Iterable[PartNumberInfo]]
-    ) -> Iterator[Optional[PartNumberInfo]]:
+    ) -> Iterator[PartNumberInfo]:
         kept = []
         for pn_1 in self.pn_list:
             for pn_2 in self.pn_list:
@@ -236,13 +236,17 @@ class PartnumberInfoList(BaseModel):
             shared = self.keep_only_shared()
             if shared:
                 for pn in other:
-                    yield pn.remove_eq(shared)
+                    result = pn.remove_eq(shared)
+                    if result:
+                        yield result
             else:
                 yield from other
         else:
             shared = reduce(lambda x, y: x.keep_only_eq(y), kept)
             for pn in other:
-                yield pn.remove_eq(shared)
+                result = pn.remove_eq(shared)
+                if result:
+                    yield result
 
     def as_list(self, parent_partnumbers=None):
         for pn in self.pn_list:
@@ -273,11 +277,10 @@ def partnumbers2list(
         if isinstance(parent_partnumbers, PartNumberInfo)
         else parent_partnumbers
     )
-    unique = list(parent_list.keep_unique(partnumbers_list))
     flattened: List[str] = []
-    for maybe_pn in unique:
-        if maybe_pn is None:
+    for pn in parent_list.keep_unique(partnumbers_list):
+        if pn is None:
             continue
-        pn_info: PartNumberInfo = maybe_pn
+        pn_info: PartNumberInfo = pn
         flattened.extend(pn_info.str_list)
     return flattened
