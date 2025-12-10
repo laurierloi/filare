@@ -29,12 +29,18 @@ You can assume:
 - **Documentation & examples**
   - `docs/` — user & dev docs.
   - `docs/graphs/` — Mermaid sources + rendered diagrams.
-  - `docs/features/` - Tracking of in-progress or future features
-  - `docs/issues/` - Tracking of current issues with the code
-  - `docs/bugs/` - Tracking of bugs which have been identified in the codebase
-  - `docs/ui/` - Evaluating the UI and serving as a source for improvements
-  - `tutorial/` — walkthroughs.
-  - `examples/` — ready-made YAML inputs.
+- `docs/features/` - Tracking of in-progress or future features
+- `docs/issues/` - Tracking of current issues with the code
+- `docs/bugs/` - Tracking of bugs which have been identified in the codebase
+- `docs/ui/` - Evaluating the UI and serving as a source for improvements
+- `tutorial/` — walkthroughs.
+- `examples/` — ready-made YAML inputs.
+
+## Backlog Metadata (docs/issues and docs/features)
+
+- Every file under `docs/issues/**` and `docs/features/**` MUST start with the header defined in `docs/issues/header-template.md` (uid, status, priority, owner_role, estimate, dependencies, risk, milestone).
+- UID format is mandatory and immutable: issues use `ISS-<4 digits>`; features use `FEAT-<AREA>-<4 digits>` (AREA e.g., CLI, RENDER, GRAPH, BOM, MECH, DOCS, TOOLS, PERF, UI, GENERAL).
+- Reject/adjust contributions that omit the header or deviate from the UID scheme before merging; keep the header aligned when updating status or metadata.
 
 - **Tests & regression data**
   - `tests/rendering/`
