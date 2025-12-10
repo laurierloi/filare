@@ -7,6 +7,7 @@ from typing import Any, List, Optional, Tuple, Union
 
 from filare import APP_NAME, APP_URL, __version__
 from filare.errors import UnsupportedLoopSide
+from filare.models.cable import CableModel
 from filare.models.colors import MultiColor, SingleColor
 from filare.models.connections import ConnectionModel, LoopModel
 from filare.models.dataclasses import (
@@ -16,6 +17,7 @@ from filare.models.dataclasses import (
     ShieldClass,
     WireClass,
 )
+from filare.models.connector import ConnectorModel
 from filare.models.image import Image
 from filare.models.types import Side
 from filare.models.utils import html_line_breaks, remove_links
@@ -26,6 +28,8 @@ from filare.settings import settings
 
 def gv_node_connector(connector: Connector) -> str:
     """Render a connector node as an HTML-like table for Graphviz."""
+    if isinstance(connector, ConnectorModel):
+        connector = connector.to_connector()
     # TODO: extend connector style support
     params = {"component": connector, "suppress_images": True}
     is_simple_connector = connector.style == "simple"
@@ -40,6 +44,8 @@ def gv_node_connector(connector: Connector) -> str:
 
 def gv_node_cable(cable: Cable) -> str:
     """Render a cable node as an HTML-like table for Graphviz."""
+    if isinstance(cable, CableModel):
+        cable = cable.to_cable()
     # TODO: support multicolor cables
     # TODO: extend cable style support
     params = {"component": cable, "suppress_images": True}
