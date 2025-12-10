@@ -27,7 +27,9 @@ def test_metadata_validate_and_describe(tmp_path):
     result_ok = runner.invoke(cli, ["metadata", "validate", str(meta)])
     assert result_ok.exit_code == 0, result_ok.output
 
-    described = runner.invoke(cli, ["metadata", "describe", str(meta), "--format", "yaml"])
+    described = runner.invoke(
+        cli, ["metadata", "describe", str(meta), "--format", "yaml"]
+    )
     assert described.exit_code == 0, described.output
     data = yaml.safe_load(described.output)
     assert data["pn"] == "PN-1"
@@ -63,7 +65,15 @@ def test_metadata_merge_and_source(tmp_path):
 
     result = runner.invoke(
         cli,
-        ["metadata", "merge", str(base), str(override), "--format", "yaml", "--show-source"],
+        [
+            "metadata",
+            "merge",
+            str(base),
+            str(override),
+            "--format",
+            "yaml",
+            "--show-source",
+        ],
     )
     assert result.exit_code == 0, result.output
     merged = yaml.safe_load(result.output)
@@ -98,7 +108,7 @@ def test_metadata_edit_invokes_editor_and_validates(tmp_path):
     )
 
     editor_script = tmp_path / "edit.sh"
-    editor_script.write_text("#!/bin/sh\necho \"title: Added\" >> \"$1\"\n")
+    editor_script.write_text('#!/bin/sh\necho "title: Added" >> "$1"\n')
     editor_script.chmod(0o755)
 
     result = runner.invoke(

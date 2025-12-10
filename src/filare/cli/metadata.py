@@ -68,7 +68,9 @@ def _merge_with_sources(paths: List[Path]) -> Tuple[Dict[str, object], Dict[str,
     for path in paths:
         loaded = _load_yaml_file(path) or {}
         if not isinstance(loaded, dict):
-            raise MetadataValidationError(f"{path} must contain a mapping at the top level.")
+            raise MetadataValidationError(
+                f"{path} must contain a mapping at the top level."
+            )
         for key, value in loaded.items():
             if key in merged:
                 merged[key] = merge_item(merged[key], value)
@@ -88,7 +90,9 @@ def _load_metadata(paths: List[Path]) -> Dict[str, object]:
     return merged
 
 
-def _validate_payload(payload: object, strict: bool) -> Tuple[bool, List[str], List[str]]:
+def _validate_payload(
+    payload: object, strict: bool
+) -> Tuple[bool, List[str], List[str]]:
     if not isinstance(payload, dict):
         return False, [], ["Metadata must be a mapping at the top level."]
 
