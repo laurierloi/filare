@@ -32,6 +32,7 @@ if ! repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
   _die
 fi
 
+
 # --- XDG config directory for this repo (for gh, etc.) ---
 export XDG_CONFIG_HOME="${repo_root}/.config"
 mkdir -p "$XDG_CONFIG_HOME"
@@ -74,6 +75,30 @@ set -a
 # shellcheck disable=SC1090
 source "$ENV_FILE"
 set +a
+
+# --- tools check ---
+# Define all tools required by agents here
+REQUIRED_TOOLS=(uv gh git rg fd jq yq just)
+
+# ensure all required tools are installed and availabble in PATH
+missing=()
+for tool in "${REQUIRED_TOOLS[@]}"; do
+    if ! command -v "$tool" >/dev/null 2>&1; then
+        missing+=("$tool")
+    fi
+done
+
+if [ "${#missing[@]}" -ne 0 ]; then
+    echo "ERROR: Missing required CLI tools:"
+    for t in "${missing[@]}"; do
+        echo "  - $t"
+    done
+    echo ""
+    echo "Install them before running agents."
+    exit 1
+fi
+
+echo "All required tools are installed."
 
 # --- UV: ensure that the cache is always the same
 UV_CACHE_DIR="${repo_root}/.uv-cache"
