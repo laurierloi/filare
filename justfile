@@ -25,6 +25,7 @@ default:
   @echo "  just install-deps            # install dependencies (MUST NOT BE USED BY AGENTS)"
   @echo "  just mermaid-gantt           # generate Mermaid Gantt from backlog headers"
   @echo "  just mermaid-gantt-check     # generate Mermaid Gantt and validate mermaid syntax"
+  @echo "  just check-backlog-headers   # validate backlog headers/UIDs"
 
 # ---- Version ----
 version:
@@ -107,6 +108,10 @@ mermaid-gantt:
 mermaid-gantt-check:
   {{setup}} && uv run python scripts/generate_mermaid_gantt.py
   {{setup}} && ./scripts/check-mermaid.sh --files docs/workplan/gantt.md
+
+# Validate backlog headers and UID formats
+check-backlog-headers:
+  {{setup}} && uv run python scripts/check_backlog_headers.py
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
