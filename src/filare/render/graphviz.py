@@ -8,7 +8,7 @@ from typing import Any, List, Optional, Tuple, Union
 from filare import APP_NAME, APP_URL, __version__
 from filare.errors import UnsupportedLoopSide
 from filare.models.colors import MultiColor, SingleColor
-from filare.models.connections import ConnectionModel
+from filare.models.connections import ConnectionModel, LoopModel
 from filare.models.dataclasses import (
     Cable,
     Component,
@@ -88,6 +88,8 @@ def gv_connector_loops(connector: Connector) -> List:
 
         if loop.first is None or loop.second is None:
             continue
+        if isinstance(loop, LoopModel):
+            loop = loop.to_loop()
         head = (
             f"{connector.designator}:p{loop.first.pin}{this_loop_side}:{this_loop_dir}"
         )

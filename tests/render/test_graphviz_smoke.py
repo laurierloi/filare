@@ -6,7 +6,7 @@ import pytest
 from filare.errors import UnsupportedLoopSide
 from filare.models.colors import SingleColor
 from filare.models.dataclasses import Cable, Connector, Loop, WireClass
-from filare.models.connections import ConnectionModel, PinModel
+from filare.models.connections import ConnectionModel, LoopModel, PinModel
 from filare.models.types import Side
 from filare.models.wire import WireModel
 from filare.render import graphviz as gv
@@ -87,6 +87,21 @@ def test_connector_loops_right_and_missing_side():
     c.ports_right = False
     with pytest.raises(UnsupportedLoopSide):
         gv.gv_connector_loops(c)
+
+
+def test_connector_loops_accepts_loop_model():
+    c = make_connector("X1", 2)
+    c.ports_left = True
+    loop_model = LoopModel(
+        first=PinModel(parent="X1", id="1", index=0),
+        second=PinModel(parent="X1", id="2", index=1),
+        side=Side.LEFT,
+    )
+    loops = gv.gv_connector_loops(c)
+    # empty initially, so assign model and retry
+    c.loops = [loop_model]
+    loops = gv.gv_connector_loops(c)
+    assert loops and loops[0][1].startswith("X1")
 
 
 def test_gv_edge_wire_builds_ports(monkeypatch):
