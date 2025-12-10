@@ -1,5 +1,14 @@
 # Pyright typing cleanup plan
 
+uid: ISS-0019
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 Pyright currently reports ~262 errors across CLI, flows, models, render, and tooling. This plan tracks goals and phased fixes.
 
 ## Goals

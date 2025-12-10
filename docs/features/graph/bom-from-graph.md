@@ -1,4 +1,12 @@
 from: docs/features/filare-model-graph-base.md
+uid: FEAT-GRAPH-0003
+status: PLANNED
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 # BOM from Graph Traversal
 

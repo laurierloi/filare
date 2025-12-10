@@ -1,4 +1,12 @@
 from: docs/features/graph/bom-from-graph.md
+uid: FEAT-GRAPH-0016
+status: PLANNED
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 # Termination Diagram from Graph Traversal
 

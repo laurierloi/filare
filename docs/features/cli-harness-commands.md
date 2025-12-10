@@ -1,5 +1,14 @@
 # CLI Commands: harness domain
 
+uid: FEAT-CLI-0003
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Summary
 
 Add `filare harness <command>` to build harness artifacts and shared BOM slices, separate from document bundling. This scopes BOM/multiplier tasks and harness-level outputs.

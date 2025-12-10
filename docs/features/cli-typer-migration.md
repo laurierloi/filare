@@ -1,5 +1,14 @@
 # Migrate Filare CLI to Typer
 
+uid: FEAT-CLI-0008
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Summary
 
 Adopt Typer for the Filare CLI to enable hierarchical subcommands, richer help/auto-completion, and consistent flag handling. The hierarchical command redesign depends on this migration for clean subcommand UX.

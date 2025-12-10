@@ -1,5 +1,14 @@
 # Template: Label Sheet (Wire/Connector Tags)
 
+uid: ISS-0028
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 UI — Importance: Medium

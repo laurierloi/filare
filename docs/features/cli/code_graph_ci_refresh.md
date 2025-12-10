@@ -1,5 +1,14 @@
 # CI: refresh code graphs via `filare code graph`
 
+uid: FEAT-CLI-0010
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Summary
 
 Add a CI job to run `filare code graph` and publish artifacts (JSON/DOT/SVG) for the selected tools, keeping graphs current and downloadable.

@@ -1,5 +1,14 @@
 # Paginate titlepage contents table when large
 
+uid: ISS-0036
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 FEATURE

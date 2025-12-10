@@ -1,5 +1,14 @@
 # Make path/component validation errors contextual
 
+uid: ISS-0018
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 REWORK

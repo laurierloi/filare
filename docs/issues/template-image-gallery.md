@@ -1,5 +1,14 @@
 # Template: Image Gallery / Reference Photos
 
+uid: ISS-0027
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 UI — Importance: Low

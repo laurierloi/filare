@@ -1,5 +1,14 @@
 # Handle external tool failures with actionable errors
 
+uid: ISS-0011
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 REWORK

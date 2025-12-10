@@ -1,5 +1,14 @@
 # Titleblock formatting on titlepage is incorrect
 
+uid: ISS-0034
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 FEATURE
