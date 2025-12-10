@@ -6,7 +6,9 @@ import pytest
 from filare.errors import UnsupportedLoopSide
 from filare.models.colors import SingleColor
 from filare.models.dataclasses import Cable, Connector, Loop, WireClass
+from filare.models.connections import ConnectionModel, PinModel
 from filare.models.types import Side
+from filare.models.wire import WireModel
 from filare.render import graphviz as gv
 
 
@@ -133,6 +135,28 @@ def test_gv_edge_wire_handles_missing_endpoints():
     )
     assert color == "#000000"
     assert left1 is None and left2 is None and right1 is None and right2 is None
+
+
+def test_gv_edge_wire_accepts_connection_model():
+    class DummyHarness:
+        def __init__(self):
+            self.connectors = {
+                "X1": make_connector("X1", 1),
+                "X2": make_connector("X2", 1),
+            }
+
+    harness = DummyHarness()
+    cable = Cable(designator="W1", wirecount=1)
+    connection_model = ConnectionModel(
+        from_=PinModel(parent="X1", id="1", index=0, color="RD"),
+        via=WireModel(parent="W1", id="1", index=0, color="BK"),
+        to=PinModel(parent="X2", id="1", index=0, color="GN"),
+    )
+    color, left1, left2, right1, right2 = gv.gv_edge_wire(
+        harness, cable, connection_model
+    )
+    assert "#000000" in color
+    assert left1 and right2
 
 
 def test_set_dot_basics_respects_engine(monkeypatch):

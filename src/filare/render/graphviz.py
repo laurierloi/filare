@@ -8,6 +8,7 @@ from typing import Any, List, Optional, Tuple, Union
 from filare import APP_NAME, APP_URL, __version__
 from filare.errors import UnsupportedLoopSide
 from filare.models.colors import MultiColor, SingleColor
+from filare.models.connections import ConnectionModel
 from filare.models.dataclasses import (
     Cable,
     Component,
@@ -101,6 +102,8 @@ def gv_edge_wire(
     harness, cable, connection
 ) -> Tuple[str, Optional[str], Optional[str], Optional[str], Optional[str]]:
     """Return Graphviz edge descriptors for a connection through a wire/shield."""
+    if isinstance(connection, ConnectionModel):
+        connection = connection.to_connection()
     if connection.via.color:
         # check if it's an actual wire and not a shield
         color = f"#000000:{connection.via.color.html_padded}:#000000"
