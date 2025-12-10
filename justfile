@@ -7,20 +7,26 @@ setup := "source scripts/agent-setup.sh >/dev/null"
 
 default:
   @echo "Available recipes:"
-  @echo "  just lint                # run pre-commit on all files"
-  @echo "  just pre-commit          # run pre-commit on staged files"
-  @echo "  just git-status          # show git status"
-  @echo "  just test-all            # run all tests"
-  @echo "  just test-fast           # run fast tests (excluding functional)"
-  @echo "  just test-functional     # run only functional tests"
-  @echo "  just test-mermaid        # test the mermaid diagrams generation"
-  @echo "  just example-first       # build first example (ex01)"
-  @echo "  just demo-first          # build first example (demo01)"
-  @echo "  just build-docs          # build mkdocs documentation"
-  @echo "  just build-examples      # rebuild all examples"
-  @echo "  just bom-check           # run filare-qty BOM sanity check"
-  @echo "  just check-tools         # verify required CLI tools are present"
-  @echo "  just install-deps        # install dependencies (MUST NOT BE USED BY AGENTS)"
+  @echo "  just version                 # get the current filare version"
+  @echo "  just lint                    # run pre-commit on all files"
+  @echo "  just pre-commit              # run pre-commit on staged files"
+  @echo "  just test-all                # run all tests"
+  @echo "  just test-fast               # run fast tests (excluding functional)"
+  @echo "  just test-functional         # run only functional tests"
+  @echo "  just test-mermaid            # test the mermaid diagrams generation"
+  @echo "  just test-semantic-release   # test semantic-release configuration"
+  @echo "  just test-version            # see what would be the next version"
+  @echo "  just example-first           # build first example (ex01)"
+  @echo "  just demo-first              # build first example (demo01)"
+  @echo "  just build-docs              # build mkdocs documentation"
+  @echo "  just build-examples          # rebuild all examples"
+  @echo "  just bom-check               # run filare-qty BOM sanity check"
+  @echo "  just check-tools             # verify required CLI tools are present"
+  @echo "  just install-deps            # install dependencies (MUST NOT BE USED BY AGENTS)"
+
+# ---- Version ----
+version:
+  cat VERSION
 
 # ---- Linting & hooks ----
 
@@ -52,6 +58,12 @@ test-functional:
 
 test-mermaid:
   {{setup}} && ./scripts/check-mermaid.sh
+
+test-semantic-release:
+  {{setup}} && npx semantic-release --dry-run --noop --stdout --yes
+
+test-version:
+  {{setup}} && npx semantic-release --version --dry-run --noop --stdout --yes
 
 # ---- Filare commands & docs ----
 

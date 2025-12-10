@@ -121,7 +121,6 @@ useLibraryCodeForTypes = true
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
 branch = "main"
-changelog_file = "CHANGELOG.md"
 commit_message = "chore(release): v{version}"
 commit_author = "semantic-release <semantic-release@users.noreply.github.com>"
 commit_version_number = true
@@ -140,6 +139,14 @@ changelog_sections = [
   ["ci", "CI"],
   ["chore", "Chores"],
 ]
+
+[tool.semantic_release.branches]
+main = { match = "main", prerelease = false }
+beta = { match = "beta", prerelease = true, prerelease_token = "beta.rc" }
+
+[tool.semantic_release.changelog.default_templates]
+changelog_file = "CHANGELOG.md"
+output_format = "md"
 
 [tool.isort]
 profile = "black"
