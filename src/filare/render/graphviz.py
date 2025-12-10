@@ -10,13 +10,7 @@ from filare.errors import UnsupportedLoopSide
 from filare.models.cable import CableModel
 from filare.models.colors import MultiColor, SingleColor
 from filare.models.connections import ConnectionModel, LoopModel
-from filare.models.dataclasses import (
-    Cable,
-    Component,
-    Connector,
-    ShieldClass,
-    WireClass,
-)
+from filare.models.dataclasses import Cable, Connector, ShieldClass, WireClass
 from filare.models.connector import ConnectorModel
 from filare.models.image import Image
 from filare.models.types import Side
@@ -73,6 +67,8 @@ def _node_image_attrs(image: Optional[Image]) -> dict:
 
 def gv_connector_loops(connector: Connector) -> List:
     """Return loop edges for a connector with placement hints."""
+    if isinstance(connector, ConnectorModel):
+        connector = connector.to_connector()
     loop_edges = []
     if connector.ports_left:
         loop_side = "l"
