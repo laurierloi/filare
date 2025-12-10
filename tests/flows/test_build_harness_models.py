@@ -56,3 +56,30 @@ def test_build_harness_from_models_with_additional_bom(
     )
     harness.populate_bom()
     assert any(entry.category for entry in harness.bom.values())
+
+
+def test_build_harness_from_models_accepts_connections(
+    basic_metadata, basic_page_options
+):
+    connectors = [
+        ConnectorModel(designator="J1", pinlabels=["1"]),
+        ConnectorModel(designator="J2", pinlabels=["1"]),
+    ]
+    cables = [
+        CableModel(designator="C1", colors=["RD"], wirecount=1, length="1 m")
+    ]
+    connections = [
+        ConnectionModel(
+            from_=PinModel(parent="J1", id="1", index=0),
+            via=WireModel(parent="C1", id="1", index=0, color="RD"),
+            to=PinModel(parent="J2", id="1", index=0),
+        )
+    ]
+    harness = build_harness_from_models(
+        connectors,
+        cables,
+        basic_metadata,
+        basic_page_options,
+        connections=connections,
+    )
+    assert harness.cables["C1"]._connections

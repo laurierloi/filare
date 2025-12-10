@@ -43,4 +43,5 @@ Gradually migrate remaining dataclass-heavy models (Connector, Cable, WireClass/
 ### Progress 2025-12-10
 
 - Color helpers: migrated `MultiColor` to a Pydantic model and kept legacy iteration/formatting semantics; validated usage surfaces for connectors/cables/render.
-- Wiring shims: added `WireModel`/`ShieldModel` Pydantic adapters with round-trip converters to `WireClass`/`ShieldClass`; tests cover basic roundtrips and ConnectionModel now accepts wire models. Integration into flows/rendering remains pending.
+- Wiring shims: added `WireModel`/`ShieldModel` Pydantic adapters with round-trip converters to `WireClass`/`ShieldClass`; tests cover basic roundtrips and ConnectionModel now accepts wire models.
+- Flow integration: `Harness.connect_model()` added to route ConnectionModel/dict through existing connect logic; build_harness_from_models can consume connection models for straight-through wiring setup.
