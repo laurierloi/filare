@@ -32,6 +32,7 @@ if ! repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
   _die
 fi
 
+scripts_dir="${repo_root}/scripts"
 
 # --- XDG config directory for this repo (for gh, etc.) ---
 export XDG_CONFIG_HOME="${repo_root}/.config"
@@ -51,7 +52,6 @@ echo "GH_CONFIG_DIR set to: $GH_CONFIG_DIR"
 export PRE_COMMIT_HOME="${XDG_CONFIG_HOME}/pre-commit"
 mkdir -p "$PRE_COMMIT_HOME"
 echo "PRE_COMMIT_HOME set to: $PRE_COMMIT_HOME"
-
 
 
 # Resolve env file path
@@ -77,28 +77,9 @@ source "$ENV_FILE"
 set +a
 
 # --- tools check ---
-# Define all tools required by agents here
-REQUIRED_TOOLS=(uv gh git rg fd jq yq just)
-
-# ensure all required tools are installed and availabble in PATH
-missing=()
-for tool in "${REQUIRED_TOOLS[@]}"; do
-    if ! command -v "$tool" >/dev/null 2>&1; then
-        missing+=("$tool")
-    fi
-done
-
-if [ "${#missing[@]}" -ne 0 ]; then
-    echo "ERROR: Missing required CLI tools:"
-    for t in "${missing[@]}"; do
-        echo "  - $t"
-    done
-    echo ""
-    echo "Install them before running agents."
-    exit 1
+if ! bash "$scripts_dir/check-tools.sh"; then
+  _die "One or more required CLI tools are missing. Please install them and re-run agent_setup.sh."
 fi
-
-echo "All required tools are installed."
 
 # --- UV: ensure that the cache is always the same
 UV_CACHE_DIR="${repo_root}/.uv-cache"
