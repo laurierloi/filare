@@ -23,6 +23,7 @@ default:
   @echo "  just bom-check               # run filare-qty BOM sanity check"
   @echo "  just check-tools             # verify required CLI tools are present"
   @echo "  just install-deps            # install dependencies (MUST NOT BE USED BY AGENTS)"
+  @echo "  just mermaid-gantt           # generate Mermaid Gantt from backlog headers"
 
 # ---- Version ----
 version:
@@ -96,6 +97,10 @@ bom-check:
 # Check that all required CLI tools are installed (uses your check-tools.sh)
 check-tools:
   {{setup}} && bash scripts/check-tools.sh
+
+# Generate Mermaid Gantt from backlog headers
+mermaid-gantt:
+  {{setup}} && uv run python scripts/generate_mermaid_gantt.py
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
