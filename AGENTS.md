@@ -316,6 +316,7 @@ uv run pytest
   - JUDGE
   - VALIDATOR
   - UI
+  - FIXER
 - Read this file + your role-specific guide (AGENT.<ROLE>.md)
 - Scan relevant code
 - Write a short step plan
