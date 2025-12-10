@@ -102,12 +102,12 @@ check-tools:
 # Generate Mermaid Gantt from backlog headers
 mermaid-gantt:
   docker build -t filare-mermaid -f Dockerfile .
-  docker run --rm -v {{PWD}}:/app -w /app filare-mermaid bash -lc "source scripts/agent-setup.sh >/dev/null || true; uv run python scripts/generate_mermaid_gantt.py"
+  docker run --rm -v "$PWD":/app -w /app filare-mermaid bash -lc "source scripts/agent-setup.sh >/dev/null || true; uv run python scripts/generate_mermaid_gantt.py"
 
 # Generate and validate the Mermaid Gantt diagram
 mermaid-gantt-check:
   docker build -t filare-mermaid -f Dockerfile .
-  docker run --rm -v {{PWD}}:/app -w /app filare-mermaid bash -lc "source scripts/agent-setup.sh >/dev/null || true; uv run python scripts/generate_mermaid_gantt.py && ./scripts/check-mermaid.sh --files docs/workplan/gantt.md"
+  docker run --rm -v "$PWD":/app -w /app filare-mermaid bash -lc "source scripts/agent-setup.sh >/dev/null || true; uv run python scripts/generate_mermaid_gantt.py && ./scripts/check-mermaid.sh --files docs/workplan/gantt.md"
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
