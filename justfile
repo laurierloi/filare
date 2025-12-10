@@ -14,7 +14,8 @@ default:
   @echo "  just test-fast           # run fast tests (excluding functional)"
   @echo "  just test-functional     # run only functional tests"
   @echo "  just test-mermaid        # test the mermaid diagrams generation"
-  @echo "  just example-first       # build first example (demo01)"
+  @echo "  just example-first       # build first example (ex01)"
+  @echo "  just demo-first          # build first example (demo01)"
   @echo "  just build-docs          # build mkdocs documentation"
   @echo "  just build-examples      # rebuild all examples"
   @echo "  just bom-check           # run filare-qty BOM sanity check"
@@ -56,6 +57,10 @@ test-mermaid:
 
 # Build only the first example with filare (quick sanity run)
 example-first:
+  {{setup}} && uv run filare run examples/ex01.yml -f hpst -o outputs
+
+# Build only the first example with filare (quick sanity run)
+demo-first:
   {{setup}} && uv run filare run examples/demo01.yml -f hpst -o outputs
 
 # Show resolved Filare settings (YAML, includes defaults)
