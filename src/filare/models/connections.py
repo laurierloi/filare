@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, field_validator
 
 from filare.models.colors import MultiColor
 from filare.models.dataclasses import Connection, Loop, PinClass
+from filare.models.wire import ShieldModel, WireModel
 from filare.models.types import Side
 
 
@@ -147,6 +148,8 @@ class ConnectionModel(BaseModel):
             return value
         if isinstance(value, PinClass):
             return PinModel.from_pinclass(value)
+        if isinstance(value, (WireModel, ShieldModel)):
+            return value
         if isinstance(value, dict):
             return PinModel(**value)
         return value
@@ -157,6 +160,8 @@ class ConnectionModel(BaseModel):
                 return None
             if isinstance(val, PinModel):
                 return val.to_pinclass()
+            if isinstance(val, (WireModel, ShieldModel)):
+                return val.to_wireclass()
             return val
 
         return Connection(

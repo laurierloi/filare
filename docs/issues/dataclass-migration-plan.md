@@ -33,3 +33,16 @@ Gradually migrate remaining dataclass-heavy models (Connector, Cable, WireClass/
 - Rendering code expects dataclass-specific attributes/mutability; adapters must retain behavior during transition.
 - Graphviz output relies on pin activation side effects; ensure Pydantic-backed objects preserve those semantics or provide compatibility wrappers.
 - Legacy YAML parsing might construct dataclasses implicitly; migration must keep backward compatibility paths until schemas are confirmed stable.
+
+## Upcoming steps for the next slice
+
+1. Lock in the color helper migration by verifying MultiColor/SingleColor behavior across connector/cable parsing and rendering consumers; adjust adapters if any regressions surface.
+2. Introduce Pydantic shims for Connector/Cable/WireClass/ShieldClass with converters to/from the legacy dataclasses, keeping existing imports stable.
+3. Thread the new shims through `build_harness` wiring/loop handling and renderer entrypoints with minimal behavior changes; add targeted regression tests for connection creation and BOM quantities.
+
+### Progress 2025-12-10
+
+- Color helpers: migrated `MultiColor` to a Pydantic model and kept legacy iteration/formatting semantics; validated usage surfaces for connectors/cables/render.
+- Wiring shims: added `WireModel`/`ShieldModel` Pydantic adapters with round-trip converters to `WireClass`/`ShieldClass`; tests cover basic roundtrips and ConnectionModel now accepts wire models.
+- Flow integration: `Harness.connect_model()` added to route ConnectionModel/dict through existing connect logic; build_harness_from_models can consume connection models for straight-through wiring setup.
+- Next: peel renderer/graphviz to accept connection/wire models, and incrementally replace direct dataclass usage in graph building and BOM population.
