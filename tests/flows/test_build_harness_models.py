@@ -63,9 +63,7 @@ def test_build_harness_from_models_accepts_connections(
         ConnectorModel(designator="J1", pinlabels=["1"]),
         ConnectorModel(designator="J2", pinlabels=["1"]),
     ]
-    cables = [
-        CableModel(designator="C1", colors=["RD"], wirecount=1, length="1 m")
-    ]
+    cables = [CableModel(designator="C1", colors=["RD"], wirecount=1, length="1 m")]
     connections = [
         ConnectionModel(
             from_=PinModel(parent="J1", id="1", index=0),
