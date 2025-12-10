@@ -93,4 +93,5 @@ No.
 - Added regression test `tests/render/test_graphviz_smoke.py::test_connector_template_uses_pin_number_when_label_missing` to assert unlabeled pins omit `None` and render the pin number across the row.
 
 Tests:
+
 - `PYTHONPATH=src uv run pytest tests/render/test_graphviz_smoke.py`
