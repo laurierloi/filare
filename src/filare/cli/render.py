@@ -63,6 +63,7 @@ def _render_cli(
     output_formats = {format_codes[f] for f in formats if f in format_codes}
     harness_output_formats = output_formats.copy()
     shared_bom = {}
+    titlepage_metadata_files = tuple(metadata) if metadata else tuple(files_list)
 
     extra_metadata = {
         "output_dir": resolved_output_dir,
@@ -120,13 +121,15 @@ def _render_cli(
         )
 
     if ("html" in output_formats) and create_titlepage:
-        build_titlepage(tuple(metadata), extra_metadata, shared_bom)
+        build_titlepage(titlepage_metadata_files, extra_metadata, shared_bom)
 
         if "pdf" in output_formats:
             extra_metadata["titlepage"] = extra_metadata["titlepage"].with_stem(
                 f"{extra_metadata['titlepage'].stem}_for_pdf"
             )
-            build_titlepage(tuple(metadata), extra_metadata, shared_bom, for_pdf=True)
+            build_titlepage(
+                titlepage_metadata_files, extra_metadata, shared_bom, for_pdf=True
+            )
 
     if "pdf" in output_formats:
         build_pdf_bundle(

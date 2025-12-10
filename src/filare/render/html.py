@@ -569,7 +569,11 @@ def generate_titlepage(yaml_data, extra_metadata, shared_bom, for_pdf=False):
         "sheet_name": "titlepage",
         "output_name": "titlepage",
     }
-    titlepage_metadata["template"]["name"] = "titlepage"
+    template_metadata = titlepage_metadata.get("template")
+    if not isinstance(template_metadata, dict):
+        template_metadata = {}
+        titlepage_metadata["template"] = template_metadata
+    template_metadata["name"] = "titlepage"
     metadata = Metadata(**titlepage_metadata)
     index_table = IndexTable.from_pages_metadata(metadata)
 
