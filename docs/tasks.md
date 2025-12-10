@@ -34,13 +34,13 @@ That ordering is somewhat arbitrary
 ## Outputs
 
 - 230329GTW2_bom_class_generate_excel_see_MR
+- 230525GTW1_bom_on_separate_page_by_config (covered by `docs/features/bom_pagination.md`)
 
 ## Views
 
 - 230911GTW1_create_a_view_with_only_connection_table
 - 230329GTW1_support_splitting_SVG_in_two
 - 230717GTW1_support_dual_color_in_wire_see_ex10
-- 230525GTW1_bom_on_separate_page_by_config
 - 230327GTW1_create/include_egse_template
 - 230329GTW1_create_low_level_view_as_only_pin_table
 - 230329GTW2_create_high_level_view_as_only_connector
