@@ -89,7 +89,7 @@ Output file:
 
 ### Syntax, tutorial and example gallery
 
-Read the [syntax description](docs/syntax.md) to learn about Filare's features and how to use them.
+Read the [syntax description](https://laurierloi.github.io/filare/syntax/) to learn about Filare's features and how to use them.
 
 See the [tutorial page](tutorial/readme.md) for sample code, as well as the [example gallery](examples/readme.md) to see more of what Filare can do.
 
@@ -298,7 +298,7 @@ Please see the [documentation](buildscript.md) of the `build_examples.py` script
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md)
+See the [Changelog](https://laurierloi.github.io/filare/changelog/)
 
 ## Status
 
