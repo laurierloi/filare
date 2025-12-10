@@ -1,4 +1,12 @@
 # Document Representation and Change Tracking
+uid: FEAT-DOCS-0001
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Status
 

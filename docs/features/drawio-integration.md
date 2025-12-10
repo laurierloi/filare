@@ -1,4 +1,12 @@
 from: docs/features/drawio-svg-import.md
+uid: FEAT-DOCS-0002
+status: WAITING_FOR_OPERATOR
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 # DrawIO Authoring Integration
 

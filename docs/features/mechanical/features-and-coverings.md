@@ -1,4 +1,12 @@
 from: docs/research/mechanical-diagram-elements.md
+uid: FEAT-MECH-0004
+status: PROPOSED
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 # Mechanical Features and Coverings
 

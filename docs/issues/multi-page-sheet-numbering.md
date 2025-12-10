@@ -1,4 +1,12 @@
 # Sheet numbering incorrect in multi-page documents
+uid: ISS-0016
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Category
 

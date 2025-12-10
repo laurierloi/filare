@@ -1,4 +1,12 @@
 from: docs/features/graph/bundle-model.md
+uid: FEAT-GRAPH-0005
+status: PLANNED
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 # Cable as Part (Graph-Based)
 

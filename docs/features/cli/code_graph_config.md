@@ -1,4 +1,12 @@
 # CLI: `filare code graph` configuration support
+uid: FEAT-CLI-0011
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Summary
 

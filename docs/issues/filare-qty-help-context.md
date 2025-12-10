@@ -1,4 +1,12 @@
 # Explain filare-qty workflow and flag meanings
+uid: ISS-0012
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Category
 

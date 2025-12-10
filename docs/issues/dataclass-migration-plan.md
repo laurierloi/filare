@@ -1,4 +1,12 @@
 # Dataclass migration plan for Connector/Cable/Wire
+uid: ISS-0007
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 Category: REWORK
 

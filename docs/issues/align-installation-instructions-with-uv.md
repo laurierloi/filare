@@ -1,4 +1,12 @@
 # Align installation instructions with uv (RESOLVED)
+uid: ISS-0001
+status: DONE
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 Installation guidance previously pointed to `pip`/`virtualenv` instead of the uv-first workflow used throughout the repo. This was updated in this PR to use uv consistently.
 

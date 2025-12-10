@@ -1,4 +1,12 @@
 # Template: Approvals / Signoff Page
+uid: ISS-0021
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Category
 

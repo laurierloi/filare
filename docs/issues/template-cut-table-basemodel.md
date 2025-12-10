@@ -1,4 +1,12 @@
 # Add BaseModel for cut_table rows
+uid: ISS-0025
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Category
 

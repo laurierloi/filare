@@ -1,4 +1,12 @@
 from: docs/features/standard-harness-component-support.md
+uid: FEAT-GENERAL-0001
+status: PROPOSED
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 # Cavities, Terminals, and Seals Support
 

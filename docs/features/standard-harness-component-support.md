@@ -1,4 +1,12 @@
 from: docs/research/harness-diagram-components.md
+uid: FEAT-BOM-0007
+status: PROPOSED
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 # Standard Harness Component Support
 

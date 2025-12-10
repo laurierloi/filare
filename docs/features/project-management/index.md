@@ -1,4 +1,12 @@
 # Project Management Features
+uid: FEAT-PM-0002
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 - [Backlog planning pipeline](project-management-planning.md)
 - [Taskwarrior export pipeline](taskwarrior-pipeline.md)

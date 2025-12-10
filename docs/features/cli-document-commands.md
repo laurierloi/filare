@@ -1,4 +1,12 @@
 # CLI Commands: document domain
+uid: FEAT-CLI-0001
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Summary
 

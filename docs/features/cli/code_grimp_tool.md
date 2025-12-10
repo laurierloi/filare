@@ -1,4 +1,12 @@
 # CLI: `filare code graph --tool grimp`
+uid: FEAT-CLI-0012
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Summary
 

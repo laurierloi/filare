@@ -1,4 +1,12 @@
 # Code graph configuration
+uid: FEAT-CLI-0015
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Summary
 

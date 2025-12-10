@@ -1,4 +1,12 @@
 from: docs/research/performance-tools.md
+uid: FEAT-PERF-0002
+status: PROPOSED
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 # Memray Support (Allocation Tracing)
 

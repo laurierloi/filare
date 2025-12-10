@@ -1,4 +1,12 @@
 # Graph Features Overview
+uid: FEAT-GRAPH-0002
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 Follow-up features under `docs/features/graph/` elaborate how to refactor Filare models toward a node/link-centric graph. Each file depends on `docs/features/filare-model-graph-base.md` and should be implemented as separate features.
 

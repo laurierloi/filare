@@ -1,4 +1,12 @@
 # CLI: `filare code` domain and `graph` subcommand scaffold
+uid: FEAT-CLI-0009
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Summary
 
