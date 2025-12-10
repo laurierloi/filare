@@ -1,14 +1,51 @@
 # CLI Commands: settings domain
 
+## Status
+
+DONE
+
 ## Summary
 
 Add `filare settings <command>` to read, update, and persist Filare settings (paths, defaults, format preferences), improving transparency and reproducibility.
+
+## Requirements
+
+- Provide a `filare settings` command group with `show`, `set`, `reset`, and `path` subcommands plus listed flags.
+- Support per-user and per-project scopes with clear precedence and explicit config file locations.
+- Default config directory is `$XDG_CONFIG_HOME/filare`, overridable via `FIL_CONFIG_PATH`; settings stored as YAML files named per scope (e.g., `<name_of_settings>.yaml`).
+- Offer YAML output and human-readable table formatting (no JSON option for now).
+- Settings resolution priority: CLI args override env vars, which override config file values, which override defaults.
+- Maintain backward compatibility with existing defaults and environment-variable overrides; use `pathlib` for all path handling.
+
+## Steps
+
+- [x] Map current settings loading (env + defaults) and decide config storage locations/schema for user/project scopes.
+- [x] Implement settings persistence and resolution (defaults, env, user, project) plus helpers to read/write and validate values.
+- [x] Add Typer `settings` command group with `show`, `set`, `reset`, and `path` behaviors and formatting flags.
+- [x] Add tests covering settings loading, precedence, mutations, and CLI outputs.
+- [x] Update docs/help text and examples as needed.
+
+## Progress Log
+
+2025-12-10: Created feature plan and initial status.
+2025-12-10: Implemented YAML-backed settings store (FIL_CONFIG_PATH/XDG paths), Typer commands, and tests for precedence and mutations.
+2025-12-10: Updated feature doc; marked feature DONE pending operator review.
+2025-12-10: Added `just filare-settings-get` helper to show resolved settings.
+2025-12-10: Added `config_dir` read-only setting surfaced in `settings show`.
+
+## Sub-Features
+
+- None
+
+## Related Issues
+
+- None
 
 ## Commands
 
 - `filare settings show` — display current settings and defaults.
   - Input: none (reads from config file/environment).
-  - Flags: `--format {table,json,yaml}`, `--include-defaults`.
+  - Flags: `--format {table,yaml}`, `--include-defaults`.
   - Output: settings to stdout.
 - `filare settings set <key> <value>` — update a setting (e.g., default formats, output dir).
   - Input: key/value.
@@ -25,8 +62,8 @@ Add `filare settings <command>` to read, update, and persist Filare settings (pa
 
 ## Inputs & Formats
 
-- No YAML inputs; operates on config files/env.
-- Supports JSON/YAML output for automation.
+- operates on config files/env/yaml.
+- Supports YAML output for automation.
 
 ## Outputs
 
@@ -45,5 +82,13 @@ Add `filare settings <command>` to read, update, and persist Filare settings (pa
 ## UI Notes
 
 - Show config file locations and scopes in help (`user` vs `project`) with examples.
-- Ensure outputs support both table and JSON for automation.
+- Ensure outputs support both table and YAML for automation.
 - Provide non-interactive flags (`--yes`) and clear error messages when scope/key is invalid.
+
+## Implementation
+
+- [x] Analyze existing `filare.settings` usage to decide new storage schema (keys, types, defaults) and confirm env override strategy (`FIL_CONFIG_PATH` vs `$XDG_CONFIG_HOME/filare`).
+- [x] Define config path resolution for `user` vs `project` scopes using `pathlib`, including creation behavior for `settings path --create` and file naming (`<name_of_settings>.yaml`).
+- [x] Implement YAML-only settings persistence/merging helpers (load/write, type parsing, append semantics) to back the CLI.
+- [x] Wire Typer `settings` subcommands (`show`, `set`, `reset`, `path`) to the persistence layer with format/scoping flags (table/YAML) and exit codes.
+- [x] Add tests for settings resolution and CLI commands; refresh docs/help to reflect new behaviors.
