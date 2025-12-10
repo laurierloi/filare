@@ -404,6 +404,41 @@ class Harness:
         if to_name in self.connectors:
             self.connectors[to_name].activate_pin(to_pin, Side.LEFT)
 
+    def connect_model(self, connection) -> None:
+        """Accept a ConnectionModel (or dict) and route through connect()."""
+        from filare.models.connections import ConnectionModel
+        from filare.models.dataclasses import Connection as ConnectionDataclass
+
+        if isinstance(connection, dict):
+            connection = ConnectionModel(**connection)
+        if isinstance(connection, ConnectionModel):
+            connection = connection.to_connection()
+        if not isinstance(connection, ConnectionDataclass):
+            raise TypeError("connection must be ConnectionModel, dict, or Connection")
+
+        from_name = getattr(connection.from_, "parent", None) if connection.from_ else ""
+        to_name = getattr(connection.to, "parent", None) if connection.to else ""
+        via_name = getattr(connection.via, "parent", None) if connection.via else ""
+
+        from_pin = getattr(connection.from_, "id", None) or getattr(
+            connection.from_, "label", ""
+        )
+        to_pin = getattr(connection.to, "id", None) or getattr(
+            connection.to, "label", ""
+        )
+        via_wire = getattr(connection.via, "id", None) or getattr(
+            connection.via, "label", ""
+        )
+
+        self.connect(
+            str(from_name or ""),
+            str(from_pin or ""),
+            str(via_name or ""),
+            str(via_wire or ""),
+            str(to_name or ""),
+            str(to_pin or ""),
+        )
+
     def create_graph(self) -> Graph:
         dot = Graph(engine=settings.graphviz_engine or "dot")
         set_dot_basics(dot, self.options)
