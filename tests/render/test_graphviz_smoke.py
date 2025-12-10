@@ -9,6 +9,7 @@ from filare.models.colors import SingleColor
 from filare.models.connections import ConnectionModel, LoopModel, PinModel
 from filare.models.connector import ConnectorModel
 from filare.models.dataclasses import Cable, Connector, Loop, WireClass
+from filare.models.connections import ConnectionModel, PinModel
 from filare.models.types import Side
 from filare.models.wire import WireModel
 from filare.render import graphviz as gv
