@@ -24,7 +24,7 @@ Generate Mermaid Gantt charts from the backlog manifest to visualize milestones,
 - Use the canonical manifest keyed by `uid` to build Gantt sections per workstream/milestone.
 - Include dependency ordering (`after <id>`) based on manifest dependencies.
 - Output locations: `outputs/workplan/gantt.md` (artifact) and `docs/workplan/gantt.md` (embedded in MkDocs).
-- Regeneration via `just mermaid-gantt` (runs `scripts/generate_mermaid_gantt.py`).
+- Regeneration via `just mermaid-gantt` (runs `scripts/generate_mermaid_gantt.py`); validate via `just mermaid-gantt-check` which runs `scripts/check-mermaid.sh --files docs/workplan/gantt.md`.
 - Keep identifiers stable (uids) for cross-linking to issues/features.
 - Enforce UID format (`ISS-####`, `FEAT-<AREA>-####`) for consistent references in diagrams.
 

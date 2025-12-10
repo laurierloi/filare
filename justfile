@@ -24,6 +24,7 @@ default:
   @echo "  just check-tools             # verify required CLI tools are present"
   @echo "  just install-deps            # install dependencies (MUST NOT BE USED BY AGENTS)"
   @echo "  just mermaid-gantt           # generate Mermaid Gantt from backlog headers"
+  @echo "  just mermaid-gantt-check     # generate Mermaid Gantt and validate mermaid syntax"
 
 # ---- Version ----
 version:
@@ -101,6 +102,11 @@ check-tools:
 # Generate Mermaid Gantt from backlog headers
 mermaid-gantt:
   {{setup}} && uv run python scripts/generate_mermaid_gantt.py
+
+# Generate and validate the Mermaid Gantt diagram
+mermaid-gantt-check:
+  {{setup}} && uv run python scripts/generate_mermaid_gantt.py
+  {{setup}} && ./scripts/check-mermaid.sh --files docs/workplan/gantt.md
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
