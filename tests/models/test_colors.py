@@ -99,6 +99,11 @@ def test_multi_color_accepts_varied_inputs():
     assert unknown_even[0].code_en == "Q1Q1"
 
 
+def test_multi_color_iteration_yields_colors():
+    colors = MultiColor(["RD", SingleColor("GN")])
+    assert [color.code_en for color in colors] == ["RD", "GN"]
+
+
 def test_multi_color_str_in_html_mode(monkeypatch):
     monkeypatch.setattr(
         "filare.models.colors.color_output_mode", ColorOutputMode.HTML_UPPER

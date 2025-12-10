@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from collections import namedtuple
-from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 padding_amount = 1
 
@@ -116,41 +115,20 @@ class SingleColor(BaseModel):
             return convert_case(self.html)
 
 
-@dataclass
-class MultiColor:
-    colors: List[SingleColor] = field(default_factory=list)
+class MultiColor(BaseModel):
+    colors: List[SingleColor] = Field(default_factory=list)
 
-    def __init__(self, inp):
-        self.colors = []
-        if inp is None:
-            pass
-        elif isinstance(inp, MultiColor):  # copy existing multicolor
-            self.colors = list(inp.colors)
-        elif isinstance(inp, List):  # input is already a list
-            for item in inp:
-                if item is None:
-                    pass
-                elif isinstance(item, SingleColor):
-                    self.colors.append(item)
-                else:  # string
-                    self.colors.append(SingleColor(item))
-        elif isinstance(inp, SingleColor):  # single color
-            self.colors = [inp]
-        else:  # split input into list
-            if ":" in str(inp):
-                self.colors = [SingleColor(item) for item in inp.split(":")]
-            else:
-                if isinstance(inp, int):
-                    self.colors = [SingleColor(inp)]
-                elif len(inp) % 2 == 0:
-                    items = [inp[i : i + 2] for i in range(0, len(inp), 2)]
-                    known = [item.upper() in known_colors.keys() for item in items]
-                    if all(known):
-                        self.colors = [SingleColor(item) for item in items]
-                    else:  # assume it's a valud HTML color name
-                        self.colors = [SingleColor(inp)]
-                else:  # assume it's a valid HTML color name
-                    self.colors = [SingleColor(inp)]
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    def __init__(self, inp=None, **data):
+        if "colors" in data:
+            colors_value = self._normalize_colors(data.pop("colors"))
+        else:
+            colors_value = self._normalize_colors(inp)
+        super().__init__(colors=colors_value, **data)
+
+    def __iter__(self):
+        return iter(self.colors)
 
     def __len__(self):
         return len(self.colors)
@@ -209,6 +187,36 @@ class MultiColor:
         if len(self.html_padded_list) == 0:
             return "#FFFFFF"
         return ":".join(self.html_padded_list)
+
+    @classmethod
+    def _normalize_colors(cls, inp):
+        colors: List[SingleColor] = []
+        if inp is None:
+            return colors
+        if isinstance(inp, MultiColor):
+            return list(inp.colors)
+        if isinstance(inp, (list, tuple)):
+            for item in inp:
+                if item is None:
+                    continue
+                colors.append(
+                    item if isinstance(item, SingleColor) else SingleColor(item)
+                )
+            return colors
+        if isinstance(inp, SingleColor):
+            return [inp]
+
+        inp_str = str(inp)
+        if ":" in inp_str:
+            return [SingleColor(item) for item in inp_str.split(":")]
+        if isinstance(inp, int):
+            return [SingleColor(inp)]
+        if len(inp_str) % 2 == 0:
+            items = [inp_str[i : i + 2] for i in range(0, len(inp_str), 2)]
+            known = [item.upper() in known_colors.keys() for item in items]
+            if all(known):
+                return [SingleColor(item) for item in items]
+        return [SingleColor(inp_str)]
 
 
 COLOR_CODES = {
