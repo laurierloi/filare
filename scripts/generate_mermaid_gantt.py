@@ -11,6 +11,7 @@ from typing import Dict, Iterable, List, Optional, Tuple
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 BACKLOG_DIRS = [REPO_ROOT / "docs" / "issues", REPO_ROOT / "docs" / "features"]
 OUTPUT_PATH = REPO_ROOT / "outputs" / "workplan" / "gantt.md"
+DOCS_OUTPUT_PATH = REPO_ROOT / "docs" / "workplan" / "gantt.md"
 ALLOWED_KEYS = {
     "uid",
     "status",
@@ -116,8 +117,11 @@ def generate_mermaid(tasks: List[Dict[str, str]]) -> str:
 def main() -> None:
     tasks = build_tasks(find_backlog_files())
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(generate_mermaid(tasks), encoding="utf-8")
-    print(f"Wrote Mermaid Gantt with {len(tasks)} tasks to {OUTPUT_PATH}")
+    DOCS_OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    content = generate_mermaid(tasks)
+    OUTPUT_PATH.write_text(content, encoding="utf-8")
+    DOCS_OUTPUT_PATH.write_text(content, encoding="utf-8")
+    print(f"Wrote Mermaid Gantt with {len(tasks)} tasks to {OUTPUT_PATH} and {DOCS_OUTPUT_PATH}")
 
 
 if __name__ == "__main__":
