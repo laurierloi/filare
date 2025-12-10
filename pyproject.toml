@@ -140,6 +140,10 @@ changelog_sections = [
   ["chore", "Chores"],
 ]
 
+[tool.semantic_release.branches]
+main = { match = "main", prerelease = false }
+beta = { match = "beta", prerelease = true, prerelease_token = "beta.rc" }
+
 [tool.semantic_release.changelog.default_templates]
 changelog_file = "CHANGELOG.md"
 output_format = "md"
