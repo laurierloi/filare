@@ -21,6 +21,14 @@ def test_metadata_validate_and_describe(tmp_path):
         pn: PN-1
         title: Demo
         company: TestCo
+        authors:
+          Created:
+            name: Bob
+            date: 2023-03-29
+        revisions:
+          A:
+            name: Bob
+            date: 2023-03-29
         """,
     )
 

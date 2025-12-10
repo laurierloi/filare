@@ -31,11 +31,22 @@ class AuthorLite(BaseModel):
     """Minimal author entry."""
 
     name: str = ""
-    date: Optional[str] = None
+    date: Optional[object] = None
     changelog: Optional[str] = None
     role: Optional[str] = None
 
     model_config = {"extra": "allow"}
+
+    @field_validator("date", mode="before")
+    def _coerce_date(cls, value):
+        if value is None:
+            return None
+        if isinstance(value, (str,)):
+            return value
+        # Accept datetime/date objects produced by YAML loaders.
+        if hasattr(value, "isoformat"):
+            return value.isoformat()
+        return value
 
 
 class MetadataLite(BaseModel):
