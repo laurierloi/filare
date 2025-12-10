@@ -15,20 +15,47 @@ nav:
   - Graphs:
       - Overview: graphs/architecture.md
       - Data Flow: graphs/data_flow.md
+      - Document Flow: graphs/document_flow.md
       - Models: graphs/models.md
   - Syntax: syntax.md
+  - Pages: pages.md
   - Tutorial: tutorial/readme.md
+  - Tutorials:
+      - Tutorial 01: tutorial/tutorial01.md
+      - Tutorial 02: tutorial/tutorial02.md
+      - Tutorial 03: tutorial/tutorial03.md
+      - Tutorial 04: tutorial/tutorial04.md
+      - Tutorial 05: tutorial/tutorial05.md
+      - Tutorial 06: tutorial/tutorial06.md
+      - Tutorial 07: tutorial/tutorial07.md
+      - Tutorial 08: tutorial/tutorial08.md
+      - Tutorial Backlog: tutorial/todo.md
   - Examples: examples/readme.md
+  - Workflows:
+      - Basic Output Generation: workflows/basic-output-generation.md
+      - Quantity Multipliers (Current): workflows/quantity-multipliers-current.md
   - Advanced Images: advanced_image_usage.md
   - Build Script: buildscript.md
   - CI: ci.md
   - Docs:
+      - Agents: agents.md
       - Mermaid Check: mermaid.md
+      - MkDocs: mkdocs.md
+      - Docs Improvement Tracker: docs_improvement.md
+  - Features: features/index.md
+  - Issues: issues/index.md
+  - Research: research/index.md
+  - UI Reviews: ui/index.md
   - Dev:
       - Metadata Guide: dev/metadata_guide.md
       - GitHub CLI: dev/github.md
+      - Logging Sources: dev/logging-sources.md
+      - Pyright: dev/pyright.md
       - Text Overlap Checker: dev/text_overlap_checker.md
-      - Tasks: tasks.md
+  - Projects:
+      - Part Ingestion: projects/part-ingestion.md
+  - Work Tracking: tasks.md
+  - Refactor Plan: refactor.md
   - Collisions: collisions/summary.md
   - Changelog: CHANGELOG.md
   - Contributing: CONTRIBUTING.md
@@ -55,7 +82,12 @@ extra_javascript:
   - https://unpkg.com/mermaid@10/dist/mermaid.min.js
   - javascripts/mermaid.js
 
-exclude_docs: |
-  mkdocs.md
-  tutorial/todo.md
-  tutorial/tutorial0*.md
+not_in_nav: |
+  features/**
+  issues/**
+  research/**
+  ui/**
+  !features/index.md
+  !issues/index.md
+  !research/index.md
+  !ui/index.md
