@@ -53,6 +53,10 @@ test-mermaid:
 example-first:
   {{setup}} && uv run filare run examples/demo01.yml -f hpst -o outputs
 
+# Show resolved Filare settings (YAML, includes defaults)
+filare-settings-get:
+  {{setup}} && uv run filare settings show --format yaml --include-defaults
+
 # Build full documentation with mkdocs
 build-docs:
   {{setup}} && uv run mkdocs build
