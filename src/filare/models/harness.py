@@ -561,6 +561,10 @@ def _build_cut_table(harness):
             if idx in seen:
                 continue
             seen.add(idx)
+            try:
+                wire_suffix = int(idx) + 1
+            except (TypeError, ValueError):
+                wire_suffix = idx
             color = (
                 getattr(wire.color, "code_en", None)
                 or getattr(wire.color, "html", "")
@@ -571,7 +575,7 @@ def _build_cut_table(harness):
             length = getattr(wire, "length", None) or getattr(cable, "length", "")
             rows.append(
                 {
-                    "wire": f"{cable.designator}-{idx + 1}",
+                    "wire": f"{cable.designator}-{wire_suffix}",
                     "partno": getattr(cable, "pn", "") or "",
                     "color": color or "",
                     "length": length or "",

@@ -96,3 +96,28 @@ def test_harness_output_and_tables(tmp_path, basic_metadata, monkeypatch):
     assert (out.with_suffix(".tsv")).exists()
     assert template_calls  # cut/termination tables rendered
     assert html_calls  # html output invoked
+
+
+def test_build_cut_table_handles_shield_id(basic_metadata, monkeypatch):
+    options = PageOptions(include_cut_diagram=True)
+    harness = Harness(metadata=basic_metadata, options=options, notes=Notes())
+    harness.add_cable_model(
+        {"designator": "C1", "wirecount": 1, "colors": ["RD"], "shield": True}
+    )
+
+    template_calls = []
+
+    class FakeTemplate:
+        def render(self, ctx):
+            template_calls.append(ctx)
+            return "<table></table>"
+
+    monkeypatch.setattr(
+        harness_module, "get_template", lambda *args, **kwargs: FakeTemplate()
+    )
+
+    rows, rendered = harness_module._build_cut_table(harness)
+
+    assert rendered == "<table></table>"
+    assert any(row["wire"].endswith("-s") for row in rows)
+    assert template_calls  # template was rendered
