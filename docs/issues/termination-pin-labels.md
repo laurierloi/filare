@@ -1,4 +1,5 @@
 # Termination table omits pin details
+
 uid: ISS-0033
 status: BACKLOG
 priority: medium

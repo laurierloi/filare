@@ -14,6 +14,7 @@ milestone: <label>           # e.g., Q1-2025, beta-1.5
 ```
 
 Guidelines:
+
 - `uid` is the primary key reused across manifest, Taskwarrior, Mermaid, and timelines; keep it short and unique.
 - Place the header immediately after the title (or at the top) and keep it in YAML-style key/value lines.
 - If an item spans multiple files, pick one canonical `uid` and reference it from related documents.

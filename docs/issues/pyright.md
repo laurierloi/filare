@@ -1,4 +1,5 @@
 # Pyright typing cleanup plan
+
 uid: ISS-0019
 status: BACKLOG
 priority: medium

@@ -1,4 +1,5 @@
 # Add BaseModel for termination_table rows
+
 uid: ISS-0031
 status: BACKLOG
 priority: medium

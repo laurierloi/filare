@@ -1,4 +1,5 @@
 # Migrate Filare CLI to Typer
+
 uid: FEAT-CLI-0008
 status: BACKLOG
 priority: medium

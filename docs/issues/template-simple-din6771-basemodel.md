@@ -1,4 +1,5 @@
 # Add BaseModel/context schema for legacy simple templates
+
 uid: ISS-0030
 status: BACKLOG
 priority: medium

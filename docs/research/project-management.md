@@ -1,9 +1,11 @@
 # Project Management for Filare Backlog Coordination
 
 ## Summary
+
 Explore how to convert the current markdown backlog in `docs/issues` and `docs/features` into actionable plans (timelines, Gantt charts, Taskwarrior task lists) and whether introducing a PROJET_MANAGER agent would increase coordination, prevent conflicts, and maximize parallel work across agents.
 
 ## Use Cases for Filare
+
 - Create a single, time-aware backlog from the existing markdown issues/features to sequence releases and de-risk large refactors (e.g., graph model shift vs CLI restructuring).
 - Give agents a reservation/assignment view so they can claim tasks, avoid overlap on shared files (CLI, renderers, docs), and see dependencies.
 - Provide leadership with a lightweight roadmap (Gantt) that is exportable to reports without adopting heavy external tooling.
@@ -11,6 +13,7 @@ Explore how to convert the current markdown backlog in `docs/issues` and `docs/f
 - Surface quick wins (docs-only, low coupling) to keep velocity high while long-running items proceed in parallel.
 
 ## Technical Evaluation
+
 - Features: derive structured metadata (status, priority, owner/agent role, dependencies, target release, risk) from a small YAML/JSON manifest that references existing markdown files; generate:
   - Mermaid/Graphviz Gantt charts per quarter/milestone.
   - Taskwarrior import files for offline CLI task management.
@@ -22,32 +25,39 @@ Explore how to convert the current markdown backlog in `docs/issues` and `docs/f
 - Required integrations: a canonical backlog manifest (e.g., `docs/workplan/backlog.yml`), a generator script (`uv run python ...`) that emits Gantt (Mermaid), Taskwarrior JSON, and markdown rollups; optional hook into `just` to refresh artifacts.
 
 ## Complexity Score (1–5)
+
 2 — Mostly documentation and light tooling:
+
 - Changes are confined to docs plus a small parser/generator script.
 - No core library or schema impact; minimal new abstractions.
 - External APIs (Mermaid, Taskwarrior JSON) are stable and simple.
 
 ## Maintenance Risk
+
 - External-side reliability: Mermaid Gantt syntax and Taskwarrior import format are stable; low risk of breaking changes.
 - Filare-side work: keeping backlog metadata updated is the main cost; requires ownership discipline.
 - Ongoing cost: low, assuming weekly refresh by the PROJET_MANAGER agent or a scheduled `just workplan` job.
 - Abandonment risk: minimal because the data lives in-repo; outputs can degrade gracefully (old charts) without breaking builds.
 
 ## Industry / Business Usage
+
 - Hardware/embedded teams often maintain lightweight roadmaps (Mermaid/Gantt in repos) to coordinate schematic, harness, and manufacturing documentation work.
 - Open-source projects with distributed contributors use markdown roadmaps plus issue labels to stage releases; Taskwarrior is common for CLI-driven personal task tracking.
 - Automotive/aerospace documentation teams sequence schema changes and doc updates separately to avoid blocking certification packages—mirrors Filare’s need to stage schema, renderer, and doc tasks.
 
 ## Who Uses It & Why It Works for Them
+
 - Linux distros (Debian, Fedora) coordinate releases with task queues and Gantt-like freeze timelines—works because contributors see critical paths early.
 - Hardware design teams using KiCad/Altium often keep an internal “work package” spreadsheet or markdown roadmap per release—helps parallelize schematic/layout/BOM work without collisions.
 - Rust and Kubernetes release leads rely on markdown roadmaps plus automation that turns issues into burndown charts—gives visibility without heavyweight PM suites.
 
 ## Feasibility
+
 - Feasible now: requires only docs and a small generator; no network dependencies beyond existing toolchain.
 - Even easier after minor REWORK to add consistent metadata headers to existing issue/feature files.
 
 ## Required Work
+
 - REWORK tasks:
   - Add a lightweight metadata header to every `docs/issues/*.md` and `docs/features/**/*.md` (status, priority, owner/role, estimate, dependencies, risk, target release).
   - Normalize naming (one slug per item) to avoid duplicate references across directories, and introduce an explicit immutable `uid` for each item that all outputs (Mermaid, Taskwarrior, timelines) reuse for stable references and user-facing anchors.
@@ -70,15 +80,18 @@ Explore how to convert the current markdown backlog in `docs/issues` and `docs/f
   - Regression check that every issue/feature slug is represented in the manifest.
 
 ## Recommendation
+
 **ADOPT** — Low complexity and low risk. A structured backlog plus a PROJET_MANAGER agent enables parallelism, clearer sequencing of high-risk changes (graph model, CLI Typer migration, mechanical schema), and reduces collisions between agents.
 
 ## References
-- docs/issues/*, docs/features/*
+
+- docs/issues/_, docs/features/_
 - Mermaid Gantt syntax: https://mermaid.js.org/syntax/gantt.html
 - Taskwarrior data formats: https://taskwarrior.org/docs/
 - Graphviz timelines (for optional export): https://graphviz.org/
 
 ## Optional Appendix
+
 - Sample backlog manifest entry (YAML):
   ```yaml
   - id: cli-hierarchical-commands
@@ -93,7 +106,15 @@ Explore how to convert the current markdown backlog in `docs/issues` and `docs/f
   ```
 - Sample Taskwarrior export snippet:
   ```json
-  [{"description":"Implement hierarchical CLI (cli-hierarchical-commands)","project":"filare","tags":["FEATURE","CLI","Q1"],"depends":"cli-typer-migration","due":"2025-03-31"}]
+  [
+    {
+      "description": "Implement hierarchical CLI (cli-hierarchical-commands)",
+      "project": "filare",
+      "tags": ["FEATURE", "CLI", "Q1"],
+      "depends": "cli-typer-migration",
+      "due": "2025-03-31"
+    }
+  ]
   ```
 - Sample Mermaid Gantt idea:
   ```mermaid

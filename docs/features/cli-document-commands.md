@@ -1,4 +1,5 @@
 # CLI Commands: document domain
+
 uid: FEAT-CLI-0001
 status: BACKLOG
 priority: medium

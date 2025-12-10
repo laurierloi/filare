@@ -1,4 +1,5 @@
 # Add BaseModel for cut_table rows
+
 uid: ISS-0025
 status: BACKLOG
 priority: medium

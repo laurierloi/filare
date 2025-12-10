@@ -1,4 +1,5 @@
 # Clarify connector loop syntax and examples (Resolved)
+
 uid: ISS-0002
 status: BACKLOG
 priority: medium

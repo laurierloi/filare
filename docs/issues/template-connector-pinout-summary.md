@@ -1,4 +1,5 @@
 # Template: Connector Pinout Summary
+
 uid: ISS-0024
 status: BACKLOG
 priority: medium

@@ -1,4 +1,5 @@
 # Clarify color and component validation errors
+
 uid: ISS-0005
 status: BACKLOG
 priority: medium
