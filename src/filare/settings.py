@@ -109,4 +109,12 @@ def resolve_settings(
     return FilareSettingsModel(**merged)
 
 
-settings = resolve_settings()
+class FilareSettings(FilareSettingsModel):
+    """Backward-compatible settings facade that resolves env/config/defaults."""
+
+    def __init__(self, **kwargs: Any):
+        resolved = resolve_settings(cli_overrides=kwargs)
+        super().__init__(**resolved.model_dump())
+
+
+settings = FilareSettings()
