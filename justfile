@@ -9,6 +9,7 @@ default:
   @echo "Available recipes:"
   @echo "  just lint                # run pre-commit on all files"
   @echo "  just pre-commit          # run pre-commit on staged files"
+  @echo "  just git-status          # show git status"
   @echo "  just test-all            # run all tests"
   @echo "  just test-fast           # run fast tests (excluding functional)"
   @echo "  just test-functional     # run only functional tests"
@@ -29,6 +30,10 @@ lint:
 # Run pre-commit only on staged/changed files
 pre-commit:
   {{setup}} && uv run pre-commit run
+
+# ---- Git ----
+git-status:
+  {{setup}} && git status -sb
 
 # ---- Testing ----
 
