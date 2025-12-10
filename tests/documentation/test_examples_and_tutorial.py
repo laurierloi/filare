@@ -1,12 +1,12 @@
 import glob
+import shlex
 import shutil
+import subprocess
 from pathlib import Path
 from typing import Iterable, List, Optional
 
 import pytest
 import yaml
-
-from filare.cli import cli, render_callback
 
 pytestmark = pytest.mark.skipif(
     shutil.which("dot") is None, reason="Graphviz dot executable not found"
@@ -55,22 +55,26 @@ def run_filare_cli(
                 link_target = scratch_dir / resources_dir.name
                 if not link_target.exists():
                     link_target.symlink_to(resources_dir.resolve())
-    render_callback(
-        files=tuple(files),
-        formats=formats,
-        components=(),
-        metadata=(metadata,) if metadata else (),
-        output_dir=output_dir,
-        output_name=None,
-        version=False,
-        use_qty_multipliers=False,
-        multiplier_file_name="quantity_multipliers.txt",
-    )
+
+    for file in files:
+        cmd_parts = [
+            "source scripts/agent-setup.sh >/dev/null",
+            "uv run filare run",
+            shlex.quote(str(file)),
+            "--formats",
+            shlex.quote(formats),
+            "--output-dir",
+            shlex.quote(str(output_dir)),
+        ]
+        if metadata:
+            cmd_parts.extend(["--metadata", shlex.quote(str(metadata))])
+        subprocess.run(
+            ["bash", "-lc", " ".join(cmd_parts)],
+            check=True,
+            cwd=Path.cwd(),
+        )
 
 
-@pytest.mark.skip(
-    reason="This tests just gets the system OOM... there's some leak somewhere"
-)
 def test_examples_generate_outputs(tmp_path):
     examples_dir = Path("examples")
     metadata_file = examples_dir / "metadata.yml"
