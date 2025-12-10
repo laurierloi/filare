@@ -36,9 +36,9 @@ Gradually migrate remaining dataclass-heavy models (Connector, Cable, WireClass/
 
 ## Upcoming steps for the next slice
 
-1) Lock in the color helper migration by verifying MultiColor/SingleColor behavior across connector/cable parsing and rendering consumers; adjust adapters if any regressions surface.
-2) Introduce Pydantic shims for Connector/Cable/WireClass/ShieldClass with converters to/from the legacy dataclasses, keeping existing imports stable.
-3) Thread the new shims through `build_harness` wiring/loop handling and renderer entrypoints with minimal behavior changes; add targeted regression tests for connection creation and BOM quantities.
+1. Lock in the color helper migration by verifying MultiColor/SingleColor behavior across connector/cable parsing and rendering consumers; adjust adapters if any regressions surface.
+2. Introduce Pydantic shims for Connector/Cable/WireClass/ShieldClass with converters to/from the legacy dataclasses, keeping existing imports stable.
+3. Thread the new shims through `build_harness` wiring/loop handling and renderer entrypoints with minimal behavior changes; add targeted regression tests for connection creation and BOM quantities.
 
 ### Progress 2025-12-10
 

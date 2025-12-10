@@ -416,7 +416,9 @@ class Harness:
         if not isinstance(connection, ConnectionDataclass):
             raise TypeError("connection must be ConnectionModel, dict, or Connection")
 
-        from_name = getattr(connection.from_, "parent", None) if connection.from_ else ""
+        from_name = (
+            getattr(connection.from_, "parent", None) if connection.from_ else ""
+        )
         to_name = getattr(connection.to, "parent", None) if connection.to else ""
         via_name = getattr(connection.via, "parent", None) if connection.via else ""
 
