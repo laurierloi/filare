@@ -4,11 +4,11 @@ import graphviz
 import pytest
 
 from filare.errors import UnsupportedLoopSide
-from filare.models.colors import SingleColor
 from filare.models.cable import CableModel
+from filare.models.colors import SingleColor
+from filare.models.connections import ConnectionModel, LoopModel, PinModel
 from filare.models.connector import ConnectorModel
 from filare.models.dataclasses import Cable, Connector, Loop, WireClass
-from filare.models.connections import ConnectionModel, LoopModel, PinModel
 from filare.models.types import Side
 from filare.models.wire import WireModel
 from filare.render import graphviz as gv
@@ -38,10 +38,12 @@ def test_node_cable_template_loads():
     rendered = gv.gv_node_cable(cable)
     assert "table" in rendered.lower()
 
+
 def test_node_cable_accepts_model():
     cable_model = CableModel(designator="W1", colors=["RD"], wirecount=1)
     rendered = gv.gv_node_cable(cable_model)
     assert "table" in rendered.lower()
+
 
 def test_connector_template_uses_pin_number_when_label_missing():
     conn = make_connector("X1", 2)
