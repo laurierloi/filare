@@ -1,6 +1,6 @@
 # Align error raises with input validation (RESOLVED)
 
-uid: ISS-0010
+uid: ISS-0013
 status: DONE
 priority: medium
 owner_role: REWORK
@@ -8,6 +8,7 @@ estimate: TBD
 dependencies: []
 risk: medium
 milestone: backlog
+
 
 Generic `Exception` raises in the harness-building flow made it hard to distinguish user input errors from other failures. This update standardizes those cases to `ValueError` and adds regression tests for the failure paths.
 

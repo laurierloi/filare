@@ -1,12 +1,14 @@
 from: docs/research/mechanical-harness-diagrams.md
+
 uid: FEAT-MECH-0001
-status: PROPOSED
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD
 dependencies: []
 risk: medium
 milestone: backlog
+
 
 # Mechanical CAD/STEP Linkage and Viewer
 

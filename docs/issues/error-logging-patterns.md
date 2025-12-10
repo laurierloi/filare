@@ -1,6 +1,6 @@
 # Standardize error logging when wrapping exceptions (OPEN)
 
-uid: ISS-0009
+uid: ISS-0012
 status: BACKLOG
 priority: medium
 owner_role: REWORK
@@ -8,6 +8,7 @@ estimate: TBD
 dependencies: []
 risk: medium
 milestone: backlog
+
 
 Exception wrapping now uses typed Filare errors, but logging behavior is inconsistent (some wrappers log before raising, others do not). Define a consistent guideline to avoid duplicate log noise while preserving context.
 

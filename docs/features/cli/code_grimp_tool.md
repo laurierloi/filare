@@ -9,6 +9,7 @@ dependencies: []
 risk: medium
 milestone: backlog
 
+
 ## Summary
 
 Implement a grimp-based import graph generator that emits JSON (and optional DOT/SVG) for `filare`, exposed via `filare code graph --tool grimp`.

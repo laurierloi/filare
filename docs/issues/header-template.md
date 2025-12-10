@@ -1,5 +1,15 @@
 # Issue/Feature Header Template
 
+uid: ISS-0017
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
+
 Use this header at the top of every file in `docs/issues/` and `docs/features/` to keep planning metadata consistent and to provide stable references for Taskwarrior/Mermaid/Graphviz exports.
 
 ```

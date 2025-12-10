@@ -1,5 +1,15 @@
 # `just example-first` fails on titlepage generation
 
+uid: ISS-0019
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
+
 ## Category
 
 BUG

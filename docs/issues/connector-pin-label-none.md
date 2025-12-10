@@ -1,5 +1,15 @@
 # Hide `None` labels for unlabeled pins
 
+uid: ISS-0009
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
+
 ## Category
 
 FIXER

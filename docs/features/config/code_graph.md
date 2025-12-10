@@ -9,6 +9,7 @@ dependencies: []
 risk: medium
 milestone: backlog
 
+
 ## Summary
 
 Define a YAML configuration that maps to `CodeGraphConfig` (root `pydantic.BaseModel`) with optional child configs for each supported tool: `CodeGraphPyDepsConfig`, `CodeGraphGrimpConfig`, and `CodeGraphPyan3Config`. CLI arguments merge with defaults to materialize this config before running any graph generation flow.

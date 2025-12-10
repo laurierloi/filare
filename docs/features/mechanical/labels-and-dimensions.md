@@ -1,12 +1,14 @@
 from: docs/research/mechanical-diagram-elements.md
+
 uid: FEAT-MECH-0005
-status: PROPOSED
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD
 dependencies: []
 risk: medium
 milestone: backlog
+
 
 # Mechanical Labels and Dimensions
 

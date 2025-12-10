@@ -1,6 +1,6 @@
 # Fix README link targets
 
-uid: ISS-0013
+uid: ISS-0016
 status: BACKLOG
 priority: medium
 owner_role: REWORK
@@ -8,6 +8,7 @@ estimate: TBD
 dependencies: []
 risk: medium
 milestone: backlog
+
 
 Landing-page links to syntax/tutorial/example docs point to missing paths, producing broken GitHub and docs-site navigation.
 

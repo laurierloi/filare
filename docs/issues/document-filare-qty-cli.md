@@ -1,6 +1,6 @@
 # Document filare-qty CLI usage
 
-uid: ISS-0008
+uid: ISS-0011
 status: BACKLOG
 priority: medium
 owner_role: REWORK
@@ -8,6 +8,7 @@ estimate: TBD
 dependencies: []
 risk: medium
 milestone: backlog
+
 
 The quantity multiplier helper (`filare-qty`) is not documented anywhere alongside the primary CLI.
 

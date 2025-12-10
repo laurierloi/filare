@@ -28,9 +28,10 @@ def parse_header(path: pathlib.Path) -> Dict[str, str]:
     header: Dict[str, str] = {}
     with path.open("r", encoding="utf-8") as fh:
         lines = fh.readlines()
+    started = False
     for line in lines[1:]:
-        if not line.strip():
-            break
+        if not started and not line.strip():
+            continue  # skip leading blanks before header
         if ":" not in line:
             break
         key, value = line.split(":", 1)
@@ -38,6 +39,12 @@ def parse_header(path: pathlib.Path) -> Dict[str, str]:
         if key not in REQUIRED_KEYS:
             break
         header[key] = value.strip()
+        started = True
+        if not value.strip():
+            # allow parsing to continue; empty values will be validated later
+            continue
+    if not header:
+        return {}
     return header
 
 

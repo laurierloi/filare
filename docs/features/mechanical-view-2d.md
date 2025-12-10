@@ -1,12 +1,14 @@
 from: docs/research/mechanical-harness-diagrams.md
+
 uid: FEAT-MECH-0002
-status: PROPOSED
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD
 dependencies: []
 risk: medium
 milestone: backlog
+
 
 # 2D Mechanical Harness View (SVG/DXF)
 

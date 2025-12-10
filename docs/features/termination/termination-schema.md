@@ -1,12 +1,14 @@
 from: docs/research/termination-diagram-requirements.md
+
 uid: FEAT-TERM-0002
-status: PROPOSED
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD
 dependencies: []
 risk: medium
 milestone: backlog
+
 
 # Termination Schema
 

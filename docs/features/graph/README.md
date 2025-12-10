@@ -9,6 +9,7 @@ dependencies: []
 risk: medium
 milestone: backlog
 
+
 Follow-up features under `docs/features/graph/` elaborate how to refactor Filare models toward a node/link-centric graph. Each file depends on `docs/features/filare-model-graph-base.md` and should be implemented as separate features.
 
 - pins-in-graph.md — Pins as nodes; connectors link to pins; loops as links.

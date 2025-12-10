@@ -1,13 +1,14 @@
 # CLI Commands: settings domain
 
 uid: FEAT-CLI-0007
-status: BACKLOG
+status: DONE
 priority: medium
 owner_role: FEATURE
 estimate: TBD
 dependencies: []
 risk: medium
 milestone: backlog
+
 
 ## Status
 

@@ -9,6 +9,7 @@ dependencies: []
 risk: medium
 milestone: backlog
 
+
 ## Summary
 
 Add `filare page <command>` to operate on a single page/sheet without full-document context, enabling faster iteration and targeted validation.
