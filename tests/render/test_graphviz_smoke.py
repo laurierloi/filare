@@ -29,6 +29,15 @@ def test_node_cable_template_loads():
     assert "table" in rendered.lower()
 
 
+def test_connector_template_uses_pin_number_when_label_missing():
+    conn = make_connector("X1", 2)
+    rendered = gv.gv_node_connector(conn)
+    normalized = " ".join(rendered.split())
+    assert "None" not in normalized
+    assert 'colspan="2"> 1 </td>' in normalized
+    assert 'colspan="2"> 2 </td>' in normalized
+
+
 def test_node_image_attrs_resolves_paths(tmp_path, monkeypatch):
     img_path = tmp_path / "pic.png"
     img_path.write_text("dummy")
