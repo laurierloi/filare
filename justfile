@@ -23,8 +23,8 @@ default:
   @echo "  just bom-check               # run filare-qty BOM sanity check"
   @echo "  just check-tools             # verify required CLI tools are present"
   @echo "  just install-deps            # install dependencies (MUST NOT BE USED BY AGENTS)"
-  @echo "  just mermaid-gantt           # generate Mermaid Gantt from backlog headers"
-  @echo "  just mermaid-gantt-check     # generate Mermaid Gantt and validate mermaid syntax"
+  @echo "  just mermaid-gantt           # generate Mermaid Gantt from backlog headers (Docker)"
+  @echo "  just mermaid-gantt-check     # generate Mermaid Gantt and validate mermaid syntax (Docker)"
 
 # ---- Version ----
 version:
@@ -101,12 +101,13 @@ check-tools:
 
 # Generate Mermaid Gantt from backlog headers
 mermaid-gantt:
-  {{setup}} && uv run python scripts/generate_mermaid_gantt.py
+  docker build -t filare-mermaid -f Dockerfile .
+  docker run --rm -v {{PWD}}:/app -w /app filare-mermaid bash -lc "source scripts/agent-setup.sh >/dev/null || true; uv run python scripts/generate_mermaid_gantt.py"
 
 # Generate and validate the Mermaid Gantt diagram
 mermaid-gantt-check:
-  {{setup}} && uv run python scripts/generate_mermaid_gantt.py
-  {{setup}} && ./scripts/check-mermaid.sh --files docs/workplan/gantt.md
+  docker build -t filare-mermaid -f Dockerfile .
+  docker run --rm -v {{PWD}}:/app -w /app filare-mermaid bash -lc "source scripts/agent-setup.sh >/dev/null || true; uv run python scripts/generate_mermaid_gantt.py && ./scripts/check-mermaid.sh --files docs/workplan/gantt.md"
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
