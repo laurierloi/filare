@@ -10,7 +10,6 @@ from filare.errors import UnsupportedLoopSide
 from filare.models.cable import CableModel
 from filare.models.colors import MultiColor, SingleColor
 from filare.models.connections import ConnectionModel, LoopModel
-from filare.models.dataclasses import Cable, Connector, ShieldClass, WireClass
 from filare.models.connector import ConnectorModel
 from filare.models.image import Image
 from filare.models.types import Side
@@ -18,6 +17,22 @@ from filare.models.utils import html_line_breaks, remove_links
 from filare.render.html_utils import Img, Table, Td, Tr
 from filare.render.templates import get_template
 from filare.settings import settings
+
+# Compatibility dataclass aliases
+try:  # pragma: no cover
+    from filare.models.dataclasses import (
+        Cable as CableDC,
+        Connector as ConnectorDC,
+        ShieldClass as ShieldClassDC,
+        WireClass as WireClassDC,
+    )
+except Exception:  # pragma: no cover
+    CableDC = ConnectorDC = ShieldClassDC = WireClassDC = None  # type: ignore
+
+Cable = CableDC  # type: ignore
+Connector = ConnectorDC  # type: ignore
+ShieldClass = ShieldClassDC  # type: ignore
+WireClass = WireClassDC  # type: ignore
 
 
 def gv_node_connector(connector: Connector) -> str:

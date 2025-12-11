@@ -8,9 +8,21 @@ from typing import Any, Optional, Union
 from pydantic import BaseModel, ConfigDict, field_validator
 
 from filare.models.colors import MultiColor
-from filare.models.dataclasses import Connection, Loop, PinClass
 from filare.models.wire import ShieldModel, WireModel
 from filare.models.types import Side
+
+try:  # pragma: no cover
+    from filare.models.dataclasses import (
+        Connection as ConnectionDC,
+        Loop as LoopDC,
+        PinClass as PinClassDC,
+    )
+except Exception:  # pragma: no cover
+    ConnectionDC = LoopDC = PinClassDC = None  # type: ignore
+
+PinClass = PinClassDC  # type: ignore
+Loop = LoopDC  # type: ignore
+Connection = ConnectionDC  # type: ignore
 
 
 class PinModel(BaseModel):
@@ -34,6 +46,8 @@ class PinModel(BaseModel):
 
     @classmethod
     def from_pinclass(cls, pin: PinClass) -> "PinModel":
+        if PinClassDC is None:  # pragma: no cover
+            raise TypeError("PinClass dataclass not available")
         return cls(
             index=pin.index,
             id=pin.id,
@@ -45,7 +59,9 @@ class PinModel(BaseModel):
         )
 
     def to_pinclass(self) -> PinClass:
-        return PinClass(
+        if PinClassDC is None:  # pragma: no cover
+            raise TypeError("PinClass dataclass not available")
+        return PinClassDC(
             index=self.index or 0,
             id=self.id,
             label=self.label,
@@ -97,13 +113,15 @@ class LoopModel(BaseModel):
             return value
         if isinstance(value, PinModel):
             return value
-        if isinstance(value, PinClass):
+        if PinClassDC and isinstance(value, PinClassDC):
             return PinModel.from_pinclass(value)
         if isinstance(value, dict):
             return PinModel(**value)
         return value
 
     def to_loop(self) -> Loop:
+        if LoopDC is None:  # pragma: no cover
+            raise TypeError("Loop dataclass not available")
         first_pin = (
             self.first.to_pinclass() if isinstance(self.first, PinModel) else self.first
         )
@@ -112,7 +130,7 @@ class LoopModel(BaseModel):
             if isinstance(self.second, PinModel)
             else self.second
         )
-        return Loop(
+        return LoopDC(
             first=first_pin,
             second=second_pin,
             side=self.side,
@@ -146,7 +164,7 @@ class ConnectionModel(BaseModel):
             return None
         if isinstance(value, PinModel):
             return value
-        if isinstance(value, PinClass):
+        if PinClassDC and isinstance(value, PinClassDC):
             return PinModel.from_pinclass(value)
         if isinstance(value, (WireModel, ShieldModel)):
             return value
@@ -155,6 +173,9 @@ class ConnectionModel(BaseModel):
         return value
 
     def to_connection(self) -> Connection:
+        if ConnectionDC is None:  # pragma: no cover
+            raise TypeError("Connection dataclass not available")
+
         def _cast(val):
             if val is None:
                 return None
@@ -164,7 +185,7 @@ class ConnectionModel(BaseModel):
                 return val.to_wireclass()
             return val
 
-        return Connection(
+        return ConnectionDC(
             from_=_cast(self.from_),
             via=_cast(self.via),
             to=_cast(self.to),
@@ -175,7 +196,7 @@ class ConnectionModel(BaseModel):
         def _to_model(value: Any):
             if value is None:
                 return None
-            if isinstance(value, PinClass):
+            if PinClassDC and isinstance(value, PinClassDC):
                 return PinModel.from_pinclass(value)
             return value
 
