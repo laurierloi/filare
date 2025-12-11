@@ -1,0 +1,35 @@
+metadata:
+  title: Cut Harness Beta
+  pn: CUT-B
+  company: Filare Examples
+  template:
+    name: din-6771
+    sheetsize: A3
+
+connectors:
+  C2-J1:
+    type: Terminal Block
+    subtype: female
+    pinlabels: [1, 2, 3]
+  C2-J2:
+    type: Terminal Block
+    subtype: female
+    pinlabels: [1, 2, 3]
+
+cables:
+  C2-W1:
+    wirecount: 3
+    colors: [BN, BK, BL]
+    gauge: 0.75 mm2
+    length: 0.75 m
+
+connections:
+  -
+    - C2-J1: [1, 2, 3]
+    - C2-W1: [1, 2, 3]
+    - C2-J2: [1, 2, 3]
+
+options:
+  include_bom: true
+  include_cut_diagram: true
+  include_termination_diagram: false

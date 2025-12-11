@@ -1,0 +1,26 @@
+metadata:
+  title: Termination Diagram Document
+  pn: TERM-DOC-01
+  company: Filare Examples
+  address: 400 Example Way
+
+  authors:
+    created:
+      name: Filare Team
+      date: 2024-03-15
+    reviewed:
+      name: n/a
+      date: n/a
+
+  revisions:
+    a:
+      name: Filare Team
+      date: 2024-03-15
+      changelog: initial termination-diagram document with three harnesses
+
+  template:
+    name: din-6771
+    sheetsize: A3
+
+notes:
+  - Three harnesses with termination diagrams enabled.

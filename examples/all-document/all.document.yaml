@@ -1,0 +1,45 @@
+metadata:
+  title: Full Output Document
+  pn: ALL-DOC-01
+  company: Filare Examples
+  address: 500 Example Way
+  sheet_total: 5
+  sheet_current: 1
+  sheet_name: all-doc
+  output_dir: .
+  titlepage: titlepage
+  output_names:
+    - all-h1
+    - all-h2
+  files:
+    - all-h1.yml
+    - all-h2.yml
+  use_qty_multipliers: false
+  multiplier_file_name: quantity_multipliers.txt
+
+pages:
+  - type: title
+    name: titlepage
+  - type: harness
+    name: ALL-H1
+    formats: [html, svg, png, pdf]
+  - type: harness
+    name: ALL-H2
+    formats: [html, svg, png, pdf]
+  - type: bom
+    name: bom
+    formats: [tsv]
+  - type: cut
+    name: cut
+  - type: termination
+    name: termination
+
+extras:
+  options:
+    include_bom: true
+    include_cut_diagram: true
+    include_termination_diagram: true
+    split_bom_page: true
+    split_notes_page: true
+    split_index_page: true
+    template_separator: "."

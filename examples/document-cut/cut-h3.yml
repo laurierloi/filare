@@ -1,0 +1,35 @@
+metadata:
+  title: Cut Harness Gamma
+  pn: CUT-C
+  company: Filare Examples
+  template:
+    name: din-6771
+    sheetsize: A3
+
+connectors:
+  C3-J1:
+    type: Molex MicroFit 3.0
+    subtype: female
+    pinlabels: [1, 2, 3, 4, 5]
+  C3-J2:
+    type: Molex MicroFit 3.0
+    subtype: male
+    pinlabels: [1, 2, 3, 4, 5]
+
+cables:
+  C3-W1:
+    wirecount: 5
+    colors: [RD, BK, YE, GN, BU]
+    gauge: 0.5 mm2
+    length: 1.5 m
+
+connections:
+  -
+    - C3-J1: [1, 2, 3, 4, 5]
+    - C3-W1: [1, 2, 3, 4, 5]
+    - C3-J2: [1, 2, 3, 4, 5]
+
+options:
+  include_bom: true
+  include_cut_diagram: true
+  include_termination_diagram: false

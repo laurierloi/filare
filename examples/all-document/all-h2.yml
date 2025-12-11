@@ -1,0 +1,36 @@
+metadata:
+  title: All Outputs Harness Two
+  pn: ALL-02
+  company: Filare Examples
+  template:
+    name: din-6771
+    sheetsize: A3
+
+connectors:
+  A2-J1:
+    type: Circular
+    subtype: female
+    pinlabels: [A, B, C, D, E, F]
+  A2-J2:
+    type: Circular
+    subtype: male
+    pinlabels: [A, B, C, D, E, F]
+
+cables:
+  A2-W1:
+    wirecount: 6
+    colors: [RD, BK, GN, BU, YE, WH]
+    gauge: 0.75 mm2
+    length: 1.8 m
+    shield: true
+
+connections:
+  -
+    - A2-J1: [A, B, C, D, E, F]
+    - A2-W1: [1, 2, 3, 4, 5, 6]
+    - A2-J2: [A, B, C, D, E, F]
+
+options:
+  include_bom: true
+  include_cut_diagram: true
+  include_termination_diagram: true

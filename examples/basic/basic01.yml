@@ -1,0 +1,35 @@
+metadata:
+  title: Basic Single Harness
+  pn: BASIC-01
+  company: Filare Examples
+  template:
+    name: din-6771
+    sheetsize: A3
+
+connectors:
+  J1:
+    type: JST PH
+    subtype: female
+    pinlabels: [1, 2, 3]
+  J2:
+    type: JST PH
+    subtype: male
+    pinlabels: [1, 2, 3]
+
+cables:
+  W1:
+    wirecount: 3
+    colors: [RD, BK, GN]
+    gauge: 0.35 mm2
+    length: 0.4 m
+
+connections:
+  -
+    - J1: [1, 2, 3]
+    - W1: [1, 2, 3]
+    - J2: [3, 2, 1]
+
+options:
+  include_bom: true
+  include_cut_diagram: false
+  include_termination_diagram: false
