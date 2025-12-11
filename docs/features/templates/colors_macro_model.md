@@ -3,7 +3,7 @@ from: docs/features/templates/models.md
 # Template Model: colors_macro
 
 ## Status
-PLANNED
+IN_PROGRESS
 
 ## Summary
 Implement a model for `colors_macro.html` and a factory ensuring all color/legend combinations are covered for testing.
@@ -13,13 +13,14 @@ Implement a model for `colors_macro.html` and a factory ensuring all color/legen
 - Factory must produce multiple legend entries and edge cases (empty/omitted).
 
 ## Steps
-- [ ] Identify context consumed by `colors_macro.html`.
-- [ ] Define the colors macro model extending the base template model as needed.
-- [ ] Add factory_boy factory with variants for legend richness/empties.
-- [ ] Integrate into template tests.
+- [x] Identify context consumed by `colors_macro.html`.
+- [x] Define the colors macro model extending the base template model as needed.
+- [x] Add a faker-backed factory with variants for legend richness/empties.
+- [x] Integrate into template tests.
 
 ## Progress Log
 2025-12-10: Created sub-feature for colors_macro template model/factory.
+2025-12-11: Added ColorsMacroTemplateModel + faker factory and render tests (count variants).
 
 ## Sub-Features
 - None

@@ -18,6 +18,10 @@ from filare.models.templates.cable_template_model import (
     CableTemplateModel,
     FakeCableTemplateFactory,
 )
+from filare.models.templates.colors_macro_template_model import (
+    ColorsMacroTemplateModel,
+    FakeColorsMacroTemplateFactory,
+)
 
 __all__ = [
     "TemplateModel",
@@ -31,4 +35,6 @@ __all__ = [
     "FakeBomTemplateFactory",
     "CableTemplateModel",
     "FakeCableTemplateFactory",
+    "ColorsMacroTemplateModel",
+    "FakeColorsMacroTemplateFactory",
 ]
