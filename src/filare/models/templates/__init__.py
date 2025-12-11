@@ -4,6 +4,7 @@ from filare.models.templates.template_model import TemplateModel, TemplateModelF
 from filare.models.templates.additional_components_model import (
     AdditionalComponentsFactory,
     AdditionalComponentsTemplateModel,
+    FakeAdditionalComponentFactory,
 )
 
 __all__ = [
@@ -11,4 +12,5 @@ __all__ = [
     "TemplateModelFactory",
     "AdditionalComponentsFactory",
     "AdditionalComponentsTemplateModel",
+    "FakeAdditionalComponentFactory",
 ]

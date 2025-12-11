@@ -25,6 +25,10 @@ Add Pydantic template models under `src/filare/models/templates/` (one per templ
 2025-12-11: Implemented base `TemplateModel` + factory_boy factory with render-focused tests, `render` pytest marker, classvar `template_name`, and forbidden extras to align with strict template payloads.
 2025-12-11: Implemented AdditionalComponentsTemplateModel + factory and render tests (faker-backed, id/unit variants, multi-component coverage).
 
+## Command & Testing Notes
+- Use `just test-specific <path> -- <args>` to target template model tests, e.g., `just test-specific tests/templates/test_additional_components_model.py`.
+- Faker-backed factories generate IDs and descriptions dynamically; when asserting, prefer reading values from the model instead of hard-coding literals.
+
 ## Sub-Features
 - templates/additional_components_model
 - templates/bom_model

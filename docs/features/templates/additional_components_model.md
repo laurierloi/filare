@@ -22,6 +22,11 @@ Implement a Pydantic model for `additional_components.html` (inherits from `temp
 ## Progress Log
 2025-12-10: Created sub-feature plan for additional_components template model/factory.
 2025-12-11: Implemented `AdditionalComponentsTemplateModel` + factory and render tests covering id/unit variants and multiple components (faker-backed).
+2025-12-11: Added command/testing notes; faker-backed factories generate dynamic IDs/descriptions, so tests should assert against model values, not hard-coded strings.
+
+## Command & Testing Notes
+- Run targeted suite: `just test-specific tests/templates/test_additional_components_model.py`.
+- Factories are faker-backed; capture generated IDs/quantities/descriptions from the model when asserting.
 
 ## Sub-Features
 - None

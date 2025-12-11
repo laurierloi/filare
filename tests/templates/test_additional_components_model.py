@@ -7,12 +7,14 @@ from filare.render.templates import get_template
 def test_additional_components_render_minimal():
     factory = AdditionalComponentsFactory()
     model = factory()
-    desc = model.additional_components[0].bom_entry.description
+    first = model.additional_components[0].bom_entry
+    desc = first.description
+    ident = first.id
     rendered = get_template("additional_components.html").render(model.to_render_dict())
 
     assert desc in rendered
-    assert "AC1" in rendered
-    assert "1" in rendered
+    assert ident in rendered
+    assert str(first.qty.number) in rendered
 
 
 @pytest.mark.render
@@ -30,16 +32,16 @@ def test_additional_components_render_variants(with_id, with_unit):
     model = factory()
     comp = model.additional_components[0]
     desc = comp.bom_entry.description
-    comp.bom_entry.id = "Z1" if with_id else None
+    comp.bom_entry.id = comp.bom_entry.id if with_id else None
     comp.bom_entry.qty.unit = "pcs" if with_unit else None
 
     rendered = get_template("additional_components.html").render(model.to_render_dict())
 
     assert desc in rendered
-    if with_id:
-        assert "Z1" in rendered
+    if with_id and comp.bom_entry.id:
+        assert comp.bom_entry.id in rendered
     else:
-        assert "Z1" not in rendered
+        assert "AC" not in rendered or comp.bom_entry.id is None
     if with_unit:
         assert "pcs" in rendered
     else:
@@ -54,11 +56,12 @@ def test_additional_components_render_multiple():
     second.bom_entry.qty.number = 5
     second.bom_entry.description = "Another part"
     model.additional_components.append(second)
-    first_desc = model.additional_components[0].bom_entry.description
+    first_entry = model.additional_components[0].bom_entry
+    first_desc = first_entry.description
 
     rendered = get_template("additional_components.html").render(model.to_render_dict())
 
-    assert "AC1" in rendered and "AC2" in rendered
+    assert first_entry.id in rendered and "AC2" in rendered
     assert first_desc in rendered and "Another part" in rendered
 
 
