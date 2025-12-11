@@ -20,6 +20,7 @@ default:
   @echo "  just demo-first              # build first example (demo01)"
   @echo "  just build-docs              # build mkdocs documentation"
   @echo "  just build-examples          # rebuild all examples"
+  @echo "  just check-overlap           # run filare-check-overlap over all html files in outputs/"
   @echo "  just bom-check               # run filare-qty BOM sanity check"
   @echo "  just check-tools             # verify required CLI tools are present"
   @echo "  just install-deps            # install dependencies (MUST NOT BE USED BY AGENTS)"
@@ -86,6 +87,11 @@ build-docs:
 # Rebuild all examples/tutorials via the tools script
 build-examples:
   {{setup}} && uv run python src/filare/tools/build_examples.py
+
+# Check for overlapping elements in all generated HTML files in outputs/
+check-overlap:
+  {{setup}} && uv run filare-check-overlap outputs/*.html
+
 
 # BOM sanity check using filare-qty
 bom-check:
