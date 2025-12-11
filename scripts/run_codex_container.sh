@@ -82,10 +82,9 @@ install -m 600 "$ssh_key" "$ssh_tmp/id_rsa"
 docker run --rm -it \
   -v "$workspace":/home/agent/workspace \
   -v "$codex_dir":/home/agent/.codex \
-  -v "$ssh_tmp":/home/agent/.ssh:ro \
+  -v "$ssh_tmp":/home/agent/.ssh \
   --env-file "$env_file" \
   -e HOME=/home/agent \
-  -e GIT_SSH_COMMAND="ssh -F /home/agent/.ssh/config" \
   -w /home/agent/workspace \
   --user $(id -u):$(id -g) \
   "$image" bash
