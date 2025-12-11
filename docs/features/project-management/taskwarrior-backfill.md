@@ -1,7 +1,7 @@
 # Taskwarrior Backfill to Backlog
 
 uid: FEAT-PM-0005
-status: BACKLOG
+status: IN_PROGRESS
 priority: medium
 owner_role: FEATURE
 estimate: TBD
@@ -13,7 +13,7 @@ from: docs/research/project-management.md
 
 ## Status
 
-BACKLOG
+IN_PROGRESS
 
 ## Summary
 
@@ -29,9 +29,9 @@ Explore a reverse sync: read Taskwarrior workplans (filtered JSON exports) and b
 
 ## Steps
 
-- [ ] Define allowable backfill fields and conflict resolution rules (Taskwarrior vs manifest).
-- [ ] Implement backfill utility that reads `docs/task/workplan/taskwarrior-*.json` and proposes manifest/header updates keyed by UID.
-- [ ] Add dry-run and report output showing proposed changes before writing.
+- [x] Define allowable backfill fields and conflict resolution rules (Taskwarrior vs manifest).
+- [x] Implement backfill utility that reads Taskwarrior JSON and proposes manifest/header updates keyed by UID (`scripts/taskwarrior_backfill.py`).
+- [x] Add dry-run and report output showing proposed changes before writing (`--apply` to persist).
 - [ ] Document workflow and guardrails; clarify that manifest stays authoritative.
 
 ## Progress Log
