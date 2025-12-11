@@ -17,9 +17,33 @@ def test_ready_tasks_respects_dependencies_and_status(monkeypatch):
     mod = load_module("taskwarrior_next", "scripts/taskwarrior_next.py")
     Task = mod.Task
 
-    t1 = Task(uid="U1", title="Task 1", role="FEATURE", status="PENDING", priority="M", depends=[], path="")
-    t2 = Task(uid="U2", title="Task 2", role="FEATURE", status="PENDING", priority="M", depends=["U1"], path="")
-    t3 = Task(uid="U3", title="Task 3", role="FEATURE", status="DONE", priority="M", depends=[], path="")
+    t1 = Task(
+        uid="U1",
+        title="Task 1",
+        role="FEATURE",
+        status="PENDING",
+        priority="M",
+        depends=[],
+        path="",
+    )
+    t2 = Task(
+        uid="U2",
+        title="Task 2",
+        role="FEATURE",
+        status="PENDING",
+        priority="M",
+        depends=["U1"],
+        path="",
+    )
+    t3 = Task(
+        uid="U3",
+        title="Task 3",
+        role="FEATURE",
+        status="DONE",
+        priority="M",
+        depends=[],
+        path="",
+    )
 
     ready_initial = mod.ready_tasks([t1, t2, t3], ["FEATURE"])
     assert [t.uid for t in ready_initial] == ["U1"]

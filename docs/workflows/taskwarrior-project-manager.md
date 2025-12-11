@@ -3,6 +3,7 @@
 Use Taskwarrior to publish ready queues per agent, enforce dependency order, and shard the backlog when multiple agents work in parallel.
 
 ## Steps
+
 1. **Ingest sources:** Refresh tasks from `docs/features/**`, `docs/issues/**`, `docs/workplan/**`; update priorities/dependencies.
 2. **Export/Backfill:**
    - Export current Taskwarrior state: `just taskwarrior-export`
@@ -19,6 +20,7 @@ Use Taskwarrior to publish ready queues per agent, enforce dependency order, and
    - Update priorities/dates based on operator feedback and dependency changes.
 
 ## Notes
+
 - Keep pools dependency-free; if impossible, merge affected tasks into the same pool.
 - Annotate tasks with source doc path and target date to maintain traceability.
 - Provide agents a short “next up” list per role after each planning cycle.
