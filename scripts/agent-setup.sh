@@ -87,6 +87,35 @@ export UV_CACHE_DIR
 mkdir -p "$UV_CACHE_DIR"
 echo "UV cache directory set to: $UV_CACHE_DIR"
 
+# --- Optional: vendor setuptools wheel for offline builds ---
+VENDOR_DIR="${repo_root}/scripts/vendor"
+SETUPTOOLS_VERSION="${SETUPTOOLS_VERSION:-75.1.0}"
+SETUPTOOLS_WHEEL="${VENDOR_DIR}/setuptools-${SETUPTOOLS_VERSION}-py3-none-any.whl"
+mkdir -p "$VENDOR_DIR"
+
+if [[ ! -f "$SETUPTOOLS_WHEEL" ]]; then
+  echo "Vendored setuptools wheel not found; attempting to download ${SETUPTOOLS_VERSION}..."
+  SETUPTOOLS_URL="https://files.pythonhosted.org/packages/py3/s/setuptools/setuptools-${SETUPTOOLS_VERSION}-py3-none-any.whl"
+  if command -v curl >/dev/null 2>&1; then
+    if ! curl -fsSL "$SETUPTOOLS_URL" -o "$SETUPTOOLS_WHEEL"; then
+      echo "WARNING: Failed to download setuptools ${SETUPTOOLS_VERSION} from $SETUPTOOLS_URL" >&2
+      echo "         Offline builds may fail without a vendored wheel." >&2
+      rm -f "$SETUPTOOLS_WHEEL"
+    else
+      echo "Downloaded setuptools wheel to $SETUPTOOLS_WHEEL"
+    fi
+  else
+    echo "WARNING: curl not available; cannot download setuptools wheel automatically." >&2
+  fi
+fi
+
+# If a vendored wheel exists, make it available as an extra source for uv/pip.
+if [[ -f "$SETUPTOOLS_WHEEL" ]]; then
+  export UV_EXTRA_INDEX_URL="file://${VENDOR_DIR}"
+  export PIP_FIND_LINKS="${VENDOR_DIR}"
+  echo "Using vendored wheels from ${VENDOR_DIR} (setuptools ${SETUPTOOLS_VERSION}) as extra source"
+fi
+
 # --- UV: ensure that the environment is configured
 if [[ ! -d ".venv"  ]]; then
   echo "No .venv found. Initializing environment with uv sync..."
