@@ -73,23 +73,11 @@ fi
 codex_dir="${HOME}/.codex"
 mkdir -p "$codex_dir"
 
-# Prepare temporary .ssh with key and known_hosts
+# Prepare temporary .ssh with key only; user manages known_hosts inside container if needed
 ssh_tmp="$(mktemp -d)"
 trap 'rm -rf "$ssh_tmp"' EXIT
 install -m 700 -d "$ssh_tmp"
 install -m 600 "$ssh_key" "$ssh_tmp/id_rsa"
-ssh-keyscan -t ed25519 github.com > "$ssh_tmp/known_hosts" 2>/dev/null || true
-chmod 644 "$ssh_tmp/known_hosts"
-cat > "$ssh_tmp/config" <<'CFG'
-Host github.com
-  HostName github.com
-  User git
-  IdentityFile ~/.ssh/id_rsa
-  IdentitiesOnly yes
-  UserKnownHostsFile ~/.ssh/known_hosts
-  StrictHostKeyChecking yes
-CFG
-chmod 600 "$ssh_tmp/config"
 
 docker run --rm -it \
   -v "$workspace":/home/agent/workspace \
