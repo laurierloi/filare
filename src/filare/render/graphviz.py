@@ -23,16 +23,12 @@ try:  # pragma: no cover
     from filare.models.dataclasses import (
         Cable as CableDC,
         Connector as ConnectorDC,
-        ShieldClass as ShieldClassDC,
-        WireClass as WireClassDC,
     )
 except Exception:  # pragma: no cover
-    CableDC = ConnectorDC = ShieldClassDC = WireClassDC = None  # type: ignore
+    CableDC = ConnectorDC = None  # type: ignore
 
 Cable = CableDC  # type: ignore
 Connector = ConnectorDC  # type: ignore
-ShieldClass = ShieldClassDC  # type: ignore
-WireClass = WireClassDC  # type: ignore
 
 
 def gv_node_connector(connector: Connector) -> str:
