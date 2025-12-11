@@ -31,6 +31,9 @@ default:
   @echo "  just taskwarrior-backfill    # dry-run backfill from Taskwarrior JSON"
   @echo "  just taskwarrior-backfill-apply # apply backfill updates from Taskwarrior JSON"
   @echo "  just timeline-graphviz       # generate Graphviz timeline/timeline.svg"
+  @echo "  just codex-container-build   # build codex-ready Docker image"
+  @echo "  just codex-container-sh      # start shell in codex Docker image (bind-mount repo)"
+  @echo "  just codex-container-run     # run codex container with workspace/env/ssh key"
 
 # ---- Version ----
 version:
@@ -172,6 +175,22 @@ taskwarrior-branch uid checkout="false":
 # Generate Graphviz timeline (DOT + optional SVG)
 timeline-graphviz:
   {{setup}} && uv run python scripts/generate_graphviz_timeline.py
+
+# Build codex-ready container image
+codex-container-build:
+  docker build -f docker/Dockerfile.codex -t filare-codex .
+
+# Start a shell in the codex container with repo bind-mounted and host UID/GID
+codex-container-sh:
+  docker run --rm -it \
+    -v "$PWD":/home/agent/workspace \
+    -v "$HOME"/.codex:/home/agent/.codex \
+    -w /home/agent/workspace \
+    --user $(id -u):$(id -g) \
+    filare-codex bash
+
+codex-container-run:
+  SSH_KEY=${SSH_KEY:?set SSH_KEY} ENV_FILE=${ENV_FILE:?set ENV_FILE} WORKSPACE=${WORKSPACE:-$PWD} ./scripts/run_codex_container.sh --ssh-key "$SSH_KEY" --env-file "$ENV_FILE" --workspace "$WORKSPACE"
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
