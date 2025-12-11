@@ -148,9 +148,9 @@ codex-container-build:
 # Start a shell in the codex container with repo bind-mounted and host UID/GID
 codex-container-sh:
   docker run --rm -it \
-    -v $PWD:/workspace \
-    -v $HOME/.codex:/root/.codex \
-    -w /workspace \
+    -v $PWD:/home/agent/workspace \
+    -v $HOME/.codex:/home/agent/.codex \
+    -w /home/agent/workspace \
     --user $$(id -u):$$(id -g) \
     filare-codex bash
 

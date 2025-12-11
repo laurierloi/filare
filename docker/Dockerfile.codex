@@ -17,6 +17,8 @@ RUN apt-get update && \
       jq \
       yq \
       just \
+      tmux \
+      neovim \
       npm \
       fonts-dejavu-core fonts-liberation \
       libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libgbm1 libasound2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgtk-3-0 \
@@ -32,7 +34,9 @@ ENV PATH="/root/.local/bin:${PATH}"
 RUN npm install --global @mermaid-js/mermaid-cli playwright && \
     npx playwright install chromium --with-deps
 
-WORKDIR /workspace
+# Create a non-root workspace/home location; actual UID/GID supplied at runtime via --user
+RUN mkdir -p /home/agent/workspace && chown -R 1000:1000 /home/agent
+WORKDIR /home/agent/workspace
 
-# Default command opens a shell; run with --user $(id -u):$(id -g) and bind mount repo for persistence
+# Default command opens a shell; run with --user $(id -u):$(id -g) and bind mount repo to /home/agent/workspace
 CMD ["/bin/bash"]
