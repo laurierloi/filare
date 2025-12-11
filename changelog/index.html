@@ -1,0 +1,4034 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://laurierloi.github.io/Filare/changelog/">
+      
+      
+        <link rel="prev" href="../collisions/summary/">
+      
+      
+        <link rel="next" href="../CONTRIBUTING/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Changelog - Filare Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#changelog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Filare Docs" class="md-header__button md-logo" aria-label="Filare Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Filare Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Changelog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/laurierloi/Filare" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    laurierloi/Filare
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Filare Docs" class="md-nav__button md-logo" aria-label="Filare Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Filare Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/laurierloi/Filare" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    laurierloi/Filare
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Graphs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graphs/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graphs/data_flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graphs/document_flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Document Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graphs/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/readme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/tutorial01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial 01
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/tutorial02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial 02
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/tutorial03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial 03
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/tutorial04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial 04
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/tutorial05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial 05
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/tutorial06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial 06
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/tutorial07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial 07
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/tutorial08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial 08
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/todo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial Backlog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/readme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workflows
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Workflows
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/basic-output-generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basic Output Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/quantity-multipliers-current/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quantity Multipliers (Current)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced_image_usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced Images
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../buildscript/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Script
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ci/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mermaid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mermaid Check
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mkdocs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MkDocs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs_improvement/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docs Improvement Tracker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../research/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Reviews
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        
+          
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dev
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_18">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dev
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev/metadata_guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metadata Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev/logging-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Logging Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev/pyright/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pyright
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev/text_overlap_checker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Text Overlap Checker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        
+          
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projects
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/part-ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part Ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work Tracking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Work Tracking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tasks.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workplan/gantt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backlog Gantt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workplan/timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../refactor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refactor Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collisions/summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#v101-2025-12-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.0.1 (2025-12-02)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.1 (2025-12-02)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build System
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#continuous-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continuous Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v100" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.0.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chores_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v055" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.5
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.5">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v054" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.4
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Features
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v053" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.3
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v052" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v051" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documentation_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v050" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documentation_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v041" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.4.1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.4.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documentation_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v04" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.4
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v032" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.3.2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.3.2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v031" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.3.1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.3.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v03" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.3
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#refactor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refactor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v01" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../brand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#v101-2025-12-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.0.1 (2025-12-02)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.1 (2025-12-02)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build System
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#continuous-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continuous Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v100" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.0.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chores_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v055" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.5
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.5">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v054" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.4
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Features
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v053" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.3
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v052" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v051" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documentation_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v050" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.5.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documentation_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v041" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.4.1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.4.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documentation_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v04" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.4
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v032" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.3.2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.3.2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v031" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.3.1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.3.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v03" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.3
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#refactor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refactor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v01" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="changelog">CHANGELOG<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
+<h2 id="v101-2025-12-02">v1.0.1 (2025-12-02)<a class="headerlink" href="#v101-2025-12-02" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes">Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Bom links in generated readmes
+  (<a href="https://github.com/laurierloi/filare/commit/85dd7880978a5af8f26abd327823952037b7a324"><code>85dd788</code></a>)</li>
+</ul>
+<h3 id="build-system">Build System<a class="headerlink" href="#build-system" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Support output dir for examples
+  (<a href="https://github.com/laurierloi/filare/commit/45c98cf0e282cfaaa1013391b4c981e19c6f898c"><code>45c98cf</code></a>)</li>
+</ul>
+<h3 id="chores">Chores<a class="headerlink" href="#chores" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>Expand release/distribution tasks
+  (<a href="https://github.com/laurierloi/filare/commit/9bb2bf3dba7d2fe47ad3e98b308dd13b4bbe8d13"><code>9bb2bf3</code></a>)</p>
+</li>
+<li>
+<p>Extend refactor plan
+  (<a href="https://github.com/laurierloi/filare/commit/c7e6820d3a35d21624725619dbdb606725811646"><code>c7e6820</code></a>)</p>
+</li>
+<li>
+<p>Ignore generated docs assets and format tutorials
+  (<a href="https://github.com/laurierloi/filare/commit/ece7b03e75da66d37f172a62a4879421f91f2aea"><code>ece7b03</code></a>)</p>
+</li>
+</ul>
+<h3 id="continuous-integration">Continuous Integration<a class="headerlink" href="#continuous-integration" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>Gate releases on version tags
+  (<a href="https://github.com/laurierloi/filare/commit/5fd0f965e5a449981b37952acb18abebf7a0020a"><code>5fd0f96</code></a>)</p>
+</li>
+<li>
+<p>Run semantic-release on main
+  (<a href="https://github.com/laurierloi/filare/commit/67a5d75b64d70e9cde6409080fcca8ad2693ec8d"><code>67a5d75</code></a>)</p>
+</li>
+<li>
+<p>Use PYPI_API_TOKEN for twine
+  (<a href="https://github.com/laurierloi/filare/commit/8b385af7cc671cf91403a394793bbb173bf896f7"><code>8b385af</code></a>)</p>
+</li>
+</ul>
+<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>Add architecture overview and mermaid checks
+  (<a href="https://github.com/laurierloi/filare/commit/7c1f70ee22e686bd5d735839313d2457eaf0f9d1"><code>7c1f70e</code></a>)</p>
+</li>
+<li>
+<p>Add container usage and Dockerfile
+  (<a href="https://github.com/laurierloi/filare/commit/f9cdee62087de895f93473650c5e252d26dae33c"><code>f9cdee6</code></a>)</p>
+</li>
+<li>
+<p>Add mermaid sanity page and nav cleanup
+  (<a href="https://github.com/laurierloi/filare/commit/e63b3b1f10d098c55ce7f728e846e37fffea5555"><code>e63b3b1</code></a>)</p>
+</li>
+<li>
+<p>Add mkdocs config and usage guidance
+  (<a href="https://github.com/laurierloi/filare/commit/671010c76f2fe0fa1afa3b7e361d2d8213f1578b"><code>671010c</code></a>)</p>
+</li>
+<li>
+<p>Refresh examples readme
+  (<a href="https://github.com/laurierloi/filare/commit/3edb537f7b3828e17b90a0144b644fbe567306b6"><code>3edb537</code></a>)</p>
+</li>
+</ul>
+<h2 id="v100">v1.0.0<a class="headerlink" href="#v100" title="Permanent link">&para;</a></h2>
+<h3 id="fixes">Fixes<a class="headerlink" href="#fixes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>use default_factory for NumberAndUnit qty (3bbb010)</li>
+<li>restore titleblock template and skip templates in prettier (caf08c2)</li>
+<li>add script and lint (b50a718)</li>
+</ul>
+<h3 id="documentation_1">Documentation<a class="headerlink" href="#documentation_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>add lint requirement before commits (52b4d6e)</li>
+<li>log example build alignment (f44b280)</li>
+<li>note example build before commits (d2cf036)</li>
+<li>enforce uv usage (a59640e)</li>
+</ul>
+<h3 id="ci">CI<a class="headerlink" href="#ci" title="Permanent link">&para;</a></h3>
+<ul>
+<li>allow gh-pages push with contents write permission (e58d74e)</li>
+<li>build all examples via script and stage artifacts (180b8e3)</li>
+<li>align example build commands and download artifacts (60ea747)</li>
+<li>sync dev deps without lock (fe9430c)</li>
+<li>install dev deps in workflows (99812a5)</li>
+<li>include black/pre-commit in uv dev group (81ec91f)</li>
+<li>update main workflow actions (037e401)</li>
+<li>switch to uv and python 3.11 envs (9970eda)</li>
+</ul>
+<h3 id="chores_1">Chores<a class="headerlink" href="#chores_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>add bisect runner for ex08 (06d1ea0)</li>
+<li>add CI-aligned pre-commit script (3628bfd)</li>
+<li>update uv guidance and python version (dd1309e)</li>
+</ul>
+<h3 id="other">Other<a class="headerlink" href="#other" title="Permanent link">&para;</a></h3>
+<ul>
+<li>1.0.0 (35d56cc)</li>
+<li>Revert "render: use node image attrs for graphviz" (220cdab)</li>
+<li>use absolute path to image (0f8919c)</li>
+<li>use node image attrs for graphviz (f9d08e3)</li>
+<li>lint doc (3a15b22)</li>
+<li>updated tutorial readme and save lock (0b76cfa)</li>
+<li>remove the brand agent (d13f588)</li>
+<li>Trim whitespace on embedded image URLs (ce8a393)</li>
+<li>Add CI documentation (d1ef701)</li>
+<li>Add GitHub CI workflow for Filare (38efb00)</li>
+<li>Rename codebase to Filare and update package paths (474709f)</li>
+<li>initial-commit (44d7fa6)</li>
+</ul>
+<h2 id="v055">v0.5.5<a class="headerlink" href="#v055" title="Permanent link">&para;</a></h2>
+<h3 id="fixes_1">Fixes<a class="headerlink" href="#fixes_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>support color and proper pin when un-ordered (f100cdf)</li>
+</ul>
+<h2 id="v054">v0.5.4<a class="headerlink" href="#v054" title="Permanent link">&para;</a></h2>
+<h3 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h3>
+<ul>
+<li>loop use object to provide more attributes (afc1405)</li>
+</ul>
+<h2 id="v053">v0.5.3<a class="headerlink" href="#v053" title="Permanent link">&para;</a></h2>
+<h3 id="other_1">Other<a class="headerlink" href="#other_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>bump version to v0.5.3 (0029fc1)</li>
+<li>titleblock: add gitstatus info (da5a83f)</li>
+<li>metadata: add git_status (9230ee2)</li>
+<li>wv_dataclasses: force cast where needed (b17df57)</li>
+<li>sets have a clearer string (066ffaf)</li>
+<li>cast dimensions to int (1cf1430)</li>
+<li>page_options: cast all dimensions and fix post_init (5785ed7)</li>
+<li>parse_yaml: parse all int as string (0a78765)</li>
+<li>wireviz: prettier error for connection set length mismatch (f0a81da)</li>
+<li>wireviz: parser more explicit when connection set doesn't match (de3571c)</li>
+<li>Merge pull request #10 from HerClem/patch-1 (ed58a30)</li>
+<li>wv_dataclasses: update belden 24AWG MPN (23e685b)</li>
+</ul>
+<h2 id="v052">v0.5.2<a class="headerlink" href="#v052" title="Permanent link">&para;</a></h2>
+<h3 id="other_2">Other<a class="headerlink" href="#other_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>always generate titlepage (d5e294c)</li>
+</ul>
+<h2 id="v051">v0.5.1<a class="headerlink" href="#v051" title="Permanent link">&para;</a></h2>
+<h3 id="documentation_2">Documentation<a class="headerlink" href="#documentation_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>tasks: add a list of tasks todo (964b134)</li>
+</ul>
+<h3 id="other_3">Other<a class="headerlink" href="#other_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>index_table: fix sheet indexing (e30ba97)</li>
+</ul>
+<h2 id="v050">v0.5.0<a class="headerlink" href="#v050" title="Permanent link">&para;</a></h2>
+<h3 id="documentation_3">Documentation<a class="headerlink" href="#documentation_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>syntax: autogeneration not supported for now (005172e)</li>
+</ul>
+<h3 id="other_4">Other<a class="headerlink" href="#other_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Merge pull request #9 from laurierloi/template-cable (367c6e1)</li>
+<li>cleanup (3021517)</li>
+<li>show partnumber under cable, skip if shared (753213d)</li>
+<li>remove support for mate/arrows (dedd922)</li>
+<li>examples rename 15 to 11 (f662625)</li>
+<li>remove dot assignment support (06ca42a)</li>
+<li>remove un-needed parameters (2b06b95)</li>
+<li>visual: increase ranksep and use polyline (28a0980)</li>
+<li>wv_graphviz: major cleanup - delete unused code (7850e56)</li>
+<li>empty subtype doesn't show (f22c60a)</li>
+<li>cable: instantiate notes (085f040)</li>
+<li>wv_colors: html_padded is white by default (1bf3c74)</li>
+<li>cable show length conditionally (2c82a51)</li>
+<li>remove second option for color (17b1da9)</li>
+<li>update to support cables (3b8b1fc)</li>
+<li>wire top row completed (2ac4239)</li>
+<li>templates cable: initial commit (c850d56)</li>
+<li>start supporting cable template (ad76f5a)</li>
+</ul>
+<h2 id="v041">v0.4.1<a class="headerlink" href="#v041" title="Permanent link">&para;</a></h2>
+<h3 id="documentation_4">Documentation<a class="headerlink" href="#documentation_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>README: update to install laurierloi branch (dcbe87f)</li>
+<li>syntax: remove show_wirenumbers (a9e8ba6)</li>
+</ul>
+<h3 id="other_5">Other<a class="headerlink" href="#other_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li>cleanup (f3c9992)</li>
+<li>page_options: show index by default (028f1ff)</li>
+<li>index_table: avoid adding quantity if not defined (690a597)</li>
+<li>wv_harness: update logic and checks of connector pin (51a0593)</li>
+<li>pin_name: use pin number instead of index in definition (46ae997)</li>
+<li>cast pin to int (442d1ee)</li>
+<li>support PINLABEL__PININDEX naming in connections (22c2371)</li>
+<li>components are sorted (0612570)</li>
+<li>update cli to separe prepend (1a1cb2c)</li>
+<li>modify import order - visual (4d9ac07)</li>
+<li>parse_yaml: add utility to parse and merge yaml files (92eb12d)</li>
+<li>whitespace cleanup (76b2bbb)</li>
+<li>index_table: include quantity multipliers (0946f8f)</li>
+<li>update with modified classes (d8d8a47)</li>
+<li>wv_output: update with updated bom, titlepage and metadata (b8b8e6a)</li>
+<li>by default titlepage is None, necessary for 1 page harnesses (f55a578)</li>
+<li>wv_harness changes (50e5f2a)</li>
+<li>constrain metadata (cfd3052)</li>
+<li>page_options: add ComponentDimensions and for_pdf option (97fdd79)</li>
+<li>add renderer class (3271693)</li>
+<li>add index_table (67ecb7b)</li>
+<li>demo: update metadata fields (7c760c3)</li>
+<li>output: remove debug print (39b0989)</li>
+<li>strict templates &amp; related fixes (f7ff1bf)</li>
+<li>per_harness always showed for shared_bom (428302c)</li>
+<li>include additional_bom_items in bom (1d33ada)</li>
+<li>connector support qty multiplier (efc7a3d)</li>
+<li>added treewide as a first-class config like Options (c6e46d4)</li>
+<li>warn if options defined within (2bd1598)</li>
+<li>dont duplicate pn in sheet name (40eef76)</li>
+<li>titleblock: fix row 9 classes (50b9106)</li>
+<li>page_options: cleanup (03a38f4)</li>
+<li>sort files (d882326)</li>
+<li>page number properly increments (c864145)</li>
+<li>wv_harness: warn for some common failures for clarity (bd09dd9)</li>
+<li>index_table: manage the no bom case properly (2f68617)</li>
+<li>page_options and metadata in separate files (9e94a43)</li>
+<li>show at maximum 2 pn in header (688a732)</li>
+<li>fix subtype defined as type (66f97b1)</li>
+<li>remove extra commented code (89b53fc)</li>
+<li>disable node_component, use only node_connector (0d0308f)</li>
+<li>connector cannot be called with gv_node_component (6dfe3e7)</li>
+<li>support list with its own dataclass (2402cb4)</li>
+<li>use component_table and simplify render parameters (cee4723)</li>
+<li>update dataclasses (b583f90)</li>
+<li>split into different modules (aec9b54)</li>
+<li>Merge pull request #6 from laurierloi/templates-connector (003a3d0)</li>
+<li>properly scaled (54f7499)</li>
+<li>support additional_components (f3b5092)</li>
+<li>support image and notes (3a3f609)</li>
+<li>small fixes (1b9ba0b)</li>
+<li>wv_graphviz: better connector template (62e0d79)</li>
+<li>templates: connector (f7ce022)</li>
+<li>add templates connector (b687a9f)</li>
+<li>wv_harness: comment out debug code (3c9f324)</li>
+<li>Merge pull request #5 from laurierloi/bom-column-format (c4456d5)</li>
+<li>wv_output: titlepage bom not shortened (8ea239a)</li>
+<li>wv_bom: fix bom columns (60abe07)</li>
+<li>column-format update initial (720fce3)</li>
+<li>fix pdf titlepage name (26b1cc8)</li>
+<li>cleanup (43d6d19)</li>
+<li>Merge pull request #4 from laurierloi/index-table (f77654f)</li>
+<li>build_examples: simplify the tool, no git diff supported (3ebb12c)</li>
+<li>add index_table to titlepage (687e99d)</li>
+<li>bom: show bom header (66e3258)</li>
+<li>add weasyprint (648872a)</li>
+<li>add titlepage and tempaltes depend on each-other (956e199)</li>
+<li>wv_cli: if multiple files, only generate shared pdf (e61c03c)</li>
+<li>Merge pull request #3 from laurierloi/pdf-support-weasyprint (7d61f0e)</li>
+<li>wv_output: support multiple-pages pdf (b013369)</li>
+<li>din-6771: fix dimensions (2ea9c44)</li>
+<li>titleblock: don't force total width or height (241225a)</li>
+<li>din-6771 orientation set in page (e1cf97c)</li>
+<li>remove calc, do all through jinja (19a6c04)</li>
+<li>add support using weasyprint (7777002)</li>
+<li>wv_cli: output combined html only if more than 1 file (275d4b5)</li>
+<li>underlying commands - no converter included (1ecbe6d)</li>
+<li>.gitignore: ignore outputs (7217667)</li>
+<li>shared library for methods (f5b9577)</li>
+<li>add placement options for din-6771 (e4a4e7d)</li>
+<li>wv_harness_quantity: better message if multplier not defined (b5720b2)</li>
+<li>titleblock: title font a little smaller to support 2 rows without overflow (391412c)</li>
+<li>better placement and formatting (cd695d0)</li>
+<li>update BOM height responsiveness (6dd9a30)</li>
+<li>examples,tutorial: provide default metadata (f0a6631)</li>
+<li>flag to restrict_printed_lengths (1ea0b9f)</li>
+<li>wv_harness: only add pn if not already in name (0f06b45)</li>
+<li>wv_cli: print out the qty_multipliers used (f20e660)</li>
+<li>add scaling of shared harness (5b41913)</li>
+<li>wv_harness_quantity: add support for harness quantity multipliers (c31ef66)</li>
+<li>init: update app url to fork (3d2c8c1)</li>
+<li>wv_dataclass: remove pdb (581f6f6)</li>
+<li>wv_graphviz: remove bom bubble (ff74601)</li>
+<li>wv_harness: add all items to bom (9a4334e)</li>
+<li>wv_dataclasses: improved qty_multiplier support for additional items (57ec0ea)</li>
+<li>wv_dataclass: partnumberinfo supports comparisons (7b201eb)</li>
+<li>wv_dataclass: move arrow dataclass (be17ded)</li>
+<li>wv_bom: simplify partnumbers2list (8506954)</li>
+<li>remove support (8343f62)</li>
+<li>wv_harness: refactor bom management (8a21201)</li>
+<li>wv_graphviz: improved type management (b5ca003)</li>
+<li>wv_dataclasses: dataclasses for BomItem and PartNumberInfo (b34db3d)</li>
+<li>wb_bom: only generate formatted values, no dataclasses (d909485)</li>
+<li>wv_colors: manage SingleColor case better (4d26519)</li>
+<li>add output_name to metadata (d890a68)</li>
+<li>titleblock: table has same class as div (4522fa2)</li>
+<li>bom: table has same class as div (5e868aa)</li>
+<li>wv_output: use bom template (dcc97b9)</li>
+<li>use pathlib and force path arguments (565391e)</li>
+<li>include subdirs (76b2c27)</li>
+<li>build_examples: call cli directly instead of using runner (134feb4)</li>
+<li>update pages with bom and remove un-needded styles (013d447)</li>
+<li>titleblock style defined within (920bf06)</li>
+<li>add bom (04f18ae)</li>
+<li>update readme (3b2174a)</li>
+<li>examples/tutorial: remove generated outputs (23eb99f)</li>
+<li>titleblock: all within one table (39263cb)</li>
+<li>add shared_bom support (bbbf3fb)</li>
+<li>wv_output: cleanup (b3a86f4)</li>
+<li>update titleblock with template (72ae647)</li>
+<li>jinja2: use jinja2 for html template (641b44a)</li>
+<li>wireviz cli entry point now named 'cli' (fc500b6)</li>
+<li>wireviz: suport belden wires mpn (2cef8ac)</li>
+<li>wireviz: wv_bom: limit bom table width (5f271bc)</li>
+<li>ignore examples/tutorial tsv files (cae4173)</li>
+<li>templates: din-6771: alternate BOM row color (efabc80)</li>
+<li>wireviz: support sheet count (a9329a4)</li>
+<li>wireviz: support extra metadata (55da28d)</li>
+<li>include templates in package (85a141b)</li>
+</ul>
+<h2 id="v04">v0.4<a class="headerlink" href="#v04" title="Permanent link">&para;</a></h2>
+<h3 id="other_6">Other<a class="headerlink" href="#other_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>set version 0.4 (6d82c88)</li>
+<li>Merge pull request #1 from laurierloi/refactor/big-refactor (6a00e81)</li>
+<li>modified by cleanup (fcbfa09)</li>
+<li>don't depend on zsh (6f3b586)</li>
+<li>wireviz: log if adding additional bom item failed (13d3488)</li>
+<li>Add suggestions from #186 (1faaff0)</li>
+<li>Add suggestions from #246 (b075e06)</li>
+<li>Disable CLI BOM output (3122d06)</li>
+<li>Fix additional component BOM table layout (1eeae1d)</li>
+<li>Improve conductor table rendering (93f0605)</li>
+<li>Implement bundle part number rendering (38f8147)</li>
+<li>Add TODOs (df914da)</li>
+<li>Add bundles' wires' part number info to BOM (b0b80d7)</li>
+<li>Fix BOM output in TSV and HTML (0bdda48)</li>
+<li>Include part number info in BOM table (682e45f)</li>
+<li>Resume work on BOM (c89c8db)</li>
+<li>Comment out BOM modes (WIP) and BOM bubbles (bf3c7c9)</li>
+<li>Apply #261 (f88981c)</li>
+<li>Add TODO for empty connector pin tables (7aef7f7)</li>
+<li>BOM modes (d8f38c5)</li>
+<li>Add test file for node and title bgcolors (524f8e6)</li>
+<li>Fix node background color rendering (e73c1ff)</li>
+<li>Fix color cell implementation (d93e76a)</li>
+<li>Implement multiple colors for components, improve multicolor table rendering (277537a)</li>
+<li>Allow multiple colors for components (9317bb9)</li>
+<li>Update test files (b8fa662)</li>
+<li>Add some test files to <code>tests/</code> directory (4be7956)</li>
+<li>Implement pin color output (2e47299)</li>
+<li>Optimize BOM bubble geometry (331c340)</li>
+<li>Fix line breaks in code (58259a0)</li>
+<li>Fix gauge conversion (2ab46a9)</li>
+<li>Add BOM bubble to additional component list (WIP) (865cd22)</li>
+<li>Stop recursive nesting of additional components (d3a9d8a)</li>
+<li>Implement BOM bubbles (22762d8)</li>
+<li>Change BOM output file extension from <code>.bom.tsv</code> to <code>.tsv</code> (0198a0f)</li>
+<li>Rename <code>Options.color_mode</code> to <code>.color_output_mod</code> for consistency (c43701b)</li>
+<li>Sort BOM by category, assign BOM IDs (0cca117)</li>
+<li>Add <code>tabulate</code> to dependency list (might remove later if not needed) (58e9a5f)</li>
+<li>Adapt <code>tutorial08.yml</code> (remove <code>unit</code> field) (4e87706)</li>
+<li>Add qty test file (1bef55e)</li>
+<li>Compute qty's of additional components (WIP) (c501151)</li>
+<li>Make <code>pin_objects</code> and <code>wire_objects</code> dictionaries (b61a52e)</li>
+<li>Implement BOM population (missing: qty multipliers) (e7b1a97)</li>
+<li>Clarify <code>wireviz.parse()</code> input types (8828ce1)</li>
+<li>Restructure and update <code>.gitignore</code> (97d8756)</li>
+<li>Add <code>pyan</code> to <code>devtools.txt</code> (0a4b266)</li>
+<li>Rename modules, adjust imports, move <code>build_examples.py</code> (10cf62e)</li>
+<li>Deprecate Python 3.7, add Python 3.10 (56e37b6)</li>
+<li>Define CLI epilog str in single statement (38f92e7)</li>
+<li>Change <code>description</code> to <code>type</code> in additional BOM item YAML (aa134fb)</li>
+<li>Prepare <code>harness.populate_bom()</code> (cb07d51)</li>
+<li>Improve BOM generation (TODO: wires from a bundle) (1cba27f)</li>
+<li>do not add autogenerated designators to BOM (a59149b)</li>
+<li>Include nested additional components in BOM (d9f0c3f)</li>
+<li>Clean up (7294bf1)</li>
+<li>Improve subclassing of components, prepare for BOM refactoring (9e1e97b)</li>
+<li>Remove unused line (4e12f3d)</li>
+<li>Apply dot tweaks last (a1db161)</li>
+<li>Make variable name more expressive (b7f49b0)</li>
+<li>Break longer lines not caught by <code>black</code> (dcc750c)</li>
+<li>Make green color darker (1a1478f)</li>
+<li>Re-sort <code>wv_colors.py</code> (8aa03c4)</li>
+<li>Use color objects in WireViz (c2fb59f)</li>
+<li>Implement color objects (c23430e)</li>
+<li>Add <code>cleanup.sh</code> (maybe move/delete later? or add commit hook?) (8adf8b0)</li>
+<li>Streamline assignment of ports to simple connectors (7f29c0a)</li>
+<li>Add sample use to <code>devtools.txt</code> (194f134)</li>
+<li>Run <code>autoflake -i --remove-all-unused-imports</code> (d4fc174)</li>
+<li>Run <code>autoflake -i</code> (539e9e3)</li>
+<li>Add <code>devtools.txt</code> (585db0e)</li>
+<li>Make mates object-oriented (974e9a4)</li>
+<li>Alphabetize HTML tags, improve bgcolor rendering (1227586)</li>
+<li>Make connecting things more object-oriented (efda8fa)</li>
+<li>Outsource <code>gv_edge_wire()</code> (6353a79)</li>
+<li>Reactivate cable edge generation (95631a4)</li>
+<li>Fix and simplify bgcolor logic (fce56bc)</li>
+<li>Make setting HTML tag attributes easier through <code>kwargs</code> (a4a73f1)</li>
+<li>Outsource <code>set_dot_basics()</code> and <code>apply_dot_tweaks()</code> (2999878)</li>
+<li>Add TODOs (05ad6b0)</li>
+<li>Outsource <code>gv_pin_table()</code>, simplify padding (7c0e75f)</li>
+<li>Remove old stuff, slightly simplify code (75ad23a)</li>
+<li>More WIP (d993f58)</li>
+<li>WIP (c8690a9)</li>
+<li>Implement HTML indentation (0f6ed3a)</li>
+<li>refactor cable node generation (bb9b43c)</li>
+<li>Generate gauge string inside Cable object (4eff1de)</li>
+<li>Rebuild demos (f4da47f)</li>
+<li>Further refactor connector node generation (7380129)</li>
+<li>Refactor connector node generation (77080c9)</li>
+<li>WIP (e769be3)</li>
+<li>Add temporary loop to <code>demo01</code> (3937509)</li>
+<li>Add <code>metadata.title</code> to <code>demo01.yml</code> (21d6e03)</li>
+<li>Rebuild all examples before refactoring (ab183f6)</li>
+<li>Make prefix for autogenerated component names configurable (81b0dba)</li>
+<li>Simplify Enum (abd53ec)</li>
+<li>Embed images into SVG output (28aa7f0)</li>
+<li>Auto-assign missing harness title if reading from file (81f9554)</li>
+<li>Simplify file access operations (c38305b)</li>
+<li>Make template separator character user-configurable (fbc90c0)</li>
+<li>Add support for multiple prepended files (8796709)</li>
+<li>Automatically include input file directory in list to resolve image paths (c1f195f)</li>
+<li>Update <code>build_examples.py</code> (36641bb)</li>
+<li>Write docstring for <code>parse()</code> function (76da525)</li>
+<li>Add leading underscore to local helper functions (22c3e18)</li>
+<li>Allow specifying output directory and file name separately (73dfe74)</li>
+<li>Consolidate <code>wireviz.parse()</code> to handle <code>Path</code>, <code>str</code> and <code>Dict</code> as input (1c9a1d8)</li>
+<li>Add 'black' badge to <code>README.md</code> (63b7124)</li>
+<li>Mention <code>isort</code> and <code>black</code> in contribution guidelines (daff23c)</li>
+<li>Apply some manual fixes, reapply <code>black</code> (a255596)</li>
+<li>Apply <code>black</code> (343cd29)</li>
+<li>Apply <code>isort</code> (e6f76f9)</li>
+<li>Add <code>black</code> profile for <code>isort</code> (3a18989)</li>
+<li>Create cache of graph to avoid generating it more than once (a9eb4f6)</li>
+<li>Split file output logic and object return logic (23db602)</li>
+<li>Improve <code>REAME.md</code> (8e31768)</li>
+<li>Output help string if no arguments are received (b8d74ba)</li>
+<li>Update README for new CLI commands (f87d9ef)</li>
+<li>Sort <code>--format</code> flags alphabetically (0044997)</li>
+<li>Add encoding info to <code>wv_cli.py</code> (884b982)</li>
+<li>Add <code>main()</code> to <code>wireviz.py</code> as fallback (63be33e)</li>
+<li>Remove obsolete comments (7638425)</li>
+<li>Fix smart file resolver for images (97207e6)</li>
+<li>Do not output <code>.gv</code> files by default (b9527a8)</li>
+<li>Implement image path resolver (a4a89eb)</li>
+<li>Split the YAML loading and parsing functions (471a6c3)</li>
+<li>Fix entry point (f325b69)</li>
+<li>Only output requested file types (closes #60) (a98e17b)</li>
+<li>Add CLI help strings (0764a8d)</li>
+<li>Remove unneeded code from <code>wireviz.py</code> (d0909d4)</li>
+<li>Implement working proof of concept (7121a3e)</li>
+<li>Add <code>wv_cli.py</code>, add Click requirement, change entry point (ef6af32)</li>
+<li>Simplify and clean up <code>setup.py</code> (628c80f)</li>
+<li>Simplify <code>main()</code> (095a2a0)</li>
+<li>Add explanatory comment (f78f83c)</li>
+<li>Replace <code>os.path</code> with <code>pathlib.Path</code> where used (0192f6d)</li>
+<li>Equalize line weights and simplify CSS (c1494db)</li>
+<li>Apply suggestions from code review (fd8749b)</li>
+<li>Apply suggestions from code review (e2f1a4e)</li>
+<li>Update <code>smart_file_resolve()</code> (359cd8d)</li>
+<li>Use regex-based replacement (ef69d7e)</li>
+<li>Implement <code>fontname</code> and <code>bgcolor</code>(WIP) replacement (a80192b)</li>
+<li>Consolidate code for replacing HTML placeholders (928f607)</li>
+<li>Apply <code>fontname</code> and <code>bgcolor</code> to output HTML (cf5315d)</li>
+<li>Add type hint (ea89dd4)</li>
+<li>Add template metadata to demo02.yml (a9c1724)</li>
+<li>Implement template-based HTML output (a839a47)</li>
+<li>Refactor functions for harness building (d44b649)</li>
+<li>Simplify code (37cd08d)</li>
+<li>Fix bug of arrows using the wrong port IDs (bc5ef2e)</li>
+<li>Fix duplicates in <code>syntax.md</code> after rebase (22e75f9)</li>
+<li>Move selected test files to examples directory (5cc133c)</li>
+<li>Update syntax description (autogeneration, arrows) (aa81c18)</li>
+<li>Resolve component level mate not revealing connection count (def03d1)</li>
+<li>Resolve edge case of empty HTML tables (f20f313)</li>
+<li>Squash <code>feature/mate+autogenerate</code> branch (e3fbc91)</li>
+<li>Bump version in generated files (211ded0)</li>
+<li>Bump version to 0.4-dev (4c97195)</li>
+</ul>
+<h2 id="v032">v0.3.2<a class="headerlink" href="#v032" title="Permanent link">&para;</a></h2>
+<h3 id="other_7">Other<a class="headerlink" href="#other_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Bump version to 0.3.2 (b0d0070)</li>
+<li>Fix graphviz file header (9af0cb8)</li>
+</ul>
+<h2 id="v031">v0.3.1<a class="headerlink" href="#v031" title="Permanent link">&para;</a></h2>
+<h3 id="other_8">Other<a class="headerlink" href="#other_8" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Bump version to 0.3.1 (7f33517)</li>
+<li>Improve gracefulness when invoking <code>wireviz.parse()</code> without <code>file_out</code> (80b7a54)</li>
+</ul>
+<h2 id="v03">v0.3<a class="headerlink" href="#v03" title="Permanent link">&para;</a></h2>
+<h3 id="other_9">Other<a class="headerlink" href="#other_9" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Merge branch 'dev' (be1ecd4)</li>
+<li>Rebuild examples (eb7be15)</li>
+<li>Bump version to 0.3 (2629e1c)</li>
+<li>Update changelog (36dfaea)</li>
+<li>Harmonize shebangs and encoding info (3cc36e1)</li>
+<li>Add syntax documentation for cable length units (255569a)</li>
+<li>Rearrange syntax description (869ad6b)</li>
+<li>Add <code>temp/</code> to .gitignore (48d2e7b)</li>
+<li>Move color type aliases into wv_colors.py to avoid circular imports (7125f28)</li>
+<li>Support specifying hex colors for any color attributes (c349461)</li>
+<li>Support specifying hex colors where no color name is needed (b3fdd48)</li>
+<li>Support bgcolor of additional components (166ab2f)</li>
+<li>Support image.bgcolor to enable adapting to image colors (324508a)</li>
+<li>Support both bgcolor and bgcolor_title attributes (45d7d03)</li>
+<li>Add bgcolor attribute to connectors and cables (dbccb77)</li>
+<li>Implement suppliers and supplier part numbers (#241) (a3eefe6)</li>
+<li>Add optional tweaking of the .gv output (#215) (db05514)</li>
+<li>Add basic options and metadata (#214) (92354e6)</li>
+<li>Use unique index for connector pin ports (#229) (e212fc9)</li>
+<li>Update changelog for #197 (a368072)</li>
+<li>Simplify BOM code (#197) (31d55ff)</li>
+<li>Update contribution guidelines (cf91977)</li>
+<li>Update changelog and syntax documentation (cbc30b7)</li>
+<li>Remove <code>.</code> from requirements.txt (71a1c52)</li>
+<li>Remove duplicate contribution guidelines (bdc405a)</li>
+<li>Show connector pins even when all are unconnected (7546991)</li>
+<li>Correctly check for default of None (c0a885a)</li>
+<li>Assign the default cable length unit when not present (#206) (da56841)</li>
+<li>Detect and assign unit within cable length attribute (#198) (606ddbf)</li>
+<li>Add support for wire length units (dec64ab)</li>
+<li>Create separate modules for BOM and HTML functions (96bd121)</li>
+<li>Show pin labels of adjacent connectors in cable node (#70) (eebf932)</li>
+<li>Update example 08 to reference wires using colors (3bf448c)</li>
+<li>Allow referencing wires by color/label (#169,#193) (03e6077)</li>
+<li>Add option to add colors to connector pins (#141) (feff47f)</li>
+<li>Add type aliases that reflect their semantics (64bd34a)</li>
+<li>Update the types of dataclass attributes according to usage (3f091bb)</li>
+<li>Remove input text hyperlinks except in the HTML BOM (e2e8bbf)</li>
+<li>Allow addittional BOM items within components (#115) (e85ee5d)</li>
+<li>Bump version to 0.3-dev (4e4dac8)</li>
+</ul>
+<h2 id="v02">v0.2<a class="headerlink" href="#v02" title="Permanent link">&para;</a></h2>
+<h3 id="refactor">Refactor<a class="headerlink" href="#refactor" title="Permanent link">&para;</a></h3>
+<ul>
+<li>rename 'input' -&gt; 'yaml_data' (1f06c60)</li>
+</ul>
+<h3 id="other_10">Other<a class="headerlink" href="#other_10" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Release v0.2 (55dfc28)</li>
+<li>Rebuild all examples with v0.2 (b2d1a29)</li>
+<li>Bump version to 0.2 (3e570d6)</li>
+<li>Improve documentation (6db1fcf)</li>
+<li>Avoid errors from HTML validator (fb17eae)</li>
+<li>Define application name and URL only once (7dcd1a7)</li>
+<li>Add version number to output files with meta info (b00040c)</li>
+<li>Simplify colorbar using the same technique as html_image() (1809f73)</li>
+<li>Add optional image to connectors and cables (#153) (4782da4)</li>
+<li>Add command line options to show version number (7df8a4b)</li>
+<li>Comment out unimplemented command line option (c4957f1)</li>
+<li>Add diff as an alias to the compare command (83a467a)</li>
+<li>Add -b BRANCH argument to the compare and restore commands (b14f5cb)</li>
+<li>Add .gitattributes for GitHub Linguist (#154) (df90d83)</li>
+<li>Add whitespace to GraphViz HTML for readability (e3fb39f)</li>
+<li>Rebuild GV HTML generation using lists (94faec5)</li>
+<li>Improve line break handling (af196df)</li>
+<li>Simplify code and rename variables (102c7d6)</li>
+<li>Add color attribute to cables (43f85ae)</li>
+<li>Refactor cable GraphViz HTML generation (2639c77)</li>
+<li>Remove obsolete code (79e751d)</li>
+<li>fix #149 introduced in #147 (19b82e9)</li>
+<li>Extend unknown color error message (#147) (84edda6)</li>
+<li>Improve handling of strings with '-' in wv_helper.expand() (4802705)</li>
+<li>Add 25-pair comments and split lines according to coloring pattern (9a3b8bc)</li>
+<li>Replace 20 YW color codes with YE to avoid Unknown color specified (113a731)</li>
+<li>Change wire padding behavior (23c17e6)</li>
+<li>Fix change requests from owner as descibed in PR #118 (99ca185)</li>
+<li>Add CLI option -c that allows comparing Graphviz output also (21db0d5)</li>
+<li>Move group loop into build_generated() for consistency (378e13b)</li>
+<li>Restructure the group dict initialization (94ca9cc)</li>
+<li>Make all actions honor the optional argument -g or --group (476f85b)</li>
+<li>Add actions to compare against and restore from the latest commit (4eedd94)</li>
+<li>Refactor build_examples.py (3fa015c)</li>
+<li>Make each shield wire uniform and allow cable.shield color (1815a13)</li>
+<li>Shorten BOM field names (#121) (b9a4783)</li>
+<li>Update README.md (f2f6548)</li>
+<li>Rebuild examples (a69fc76)</li>
+<li>Update example input files (2a963bf)</li>
+<li>Rename connector attributes (#77) (a1881eb)</li>
+<li>Change code for silver and gold (6468c0e)</li>
+<li>Fix HTML color code appearing in wire node (a632dc6)</li>
+<li>Fix node rendering for cables with hidden name and/or no visible attributes (#104) (b028e7a)</li>
+<li>Fix superscript 2 in HTML output (#95) (a418005)</li>
+<li>Add new colors (olive green, light blue, beige, ivory) (a8b2dc3)</li>
+<li>Rebuild examples (8f833d9)</li>
+<li>Update example input files (afbd11c)</li>
+<li>Eliminate ferrule category, unify connectors (#78) (831b423)</li>
+<li>Build examples in the correct order (cae16bf)</li>
+<li>Rebuild examples (0da4441)</li>
+<li>Update changelog (601532b)</li>
+<li>Disable color padding for cables with no multicolor wires (8cba793)</li>
+<li>Fine-tune multicolor wire PR (3732597)</li>
+<li>Add example outputs to GH Actions (c94d3ee)</li>
+<li>Update .gitignore (0637899)</li>
+<li>Change colors as per #17 review (ea948a2)</li>
+<li>Update readme and requirements (318b6c6)</li>
+<li>Fix unicode issue for windows (force an encoding) (fecf271)</li>
+<li>Finish adding multicolor support (b147aa0)</li>
+<li>Add new color definitions (07bb3f6)</li>
+<li>Add DOCTYPE declaration in HTML output (1c0c13b)</li>
+<li>Remove XML and DOCTYPE declarations from embedded SVG (b5ac632)</li>
+<li>Update build_examples (861380d)</li>
+<li>Add initial contribution guidelines (d1b4886)</li>
+<li>Add initial contribution guidelines (8f6b8a7)</li>
+<li>Move part number info directly below designator (11baf0f)</li>
+<li>Remove obsolete nesting function, fine-tune table generating behavior (6c7d700)</li>
+<li>Refactor connector GraphViz code generation (#66) (7e54c7a)</li>
+<li>Add type hinting (#92) (12d3002)</li>
+<li>Make multi-line connector attributes centered for consistency (ba8b83f)</li>
+<li>Match parse() return tuple order to input tuple order (#89) (34cd9c2)</li>
+<li>Add ability for <code>parse()</code> to return the <code>Harness</code> instance (#87) (c8dc697)</li>
+<li>Make file output more consistently behaved. (9de33b4)</li>
+<li>Add ability to include aditional BOM lines (#80) (8b69e9a)</li>
+<li>Remove unused parameter, fix default parameter (#76) (3eed968)</li>
+<li>Add changelog (0cef5e3)</li>
+<li>Simplify connector loop code (9e11051)</li>
+<li>Ensure items in a connection set alternate between connectors and cables (cf6d367)</li>
+<li>Update example YAML files (b988e9b)</li>
+<li>Make connecting components together easier and more flexible (b479190)</li>
+<li>Allow using connector pin names to define connections (8f5b1aa)</li>
+<li>Check for duplicate pin numbers and raise an exception (6a2924f)</li>
+<li>Outsource nested HTML table creation to helper function (e1e6655)</li>
+<li>Fix bug in bundle wire BOM generation (0252476)</li>
+<li>Implement line break parsing for ferrules (501303c)</li>
+<li>Merge changes to ferrule code generation (c2fa1d0)</li>
+<li>Fine-tune examples including ferrules (981b585)</li>
+<li>Refactor ferrule GraphViz code generation (54f114e)</li>
+<li>Remove any newlines in fields for BOM generation (46ed241)</li>
+<li>Implement line break parsing for some fields (d4ac4da)</li>
+<li>Simplify BOM code (#62) (4e9933f)</li>
+<li>Fix bug in refactoring of #55, add SVG output option (de1e45f)</li>
+<li>Refactor #55 (144c99e)</li>
+<li>Add ability to export PNG data directly to other programs. (#55) (ebf1e5a)</li>
+<li>Update requirements.txt (#58) (8b067e5)</li>
+<li>Make parts of BOM code more pythonic (b238737)</li>
+<li>Clean up code (84c10e2)</li>
+<li>Simplify and fix bug in BOM generation (407a923)</li>
+<li>Fix bug of non-bundle wires appearing in BOM (4796c7c)</li>
+<li>Rebuild examples (21b3c9e)</li>
+<li>Fine-tune cable appearance (1692968)</li>
+<li>Update example+tutorial input files (65a4d6b)</li>
+<li>Fix post-merge bugs (94731cd)</li>
+<li>Merge branch 'feature/part-number' into dev (5fbe3e6)</li>
+<li>Add cable type in a couple of examples (77bf398)</li>
+<li>Support named type of cables (or wires in a bundle) (6f91b65)</li>
+<li>Move the cable category filtering before BOM grouping (c9895bd)</li>
+<li>Use lambdas for BOM grouping, and rename group variables (dd1372c)</li>
+<li>Added rendered output for new tutorial (39ad070)</li>
+<li>Added part number tutorial (4d2cb63)</li>
+<li>Merged in refactoring changes from upstream (c200f66)</li>
+<li>Added spaces after MPN: and IPN: (9c5ea06)</li>
+<li>Added diagram support for part numbers on ferrules (f67235e)</li>
+<li>Improved part number support (1ec9ca4)</li>
+<li>Merge branch 'dev' (fffb354)</li>
+<li>Fix demo 01 (49322fc)</li>
+<li>Update .gitignore to include venv/ directory (b163b7a)</li>
+<li>Reorder readme (23e22f5)</li>
+<li>Merge branch 'dev' (8b09fac)</li>
+<li>Update example 08 to hide pincount on 3.5mm jack (9d2c193)</li>
+<li>Update readme to reflect changes from #41 (e047f06)</li>
+<li>Rebuild example 02 after fixes from #41 (52a8af2)</li>
+<li>bidirectional AWG/mm2 unit conversion (#41) (08e53bc)</li>
+<li>Fix URL in setup.py (fixes #42) (c7014a2)</li>
+<li>Merge branch 'dev' (7458118)</li>
+<li>Address FIXMEs and fine-tune merge of #39 (c42b33b)</li>
+<li>Refactor and clean up code (#39) (82b173f)</li>
+<li>Added ability to set part numbers (92b6b21)</li>
+<li>Merge branch 'dev' (8326ddd)</li>
+<li>Fix for Designators apearing across all colours of wires of a guage. (#37) (a3728f5)</li>
+<li>Update readme (0a42b35)</li>
+<li>Merge branch 'dev' (4aac32b)</li>
+<li>[ci] Setup Github actions to run 'build_examples.py' as a test on each pull/pull request. (#34) (6cf7178)</li>
+<li>Merge pull request #35 from flopp/typos (a7419c4)</li>
+<li>Fix some typos: budnle, conector, separetely (eb65be3)</li>
+<li>Remove TODO file, move to-do's to GitHub Projects (69bc20a)</li>
+<li>Merge branch 'dev' (37d5ebd)</li>
+<li>Add parse_file() function and use it in build_examples.py (7060c38)</li>
+<li>Update gitignore (5d84bb8)</li>
+<li>Change gen_bom to generate_bom (154e28f)</li>
+<li>add --prepend-file option (f14a07f)</li>
+<li>fix install notes (a1f5117)</li>
+<li>Fix typo (668667d)</li>
+<li>update build_examples script (cdb2cf2)</li>
+<li>add install instructions to readme (60cd069)</li>
+<li>clean up imports, cmdline handling (9af391f)</li>
+<li>refactor dependencies and installation (5514fd4)</li>
+<li>Move source from src/ to src/wireviz/ (dfb184c)</li>
+<li>Merge branch 'dev' (5c582cb)</li>
+<li>Fine-tune wire BOM output if no gauge is specified (4661992)</li>
+<li>Update demos and examples (790e9c9)</li>
+<li>Auto-assign pincount = 1 for ferrules at initialization (da80d4b)</li>
+<li>Make custom pin numbers and hidden unused pins work nicely together (d0023c1)</li>
+<li>Merge branch 'hide_unconnected' into dev (304152f)</li>
+<li>Merge pull request #5 from elliotmr/master (0c6326b)</li>
+<li>Merge branch 'dev' (a5ca5be)</li>
+<li>Auto-generate pin numbers if only pincount is specified (8bf296b)</li>
+<li>Merge pull request #10 from kimmoli/custom-pinnumbers (b4ddbae)</li>
+<li>Merge branch 'dev' (2cfd239)</li>
+<li>Merge pull request #1 from Supern00dle/master (ffcdba4)</li>
+<li>Add optional custom pinnumbers to connector (955cf83)</li>
+<li>implemented functionality to hide pins that are not connected (c362149)</li>
+<li>Update wv_helper.py (2dfdbd5)</li>
+<li>Merge branch 'dev' (66a4716)</li>
+<li>Update readme (c1e6cf1)</li>
+<li>Merge branch 'dev' (6406e28)</li>
+<li>Add usage info to readme (644bcd7)</li>
+<li>Merge branch 'dev' (aba1478)</li>
+<li>Fine-tune tutorial, add tutorial BOMs (4384ca5)</li>
+<li>Update to-do and readme (1c57138)</li>
+<li>Fine-tune tutorials (9aea158)</li>
+<li>Add syntax highlighting to readme's (37f0f8b)</li>
+<li>Fine-tune tutorials (07fa0e2)</li>
+<li>Add batch tutorial generation (f09a81c)</li>
+<li>Add tutorial source files and readme (75990d8)</li>
+<li>Add tutorial folder to batch script (17a6e43)</li>
+<li>Improve ferrule handling, BOM creation (f858287)</li>
+<li>Make wires white by default if no color is specified (a7be096)</li>
+<li>Merge branch 'dev' (d14e017)</li>
+<li>Include BOM in example gallery (4fa700e)</li>
+<li>Update examples and readme (ccf4db5)</li>
+<li>Implement HTML output (a6cfa53)</li>
+<li>Implement sorting of BOM sections (6785417)</li>
+<li>Move color stuff and helper functions into separate modules (5a601f7)</li>
+<li>Remove unused code (22cc494)</li>
+<li>Improve BOM item names (653937f)</li>
+<li>Implement handling of wire bundles during BOM creation (aeccc2e)</li>
+<li>Change type: bundle to category: bundle (d535626)</li>
+<li>Restructure and simplify BOM creation (d97d1e1)</li>
+<li>Change wire lengths on demo 02 (93be0cb)</li>
+<li>Implement proof-of-concept HTML output (2eb6f1c)</li>
+<li>Fine-tune some details (a503545)</li>
+<li>Change 'gender' to 'subtype' for more flexibility (a43d770)</li>
+<li>Update readme (567e65f)</li>
+<li>Make BOM output optional (d2abf5f)</li>
+<li>Streamline BOM creation, implement cutlist (db31336)</li>
+<li>Add shield parameter to BOM generation (a8b9fc0)</li>
+<li>Improve handling of mm² and AWG gauges (19f0a82)</li>
+<li>Rename nodes and wires to connectors and cables (3eaabc3)</li>
+<li>Rename num_wires to wirecount (2687afc)</li>
+<li>Rename num_pins to pincount (5bff36d)</li>
+<li>Add list of designators to BOM (75e1c11)</li>
+<li>Implement proof-of-concept BOM output (c0f72bc)</li>
+<li>Fine tune line breaks (5f55b65)</li>
+<li>Add notes field for nodes and wires (e204258)</li>
+<li>Fix AWG display (666de76)</li>
+<li>Remove obsolete functions (3c566b6)</li>
+<li>Update sample code in readme (6ee3b3c)</li>
+<li>Merge branch 'dev' (4eb313c)</li>
+<li>Update examples and to-do list (fdf5694)</li>
+<li>Make PNG background white by default (88967a3)</li>
+<li>Fine tune ferrule rendering (14c4c96)</li>
+<li>Implement cable nodes as HTML tables for better visualization (7ee78b7)</li>
+<li>Improve handling and customize rendering of ferrules (da0d0c8)</li>
+<li>Add daisy chain examples (7151346)</li>
+<li>Remove idea directory (e7c95e4)</li>
+<li>Merge branch 'dev' (4cceac0)</li>
+<li>Auto-generate example gallery (d86ec0a)</li>
+<li>Update and automate examples and demos (8aeabd0)</li>
+<li>Merge yaml2wireviz into wireviz module (d99952c)</li>
+<li>Add command line argument parsing (input/output file) (50e3441)</li>
+</ul>
+<h2 id="v01">v0.1<a class="headerlink" href="#v01" title="Permanent link">&para;</a></h2>
+<h3 id="other_11">Other<a class="headerlink" href="#other_11" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Merge branch 'dev' (27362de)</li>
+<li>Update to-do list (f04441f)</li>
+<li>Make connection definition more readable, Pt. II: Create connection dataclass (c93fb74)</li>
+<li>Make connection definition more readable, Pt. I (9ff48ee)</li>
+<li>Show from/to designators on wire bundle (fcf6714)</li>
+<li>Fine-tune examples (12b4746)</li>
+<li>Add support for wire bundles (3becef7)</li>
+<li>Restructure to-do list (df6df75)</li>
+<li>Change some default parameter values (2dd21ae)</li>
+<li>Merge branch 'dev' (3ae3fff)</li>
+<li>Simplify ferrule creation (5461cb0)</li>
+<li>Clean up wire color assignment logic (5867bd5)</li>
+<li>Simplify <strong>init</strong> functions, Pt. III: use dataclasses (516d8c3)</li>
+<li>Simplify <strong>init</strong> functions, Pt. II (aeda312)</li>
+<li>Simplify processing input file sections (77a69d2)</li>
+<li>Simplify <strong>init</strong> functions, Pt. I (ab92292)</li>
+<li>Clean up code (07567be)</li>
+<li>Fine-tune wire colors (71641df)</li>
+<li>Add unnamed connector ('ferrule') support proof of concept (591829b)</li>
+<li>Merge branch 'dev' (2f42bb4)</li>
+<li>Update readme + todo (c58cda0)</li>
+<li>Move examples (c38d2b1)</li>
+<li>Add to-do list (346dd72)</li>
+<li>Add example 2 as YAML file (e829294)</li>
+<li>Re-format code (eaf57a8)</li>
+<li>Change order of arguments in wire..connect() (544e009)</li>
+<li>Implement YAML to WireViz converter (517cba4)</li>
+<li>Implement first proof of concept (e0286b2)</li>
+<li>Add pyyaml module (6b2da96)</li>
+<li>Add .txt exension to LICENSE file (841dd6e)</li>
+<li>Improve handling of single connections in Cable.connect() (a2971e7)</li>
+<li>Merge branch 'dev' (09af846)</li>
+<li>Add minimalist example 4 (06a9188)</li>
+<li>Add option to hide pin/wire counts (09bc282)</li>
+<li>Improve handling of empty lists when nesting (542aea2)</li>
+<li>Auto-decide connector pin side based on wiring (f0724ed)</li>
+<li>Merge branch 'dev' (5b0134f)</li>
+<li>Add wire color to loops (2b955fa)</li>
+<li>Add WireViz info to output file (9b745b6)</li>
+<li>Update examples, change output file extension from .dot to .gv (492710b)</li>
+<li>Move examples (30fe715)</li>
+<li>Improve output function (e3d78f3)</li>
+<li>Remove unused files (ae959f6)</li>
+<li>Merge branch 'dev' (2e7fc92)</li>
+<li>Delete old rendering functions (1e076b5)</li>
+<li>Re-implement rendering using graphviz module (85eab22)</li>
+<li>Add German color short codes (1dde27b)</li>
+<li>Add GraphViz Python module (e6cfc3b)</li>
+<li>Merge branch 'dev' (7fbaad6)</li>
+<li>Update readme (5278904)</li>
+<li>Make output background color transparent (ff94b47)</li>
+<li>Expand DIN 47100 colors (up to 20 wires) (db73fa5)</li>
+<li>Fix UTF encoding for ² character (504399c)</li>
+<li>Merge branch 'dev' (9a085c7)</li>
+<li>Remove old debug code (c0d8017)</li>
+<li>Improve color looping (049d439)</li>
+<li>Loop color codes (81b2cb5)</li>
+<li>Improve color code handling (5fc93a8)</li>
+<li>Change GraphVIz output from digraph to graph (5a2f3d7)</li>
+<li>Update readme (f649702)</li>
+<li>Add option to show equivalent AWG (e63dfc0)</li>
+<li>Merge branch 'dev' (a5c6a46)</li>
+<li>Update readme (685adde)</li>
+<li>Add Harness class, simplify harness creation (548adcd)</li>
+<li>Move to-do list into Readme (a51da37)</li>
+<li>Merge branch 'dev' (f11dce9)</li>
+<li>Split examples into separate files (542c4e6)</li>
+<li>Add output functionality to module (aee4ec1)</li>
+<li>Merge branch 'dev' (24be1bb)</li>
+<li>Update to-do list (af5d260)</li>
+<li>Update example 1 (802c10e)</li>
+<li>Update idea examples (1b3fdb1)</li>
+<li>Add different color printing modes (719ddd1)</li>
+<li>Update example output (c27f8dc)</li>
+<li>Enhance parameter support (140966f)</li>
+<li>Allow wires to hide pinout (485f7af)</li>
+<li>Add basic parameter support for connectors and wires (abba76b)</li>
+<li>Change double quotes to single quotes for strings (ee7d1ef)</li>
+<li>Add to-do list (1254ff2)</li>
+<li>Allow hiding connector name (7e1b238)</li>
+<li>Add info to header (b897231)</li>
+<li>Merge branch 'dev' (4030252)</li>
+<li>Update readme, add GNU GPL v3 license (d7a6deb)</li>
+<li>Improve shield wiring, fix and expand example 1 (d42b12f)</li>
+<li>Tweak brown color (a198d27)</li>
+<li>Add example 3 (5097f54)</li>
+<li>Add simple auto-wiring (da258ce)</li>
+<li>Update gitignore (c63da45)</li>
+<li>Add example 2 (0ae5814)</li>
+<li>Add example output (429d958)</li>
+<li>Make cable name hidden by default (006fdba)</li>
+<li>Add ability to define loops on connectors (075d9ed)</li>
+<li>Optimize file output (59816cf)</li>
+<li>Add wire colors (e084da0)</li>
+<li>Add GraphViz output functionality (48e744a)</li>
+<li>Create first draft of wireviz Python module (072958d)</li>
+<li>Update example2 (6b25817)</li>
+<li>Update readme (c6c7fbd)</li>
+<li>Update readme (bbed022)</li>
+<li>Update example1 (afcecbc)</li>
+<li>Update readme (45cc18c)</li>
+<li>Update example2 (7d763d0)</li>
+<li>Add example2 (7406617)</li>
+<li>Add wire color to example1 (f59b133)</li>
+<li>Update readme (c9402cb)</li>
+<li>Add gitignore (dbc1ccd)</li>
+<li>Update readme (6c9d415)</li>
+<li>Initial commit (bbb38e7)</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.instant", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../javascripts/mermaid.js"></script>
+      
+    
+  </body>
+</html>
