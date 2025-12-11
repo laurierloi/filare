@@ -2,7 +2,7 @@
 
 uid: FEAT-DOCS-0009
 status: BACKLOG
-priority: medium
+priority: low
 owner_role: FEATURE
 estimate: TBD
 dependencies: []
@@ -32,3 +32,4 @@ Render projection symbols (first/third angle) per DIN/EN ISO conventions, with m
 ## Related Issues
 
 - docs/issues/din-projection-symbol.md
+- docs/features/mechanical-view-2d.md (projection context for mechanical drawings)
