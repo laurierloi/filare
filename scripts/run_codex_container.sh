@@ -73,10 +73,18 @@ fi
 codex_dir="${HOME}/.codex"
 mkdir -p "$codex_dir"
 
+# Prepare temporary .ssh with key and known_hosts
+ssh_tmp="$(mktemp -d)"
+trap 'rm -rf "$ssh_tmp"' EXIT
+install -m 700 -d "$ssh_tmp"
+install -m 600 "$ssh_key" "$ssh_tmp/id_rsa"
+ssh-keyscan -t ed25519 github.com > "$ssh_tmp/known_hosts" 2>/dev/null || true
+chmod 644 "$ssh_tmp/known_hosts"
+
 docker run --rm -it \
   -v "$workspace":/home/agent/workspace \
   -v "$codex_dir":/home/agent/.codex \
-  -v "$ssh_key":/home/agent/.ssh/id_rsa:ro \
+  -v "$ssh_tmp":/home/agent/.ssh:ro \
   --env-file "$env_file" \
   -w /home/agent/workspace \
   --user $(id -u):$(id -g) \
