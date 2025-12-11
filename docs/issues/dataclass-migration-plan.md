@@ -36,9 +36,9 @@ Gradually migrate remaining dataclass-heavy models (Connector, Cable, WireClass/
 
 ## Upcoming steps for the next slice
 
-1. Lock in the color helper migration by verifying MultiColor/SingleColor behavior across connector/cable parsing and rendering consumers; adjust adapters if any regressions surface.
-2. Introduce Pydantic shims for Connector/Cable/WireClass/ShieldClass with converters to/from the legacy dataclasses, keeping existing imports stable.
-3. Thread the new shims through `build_harness` wiring/loop handling and renderer entrypoints with minimal behavior changes; add targeted regression tests for connection creation and BOM quantities.
+1. Sweep remaining direct dataclass imports (`connections.py`, `wire.py`, `graphviz.py`, `models/__init__.py`) and replace them with model-first shims plus lazy dataclass fallbacks where compatibility requires.
+2. Thread connector/cable/wire models through harness/build_harness and renderer helpers so model inputs are normalized before touching dataclasses; add regression coverage for loop normalization and model-based adders.
+3. Once shims are in place, narrow `models/__init__.py` dataclass exports and document the compatibility layer to guide downstream consumers.
 
 ### Progress 2025-12-10
 
@@ -46,3 +46,10 @@ Gradually migrate remaining dataclass-heavy models (Connector, Cable, WireClass/
 - Wiring shims: added `WireModel`/`ShieldModel` Pydantic adapters with round-trip converters to `WireClass`/`ShieldClass`; tests cover basic roundtrips and ConnectionModel now accepts wire models.
 - Flow integration: `Harness.connect_model()` added to route ConnectionModel/dict through existing connect logic; build_harness_from_models can consume connection models for straight-through wiring setup.
 - Next: peel renderer/graphviz to accept connection/wire models, and incrementally replace direct dataclass usage in graph building and BOM population.
+
+### Progress 2025-12-10 (later)
+
+- Resolved rebase conflicts while keeping HEAD changes intact and added compatibility aliases for GraphicalComponent to smooth imports.
+- Normalized `ConnectorModel.to_connector()` to emit loop dictionaries from `LoopModel`/`PinModel` inputs so the dataclass constructor can validate pins consistently.
+- Extended `Harness.add_connector`/`add_cable` to accept models and dicts, keying by the resulting designator to avoid unhashable model keys; validated with `just test-all`.
+- Next: continue peeling dataclass imports from `connections.py` and `wire.py`, and tighten `models/__init__.py` exports once the shim coverage is broader.

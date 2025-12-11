@@ -3,12 +3,11 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, List, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, List, Optional, Union, cast
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from filare.models.colors import SingleColor
-from filare.models.dataclasses import Component, GraphicalComponent  # noqa: F401
 from filare.models.hypertext import MultilineHypertext
 from filare.models.numbers import NumberAndUnit
 from filare.models.types import (  # noqa: F401
@@ -19,6 +18,22 @@ from filare.models.types import (  # noqa: F401
     QtyMultiplierConnector,
     Side,
 )
+
+if TYPE_CHECKING:  # pragma: no cover
+    from filare.models.dataclasses import Component as ComponentDC
+    from filare.models.dataclasses import GraphicalComponent as GraphicalComponentDC
+else:  # pragma: no cover
+    try:
+        from filare.models.dataclasses import (
+            Component as ComponentDC,
+            GraphicalComponent as GraphicalComponentDC,
+        )
+    except Exception:
+        ComponentDC = GraphicalComponentDC = None  # type: ignore
+
+# Compatibility aliases for export
+Component = ComponentDC  # type: ignore
+GraphicalComponent = GraphicalComponentDC  # type: ignore
 
 
 class ComponentModel(BaseModel):
@@ -95,7 +110,7 @@ class ComponentModel(BaseModel):
         for v in vals:
             if isinstance(v, ComponentModel):
                 out.append(v)
-            elif isinstance(v, Component):
+            elif ComponentDC and isinstance(v, ComponentDC):
                 out.append(ComponentModel.from_component(v))
             elif isinstance(v, dict):
                 out.append(ComponentModel(**v))
@@ -105,9 +120,11 @@ class ComponentModel(BaseModel):
 
     @classmethod
     def from_component(cls, comp: Component) -> "ComponentModel":
+        if ComponentDC is None:  # pragma: no cover
+            raise TypeError("Component dataclass not available")
         additional_models: List[Any] = []
         for sub in comp.additional_components or []:
-            if isinstance(sub, Component):
+            if ComponentDC and isinstance(sub, ComponentDC):
                 sub_model = cls.from_component(sub)
                 sub_model.parent = None  # avoid nested object references
                 additional_models.append(sub_model)
@@ -137,11 +154,13 @@ class ComponentModel(BaseModel):
         )
 
     def to_component(self) -> Component:
+        if ComponentDC is None:  # pragma: no cover
+            raise TypeError("Component dataclass not available")
         additional = [
             item.to_component() if isinstance(item, ComponentModel) else item
             for item in self.additional_components
         ]
-        comp = Component(
+        comp = ComponentDC(
             category=self.category,
             type=self.type,
             subtype=self.subtype,
