@@ -80,12 +80,24 @@ install -m 700 -d "$ssh_tmp"
 install -m 600 "$ssh_key" "$ssh_tmp/id_rsa"
 ssh-keyscan -t ed25519 github.com > "$ssh_tmp/known_hosts" 2>/dev/null || true
 chmod 644 "$ssh_tmp/known_hosts"
+cat > "$ssh_tmp/config" <<'CFG'
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+  UserKnownHostsFile ~/.ssh/known_hosts
+  StrictHostKeyChecking yes
+CFG
+chmod 600 "$ssh_tmp/config"
 
 docker run --rm -it \
   -v "$workspace":/home/agent/workspace \
   -v "$codex_dir":/home/agent/.codex \
   -v "$ssh_tmp":/home/agent/.ssh:ro \
   --env-file "$env_file" \
+  -e HOME=/home/agent \
+  -e GIT_SSH_COMMAND="ssh -F /home/agent/.ssh/config" \
   -w /home/agent/workspace \
   --user $(id -u):$(id -g) \
   "$image" bash
