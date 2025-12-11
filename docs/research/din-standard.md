@@ -79,8 +79,15 @@ Survey relevant DIN/EN ISO drawing standards (e.g., DIN 6771/823, EN ISO 5457, D
 - TOOLS tasks:
   - Create a validation script that checks rendered SVG/HTML for presence of required blocks/fields.
   - Add a lint for title-block metadata completeness.
-- COVERAGE tasks:
-  - Regression tests for templates including DIN title block, folding marks, projection symbols, and revision table.
+- COVERAGE tasks (per required element):
+  - Sheet format/margins/folding marks: render a minimal DIN page and assert SVG viewBox/frame sizes and folding mark coordinates.
+  - Title block fields (EN ISO 7200): fixture asserting all required fields/text nodes exist with correct labels/ordering in SVG/HTML.
+  - Revision table: render with multiple revisions and snapshot the table structure and values.
+  - Projection symbol: assert presence of the first/third-angle symbol asset when enabled.
+  - Line weights/styles: check SVG stroke widths/class names match configured DIN defaults for visible/hidden/center lines.
+  - Legends/standards references: render with legends enabled and assert legend content plus standards reference text.
+  - Page numbering and sheet/total: fixture asserting sheet numbering is present and formatted per spec.
+  - Scale/units: assert scale/unit text is rendered in the title block.
 
 ## Recommendation
 **ADOPT_LATER** — Valuable for EU-centric deployments; proceed after defining template changes and validation approach to avoid pseudo-compliance.
