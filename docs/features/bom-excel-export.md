@@ -2,7 +2,7 @@
 
 uid: FEAT-BOM-EXCEL-0001
 status: PLANNED
-priority: medium
+priority: low
 owner_role: FEATURE
 estimate: TBD
 dependencies: []
@@ -21,5 +21,4 @@ Provide a BOM export to Excel (XLSX) in addition to current TSV/HTML outputs, as
 
 ## Related Items
 
-- `docs/tasks.md` outputs backlog.
 - BOM pagination: `docs/features/bom_pagination.md` (existing).

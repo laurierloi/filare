@@ -6,7 +6,6 @@ TOOLS
 
 ## Evidence
 
-- `docs/tasks.md` includes `230328GTW1_try_to_use_pupeteer` (legacy tooling task) without a tracker.
 - No dedicated feature/issue documents current state of browser-based preview/automation for docs or diagrams.
 
 ## Expected Outcome

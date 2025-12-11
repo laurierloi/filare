@@ -6,8 +6,8 @@ REWORK
 
 ## Evidence
 
-- RefactorPlan step 5: finish splitting render/output responsibilities (html/pdf/assets) and audit templating vs. code-built strings; add render smoke tests.
-- Step 10 (layout polish) notes overlapping sections (notes covering diagrams, BOM covering changelog) and connector line merge artifacts.
+- Outstanding render/templating work: finish splitting render/output responsibilities (html/pdf/assets) and audit templating vs. code-built strings; add render smoke tests.
+- Layout polish needed for overlapping sections (notes covering diagrams, BOM covering changelog) and connector line merge artifacts.
 - Templating changes (e.g., connector pin labels) show the need for broader audit and tests.
 
 ## Expected Outcome
@@ -25,5 +25,4 @@ REWORK
 
 ## Related Items
 
-- RefactorPlan steps 5 and 10.
 - `docs/features/bom_pagination.md` (rendering/layout changes already done).

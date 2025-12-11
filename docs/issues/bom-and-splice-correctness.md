@@ -6,8 +6,9 @@ FIXER
 
 ## Evidence
 
-- RefactorPlan step 9 calls for loopback support to capture length/gauge when cables aren’t explicit, ensuring splices from differing gauges appear in the BOM with “near connector” guidance, and adding a cables overview.
-- Current docs/features do not track these BOM correctness items separately.
+- Loopback connections without explicit cables may miss length/gauge capture in the BOM.
+- Splices involving differing gauges should surface in BOM output with guidance (e.g., “near connector”) but aren’t explicitly tracked.
+- A cables overview summarizing runs and key attributes isn’t documented separately.
 
 ## Expected Outcome
 
@@ -21,7 +22,3 @@ FIXER
 2. Implement/verify loopback length/gauge capture and splice inclusion with guidance text.
 3. Add cables overview output and document its structure.
 4. Add tests/regressions for loopback and splice cases; update docs/examples accordingly.
-
-## Related Items
-
-- RefactorPlan step 9.

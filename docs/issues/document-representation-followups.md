@@ -6,12 +6,10 @@ FEATURE
 
 ## Evidence
 
-- RefactorPlan step 12 calls for:
-  - Accepting `*.document.yaml` as an input to drive generation (not just emit), preserving user edits per hash rules.
-  - Ensuring split components (BOM/notes/index) are excluded from the combined page when split output is configured.
-  - Updating the index table to link to all generated HTML docs (with split awareness).
-  - Adding templates for cut/termination diagram pages and integrating into rendering.
-- Current docs/features do not track these follow-ups separately from pagination work.
+- Need to accept `*.document.yaml` as input to drive generation (not just emit), preserving user edits per hash rules.
+- Split components (BOM/notes/index) should be excluded from the combined page when split output is configured.
+- Index table should link to all generated HTML docs (with split awareness).
+- Templates for cut/termination diagram pages should exist and be integrated.
 
 ## Expected Outcome
 
@@ -30,5 +28,4 @@ FEATURE
 
 ## Related Items
 
-- RefactorPlan step 12.
 - `docs/features/bom_pagination.md` (covers pagination but not document input/loading).

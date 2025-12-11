@@ -11,7 +11,7 @@ milestone: backlog
 
 ## Summary
 
-Track data-structure tasks from `docs/tasks.md`, including networkx exploration, BOM/notes structures, and part library/bundle modeling.
+Track data-structure tasks including networkx exploration, BOM/notes structures, and part library/bundle modeling.
 
 ## Scope
 
@@ -23,11 +23,10 @@ Track data-structure tasks from `docs/tasks.md`, including networkx exploration,
 
 ## Proposed Next Steps
 
-1. Map overlaps with `docs/features/config-graph-models.md` and `docs/features/pydantic-migration.md`; decide integration points.
+1. Map overlaps with current config/model work; decide integration points.
 2. Prioritize BOM/notes structure changes and part library groundwork.
 3. Add designs/experiments (networkx) and document outcomes; add regressions as features land.
 
 ## Related Items
 
-- `docs/tasks.md` data-structure backlog.
-- `docs/features/config-graph-models.md`, `docs/features/pydantic-migration.md`.
+- Other model/config migration efforts.
