@@ -2,7 +2,7 @@
 
 uid: FEAT-DOCS-0013
 status: BACKLOG
-priority: medium
+priority: high
 owner_role: FEATURE
 estimate: TBD
 dependencies: []
