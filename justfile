@@ -10,6 +10,10 @@ default:
   @echo "  just version                 # get the current filare version"
   @echo "  just lint                    # run pre-commit on all files"
   @echo "  just pre-commit              # run pre-commit on staged files"
+  @echo "  just review                  # interactive review with the operator"
+  @echo "  just get-structured-review   # format the operator feedback for agent consumption"
+  @echo "  just apply-feedback          # apply operator feedback"
+  @echo "  just git-status              # show git status"
   @echo "  just test-all                # run all tests"
   @echo "  just test-fast               # run fast tests (excluding functional)"
   @echo "  just test-functional         # run only functional tests"
@@ -23,6 +27,9 @@ default:
   @echo "  just check-overlap           # run filare-check-overlap over all html files in outputs/"
   @echo "  just bom-check               # run filare-qty BOM sanity check"
   @echo "  just check-tools             # verify required CLI tools are present"
+  @echo "  just agent-just-commands     # process the just commands for the agent"
+  @echo "  just agent-prompt-gen        # generate the agent prompts"
+  @echo "  just agent-prompt-link       # link the agent prompts dir (MUST NOT BE USED BY AGENTS)"
   @echo "  just install-deps            # install dependencies (MUST NOT BE USED BY AGENTS)"
   @echo "  just mermaid-gantt           # generate Mermaid Gantt from backlog headers"
   @echo "  just mermaid-gantt-check     # generate Mermaid Gantt and validate mermaid syntax"
@@ -48,6 +55,46 @@ lint:
 # Run pre-commit only on staged/changed files
 pre-commit:
   {{setup}} && uv run pre-commit run
+
+# ---- Operator interaction ----
+
+# ----------------------------------------------------
+# REVIEW COMMAND (interactive)
+# ----------------------------------------------------
+# Usage:
+#   just review agent_role="FIXER" task_id="42"
+#
+# Optional:
+#   diff_base="origin/beta"
+#
+# Example:
+#   just review \
+#       agent_role="FEATURE" \
+#       task_id="88" \
+#       diff_base="origin/main"
+#
+review agent_role task_id diff_base="origin/beta" apply_cmd="":
+  {{setup}} && \
+  uv run python scripts/review_changes.py \
+      --agent-role "{{agent_role}}" \
+      --task-id "{{task_id}}" \
+      --diff-base "{{diff_base}}"
+
+# ----------------------------------------------------
+# GET STRUCTURED REVIEW (agent-friendly, read-only)
+# ----------------------------------------------------
+# Usage:
+#   just get-structured-review agent_role="FIXER" task_id="42"
+#
+# This prints the contents of:
+#   outputs/review/<agent_role>-<task_id>-<step_index>/
+# in a structured format the agent can parse.
+#
+get-structured-review agent_role task_id:
+  {{setup}} && \
+  uv run python scripts/get_structured_review.py \
+      --agent-role "{{agent_role}}" \
+      --task-id "{{task_id}}"
 
 # ---- Git ----
 git-status:
@@ -102,7 +149,6 @@ build-examples:
 check-overlap:
   {{setup}} && uv run filare-check-overlap outputs/*.html
 
-
 # BOM sanity check using filare-qty
 bom-check:
   {{setup}} && uv run filare qty tests/bom/bomqty.yml
@@ -112,6 +158,18 @@ bom-check:
 # Check that all required CLI tools are installed (uses your check-tools.sh)
 check-tools:
   {{setup}} && bash scripts/check-tools.sh
+
+# Process the just commands into agent prompts
+agent-just-commands:
+  {{setup}} && uv run python scripts/generate_filare_agent_commands.py --justfile justfile --output agents/filare_commands.yml
+
+# Generate Codex prompt markdown files for all agent commands
+agent-prompt-gen:
+  {{setup}} && uv run python scripts/generate_agent_prompts.py
+
+# Link the agent-prompt to the codex config
+agent-prompt-link:
+  ln -sf $(pwd)/agents/prompts ~/.codex/prompts
 
 # Generate Mermaid Gantt from backlog headers
 mermaid-gantt:
