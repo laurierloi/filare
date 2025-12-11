@@ -10,7 +10,7 @@ theme:
     - toc.follow
     - content.code.copy
 nav:
-  - Home: README.md
+  - Home: index.md
   - Architecture: architecture.md
   - Graphs:
       - Overview: graphs/architecture.md
@@ -57,7 +57,7 @@ nav:
   - Work Tracking: tasks.md
   - Refactor Plan: refactor.md
   - Collisions: collisions/summary.md
-  - Changelog: CHANGELOG.md
+  - Changelog: changelog.md
   - Contributing: CONTRIBUTING.md
   - Branding: brand.md
 plugins:
@@ -77,6 +77,9 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.details
   - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: .
+      check_paths: true
 
 extra_javascript:
   - https://unpkg.com/mermaid@10/dist/mermaid.min.js
