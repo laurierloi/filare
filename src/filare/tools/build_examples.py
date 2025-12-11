@@ -22,27 +22,47 @@ cli = filare_cli.cli
 base_dir = script_path.parent.parent.parent.parent
 readme = "readme.md"
 groups = {
-    "examples": {
-        "path": base_dir / "examples",
+    "basic": {
+        "path": base_dir / "examples" / "basic",
+        "prefix": "basic",
+        readme: [],
+        "title": "Basic Example",
+    },
+    "minimal-document": {
+        "path": base_dir / "examples" / "minimal-document",
+        "prefix": "minimal",
+        readme: [],
+        "title": "Minimal DIN A4 Document",
+    },
+    "document-cut": {
+        "path": base_dir / "examples" / "document-cut",
+        "prefix": "cut",
+        readme: [],
+        "title": "Cut Diagram Document",
+    },
+    "document-termination": {
+        "path": base_dir / "examples" / "document-termination",
+        "prefix": "termination",
+        readme: [],
+        "title": "Termination Diagram Document",
+    },
+    "multi-page": {
+        "path": base_dir / "examples" / "multi-page",
         "prefix": "ex",
-        readme: [],  # Include no files
-        "title": "Example Gallery",
+        readme: [],
+        "title": "Multi-page Examples",
+    },
+    "all-document": {
+        "path": base_dir / "examples" / "all-document",
+        "prefix": "all",
+        readme: [],
+        "title": "Full Output Document",
     },
     "tutorial": {
         "path": base_dir / "tutorial",
         "prefix": "tutorial",
         readme: ["md", "yml"],  # Include .md and .yml files
         "title": f"{APP_NAME} Tutorial",
-    },
-    "demos": {
-        "path": base_dir / "examples",
-        "prefix": "demo",
-    },
-    "multi-page": {
-        "path": base_dir / "examples" / "multi-page",
-        "prefix": "ex",
-        readme: [],  # Include no files
-        "title": "Multi-page Examples",
     },
 }
 

@@ -1,0 +1,48 @@
+metadata:
+  title: Cut Diagram Document
+  pn: CUT-DOC-01
+  company: Filare Examples
+  address: 300 Example Way
+  sheet_total: 4
+  sheet_current: 1
+  sheet_name: cut-doc
+  output_dir: .
+  titlepage: titlepage
+  output_names:
+    - cut-h1
+    - cut-h2
+    - cut-h3
+  files:
+    - cut-h1.yml
+    - cut-h2.yml
+    - cut-h3.yml
+  use_qty_multipliers: false
+  multiplier_file_name: quantity_multipliers.txt
+
+pages:
+  - type: title
+    name: titlepage
+  - type: harness
+    name: CUT-H1
+    formats: [html, svg]
+  - type: harness
+    name: CUT-H2
+    formats: [html, svg]
+  - type: harness
+    name: CUT-H3
+    formats: [html, svg]
+  - type: bom
+    name: bom
+    formats: [tsv]
+  - type: cut
+    name: cut
+
+extras:
+  options:
+    include_bom: true
+    include_cut_diagram: true
+    include_termination_diagram: false
+    split_bom_page: false
+    split_notes_page: false
+    split_index_page: false
+    template_separator: "."

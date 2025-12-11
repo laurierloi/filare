@@ -15,7 +15,7 @@ FIXER
 
 ## Evidence
 
-- Running `uv run filare run examples/ex01.yml -f hs -o outputs/tmp-ex01` (with an existing output dir) shows unlabeled pins rendered with the literal `None` in the connector table when `pinlabels` are omitted.
+- Running `uv run filare run examples/basic/basic01.yml -f hs -o outputs/tmp-basic01` (with an existing output dir) shows unlabeled pins rendered with the literal `None` in the connector table when `pinlabels` are omitted.
 - In `src/filare/models/dataclasses.py:372-386`, missing `pinlabels` leave `PinClass.label` as `None`.
 - The Graphviz template `src/filare/templates/connector.html:21-23` renders `{{ pin.label }}` directly, so `None` is printed when no label is present.
 

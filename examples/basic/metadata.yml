@@ -1,0 +1,26 @@
+metadata:
+  title: Basic Harness Example
+  pn: BASIC-01
+  company: Filare Examples
+  address: 100 Example Way
+
+  authors:
+    created:
+      name: Filare Team
+      date: 2024-01-01
+    reviewed:
+      name: n/a
+      date: n/a
+
+  revisions:
+    a:
+      name: Filare Team
+      date: 2024-01-01
+      changelog: initial single-diagram example
+
+  template:
+    name: din-6771
+    sheetsize: A3
+
+notes:
+  - Single harness demo with a simple three-wire cable.

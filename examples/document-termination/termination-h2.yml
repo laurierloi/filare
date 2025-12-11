@@ -1,0 +1,35 @@
+metadata:
+  title: Termination Harness Beta
+  pn: TERM-B
+  company: Filare Examples
+  template:
+    name: din-6771
+    sheetsize: A3
+
+connectors:
+  T2-J1:
+    type: D-Sub
+    subtype: female
+    pinlabels: [1, 2, 3, 4]
+  T2-J2:
+    type: D-Sub
+    subtype: male
+    pinlabels: [1, 2, 3, 4]
+
+cables:
+  T2-W1:
+    wirecount: 4
+    colors: [RD, BK, GN, WH]
+    gauge: 0.35 mm2
+    length: 1.0 m
+
+connections:
+  -
+    - T2-J1: [1, 2, 3, 4]
+    - T2-W1: [1, 2, 3, 4]
+    - T2-J2: [1, 2, 3, 4]
+
+options:
+  include_bom: true
+  include_cut_diagram: false
+  include_termination_diagram: true
