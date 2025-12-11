@@ -6,8 +6,9 @@ from __future__ import annotations
 import argparse
 import json
 import pathlib
-from dataclasses import dataclass
 from typing import Dict, Iterable, List, Optional, Sequence
+
+from pydantic import BaseModel
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 DEFAULT_INPUT = REPO_ROOT / "outputs" / "workplan" / "taskwarrior.json"
@@ -15,15 +16,14 @@ DONE_STATUSES = {"DONE", "COMPLETED", "SUCCESS", "CLOSED"}
 PRIORITY_ORDER = {"H": 0, "high": 0, "M": 1, "medium": 1, "L": 2, "low": 2}
 
 
-@dataclass
-class Task:
+class Task(BaseModel):
     uid: str
     title: str
     role: str
     status: str
     priority: str
     depends: List[str]
-    path: str
+    path: str = ""
 
 
 def load_tasks(path: pathlib.Path) -> List[Task]:
