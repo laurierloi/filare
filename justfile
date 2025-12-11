@@ -148,10 +148,10 @@ codex-container-build:
 # Start a shell in the codex container with repo bind-mounted and host UID/GID
 codex-container-sh:
   docker run --rm -it \
-    -v $PWD:/home/agent/workspace \
-    -v $HOME/.codex:/home/agent/.codex \
+    -v "$PWD":/home/agent/workspace \
+    -v "$HOME"/.codex:/home/agent/.codex \
     -w /home/agent/workspace \
-    --user $$(id -u):$$(id -g) \
+    --user $(id -u):$(id -g) \
     filare-codex bash
 
 # Install tools - MUST NOT BE USED BY AGENTS
