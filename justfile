@@ -17,6 +17,7 @@ default:
   @echo "  just test-all                # run all tests"
   @echo "  just test-fast               # run fast tests (excluding functional)"
   @echo "  just test-functional         # run only functional tests"
+  @echo "  just test-specific <path> -- <pytest args> # run a specific test path with extra pytest args"
   @echo "  just test-mermaid            # test the mermaid diagrams generation"
   @echo "  just test-semantic-release   # test semantic-release configuration"
   @echo "  just test-version            # see what would be the next version"
@@ -113,6 +114,10 @@ test-fast:
 # Only functional tests (expects tests marked with "functional")
 test-functional:
   {{setup}} && uv run pytest -m functional
+
+# Run a specific test path with optional pytest arguments
+test-specific target *pytest_args:
+  {{setup}} && uv run pytest {{target}} {{pytest_args}}
 
 test-mermaid:
   {{setup}} && ./scripts/check-mermaid.sh

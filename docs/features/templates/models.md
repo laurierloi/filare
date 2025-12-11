@@ -22,6 +22,7 @@ Add Pydantic template models under `src/filare/models/templates/` (one per templ
 ## Progress Log
 2025-12-10: Created parent feature and outlined requirements/steps.
 2025-12-10: Added template models/factories for all templates under `src/filare/templates/`; tests/docs wiring pending.
+2025-12-11: Implemented base `TemplateModel` + factory_boy factory with render-focused tests, `render` pytest marker, classvar `template_name`, and forbidden extras to align with strict template payloads.
 
 ## Sub-Features
 - templates/additional_components_model
