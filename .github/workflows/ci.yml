@@ -240,11 +240,15 @@ jobs:
           fi
           new_version=${new_tag#v}
           echo "$new_version" > VERSION
+          if [ ! -f CHANGELOG.md ]; then
+            echo "WARNING: CHANGELOG.md not found after semantic-release; skipping changelog commit" >&2
+          fi
           git add VERSION
+          [ -f CHANGELOG.md ] && git add CHANGELOG.md
           if git diff --cached --quiet; then
-            echo "VERSION already up to date ($new_version)"
+            echo "VERSION/CHANGELOG already up to date ($new_version)"
           else
-            git commit -m "chore: align VERSION to ${new_version}"
+            git commit -m "chore: align release files to ${new_version}"
             git push --follow-tags
           fi
       - name: Compare versions
