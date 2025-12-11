@@ -3,7 +3,7 @@ from: docs/features/templates/models.md
 # Template Model: additional_components
 
 ## Status
-PLANNED
+IN_PROGRESS
 
 ## Summary
 Implement a Pydantic model for `additional_components.html` (inherits from `template_model.py`) and a factory_boy factory that can populate all template fields for testing coverage.
@@ -14,13 +14,14 @@ Implement a Pydantic model for `additional_components.html` (inherits from `temp
 - Provide a factory_boy factory with defaults and variants for every field combination used in the template.
 
 ## Steps
-- [ ] Map template context variables referenced in `additional_components.html`.
-- [ ] Define the model subclass with typed fields/defaults matching the template usage.
-- [ ] Add a factory_boy factory generating complete attribute sets and edge cases.
+- [x] Map template context variables referenced in `additional_components.html`.
+- [x] Define the model subclass with typed fields/defaults matching the template usage.
+- [x] Add a factory_boy-style factory generating complete attribute sets and edge cases.
 - [ ] Hook the model/factory into template tests to exercise all fields.
 
 ## Progress Log
 2025-12-10: Created sub-feature plan for additional_components template model/factory.
+2025-12-11: Implemented `AdditionalComponentsModel` + factory and render tests covering id/unit variants.
 
 ## Sub-Features
 - None

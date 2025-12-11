@@ -16,7 +16,7 @@ class TemplateModel(BaseModel):
 
     def to_render_dict(self) -> Dict[str, Any]:
         """Return a dict compatible with template rendering."""
-        payload = self.model_dump(exclude_none=True)
+        payload = self.model_dump()
         payload["template_name"] = self.template_name
         return payload
 
