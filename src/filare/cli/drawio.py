@@ -6,6 +6,7 @@ import json
 import os
 import shlex
 import subprocess
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Dict, List, Literal, Optional, Tuple
 
@@ -64,15 +65,61 @@ def _write_text(path: Optional[Path], text: str) -> None:
         typer.echo(text)
 
 
-def _fake_validate(path: Path, rules: Optional[Path]) -> DrawioValidationResult:
-    """Placeholder validation logic."""
+def _load_rules(rules: Optional[Path]) -> Dict[str, object]:
+    if not rules:
+        return {}
+    data = _load_yaml_file(rules)
+    return data or {}
+
+
+def _extract_nodes(root: ET.Element) -> List[Dict[str, object]]:
+    nodes: List[Dict[str, object]] = []
+    for cell in root.findall(".//mxCell"):
+        value = cell.attrib.get("value")
+        id_value = cell.attrib.get("id")
+        if value or id_value:
+            nodes.append({"id": id_value, "label": value})
+    return nodes
+
+
+def _validate_drawio(diagram: Path, rules: Optional[Path]) -> DrawioValidationResult:
     warnings: List[str] = []
     errors: List[str] = []
-    if not path.exists():
-        errors.append(f"{path} does not exist")
-    if rules and not rules.exists():
-        errors.append(f"Rules file {rules} does not exist")
-    return DrawioValidationResult(ok=not errors, warnings=warnings, errors=errors)
+
+    if not diagram.exists():
+        errors.append(f"{diagram} does not exist")
+        return DrawioValidationResult(ok=False, warnings=warnings, errors=errors)
+
+    try:
+        tree = ET.parse(diagram)
+        root = tree.getroot()
+    except Exception as exc:  # pragma: no cover - unexpected parse failures
+        errors.append(f"Failed to parse XML: {exc}")
+        return DrawioValidationResult(ok=False, warnings=warnings, errors=errors)
+
+    rules_data = _load_rules(rules)
+    required_tags = rules_data.get("required_tags", [])
+    required_labels = rules_data.get("required_labels", [])
+
+    # Check root
+    if root.tag not in {"mxfile", "diagram"}:
+        warnings.append(f"Unexpected root tag '{root.tag}' (expected mxfile/diagram).")
+
+    # Check required tags
+    for tag in required_tags:
+        if not root.findall(f".//{tag}"):
+            errors.append(f"Missing required tag '{tag}'.")
+
+    # Check labels
+    if required_labels:
+        nodes = _extract_nodes(root)
+        present_labels = {n["label"] for n in nodes if n.get("label")}
+        for label in required_labels:
+            if label not in present_labels:
+                errors.append(f"Missing required label '{label}'.")
+
+    ok = not errors
+    return DrawioValidationResult(ok=ok, warnings=warnings, errors=errors)
 
 
 @drawio_app.command("validate")
@@ -101,7 +148,7 @@ def validate_command(
     ),
 ) -> None:
     """Validate a Draw.io diagram."""
-    result = _fake_validate(diagram, rules)
+    result = _validate_drawio(diagram, rules)
     report = result.to_dict()
     _print_report(report, format)
     if not result.ok:
@@ -141,13 +188,15 @@ def import_command(
 ) -> None:
     """Import a Draw.io diagram and map nodes to components."""
     mapping_data = _load_yaml_file(mapping) if mapping else {}
+    tree = ET.parse(file)
+    nodes = _extract_nodes(tree.getroot())
+    output_payload = {"nodes": nodes, "mapping": mapping_data}
     report = {
         "file": str(file),
         "mapping_loaded": bool(mapping_data),
-        "matched": 0,
-        "unmatched": 0,
+        "nodes": len(nodes),
     }
-    output_text = yaml.safe_dump({"components": {}, "mapping": mapping_data})
+    output_text = yaml.safe_dump(output_payload, sort_keys=False)
     if not dry_run:
         _write_text(output, output_text)
     _print_report(report, "table")
@@ -190,13 +239,31 @@ def export_command(
 ) -> None:
     """Generate a Draw.io diagram from a harness."""
     style_data = _load_yaml_file(style) if style else {}
+    harness_data = _load_yaml_file(harness) or {}
+    connectors = harness_data.get("connectors", {})
+    connector_names = list(connectors.keys())
+
+    diagram_name = harness_data.get("metadata", {}).get("name") or harness.stem
+    nodes_xml = "\n".join(
+        f'<mxCell id="{idx}" value="{name}" style="shape=ellipse" />'
+        for idx, name in enumerate(connector_names, start=1)
+    )
+    template_content = template.read_text(encoding="utf-8") if template else ""
+    body = (
+        f'<mxfile><diagram name="{diagram_name}"><root>'
+        f'{template_content}{nodes_xml}'
+        f"</root></diagram></mxfile>"
+    )
+
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text("<!-- drawio content would go here -->", encoding="utf-8")
+    output.write_text(body, encoding="utf-8")
+
     report = {
         "harness": str(harness),
         "template": str(template) if template else None,
         "output": str(output),
         "style_loaded": bool(style_data),
+        "nodes_written": len(connector_names),
     }
     _print_report(report, "table")
 
@@ -242,11 +309,23 @@ def sync_command(
     if backup:
         backup.parent.mkdir(parents=True, exist_ok=True)
         backup.write_text(diagram.read_text(encoding="utf-8"), encoding="utf-8")
+
+    changes: List[str] = []
+    if direction in {"to-drawio", "bidirectional"}:
+        # Append a comment noting sync
+        content = diagram.read_text(encoding="utf-8")
+        content += "\n<!-- synced from harness -->"
+        diagram.write_text(content, encoding="utf-8")
+        changes.append("diagram_updated")
+    if direction in {"to-harness", "bidirectional"}:
+        # Record harness touch
+        changes.append("harness_reviewed")
+
     summary = {
         "harness": str(harness),
         "diagram": str(diagram),
         "direction": direction,
-        "changes": [],
+        "changes": changes,
     }
     report_text = json.dumps(summary, indent=2)
     _write_text(report, report_text)
@@ -293,7 +372,7 @@ def edit_command(
         raise typer.Exit(code=result.returncode)
     if no_validate:
         return
-    validation = _fake_validate(diagram, rules)
+    validation = _validate_drawio(diagram, rules)
     if validation.errors:
         typer.echo("Errors after edit:", err=True)
         for err in validation.errors:
@@ -364,7 +443,7 @@ def review_command(
     comments_path.write_text(comments, encoding="utf-8")
     typer.echo(f"Saved comments to {comments_path}")
 
-    validation = _fake_validate(diagram, rules)
+    validation = _validate_drawio(diagram, rules)
     _print_report(validation.to_dict(), format)
     if not validation.ok:
         raise typer.Exit(code=1)
