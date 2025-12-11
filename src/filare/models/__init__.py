@@ -26,6 +26,7 @@ from filare.models.harness_quantity import *  # noqa: F401,F403
 from filare.models.metadata import *  # noqa: F401,F403
 from filare.models.options import *  # noqa: F401,F403
 from filare.models.page import *  # noqa: F401,F403
+from filare.models.additional_component import *  # noqa: F401,F403
 from filare.models.primitives import *  # noqa: F401,F403
 from filare.models.table_models import *  # noqa: F401,F403
 from filare.models.template_inputs import *  # noqa: F401,F403

@@ -1,6 +1,6 @@
 import pytest
 
-from filare.models.templates import AdditionalComponentsFactory
+from filare.models.templates import AdditionalComponentsFactory, AdditionalComponentsTemplateModel
 from filare.render.templates import get_template
 
 
@@ -67,6 +67,7 @@ def test_additional_components_factory_count_and_faker():
     model = factory()
 
     assert len(model.additional_components) == 3
+    assert isinstance(model, AdditionalComponentsTemplateModel)
     for idx, comp in enumerate(model.additional_components, start=1):
         assert comp.bom_entry.description
         assert comp.bom_entry.qty.number >= 1

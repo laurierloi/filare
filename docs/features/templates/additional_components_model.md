@@ -15,13 +15,13 @@ Implement a Pydantic model for `additional_components.html` (inherits from `temp
 
 ## Steps
 - [x] Map template context variables referenced in `additional_components.html`.
-- [x] Define the model subclass with typed fields/defaults matching the template usage.
-- [x] Add a factory_boy-style factory generating complete attribute sets and edge cases.
-- [ ] Hook the model/factory into template tests to exercise all fields.
+- [x] Define the template model subclass with typed fields/defaults matching the template usage.
+- [x] Add a factory_boy-style factory generating complete attribute sets and edge cases (faker-backed with count support).
+- [x] Hook the model/factory into template tests to exercise all fields.
 
 ## Progress Log
 2025-12-10: Created sub-feature plan for additional_components template model/factory.
-2025-12-11: Implemented `AdditionalComponentsModel` + factory and render tests covering id/unit variants.
+2025-12-11: Implemented `AdditionalComponentsTemplateModel` + factory and render tests covering id/unit variants and multiple components (faker-backed).
 
 ## Sub-Features
 - None
