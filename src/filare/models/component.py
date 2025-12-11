@@ -20,6 +20,12 @@ from filare.models.types import (  # noqa: F401
     Side,
 )
 
+# Compatibility export for GraphicalComponent dataclass
+try:  # pragma: no cover
+    from filare.models.dataclasses import GraphicalComponent as GraphicalComponent  # type: ignore  # noqa: F401
+except Exception:  # pragma: no cover
+    GraphicalComponent = None  # type: ignore
+
 
 class ComponentModel(BaseModel):
     """Pydantic representation of a Component with conversion helpers."""

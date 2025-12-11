@@ -7,6 +7,7 @@ from filare.models.component import *  # noqa: F401,F403
 from filare.models.configs import *  # noqa: F401,F403
 from filare.models.connections import *  # noqa: F401,F403
 from filare.models.connector import *  # noqa: F401,F403
+# Keep dataclass exports for compatibility
 from filare.models.dataclasses import *  # noqa: F401,F403
 from filare.models.document import *  # noqa: F401,F403
 from filare.models.harness import *  # noqa: F401,F403

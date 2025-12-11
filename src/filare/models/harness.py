@@ -55,9 +55,23 @@ class Harness:
     def name(self) -> str:
         return self.metadata.name
 
-    def add_connector(self, designator: str, *args, **kwargs) -> None:
-        conn = Connector(designator=designator, *args, **kwargs)
-        self.connectors[designator] = conn
+    def add_connector(
+        self, designator: Union[str, ConnectorModel, Dict[str, Any]], *args, **kwargs
+    ) -> None:
+        """Accept dataclass args, ConnectorModel, or mapping and store keyed by designator."""
+        if args or kwargs:
+            conn = Connector(designator=designator, *args, **kwargs)
+            key = designator
+        elif isinstance(designator, ConnectorModel):
+            conn = designator.to_connector()
+            key = conn.designator
+        elif isinstance(designator, dict):
+            conn = Connector(**designator)
+            key = conn.designator
+        else:
+            conn = Connector(designator=designator)
+            key = designator
+        self.connectors[key] = conn
 
     def add_connector_model(
         self, connector_model: Union[ConnectorModel, Dict[str, Any]]
@@ -71,9 +85,23 @@ class Harness:
             raise TypeError("connector_model must be ConnectorModel or dict")
         self.connectors[conn.designator] = conn
 
-    def add_cable(self, designator: str, *args, **kwargs) -> None:
-        cbl = Cable(designator=designator, *args, **kwargs)
-        self.cables[designator] = cbl
+    def add_cable(
+        self, designator: Union[str, CableModel, Dict[str, Any]], *args, **kwargs
+    ) -> None:
+        """Accept dataclass args, CableModel, or mapping and store keyed by designator."""
+        if args or kwargs:
+            cbl = Cable(designator=designator, *args, **kwargs)
+            key = designator
+        elif isinstance(designator, CableModel):
+            cbl = designator.to_cable()
+            key = cbl.designator
+        elif isinstance(designator, dict):
+            cbl = Cable(**designator)
+            key = cbl.designator
+        else:
+            cbl = Cable(designator=designator)
+            key = designator
+        self.cables[key] = cbl
 
     def add_cable_model(self, cable_model: Union[CableModel, Dict[str, Any]]) -> None:
         """Accept a CableModel (or similar with to_cable()) and store the dataclass."""
