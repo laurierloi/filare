@@ -19,7 +19,6 @@ RUN apt-get update && \
       just \
       tmux \
       neovim \
-      tid \
       openssh-client \
       npm \
       fonts-dejavu-core fonts-liberation \
