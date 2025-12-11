@@ -57,6 +57,7 @@ nav:
   - Work Tracking:
       - Tasks: tasks.md
       - Backlog Gantt: workplan/gantt.md
+      - Timeline: workplan/timeline.md
   - Refactor Plan: refactor.md
   - Collisions: collisions/summary.md
   - Changelog: changelog.md

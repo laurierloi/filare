@@ -29,6 +29,7 @@ default:
   @echo "  just taskwarrior-export      # export backlog to Taskwarrior JSON"
   @echo "  just taskwarrior-backfill    # dry-run backfill from Taskwarrior JSON"
   @echo "  just taskwarrior-backfill-apply # apply backfill updates from Taskwarrior JSON"
+  @echo "  just timeline-graphviz       # generate Graphviz timeline/timeline.svg"
 
 # ---- Version ----
 version:
@@ -127,6 +128,10 @@ taskwarrior-backfill:
 # Backfill headers from Taskwarrior JSON (apply changes)
 taskwarrior-backfill-apply:
   {{setup}} && uv run python scripts/taskwarrior_backfill.py --apply outputs/workplan/taskwarrior.json
+
+# Generate Graphviz timeline (DOT + optional SVG)
+timeline-graphviz:
+  {{setup}} && uv run python scripts/generate_graphviz_timeline.py
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:

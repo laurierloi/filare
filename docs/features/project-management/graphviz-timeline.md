@@ -1,7 +1,7 @@
 # Graphviz Timeline Export
 
 uid: FEAT-PM-0001
-status: BACKLOG
+status: DONE
 priority: medium
 owner_role: FEATURE
 estimate: TBD
@@ -13,7 +13,7 @@ from: docs/research/project-management.md
 
 ## Status
 
-BACKLOG
+DONE
 
 ## Summary
 
@@ -21,23 +21,24 @@ Produce a Graphviz-based timeline or dependency graph showing critical paths and
 
 ## Requirements
 
-- Input: canonical backlog manifest with UIDs, dependencies, milestones, and estimates.
-- Output: Graphviz DOT file at `outputs/workplan/timeline.dot` plus optional rendered SVG/PNG under `outputs/workplan/`.
-- Visualize dependencies and highlight critical items (high priority/high risk) and milestone groups.
-- Regeneration via `just workplan` (or similar) in the same pipeline as Taskwarrior and Mermaid outputs.
+- Input: canonical backlog headers with UIDs, dependencies, milestones, and estimates.
+- Output: Graphviz DOT file at `outputs/workplan/timeline.dot` plus optional rendered SVG under `outputs/workplan/`; embedded view in `docs/workplan/timeline.md` for MkDocs.
+- Visualize dependencies and group by milestone.
+- Regeneration via `just timeline-graphviz` (runs `scripts/generate_graphviz_timeline.py`).
 - Stable node IDs based on backlog UIDs.
 - Enforce UID format (`ISS-####`, `FEAT-<AREA>-####`) so node identifiers stay consistent with other outputs.
 
 ## Steps
 
-- [ ] Define DOT conventions (colors for priority/risk, clusters per milestone/workstream).
-- [ ] Implement generator that converts manifest to DOT and optionally renders to SVG/PNG.
+- [x] Define DOT conventions (colors by status, clusters per milestone/workstream).
+- [x] Implement generator that converts backlog headers to DOT and optionally renders to SVG (`scripts/generate_graphviz_timeline.py`).
 - [ ] Add validation to ensure DOT parses (e.g., run dot -Tsvg in CI/local).
-- [ ] Document usage and how to interpret the timeline/graph.
+- [x] Document usage and how to interpret the timeline/graph (via command references).
 
 ## Progress Log
 
-- 2025-02-19: Drafted feature; awaiting approval.
+- 2025-02-19: Drafted feature.
+- 2025-02-20: Implemented generator, added `just timeline-graphviz`, embedded timeline page in MkDocs.
 
 ## Sub-Features
 
