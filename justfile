@@ -26,6 +26,9 @@ default:
   @echo "  just mermaid-gantt           # generate Mermaid Gantt from backlog headers"
   @echo "  just mermaid-gantt-check     # generate Mermaid Gantt and validate mermaid syntax"
   @echo "  just check-backlog-headers   # validate backlog headers/UIDs"
+  @echo "  just taskwarrior-export      # export backlog to Taskwarrior JSON"
+  @echo "  just taskwarrior-backfill    # dry-run backfill from Taskwarrior JSON"
+  @echo "  just taskwarrior-backfill-apply # apply backfill updates from Taskwarrior JSON"
 
 # ---- Version ----
 version:
@@ -112,6 +115,18 @@ mermaid-gantt-check:
 # Validate backlog headers and UID formats
 check-backlog-headers:
   {{setup}} && uv run python scripts/check_backlog_headers.py
+
+# Export backlog to Taskwarrior JSON (filters can be passed as CLI args)
+taskwarrior-export:
+  {{setup}} && uv run python scripts/export_taskwarrior.py
+
+# Backfill headers from Taskwarrior JSON (dry-run)
+taskwarrior-backfill:
+  {{setup}} && uv run python scripts/taskwarrior_backfill.py outputs/workplan/taskwarrior.json
+
+# Backfill headers from Taskwarrior JSON (apply changes)
+taskwarrior-backfill-apply:
+  {{setup}} && uv run python scripts/taskwarrior_backfill.py --apply outputs/workplan/taskwarrior.json
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:

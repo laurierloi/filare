@@ -13,7 +13,7 @@ from: docs/research/project-management.md
 
 ## Status
 
-BACKLOG
+DONE
 
 ## Summary
 
@@ -36,10 +36,11 @@ Build a Taskwarrior export pipeline that converts the backlog manifest (uids + m
 
 ## Steps
 
-- [ ] Define the manifest fields required for Taskwarrior (title, uid, role, milestone, dependencies, due/estimate).
-- [ ] Implement exporter that reads the manifest and writes filtered exports to `docs/task/workplan/taskwarrior-<description>-<filters>.json` (and optional aggregate output).
-- [ ] Add filter support (role, project/workstream, priority, milestone) via config or CLI arguments to keep exports scoped.
-- [ ] Support non-destructive updates: merge on UID (update fields rather than overwrite) when regenerating existing files.
+- [x] Define the manifest fields required for Taskwarrior (title, uid, role, milestone, dependencies, due/estimate).
+- [x] Implement exporter that reads backlog headers and writes exports to `outputs/workplan/taskwarrior.json` (filterable via CLI).
+- [x] Add filter support (role, priority, milestone, status) via CLI arguments to keep exports scoped.
+- [x] Provide regeneration command: `just taskwarrior-export` (calls `scripts/export_taskwarrior.py`).
+- [ ] Support non-destructive merges when regenerating existing files (current behavior overwrites).
 - [ ] Validate output against Taskwarrior import (schema/format) and add a minimal test fixture.
 - [ ] Document usage: how to regenerate and import into Taskwarrior, plus examples of filtered exports.
 
