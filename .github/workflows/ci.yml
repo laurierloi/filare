@@ -83,45 +83,45 @@ jobs:
           token:
             ${{ secrets.CODECOV_TOKEN }}
 
-      # build_examples:
-      #   name: "3) Build examples/templates"
-      #   needs: test
-      #   runs-on: ubuntu-latest
-      #   steps:
-      #     - uses: actions/checkout@v4
-      #     - uses: actions/setup-python@v5
-      #       with:
-      #         python-version: "3.11"
-      #     - name: Install uv
-      #       run: |
-      #         curl -LsSf https://astral.sh/uv/install.sh | sh
-      #         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-      #     - name: Install system deps
-      #       run: |
-      #         sudo apt-get update
-      #         sudo apt-get install -y graphviz
-      #     - name: Install project
-      #       run: |
-      #         uv venv
-      #         uv sync --group dev
-      #     - name: Build examples
-      #       run: |
-      #         uv run python src/filare/tools/build_examples.py --output-dir outputs --group examples
-      #     - name: Build tutorials
-      #       run: |
-      #         uv run python src/filare/tools/build_examples.py --output-dir outputs --group tutorial
-      #     - name: Build demos
-      #       run: |
-      #         uv run python src/filare/tools/build_examples.py --output-dir outputs --group demos
-      #     - name: Build multi-page
-      #       run: |
-      #         uv run python src/filare/tools/build_examples.py --output-dir outputs --group multi-page
-      #     - name: Upload example artifacts
-      #       uses: actions/upload-artifact@v4
-      #       with:
-      #         name: filare-examples-${{ github.run_attempt }}
-      #         path: outputs/
-      #         overwrite: true
+  build_examples:
+    name: "3) Build examples/templates"
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+      - name: Install project
+        run: |
+          uv venv
+          uv sync --group dev
+      - name: Build examples
+        run: |
+          uv run python src/filare/tools/build_examples.py --output-dir outputs --group examples
+      - name: Build tutorials
+        run: |
+          uv run python src/filare/tools/build_examples.py --output-dir outputs --group tutorial
+      - name: Build demos
+        run: |
+          uv run python src/filare/tools/build_examples.py --output-dir outputs --group demos
+      - name: Build multi-page
+        run: |
+          uv run python src/filare/tools/build_examples.py --output-dir outputs --group multi-page
+      - name: Upload example artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: filare-examples-${{ github.run_attempt }}
+          path: outputs/
+          overwrite: true
 
       # overlap_check:
       #   name: "4) Text overlap check"
@@ -153,7 +153,7 @@ jobs:
     name:
       "5) Build docs & publish gh-pages"
       # needs: overlap_check
-    needs: test
+    needs: [test, build_examples]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
@@ -165,11 +165,11 @@ jobs:
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          #- name: Download example artifacts
-          #  uses: actions/download-artifact@v4
-          #  with:
-          #    name: filare-examples-${{ github.run_attempt }}
-          #    path: outputs
+      - name: Download example artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: filare-examples-${{ github.run_attempt }}
+          path: outputs
       - name: Sync docs dependencies
         run: |
           uv venv
