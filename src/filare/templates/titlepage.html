@@ -2,6 +2,31 @@
 {% block title %}titlepage {{ metadata.title }}{% endblock %}
 {% block extra_head_style %}
 <style>
+.A3 #bom, .A2 #bom {
+  position: absolute;
+  top: 20mm;
+  left: 0;
+  right: 37.5%; /* leave 1/8 page gap before index */
+  width: auto;
+}
+
+.A3 #index_table, .A2 #index_table {
+  position: absolute;
+  top: 20mm;
+  left: 75%; /* index occupies right-most 2/8 */
+  right: 0;
+  width: auto;
+}
+
+.A3 #notes, .A2 #notes {
+  position: absolute;
+  left: 0;
+  right: 37.5%;
+  width: auto;
+  bottom: {{ (options.titleblock_rows + 1) * options.titleblock_row_height + 10 }}mm;
+  word-wrap: break-word;
+  white-space: normal;
+}
 </style>
 {% endblock %}
 
