@@ -10,6 +10,14 @@ from filare.models.templates.connector_template_model import (
     ConnectorTemplateModel,
     FakeConnectorTemplateFactory,
 )
+from filare.models.templates.bom_template_model import (
+    BomTemplateModel,
+    FakeBomTemplateFactory,
+)
+from filare.models.templates.cable_template_model import (
+    CableTemplateModel,
+    FakeCableTemplateFactory,
+)
 
 __all__ = [
     "TemplateModel",
@@ -19,4 +27,8 @@ __all__ = [
     "FakeAdditionalComponentFactory",
     "ConnectorTemplateModel",
     "FakeConnectorTemplateFactory",
+    "BomTemplateModel",
+    "FakeBomTemplateFactory",
+    "CableTemplateModel",
+    "FakeCableTemplateFactory",
 ]

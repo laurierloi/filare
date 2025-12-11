@@ -3,7 +3,7 @@ from: docs/features/templates/models.md
 # Template Model: bom
 
 ## Status
-PLANNED
+IN_PROGRESS
 
 ## Summary
 Implement a Pydantic model for `bom.html` and a factory_boy factory to generate all field combinations used by the BOM template.
@@ -14,13 +14,19 @@ Implement a Pydantic model for `bom.html` and a factory_boy factory to generate 
 - Remain compatible with existing BOM rendering expectations.
 
 ## Steps
-- [ ] Identify context keys consumed by `bom.html`.
-- [ ] Define the BOM template model with typed defaults.
-- [ ] Add a factory_boy factory with variants covering optional/edge fields.
-- [ ] Wire into template tests to render BOM with full coverage.
+- [x] Identify context keys consumed by `bom.html`.
+- [x] Define the BOM template model with typed defaults.
+- [x] Add a faker-backed factory with variants covering optional/edge fields.
+- [x] Wire into template tests to render BOM with full coverage.
 
 ## Progress Log
 2025-12-10: Created sub-feature for BOM template model/factory.
+2025-12-11: Added BomTemplateModel + faker factory and render tests (reverse header variants).
+
+## Command & Testing Notes
+- Run targeted suite: `just test-specific tests/templates/test_bom_template_model.py`.
+- Factories are faker-backed; capture generated IDs/quantities/descriptions from the model when asserting.
+- Cover multiple row counts (e.g., 1/10/50) to ensure layout and header/footer behavior remains correct.
 
 ## Sub-Features
 - None
