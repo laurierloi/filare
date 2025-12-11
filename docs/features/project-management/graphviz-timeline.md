@@ -22,7 +22,7 @@ Produce a Graphviz-based timeline or dependency graph showing critical paths and
 ## Requirements
 
 - Input: canonical backlog headers with UIDs, dependencies, milestones, and estimates.
-- Output: Graphviz DOT file at `outputs/workplan/timeline.dot` plus optional rendered SVG under `outputs/workplan/`.
+- Output: Graphviz DOT file at `outputs/workplan/timeline.dot` plus optional rendered SVG under `outputs/workplan/`; embedded view in `docs/workplan/timeline.md` for MkDocs.
 - Visualize dependencies and group by milestone.
 - Regeneration via `just timeline-graphviz` (runs `scripts/generate_graphviz_timeline.py`).
 - Stable node IDs based on backlog UIDs.
