@@ -273,7 +273,7 @@ class BomContent(dict):
         if filter_entries:
             _keys_to_remove = []
             for key, entry in self.items():
-                if not entry.partnumbers or entry.qty.number <= 0:
+                if entry.qty.number <= 0:
                     _keys_to_remove.append(key)
             for key in _keys_to_remove:
                 del self[key]
