@@ -1,7 +1,7 @@
 # Graphviz Timeline Export
 
 uid: FEAT-PM-0001
-status: BACKLOG
+status: DONE
 priority: medium
 owner_role: FEATURE
 estimate: TBD
@@ -37,7 +37,8 @@ Produce a Graphviz-based timeline or dependency graph showing critical paths and
 
 ## Progress Log
 
-- 2025-02-19: Drafted feature; awaiting approval.
+- 2025-02-19: Drafted feature.
+- 2025-02-20: Implemented generator, added `just timeline-graphviz`, embedded timeline page in MkDocs.
 
 ## Sub-Features
 
