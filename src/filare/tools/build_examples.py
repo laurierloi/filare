@@ -120,15 +120,19 @@ def build_generated(groupkeys, output_base=None):
         # collect and iterate input YAML files
         yaml_files = [f for f in collect_filenames("Building", key, input_extensions)]
         try:
+            metadata_arg = []
+            metadata_file = yaml_files[0].parent / "metadata.yml"
+            # Demo YAMLs already carry full metadata; avoid overriding them.
+            if key != "demos" and metadata_file.exists():
+                metadata_arg = ["--metadata", str(metadata_file)]
             cli(
                 [
                     "run",
                     "--formats",
                     "ghpstb",  # no pdf for now
-                    "--metadata",
-                    str(yaml_files[0].parent / "metadata.yml"),
                     "--output-dir",
                     str(dest_path),
+                    *metadata_arg,
                     *[str(f) for f in yaml_files],
                 ]
             )
