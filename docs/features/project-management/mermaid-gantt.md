@@ -14,7 +14,7 @@ from: docs/research/project-management.md
 
 ## Status
 
-BACKLOG
+DONE
 
 ## Summary
 
@@ -31,10 +31,10 @@ Generate Mermaid Gantt charts from the backlog manifest to visualize milestones,
 
 ## Steps
 
-- [ ] Define mapping from manifest fields to Gantt (sections, start dates, durations/estimates, dependencies).
-- [ ] Implement generator producing Mermaid blocks grouped by milestone/workstream.
-- [ ] Add validation or linting step to ensure Mermaid syntax correctness.
-- [ ] Document embedding instructions for docs/mkdocs and regeneration workflow.
+- [x] Define mapping from manifest fields to Gantt (sections, start dates, durations/estimates, dependencies).
+- [x] Implement generator producing Mermaid blocks grouped by milestone/workstream.
+- [x] Add validation or linting step to ensure Mermaid syntax correctness (`just mermaid-gantt-check`).
+- [x] Document embedding instructions for docs/mkdocs and regeneration workflow.
 
 ## Progress Log
 
