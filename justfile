@@ -27,6 +27,9 @@ default:
   @echo "  just check-overlap           # run filare-check-overlap over all html files in outputs/"
   @echo "  just bom-check               # run filare-qty BOM sanity check"
   @echo "  just check-tools             # verify required CLI tools are present"
+  @echo "  just agent-just-commands     # process the just commands for the agent"
+  @echo "  just agent-prompt-gen        # generate the agent prompts"
+  @echo "  just agent-prompt-link       # link the agent prompts dir (MUST NOT BE USED BY AGENTS)"
   @echo "  just install-deps            # install dependencies (MUST NOT BE USED BY AGENTS)"
   @echo "  just mermaid-gantt           # generate Mermaid Gantt from backlog headers"
   @echo "  just mermaid-gantt-check     # generate Mermaid Gantt and validate mermaid syntax"
@@ -143,7 +146,6 @@ build-examples:
 check-overlap:
   {{setup}} && uv run filare-check-overlap outputs/*.html
 
-
 # BOM sanity check using filare-qty
 bom-check:
   {{setup}} && uv run filare qty tests/bom/bomqty.yml
@@ -153,6 +155,18 @@ bom-check:
 # Check that all required CLI tools are installed (uses your check-tools.sh)
 check-tools:
   {{setup}} && bash scripts/check-tools.sh
+
+# Process the just commands into agent prompts
+agent-just-commands:
+  {{setup}} && uv run python scripts/generate_filare_agent_commands.py --justfile justfile --output agents/filare_commands.yml
+
+# Generate Codex prompt markdown files for all agent commands
+agent-prompt-gen:
+  {{setup}} && uv run python scripts/generate_agent_prompts.py
+
+# Link the agent-prompt to the codex config
+agent-prompt-link:
+  ln -sf $(pwd)/agents/prompts ~/.codex/prompts
 
 # Generate Mermaid Gantt from backlog headers
 mermaid-gantt:

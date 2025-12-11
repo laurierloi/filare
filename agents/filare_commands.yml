@@ -1,0 +1,960 @@
+commands:
+  agent-just-commands:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: misc
+    description: Process the just commands into agent prompts
+    name: agent-just-commands
+    origin: justfile
+    run: just agent-just-commands
+    safe_for_agents: true
+  agent-prompt-gen:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: misc
+    description: Generate Codex prompt markdown files for all agent commands
+    name: agent-prompt-gen
+    origin: justfile
+    run: just agent-prompt-gen
+    safe_for_agents: true
+  agent-prompt-link:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: misc
+    description: Link the agent-prompt to the codex config
+    name: agent-prompt-link
+    origin: justfile
+    run: just agent-prompt-link
+    safe_for_agents: true
+  bom-check:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+        - filare-installed
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: validate-filare-output
+      params: {}
+      stage: on_success
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: filare
+    description: BOM sanity check using filare-qty
+    name: bom-check
+    origin: justfile
+    run: just bom-check
+    safe_for_agents: true
+  build-docs:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: build
+    description: Build full documentation with mkdocs
+    name: build-docs
+    origin: justfile
+    run: just build-docs
+    safe_for_agents: true
+  build-examples:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: build
+    description: Rebuild all examples/tutorials via the tools script
+    name: build-examples
+    origin: justfile
+    run: just build-examples
+    safe_for_agents: true
+  check-backlog-headers:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: project_management
+    description: Validate backlog headers and UID formats
+    name: check-backlog-headers
+    origin: justfile
+    run: just check-backlog-headers
+    safe_for_agents: true
+  check-overlap:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+        - filare-installed
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: validate-filare-output
+      params: {}
+      stage: on_success
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: filare
+    description: Check for overlapping elements in all generated HTML files in outputs/
+    name: check-overlap
+    origin: justfile
+    run: just check-overlap
+    safe_for_agents: true
+  check-tools:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: parse-lint-output
+      params:
+        group_by_file: true
+      stage: on_error
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: lint
+    description: '---- Tooling ----  Check that all required CLI tools are installed
+      (uses your check-tools.sh)'
+    name: check-tools
+    origin: justfile
+    run: just check-tools
+    safe_for_agents: true
+  default:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: misc
+    name: default
+    origin: justfile
+    run: just default
+    safe_for_agents: true
+  demo-first:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+        - filare-installed
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: validate-filare-output
+      params: {}
+      stage: on_success
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: filare
+    description: Build only the first example with filare (quick sanity run)
+    name: demo-first
+    origin: justfile
+    run: just demo-first
+    safe_for_agents: true
+  example-first:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+        - filare-installed
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: validate-filare-output
+      params: {}
+      stage: on_success
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: filare
+    description: '---- Filare commands & docs ----  Build only the first example with
+      filare (quick sanity run)'
+    name: example-first
+    origin: justfile
+    run: just example-first
+    safe_for_agents: true
+  filare-settings-get:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+        - filare-installed
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: validate-filare-output
+      params: {}
+      stage: on_success
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: filare
+    description: Show resolved Filare settings (YAML, includes defaults)
+    name: filare-settings-get
+    origin: justfile
+    run: just filare-settings-get
+    safe_for_agents: true
+  git-status:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: parse-lint-output
+      params:
+        group_by_file: true
+      stage: on_error
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: lint
+    description: '---- Operator interaction ----  ----------------------------------------------------
+      REVIEW COMMAND (interactive) ----------------------------------------------------
+      Usage: just review agent_role="FIXER" task_id="42"  Optional: diff_base="origin/beta"  Example:
+      just review \ agent_role="FEATURE" \ task_id="88" \ diff_base="origin/main"   ----------------------------------------------------
+      GET STRUCTURED REVIEW (agent-friendly, read-only) ----------------------------------------------------
+      Usage: just get-structured-review agent_role="FIXER" task_id="42"  This prints
+      the contents of: outputs/review/<agent_role>-<task_id>-<step_index>/ in a structured
+      format the agent can parse.   ---- Git ----'
+    name: git-status
+    origin: justfile
+    run: just git-status
+    safe_for_agents: true
+  install-deps:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - user-confirmation-required
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: env
+    description: Install tools - MUST NOT BE USED BY AGENTS
+    name: install-deps
+    origin: justfile
+    run: just install-deps
+    safe_for_agents: false
+  lint:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: parse-lint-output
+      params:
+        group_by_file: true
+      stage: on_error
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: lint
+    description: '---- Linting & hooks ----  Lint: run lint script'
+    name: lint
+    origin: justfile
+    run: just lint
+    safe_for_agents: true
+  mermaid-gantt:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: project_management
+    description: Generate Mermaid Gantt from backlog headers
+    name: mermaid-gantt
+    origin: justfile
+    run: just mermaid-gantt
+    safe_for_agents: true
+  mermaid-gantt-check:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: project_management
+    description: Generate and validate the Mermaid Gantt diagram
+    name: mermaid-gantt-check
+    origin: justfile
+    run: just mermaid-gantt-check
+    safe_for_agents: true
+  pre-commit:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: parse-lint-output
+      params:
+        group_by_file: true
+      stage: on_error
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: lint
+    description: Run pre-commit only on staged/changed files
+    name: pre-commit
+    origin: justfile
+    run: just pre-commit
+    safe_for_agents: true
+  taskwarrior-backfill:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: project_management
+    description: Backfill headers from Taskwarrior JSON (dry-run)
+    name: taskwarrior-backfill
+    origin: justfile
+    run: just taskwarrior-backfill
+    safe_for_agents: true
+  taskwarrior-backfill-apply:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: project_management
+    description: Backfill headers from Taskwarrior JSON (apply changes)
+    name: taskwarrior-backfill-apply
+    origin: justfile
+    run: just taskwarrior-backfill-apply
+    safe_for_agents: true
+  taskwarrior-export:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: project_management
+    description: Export backlog to Taskwarrior JSON (filters can be passed as CLI
+      args)
+    name: taskwarrior-export
+    origin: justfile
+    run: just taskwarrior-export
+    safe_for_agents: true
+  test-all:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: parse-test-output
+      params:
+        framework: pytest
+      stage: on_error
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: test
+    description: '---- Testing ----  all tests'
+    name: test-all
+    origin: justfile
+    run: just test-all
+    safe_for_agents: true
+  test-fast:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: parse-test-output
+      params:
+        framework: pytest
+      stage: on_error
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: test
+    description: All tests unit tests
+    name: test-fast
+    origin: justfile
+    run: just test-fast
+    safe_for_agents: true
+  test-functional:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: parse-test-output
+      params:
+        framework: pytest
+      stage: on_error
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: test
+    description: Only functional tests (expects tests marked with "functional")
+    name: test-functional
+    origin: justfile
+    run: just test-functional
+    safe_for_agents: true
+  test-mermaid:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: project_management
+    name: test-mermaid
+    origin: justfile
+    run: just test-mermaid
+    safe_for_agents: true
+  test-semantic-release:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: parse-test-output
+      params:
+        framework: pytest
+      stage: on_error
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: test
+    name: test-semantic-release
+    origin: justfile
+    run: just test-semantic-release
+    safe_for_agents: true
+  test-version:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: parse-test-output
+      params:
+        framework: pytest
+      stage: on_error
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: test
+    name: test-version
+    origin: justfile
+    run: just test-version
+    safe_for_agents: true
+  timeline-graphviz:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+        - python-available
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: project_management
+    description: List next ready tasks for a role from Taskwarrior export  Split Taskwarrior
+      backlog into dependency-safe pools  Update a Taskwarrior task (status/notes)
+      in the export; can stamp completion time  Generate a branch name from a Taskwarrior
+      task UID (optionally check out)  Generate Graphviz timeline (DOT + optional
+      SVG)
+    name: timeline-graphviz
+    origin: justfile
+    run: just timeline-graphviz
+    safe_for_agents: true
+  version:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: meta
+    description: '---- Version ----'
+    name: version
+    origin: justfile
+    run: just version
+    safe_for_agents: true
+version: 1
