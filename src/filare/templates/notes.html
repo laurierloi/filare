@@ -18,7 +18,11 @@
     bottom: {{ titleblock_offset + (options.bom_rows + 2) * options.bom_row_height if options.show_bom else titleblock_offset }}mm;
     {% else %}
     left: 0;
-    bottom: {{ titleblock_offset + (options.bom_rows + 2) * options.bom_row_height if options.show_bom else titleblock_offset }}mm;
+    {% if options.show_bom %}
+    bottom: {{ (options.bom_rows + 2) * options.bom_row_height }}mm;
+    {% else %}
+    bottom: 0;
+    {% endif %}
     {% endif %}
   }
 
