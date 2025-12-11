@@ -10,6 +10,8 @@ import re
 import subprocess
 from typing import Optional
 
+import typer
+
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 DEFAULT_INPUT = REPO_ROOT / "outputs" / "workplan" / "taskwarrior.json"
 
@@ -61,25 +63,25 @@ def next_branch_name(role: str, title: str) -> str:
         i += 1
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate/checkout branch from Taskwarrior task")
-    parser.add_argument("--input", type=pathlib.Path, default=DEFAULT_INPUT, help=f"Taskwarrior JSON (default {DEFAULT_INPUT})")
-    parser.add_argument("--uid", required=True, help="Task UID to base the branch name on")
-    parser.add_argument("--checkout", action="store_true", help="If set, git checkout -b <branch>")
-    args = parser.parse_args()
+def main(
+    uid: str = typer.Option(..., "--uid", help="Task UID to base the branch name on"),
+    input: pathlib.Path = typer.Option(DEFAULT_INPUT, "--input", help=f"Taskwarrior JSON (default: {DEFAULT_INPUT})"),
+    checkout: bool = typer.Option(False, "--checkout", help="If set, git checkout -b <branch>"),
+) -> None:
+    """Generate/checkout branch from Taskwarrior task."""
 
     git_fetch_origin()
-    role, title = load_task(args.input, args.uid)
+    role, title = load_task(input, uid)
     branch = next_branch_name(role, title)
-    print(branch)
+    typer.echo(branch)
 
-    if args.checkout:
+    if checkout:
         current = current_branch()
         if current == branch:
-            print(f"Already on branch {branch}; nothing to do.")
+            typer.echo(f"Already on branch {branch}; nothing to do.")
             return
         subprocess.run(["git", "checkout", "-b", branch], cwd=REPO_ROOT, check=False)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)
