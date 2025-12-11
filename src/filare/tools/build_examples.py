@@ -4,6 +4,7 @@
 import argparse
 import logging
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -144,6 +145,7 @@ def build_generated(groupkeys, output_base=None):
     # Write a manifest of all document representations for each destination
     for dest in all_dest_paths:
         _write_document_manifest(dest)
+    verify_bom_tables(all_dest_paths)
 
 
 def clean_generated(groupkeys):
@@ -165,6 +167,40 @@ def clean_generated(groupkeys):
         manifest = groups[key]["path"] / "document_manifest.yaml"
         if manifest.exists():
             manifest.unlink()
+
+
+def _bom_rows_in_html(html_path: Path) -> int:
+    """Count BOM table rows inside an HTML file; returns -1 when no BOM exists."""
+    try:
+        content = html_path.read_text(encoding="utf-8")
+    except Exception:
+        return -1
+    match = re.search(
+        r"<div\\s+id=\"bom\"[^>]*>(?P<body>.*?)</div>",
+        content,
+        re.IGNORECASE | re.DOTALL,
+    )
+    if not match:
+        return -1
+    body = match.group("body")
+    return len(re.findall(r"<tr", body, re.IGNORECASE))
+
+
+def verify_bom_tables(output_dirs):
+    """Ensure every rendered BOM HTML contains data rows."""
+    failures = []
+    for dest in output_dirs:
+        for html in Path(dest).rglob("*.html"):
+            rows = _bom_rows_in_html(html)
+            if rows == -1:
+                continue
+            if rows <= 1:
+                failures.append((html, rows))
+    if failures:
+        lines = "\n".join(f" - {path} (rows={rows})" for path, rows in failures)
+        raise SystemExit(
+            "BOM sanity check failed: header-only BOM tables found:\n" + lines
+        )
 
 
 def _write_document_manifest(output_dir: Path) -> None:
