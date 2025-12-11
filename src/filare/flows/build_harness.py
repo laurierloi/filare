@@ -519,9 +519,9 @@ def build_harness_from_files(
     generate_document = bool(doc_yaml_path)
     if doc_yaml_path and doc_yaml_path.exists():
         document_representation = DocumentRepresentation.from_yaml(doc_yaml_path)
-        harness.document = document_representation
-        _apply_document_to_harness(harness, document_representation)
         if not registry.allow_override(doc_yaml_path.name):
+            harness.document = document_representation
+            _apply_document_to_harness(harness, document_representation)
             logging.warning(
                 "Document representation locked (allow_override=False); using existing %s",
                 doc_yaml_path,
