@@ -1,5 +1,14 @@
 # Clarify connector loop syntax and examples (Resolved)
 
+uid: ISS-0004
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 The connector `loops` documentation was previously mis-indented, missing accepted keys, and lacked a working YAML example.
 
 ## Category

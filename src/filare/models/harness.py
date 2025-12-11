@@ -15,7 +15,6 @@ from filare.models.bom import BomContent, BomEntry, BomEntryBase, BomRenderOptio
 from filare.models.cable import CableModel
 from filare.models.component import ComponentModel
 from filare.models.connector import ConnectorModel
-from filare.models.dataclasses import Cable, Component, Connector
 from filare.models.document import DocumentRepresentation
 from filare.models.metadata import Metadata
 from filare.models.notes import Notes
@@ -34,6 +33,20 @@ from filare.render.imported_svg import prepare_imported_svg
 from filare.render.pdf import generate_pdf_output
 from filare.render.templates import get_template
 from filare.settings import settings
+
+# Compatibility dataclass aliases
+try:  # pragma: no cover
+    from filare.models.dataclasses import (
+        Cable as CableDC,
+        Component as ComponentDC,
+        Connector as ConnectorDC,
+    )
+except Exception:  # pragma: no cover
+    CableDC = ComponentDC = ConnectorDC = None  # type: ignore
+
+Cable = CableDC  # type: ignore
+Component = ComponentDC  # type: ignore
+Connector = ConnectorDC  # type: ignore
 
 
 @dataclass
@@ -55,9 +68,25 @@ class Harness:
     def name(self) -> str:
         return self.metadata.name
 
-    def add_connector(self, designator: str, *args, **kwargs) -> None:
-        conn = Connector(designator=designator, *args, **kwargs)
-        self.connectors[designator] = conn
+    def add_connector(
+        self, designator: Union[str, ConnectorModel, Dict[str, Any]], *args, **kwargs
+    ) -> None:
+        """Accept dataclass args, ConnectorModel, or mapping and store keyed by designator."""
+        if ConnectorDC is None:  # pragma: no cover
+            raise TypeError("Connector dataclass not available")
+        if args or kwargs:
+            conn = Connector(designator=designator, *args, **kwargs)
+            key = designator
+        elif isinstance(designator, ConnectorModel):
+            conn = designator.to_connector()
+            key = conn.designator
+        elif isinstance(designator, dict):
+            conn = Connector(**designator)
+            key = conn.designator
+        else:
+            conn = Connector(designator=designator)
+            key = designator
+        self.connectors[key] = conn
 
     def add_connector_model(
         self, connector_model: Union[ConnectorModel, Dict[str, Any]]
@@ -71,9 +100,25 @@ class Harness:
             raise TypeError("connector_model must be ConnectorModel or dict")
         self.connectors[conn.designator] = conn
 
-    def add_cable(self, designator: str, *args, **kwargs) -> None:
-        cbl = Cable(designator=designator, *args, **kwargs)
-        self.cables[designator] = cbl
+    def add_cable(
+        self, designator: Union[str, CableModel, Dict[str, Any]], *args, **kwargs
+    ) -> None:
+        """Accept dataclass args, CableModel, or mapping and store keyed by designator."""
+        if CableDC is None:  # pragma: no cover
+            raise TypeError("Cable dataclass not available")
+        if args or kwargs:
+            cbl = Cable(designator=designator, *args, **kwargs)
+            key = designator
+        elif isinstance(designator, CableModel):
+            cbl = designator.to_cable()
+            key = cbl.designator
+        elif isinstance(designator, dict):
+            cbl = Cable(**designator)
+            key = cbl.designator
+        else:
+            cbl = Cable(designator=designator)
+            key = designator
+        self.cables[key] = cbl
 
     def add_cable_model(self, cable_model: Union[CableModel, Dict[str, Any]]) -> None:
         """Accept a CableModel (or similar with to_cable()) and store the dataclass."""
@@ -86,6 +131,8 @@ class Harness:
         self.cables[cable.designator] = cable
 
     def add_additional_bom_item(self, item: Union[dict, ComponentModel]) -> None:
+        if ComponentDC is None:  # pragma: no cover
+            raise TypeError("Component dataclass not available")
         if isinstance(item, ComponentModel):
             new_item = item.to_component()
         else:
@@ -404,6 +451,43 @@ class Harness:
         if to_name in self.connectors:
             self.connectors[to_name].activate_pin(to_pin, Side.LEFT)
 
+    def connect_model(self, connection) -> None:
+        """Accept a ConnectionModel (or dict) and route through connect()."""
+        from filare.models.connections import ConnectionModel
+        from filare.models.dataclasses import Connection as ConnectionDataclass
+
+        if isinstance(connection, dict):
+            connection = ConnectionModel(**connection)
+        if isinstance(connection, ConnectionModel):
+            connection = connection.to_connection()
+        if not isinstance(connection, ConnectionDataclass):
+            raise TypeError("connection must be ConnectionModel, dict, or Connection")
+
+        from_name = (
+            getattr(connection.from_, "parent", None) if connection.from_ else ""
+        )
+        to_name = getattr(connection.to, "parent", None) if connection.to else ""
+        via_name = getattr(connection.via, "parent", None) if connection.via else ""
+
+        from_pin = getattr(connection.from_, "id", None) or getattr(
+            connection.from_, "label", ""
+        )
+        to_pin = getattr(connection.to, "id", None) or getattr(
+            connection.to, "label", ""
+        )
+        via_wire = getattr(connection.via, "id", None) or getattr(
+            connection.via, "label", ""
+        )
+
+        self.connect(
+            str(from_name or ""),
+            str(from_pin or ""),
+            str(via_name or ""),
+            str(via_wire or ""),
+            str(to_name or ""),
+            str(to_pin or ""),
+        )
+
     def create_graph(self) -> Graph:
         dot = Graph(engine=settings.graphviz_engine or "dot")
         set_dot_basics(dot, self.options)
@@ -561,6 +645,10 @@ def _build_cut_table(harness):
             if idx in seen:
                 continue
             seen.add(idx)
+            try:
+                wire_suffix = int(idx) + 1
+            except (TypeError, ValueError):
+                wire_suffix = idx
             color = (
                 getattr(wire.color, "code_en", None)
                 or getattr(wire.color, "html", "")
@@ -571,7 +659,7 @@ def _build_cut_table(harness):
             length = getattr(wire, "length", None) or getattr(cable, "length", "")
             rows.append(
                 {
-                    "wire": f"{cable.designator}-{idx + 1}",
+                    "wire": f"{cable.designator}-{wire_suffix}",
                     "partno": getattr(cable, "pn", "") or "",
                     "color": color or "",
                     "length": length or "",

@@ -1,5 +1,14 @@
 # Clarify connection parsing errors
 
+uid: ISS-0008
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 REWORK

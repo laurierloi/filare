@@ -32,6 +32,8 @@ if ! repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
   _die
 fi
 
+scripts_dir="${repo_root}/scripts"
+
 # --- XDG config directory for this repo (for gh, etc.) ---
 export XDG_CONFIG_HOME="${repo_root}/.config"
 mkdir -p "$XDG_CONFIG_HOME"
@@ -50,7 +52,6 @@ echo "GH_CONFIG_DIR set to: $GH_CONFIG_DIR"
 export PRE_COMMIT_HOME="${XDG_CONFIG_HOME}/pre-commit"
 mkdir -p "$PRE_COMMIT_HOME"
 echo "PRE_COMMIT_HOME set to: $PRE_COMMIT_HOME"
-
 
 
 # Resolve env file path
@@ -74,6 +75,11 @@ set -a
 # shellcheck disable=SC1090
 source "$ENV_FILE"
 set +a
+
+# --- tools check ---
+if ! bash "$scripts_dir/check-tools.sh"; then
+  _die "One or more required CLI tools are missing. Please install them and re-run agent_setup.sh."
+fi
 
 # --- UV: ensure that the cache is always the same
 UV_CACHE_DIR="${repo_root}/.uv-cache"

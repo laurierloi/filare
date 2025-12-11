@@ -245,6 +245,7 @@ def build_harness_from_models(
     options: PageOptions,
     notes: Notes = Notes([]),
     additional_bom: Optional[List[Union[ComponentModel, Dict[str, Any]]]] = None,
+    connections: Optional[List[Union[Dict[str, Any], Any]]] = None,
 ) -> Harness:
     """Build a Harness from already-instantiated connector/cable models."""
     harness = Harness(metadata=metadata, options=options, notes=notes)
@@ -254,6 +255,8 @@ def build_harness_from_models(
         harness.add_cable_model(cable)
     for item in additional_bom or []:
         harness.add_additional_bom_item(item)
+    for connection in connections or []:
+        harness.connect_model(connection)
     harness.populate_bom()
     return harness
 

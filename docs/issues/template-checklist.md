@@ -1,5 +1,14 @@
 # Template: Assembly/Test Checklist
 
+uid: ISS-0030
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 UI — Importance: Medium

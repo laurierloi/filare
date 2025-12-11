@@ -1,5 +1,14 @@
 # Log handling and configuration switches
 
+uid: ISS-0021
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 Filare currently emits logs from flow fallbacks, option normalization, and tooling, but there is no centralized way to configure log levels/handlers. Users must rely on defaults or set global Python logging manually.
 
 ## Category

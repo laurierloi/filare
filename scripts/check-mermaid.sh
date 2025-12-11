@@ -21,10 +21,15 @@ cat >"$puppeteer_cfg" <<'CFG'
 CFG
 
 failed_list=""
+files_override=""
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --failed-list)
       failed_list="$2"
+      shift 2
+      ;;
+    --files)
+      files_override="$2"
       shift 2
       ;;
     *)
@@ -34,7 +39,12 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-mapfile -t files < <(rg -l '```mermaid' "$root_dir/docs" || true)
+if [[ -n "$files_override" ]]; then
+  # Comma or space separated list.
+  IFS=', ' read -r -a files <<<"$files_override"
+else
+  mapfile -t files < <(rg -l '```mermaid' "$root_dir/docs" || true)
+fi
 
 if [ "${#files[@]}" -eq 0 ]; then
   echo "No Mermaid diagrams found under docs/"

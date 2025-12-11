@@ -1,5 +1,14 @@
 # FilareModel Graph Base
 
+uid: FEAT-GRAPH-0001
+status: IN_PROGRESS
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Status
 
 IN_PROGRESS

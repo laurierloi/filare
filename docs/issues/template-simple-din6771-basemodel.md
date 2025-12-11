@@ -1,5 +1,14 @@
 # Add BaseModel/context schema for legacy simple templates
 
+uid: ISS-0037
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 UI

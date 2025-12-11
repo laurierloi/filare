@@ -1,5 +1,14 @@
 # Hierarchical CLI for Filare (metadata/document/page/harness/settings/drawio)
 
+uid: FEAT-CLI-0004
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Summary
 
 Introduce a unified, multi-level CLI (`filare <domain> <command>`) so users can target specific parts of the flow (metadata, documents, pages, harnesses, settings, drawio). This improves discoverability, enables segmented validation, and reduces cognitive load compared to separate executables.

@@ -19,10 +19,15 @@
   {% for pin in component.pins_to_show()  %}
     <tr>
       {% if component.ports_left %}  <td port="p{{ pin.index + 1 }}l"> {{ pin.id }} </td> {% endif %}
-      <td colspan="2"> {{ pin.label }} </td>
-      {% if component.has_pincolors %}
-      <td sides="TBL"> {{ pin.color }} </td>
-      <td sides="TBR"> { colors.color_minitable(pin.color, pin.color.len) } </td>
+      {% if pin.label %}
+        <td colspan="2"> {{ pin.label }} </td>
+        {% if component.has_pincolors %}
+        <td sides="TBL"> {{ pin.color }} </td>
+        <td sides="TBR"> { colors.color_minitable(pin.color, pin.color.len) } </td>
+        {% endif %}
+      {% else %}
+        {% set colspan = 2 + (2 if component.has_pincolors else 0) %}
+        <td colspan="{{ colspan }}"> {{ pin.id }} </td>
       {% endif %}
       {% if component.ports_right %} <td port="p{{ pin.index + 1 }}r"> {{ pin.id }} </td> {% endif %}
     </tr>

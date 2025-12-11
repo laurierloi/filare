@@ -1,5 +1,14 @@
 # CLI: `filare code` domain and `graph` subcommand scaffold
 
+uid: FEAT-CLI-0009
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Summary
 
 Add a Typer-powered `filare code` command (implemented in `src/filare/cli/code.py`) that hosts code-focused utilities. First child command: `filare code graph` with a pluggable `--tool` flag.

@@ -1,5 +1,14 @@
 from: docs/features/standard-harness-component-support.md
 
+uid: FEAT-GENERAL-0002
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 # Shield Termination Metadata
 
 ## Status

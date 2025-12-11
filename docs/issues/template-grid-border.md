@@ -1,5 +1,14 @@
 # Template: Diagram Grid Border (Lettered)
 
+uid: ISS-0033
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 UI — Importance: Medium

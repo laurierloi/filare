@@ -569,7 +569,11 @@ def generate_titlepage(yaml_data, extra_metadata, shared_bom, for_pdf=False):
         "sheet_name": "titlepage",
         "output_name": "titlepage",
     }
-    titlepage_metadata["template"]["name"] = "titlepage"
+    template_metadata = titlepage_metadata.get("template")
+    if not isinstance(template_metadata, dict):
+        template_metadata = {}
+        titlepage_metadata["template"] = template_metadata
+    template_metadata["name"] = "titlepage"
     metadata = Metadata(**titlepage_metadata)
     index_table = IndexTable.from_pages_metadata(metadata)
 
@@ -582,6 +586,17 @@ def generate_titlepage(yaml_data, extra_metadata, shared_bom, for_pdf=False):
 
     # todo: index table options as a dataclass
     options = get_page_options(yaml_data, "titlepage")
+
+    # Auto-split sections that cannot reasonably fit on the titlepage.
+    index_rows = len(index_table.rows) + 1  # + header
+    if index_rows > 15:
+        options.split_index_page = True
+        options.show_index_table = False
+
+    if len(shared_bom) > 15:
+        options.split_bom_page = True
+        options.show_bom = False
+
     options.bom_updated_position = "top: 20mm; left: 10mm"
     options.for_pdf = for_pdf
 

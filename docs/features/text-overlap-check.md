@@ -1,5 +1,14 @@
 # Text Overlap Check for Generated HTML
 
+uid: FEAT-DOCS-0005
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Goal
 
 Add a tooling-only check that fails when rendered text in generated HTML overlaps visually. This guards regressions where labels or annotations collide after layout changes.

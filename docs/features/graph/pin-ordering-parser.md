@@ -1,5 +1,14 @@
 from: docs/features/graph/pins-in-graph.md
 
+uid: FEAT-GRAPH-0012
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 # Pin Ordering Parser
 
 ## Status

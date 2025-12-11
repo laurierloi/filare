@@ -1,5 +1,14 @@
 from: docs/research/performance-tools.md
 
+uid: FEAT-PERF-0003
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 # Perf CI Workflow (On-Demand Profiling)
 
 ## Status

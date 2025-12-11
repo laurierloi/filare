@@ -1,5 +1,14 @@
 # Make number/unit validation errors actionable
 
+uid: ISS-0024
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 REWORK

@@ -1,5 +1,14 @@
 # Template: Notes/Changelog Page
 
+uid: ISS-0036
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 UI — Importance: Medium

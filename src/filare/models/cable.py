@@ -2,22 +2,39 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Sequence, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Sequence, Union, cast
 
 from pydantic import Field, field_validator, model_validator
 
 from filare.models.colors import MultiColor, SingleColor, get_color_by_colorcode_index
 from filare.models.connector import GraphicalComponentModel
-from filare.models.dataclasses import (  # noqa: F401
-    Cable,
-    Connection,
-    ShieldClass,
-    WireClass,
-)
 from filare.models.hypertext import MultilineHypertext
 from filare.models.image import Image
 from filare.models.numbers import NumberAndUnit
 from filare.models.types import BomCategory, QtyMultiplierCable  # noqa: F401
+
+if TYPE_CHECKING:  # pragma: no cover
+    from filare.models.dataclasses import (
+        Cable as CableDC,
+        Connection as ConnectionDC,
+        ShieldClass as ShieldClassDC,
+        WireClass as WireClassDC,
+    )
+else:  # pragma: no cover
+    try:
+        from filare.models.dataclasses import (
+            Cable as CableDC,
+            Connection as ConnectionDC,
+            ShieldClass as ShieldClassDC,
+            WireClass as WireClassDC,
+        )
+    except Exception:
+        CableDC = ConnectionDC = ShieldClassDC = WireClassDC = None  # type: ignore
+
+Cable = CableDC  # type: ignore
+Connection = ConnectionDC  # type: ignore
+ShieldClass = ShieldClassDC  # type: ignore
+WireClass = WireClassDC  # type: ignore
 
 
 class CableModel(GraphicalComponentModel):
@@ -80,6 +97,8 @@ class CableModel(GraphicalComponentModel):
         return self
 
     def to_cable(self) -> Cable:
+        if CableDC is None:  # pragma: no cover
+            raise TypeError("Cable dataclass not available")
         type_value = cast(Optional[MultilineHypertext], self.type)
         subtype_value = cast(Optional[MultilineHypertext], self.subtype)
         color_value = cast(Optional[MultiColor], self.color)
@@ -94,7 +113,7 @@ class CableModel(GraphicalComponentModel):
             if isinstance(self.shield, (bool, MultiColor))
             else MultiColor(self.shield)
         )
-        return Cable(
+        return CableDC(
             designator=self.designator,
             type=type_value,
             subtype=subtype_value,

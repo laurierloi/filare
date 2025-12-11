@@ -1,5 +1,14 @@
 # CLI: `filare code graph` configuration support
 
+uid: FEAT-CLI-0011
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Summary
 
 Allow `filare code graph` to consume a YAML configuration (mapped to `CodeGraphConfig`) while still honoring CLI flags. Store the resolved config in the flows under `src/filare/flows/code_analysis/` so each tool receives the right defaults and overrides.

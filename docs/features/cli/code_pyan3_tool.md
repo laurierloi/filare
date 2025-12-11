@@ -1,5 +1,14 @@
 # CLI: `filare code graph --tool pyan3`
 
+uid: FEAT-CLI-0013
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Summary
 
 Implement a pyan3-based static call graph generator exposed via `filare code graph --tool pyan3`, producing module-grouped call graphs (DOT/SVG) for Filare.

@@ -1,5 +1,14 @@
 from: docs/research/cut-diagram-requirements.md
 
+uid: FEAT-BOM-0003
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 # Cut List Schema
 
 ## Status

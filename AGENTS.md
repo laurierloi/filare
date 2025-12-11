@@ -29,12 +29,18 @@ You can assume:
 - **Documentation & examples**
   - `docs/` — user & dev docs.
   - `docs/graphs/` — Mermaid sources + rendered diagrams.
-  - `docs/features/` - Tracking of in-progress or future features
-  - `docs/issues/` - Tracking of current issues with the code
-  - `docs/bugs/` - Tracking of bugs which have been identified in the codebase
-  - `docs/ui/` - Evaluating the UI and serving as a source for improvements
-  - `tutorial/` — walkthroughs.
-  - `examples/` — ready-made YAML inputs.
+- `docs/features/` - Tracking of in-progress or future features
+- `docs/issues/` - Tracking of current issues with the code
+- `docs/bugs/` - Tracking of bugs which have been identified in the codebase
+- `docs/ui/` - Evaluating the UI and serving as a source for improvements
+- `tutorial/` — walkthroughs.
+- `examples/` — ready-made YAML inputs.
+
+## Backlog Metadata (docs/issues and docs/features)
+
+- Every file under `docs/issues/**` and `docs/features/**` MUST start with the header defined in `docs/issues/header-template.md` (uid, status, priority, owner_role, estimate, dependencies, risk, milestone).
+- UID format is mandatory and immutable: issues use `ISS-<4 digits>`; features use `FEAT-<AREA>-<4 digits>` (AREA e.g., CLI, RENDER, GRAPH, BOM, MECH, DOCS, TOOLS, PERF, UI, GENERAL).
+- Reject/adjust contributions that omit the header or deviate from the UID scheme before merging; keep the header aligned when updating status or metadata.
 
 - **Tests & regression data**
   - `tests/rendering/`
@@ -226,6 +232,7 @@ You MUST run:
 ```bash
 source scripts/agent-setup.sh
 ```
+
 before executing any Git or GitHub commands.
 
 The env file <.env> MUST exist and SHOULD define GH_TOKEN for GitHub CLI auth.
@@ -240,7 +247,7 @@ This enforces a non-interactive, editorless Git configuration.
 
   ```bash
   source scripts/agent-setup.sh >/dev/null && git commit -m "<message>"
-````
+  ```
 
 - You MUST merge without opening an editor:
 
@@ -315,6 +322,7 @@ uv run pytest
   - JUDGE
   - VALIDATOR
   - UI
+  - FIXER
 - Read this file + your role-specific guide (AGENT.<ROLE>.md)
 - Scan relevant code
 - Write a short step plan
@@ -352,6 +360,64 @@ Do **not**:
 - Introduce breaking schema or CLI changes
 - Delete public APIs without migration
 - Commit secrets or machine‑specific configs
+
+## 11. Tools
+
+Agents **MUST** use the following CLI tools when performing search, discovery, and structured config manipulation.
+Agents **MUST NOT** use their older or less-reliable counterparts.
+
+### `rg` (ripgrep) — _MANDATORY for code search_
+
+- **USE** `rg` for all file/content searches.
+- **DO NOT USE** `grep`, `ag`, or `ack`.
+- Fast, respects `.gitignore`, supports `--json`, ideal for locating symbols, definitions, and patterns.
+- Example:
+
+  ```bash
+  rg --line-number --no-heading "pattern" src/
+  ```
+
+### `fd` — _MANDATORY for file discovery_
+
+- **USE** `fd` to list or find files.
+- **DO NOT USE** `find`.
+- Simpler, faster, respects `.gitignore`, consistent output.
+- Example:
+
+  ```bash
+  fd ".py" src/
+  ```
+
+### `jq` — _MANDATORY for JSON parsing_
+
+- **USE** `jq` to read, filter, or transform JSON produced by tools (pytest, ripgrep, linters).
+- **DO NOT USE** ad-hoc text parsing or `python -c` for JSON extraction.
+- Example:
+
+  ```bash
+  jq '.tests[] | .nodeid' report.json
+  ```
+
+### `yq` — _MANDATORY for YAML parsing/editing_
+
+- **USE** `yq` for reading and modifying YAML-based configs (CI, compose files, workflows).
+- **DO NOT USE** raw regex, manual indentation edits, or line-by-line sed for YAML.
+- Example:
+
+  ```bash
+  yq '.services.api.image = "app:latest"' -i docker-compose.yml
+  ```
+
+### `just` — _MANDATORY for invoking project tasks_
+
+- **USE** `just` for all predefined project workflows (tests, linting, docs).
+- **DO NOT USE** manual inline shell command chains when a recipe exists.
+- Ensures consistency, discoverability, and reliable execution.
+- Example:
+
+  ```bash
+  just test
+  ```
 
 ---
 

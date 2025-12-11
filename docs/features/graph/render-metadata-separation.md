@@ -1,5 +1,14 @@
 from: docs/features/graph/connections-in-graph.md
 
+uid: FEAT-GRAPH-0015
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 # Render Metadata Separation
 
 ## Status

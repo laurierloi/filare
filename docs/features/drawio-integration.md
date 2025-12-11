@@ -1,5 +1,14 @@
 from: docs/features/drawio-svg-import.md
 
+uid: FEAT-DOCS-0002
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 # DrawIO Authoring Integration
 
 ## Status

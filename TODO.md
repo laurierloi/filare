@@ -1,7 +1,0 @@
-- Ensure https://pypi.org/project/filare/ has all the required info
-- Create Icon and style
-- Ensure package is released both on pypi and on github
-- Ensure that the github.io page is operational
-- Maybe add a documentation generator to create the github.io docs?
-- Start looking at feature extension
-- Only publish/package on version tags

@@ -51,6 +51,28 @@ def test_build_titlepage_uses_metadata(monkeypatch, tmp_path):
     assert called["for_pdf"] is True
 
 
+def test_build_titlepage_with_harness_metadata_only(tmp_path):
+    example = Path("examples/demo01.yml")
+    extra_metadata = {
+        "output_dir": tmp_path,
+        "files": [example],
+        "output_names": ["titlepage", example.stem],
+        "sheet_total": 2,
+        "sheet_current": 3,
+        "use_qty_multipliers": False,
+        "multiplier_file_name": "quantity_multipliers.txt",
+        "titlepage": Path("titlepage"),
+        "sheet_name": example.stem.upper(),
+    }
+
+    build_titlepage([example], extra_metadata, shared_bom={})
+
+    titlepage_html = tmp_path / "titlepage.html"
+    assert titlepage_html.exists()
+    content = titlepage_html.read_text(encoding="utf-8")
+    assert "demo01" in content.lower()
+
+
 def test_build_pdf_bundle(monkeypatch, tmp_path):
     html_paths = [tmp_path / "a.html"]
     called = {}

@@ -1,5 +1,14 @@
 from: docs/features/graph/parts-and-components-links.md
 
+uid: FEAT-GRAPH-0011
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 # Parts List Export
 
 ## Status

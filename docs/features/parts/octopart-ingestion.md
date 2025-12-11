@@ -1,5 +1,14 @@
 from: docs/research/vendor-parts-ingestion.md
 
+uid: FEAT-BOM-0006
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 # Octopart Ingestion (Filare-Relevant Categories)
 
 ## Status

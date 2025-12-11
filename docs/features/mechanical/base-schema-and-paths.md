@@ -1,5 +1,14 @@
 from: docs/research/mechanical-diagram-elements.md
 
+uid: FEAT-MECH-0003
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 # Mechanical Base Schema and Paths
 
 ## Status

@@ -1,5 +1,14 @@
 # Clarify color and component validation errors
 
+uid: ISS-0007
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 REWORK

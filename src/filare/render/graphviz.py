@@ -7,14 +7,10 @@ from typing import Any, List, Optional, Tuple, Union
 
 from filare import APP_NAME, APP_URL, __version__
 from filare.errors import UnsupportedLoopSide
+from filare.models.cable import CableModel
 from filare.models.colors import MultiColor, SingleColor
-from filare.models.dataclasses import (
-    Cable,
-    Component,
-    Connector,
-    ShieldClass,
-    WireClass,
-)
+from filare.models.connections import ConnectionModel, LoopModel
+from filare.models.connector import ConnectorModel
 from filare.models.image import Image
 from filare.models.types import Side
 from filare.models.utils import html_line_breaks, remove_links
@@ -22,9 +18,23 @@ from filare.render.html_utils import Img, Table, Td, Tr
 from filare.render.templates import get_template
 from filare.settings import settings
 
+# Compatibility dataclass aliases
+try:  # pragma: no cover
+    from filare.models.dataclasses import (
+        Cable as CableDC,
+        Connector as ConnectorDC,
+    )
+except Exception:  # pragma: no cover
+    CableDC = ConnectorDC = None  # type: ignore
+
+Cable = CableDC  # type: ignore
+Connector = ConnectorDC  # type: ignore
+
 
 def gv_node_connector(connector: Connector) -> str:
     """Render a connector node as an HTML-like table for Graphviz."""
+    if isinstance(connector, ConnectorModel):
+        connector = connector.to_connector()
     # TODO: extend connector style support
     params = {"component": connector, "suppress_images": True}
     is_simple_connector = connector.style == "simple"
@@ -39,6 +49,8 @@ def gv_node_connector(connector: Connector) -> str:
 
 def gv_node_cable(cable: Cable) -> str:
     """Render a cable node as an HTML-like table for Graphviz."""
+    if isinstance(cable, CableModel):
+        cable = cable.to_cable()
     # TODO: support multicolor cables
     # TODO: extend cable style support
     params = {"component": cable, "suppress_images": True}
@@ -66,6 +78,8 @@ def _node_image_attrs(image: Optional[Image]) -> dict:
 
 def gv_connector_loops(connector: Connector) -> List:
     """Return loop edges for a connector with placement hints."""
+    if isinstance(connector, ConnectorModel):
+        connector = connector.to_connector()
     loop_edges = []
     if connector.ports_left:
         loop_side = "l"
@@ -87,6 +101,8 @@ def gv_connector_loops(connector: Connector) -> List:
 
         if loop.first is None or loop.second is None:
             continue
+        if isinstance(loop, LoopModel):
+            loop = loop.to_loop()
         head = (
             f"{connector.designator}:p{loop.first.pin}{this_loop_side}:{this_loop_dir}"
         )
@@ -101,6 +117,8 @@ def gv_edge_wire(
     harness, cable, connection
 ) -> Tuple[str, Optional[str], Optional[str], Optional[str], Optional[str]]:
     """Return Graphviz edge descriptors for a connection through a wire/shield."""
+    if isinstance(connection, ConnectionModel):
+        connection = connection.to_connection()
     if connection.via.color:
         # check if it's an actual wire and not a shield
         color = f"#000000:{connection.via.color.html_padded}:#000000"

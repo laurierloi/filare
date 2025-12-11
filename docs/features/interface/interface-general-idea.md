@@ -1,5 +1,14 @@
 from: docs/features/filare-model-graph-base.md
 
+uid: FEAT-UI-0001
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 # Interface General Idea
 
 ## Status
