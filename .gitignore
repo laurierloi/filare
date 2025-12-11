@@ -40,6 +40,11 @@ outputs/*
 !examples/**/*.md
 !examples/drawio-import-demo.svg
 examples/**/document_manifest.yaml
+examples/**/document_hashes.yaml
+examples/**/*.document.yaml
+examples/**/*.gv
+examples/*/readme.md
+!examples/readme.md
 examples/**/*.html
 examples/**/*.svg
 examples/**/*.png
