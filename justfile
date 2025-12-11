@@ -77,7 +77,7 @@ test-version:
 
 # Build only the first example with filare (quick sanity run)
 example-first:
-  {{setup}} && uv run filare run examples/ex01.yml -f hpst -o outputs
+  {{setup}} && uv run filare run examples/basic/basic01.yml -d examples/basic/metadata.yml -f hpst -o outputs
 
 # Build only the first example with filare (quick sanity run)
 demo-first:

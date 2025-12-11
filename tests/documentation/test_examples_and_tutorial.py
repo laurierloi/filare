@@ -39,13 +39,16 @@ def _sanitize_inputs(
 
 def run_filare_cli(
     output_dir: Path,
-    metadata: Path,
+    metadata: Optional[Path],
     inputs,
     formats="h",
     strip_cut_and_term: bool = False,
     scratch_dir: Optional[Path] = None,
 ):
     # Use CLI callback directly to avoid subprocess; default html only to avoid heavy BOM rendering
+    if strip_cut_and_term and scratch_dir:
+        scratch_dir.mkdir(parents=True, exist_ok=True)
+
     files = _sanitize_inputs(
         inputs, scratch_dir or output_dir, strip_cut_and_term=strip_cut_and_term
     )
@@ -58,7 +61,7 @@ def run_filare_cli(
 
     for file in files:
         cmd_parts = [
-            "source scripts/agent-setup.sh >/dev/null",
+            "source scripts/agent-setup.sh >/dev/null &&",
             "uv run filare run",
             shlex.quote(str(file)),
             "--formats",
@@ -76,26 +79,40 @@ def run_filare_cli(
 
 
 def test_examples_generate_outputs(tmp_path):
-    examples_dir = Path("examples")
-    metadata_file = examples_dir / "metadata.yml"
-    yaml_inputs = sorted(Path(p) for p in glob.glob(str(examples_dir / "ex*.yml")))
-    assert yaml_inputs, "No example YAMLs found"
-    output_dir = Path("outputs") / "examples"
-    output_dir.mkdir(parents=True, exist_ok=True)
+    examples_root = Path("examples")
+    groups = []
 
-    run_filare_cli(
-        output_dir,
-        metadata_file,
-        yaml_inputs,
-        formats="h",
-        strip_cut_and_term=True,
-        scratch_dir=tmp_path,
-    )
+    for meta in sorted(examples_root.glob("*/metadata.yml")):
+        base = meta.parent
+        inputs = sorted(
+            p
+            for p in base.glob("*.yml")
+            if p.name != "metadata.yml" and not p.name.endswith(".document.yaml")
+        )
+        if inputs:
+            groups.append((base.name, meta, inputs))
 
-    for inp in yaml_inputs:
-        stem = inp.stem
-        for ext in (".html",):
-            assert (output_dir / f"{stem}{ext}").exists()
+    assert groups, "No example YAMLs found"
+
+    base_output = Path("outputs") / "examples"
+    base_output.mkdir(parents=True, exist_ok=True)
+
+    for name, metadata_file, yaml_inputs in groups:
+        output_dir = base_output / name
+        output_dir.mkdir(parents=True, exist_ok=True)
+        run_filare_cli(
+            output_dir,
+            metadata_file,
+            yaml_inputs,
+            formats="h",
+            strip_cut_and_term=True,
+            scratch_dir=tmp_path / name,
+        )
+
+        for inp in yaml_inputs:
+            stem = inp.stem
+            for ext in (".html",):
+                assert (output_dir / f"{stem}{ext}").exists()
 
 
 def test_tutorial_generates_outputs(tmp_path):
