@@ -78,12 +78,13 @@ Add `filare drawio <command>` to manage Draw.io integrations, keeping diagram as
 - [x] Implement reusable Draw.io parsing/mapping utilities (load, merge mappings/rules, apply direction flags, backups/dry-run, editor invocation, comment capture).
 - [x] Add Typer `drawio` subcommands with required flags, outputs (table/JSON), and exit codes; ensure pathlib usage.
 - [x] Add tests covering import/export/sync/validate behaviors, edit (editor stub + optional validation), review (read-only + comment capture), dry-run/backup, and JSON report outputs.
-- [ ] Update docs/help/examples to reflect new drawio commands, flags, and default paths.
+- [x] Update docs/help/examples to reflect new drawio commands, flags, and default paths.
 
 ## Progress Log
 2025-12-10: Drafted plan, set status to IN_PROGRESS; awaiting operator review before implementation.
 2025-12-10: Implemented placeholder Draw.io CLI commands (import/export/sync/validate/edit/review) with tests; docs updates pending.
 2025-12-10: Resolved rebase conflicts and wired metadata/drawio CLIs; tests passing.
+2025-12-10: Documented drawio CLI usage and examples; marked docs step complete.
 
 ## Implementation
 - [ ] Audit current Draw.io support and identify reuse vs new helpers (file loading, mapping/rules schema, direction handling).
