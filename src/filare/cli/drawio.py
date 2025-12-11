@@ -69,7 +69,7 @@ def _load_rules(rules: Optional[Path]) -> Dict[str, object]:
     if not rules:
         return {}
     data = _load_yaml_file(rules)
-    return data or {}
+    return data if isinstance(data, dict) else {}
 
 
 def _extract_nodes(root: ET.Element) -> List[Dict[str, object]]:
@@ -98,8 +98,18 @@ def _validate_drawio(diagram: Path, rules: Optional[Path]) -> DrawioValidationRe
         return DrawioValidationResult(ok=False, warnings=warnings, errors=errors)
 
     rules_data = _load_rules(rules)
-    required_tags = rules_data.get("required_tags", [])
-    required_labels = rules_data.get("required_labels", [])
+    tags_raw = rules_data.get("required_tags", [])
+    labels_raw = rules_data.get("required_labels", [])
+    required_tags = (
+        [str(tag) for tag in tags_raw]
+        if isinstance(tags_raw, (list, tuple, set))
+        else []
+    )
+    required_labels = (
+        [str(lbl) for lbl in labels_raw]
+        if isinstance(labels_raw, (list, tuple, set))
+        else []
+    )
 
     # Check root
     if root.tag not in {"mxfile", "diagram"}:
@@ -239,11 +249,17 @@ def export_command(
 ) -> None:
     """Generate a Draw.io diagram from a harness."""
     style_data = _load_yaml_file(style) if style else {}
-    harness_data = _load_yaml_file(harness) or {}
-    connectors = harness_data.get("connectors", {})
+    harness_data_raw = _load_yaml_file(harness)
+    harness_data: Dict[str, object] = (
+        harness_data_raw if isinstance(harness_data_raw, dict) else {}
+    )
+    connectors_raw = harness_data.get("connectors", {})
+    connectors = connectors_raw if isinstance(connectors_raw, dict) else {}
     connector_names = list(connectors.keys())
 
-    diagram_name = harness_data.get("metadata", {}).get("name") or harness.stem
+    metadata_raw = harness_data.get("metadata", {})
+    metadata_dict = metadata_raw if isinstance(metadata_raw, dict) else {}
+    diagram_name = metadata_dict.get("name") or harness.stem
     nodes_xml = "\n".join(
         f'<mxCell id="{idx}" value="{name}" style="shape=ellipse" />'
         for idx, name in enumerate(connector_names, start=1)
@@ -251,7 +267,7 @@ def export_command(
     template_content = template.read_text(encoding="utf-8") if template else ""
     body = (
         f'<mxfile><diagram name="{diagram_name}"><root>'
-        f'{template_content}{nodes_xml}'
+        f"{template_content}{nodes_xml}"
         f"</root></diagram></mxfile>"
     )
 
@@ -363,7 +379,9 @@ def edit_command(
     ),
 ) -> None:
     """Open Draw.io for interactive editing, then optionally validate."""
-    chosen_editor = editor or os.environ.get("VISUAL") or os.environ.get("EDITOR") or "drawio"
+    chosen_editor = (
+        editor or os.environ.get("VISUAL") or os.environ.get("EDITOR") or "drawio"
+    )
     cmd_parts = shlex.split(chosen_editor)
     cmd_parts.append(str(diagram))
     result = subprocess.run(cmd_parts)
@@ -425,7 +443,9 @@ def review_command(
     ),
 ) -> None:
     """Open Draw.io read-only, capture CLI comments, and save them."""
-    chosen_editor = editor or os.environ.get("VISUAL") or os.environ.get("EDITOR") or "drawio"
+    chosen_editor = (
+        editor or os.environ.get("VISUAL") or os.environ.get("EDITOR") or "drawio"
+    )
     cmd_parts = shlex.split(chosen_editor)
     cmd_parts.append(str(diagram))
     result = subprocess.run(cmd_parts)

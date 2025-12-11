@@ -14,6 +14,7 @@ milestone: backlog
 Add `filare drawio <command>` to manage Draw.io integrations, keeping diagram assets in sync with Filare harness data.
 
 ## Requirements
+
 - Provide `filare drawio` group with `import`, `export`, `sync`, `validate`, `edit`, and `review` subcommands and listed flags/options.
 - Support Draw.io (.drawio/.xml) inputs plus YAML/JSON mapping/rules; harness YAML for export/sync.
 - Emit human-readable and JSON outputs for validation/sync reports; keep backward compatibility with existing harness rendering.
@@ -74,6 +75,7 @@ Add `filare drawio <command>` to manage Draw.io integrations, keeping diagram as
 - Surface mapping/rules schema references to reduce trial-and-error.
 
 ## Steps
+
 - [x] Map existing drawio tooling (if any) and define schema/IO helpers needed for import/export/sync/validate/edit/review.
 - [x] Implement reusable Draw.io parsing/mapping utilities (load, merge mappings/rules, apply direction flags, backups/dry-run, editor invocation, comment capture).
 - [x] Add Typer `drawio` subcommands with required flags, outputs (table/JSON), and exit codes; ensure pathlib usage.
@@ -81,12 +83,14 @@ Add `filare drawio <command>` to manage Draw.io integrations, keeping diagram as
 - [x] Update docs/help/examples to reflect new drawio commands, flags, and default paths.
 
 ## Progress Log
+
 2025-12-10: Drafted plan, set status to IN_PROGRESS; awaiting operator review before implementation.
 2025-12-10: Implemented placeholder Draw.io CLI commands (import/export/sync/validate/edit/review) with tests; docs updates pending.
 2025-12-10: Resolved rebase conflicts and wired metadata/drawio CLIs; tests passing.
 2025-12-10: Documented drawio CLI usage and examples; marked docs step complete.
 
 ## Implementation
+
 - [ ] Audit current Draw.io support and identify reuse vs new helpers (file loading, mapping/rules schema, direction handling).
 - [ ] Design data flow for import/export/sync/validate/edit/review (IO formats, backups, dry-run, JSON reports, editor invocation, comment capture) with pathlib paths.
 - [ ] Implement helper layer plus Typer `drawio` subcommands wired to these helpers.

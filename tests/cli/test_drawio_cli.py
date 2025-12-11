@@ -18,13 +18,24 @@ def test_drawio_validate_and_import(tmp_path):
     diagram = _make_file(tmp_path, "diagram.drawio", "<xml/>")
     rules = _make_file(tmp_path, "rules.yml", "rules: {}")
 
-    res_validate = runner.invoke(cli, ["drawio", "validate", str(diagram), "--rules", str(rules), "--format", "json"])
+    res_validate = runner.invoke(
+        cli,
+        ["drawio", "validate", str(diagram), "--rules", str(rules), "--format", "json"],
+    )
     assert res_validate.exit_code == 0, res_validate.output
 
     mapping = _make_file(tmp_path, "mapping.yml", "mapping: {}")
     res_import = runner.invoke(
         cli,
-        ["drawio", "import", str(diagram), "--mapping", str(mapping), "--output", str(tmp_path / "out.yml")],
+        [
+            "drawio",
+            "import",
+            str(diagram),
+            "--mapping",
+            str(mapping),
+            "--output",
+            str(tmp_path / "out.yml"),
+        ],
     )
     assert res_import.exit_code == 0, res_import.output
     assert (tmp_path / "out.yml").exists()
