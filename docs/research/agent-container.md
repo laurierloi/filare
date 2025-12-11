@@ -7,8 +7,8 @@ Specification for a Docker image that bundles Filare tooling plus Codex CLI prer
 - Image: `docker/Dockerfile.codex` installs uv/gh/git/rg/fd/jq/yq/just, Graphviz, npm, mermaid-cli, Playwright/Chromium, tmux, neovim, fonts, git-lfs.
 - Build: `just codex-container-build` (tags `filare-codex`).
 - Shell: `just codex-container-sh` uses `--user $(id -u):$(id -g)` and `-v $PWD:/workspace` so files are host-owned and persistent.
-- Host dotfiles: bind-mount optional `~/.tmux.conf` and `~/.config/nvim` into the container for familiar tmux/NVim configs.
-- Codex credentials: pass at runtime via `-e CODEX_API_KEY=...` (or env-file). Do not bake secrets into the image.
+- Host dotfiles: bind-mount optional `~/.tmux.conf` and `~/.config/nvim` into the container for familiar tmux/NVim configs. Bind `~/.codex` to `/root/.codex` to reuse host Codex config/session.
+- Codex credentials: use host `~/.codex` mount; avoid baking secrets into the image.
 - Branch sync: mount the repo so you control branch/cleanliness; otherwise clone in the container entry if needed.
 
 ## Next Steps

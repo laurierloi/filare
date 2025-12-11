@@ -31,6 +31,8 @@ default:
   @echo "  just taskwarrior-backfill    # dry-run backfill from Taskwarrior JSON"
   @echo "  just taskwarrior-backfill-apply # apply backfill updates from Taskwarrior JSON"
   @echo "  just timeline-graphviz       # generate Graphviz timeline/timeline.svg"
+  @echo "  just codex-container-build   # build codex-ready Docker image"
+  @echo "  just codex-container-sh      # start shell in codex Docker image (bind-mount repo)"
 
 # ---- Version ----
 version:
@@ -138,6 +140,19 @@ taskwarrior-backfill-apply:
 # Generate Graphviz timeline (DOT + optional SVG)
 timeline-graphviz:
   {{setup}} && uv run python scripts/generate_graphviz_timeline.py
+
+# Build codex-ready container image
+codex-container-build:
+  docker build -f docker/Dockerfile.codex -t filare-codex .
+
+# Start a shell in the codex container with repo bind-mounted and host UID/GID
+codex-container-sh:
+  docker run --rm -it \
+    -v $PWD:/workspace \
+    -v $HOME/.codex:/root/.codex \
+    -w /workspace \
+    --user $$(id -u):$$(id -g) \
+    filare-codex bash
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
