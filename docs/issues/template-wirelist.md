@@ -1,6 +1,6 @@
 # Template: Wire List / Netlist
 
-uid: ISS-0032
+uid: ISS-0039
 status: BACKLOG
 priority: medium
 owner_role: REWORK

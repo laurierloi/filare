@@ -1,6 +1,6 @@
 # Document filare-qty CLI usage
 
-uid: ISS-0008
+uid: ISS-0011
 status: BACKLOG
 priority: medium
 owner_role: REWORK

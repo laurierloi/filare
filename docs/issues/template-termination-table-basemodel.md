@@ -1,6 +1,6 @@
 # Add BaseModel for termination_table rows
 
-uid: ISS-0031
+uid: ISS-0038
 status: BACKLOG
 priority: medium
 owner_role: REWORK

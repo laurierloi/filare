@@ -1,6 +1,6 @@
 # Improve loop validation and graph rendering errors
 
-uid: ISS-0015
+uid: ISS-0022
 status: BACKLOG
 priority: medium
 owner_role: REWORK

@@ -1,6 +1,6 @@
 # Termination table omits pin details
 
-uid: ISS-0033
+uid: ISS-0040
 status: BACKLOG
 priority: medium
 owner_role: REWORK

@@ -1,6 +1,7 @@
 from: docs/features/graph/bom-from-graph.md
+
 uid: FEAT-GRAPH-0016
-status: PLANNED
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD

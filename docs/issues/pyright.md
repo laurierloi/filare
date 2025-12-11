@@ -1,6 +1,6 @@
 # Pyright typing cleanup plan
 
-uid: ISS-0019
+uid: ISS-0026
 status: BACKLOG
 priority: medium
 owner_role: REWORK

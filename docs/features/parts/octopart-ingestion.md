@@ -1,6 +1,7 @@
 from: docs/research/vendor-parts-ingestion.md
+
 uid: FEAT-BOM-0006
-status: PROPOSED
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD

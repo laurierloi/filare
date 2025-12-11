@@ -1,6 +1,7 @@
 from: docs/features/filare-model-graph-base.md
+
 uid: FEAT-GRAPH-0010
-status: PLANNED
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD

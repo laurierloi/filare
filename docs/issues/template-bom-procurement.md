@@ -1,6 +1,6 @@
 # Template: Procurement BOM (minimal layout)
 
-uid: ISS-0022
+uid: ISS-0029
 status: BACKLOG
 priority: medium
 owner_role: REWORK

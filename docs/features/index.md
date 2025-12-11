@@ -1,5 +1,14 @@
 # Features Index
 
+uid: FEAT-DOCS-0004
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 This section collects feature design notes, drafts, and specs. Subfolders group topics such as CLI work (`cli/`), graph/model behaviors (`graph/`), mechanical outputs (`mechanical*`), performance tooling, and parts/ingestion pipelines.
 
 Use these pages to understand planned or in-progress capabilities, edge cases under evaluation, and templates for new feature docs. Each file should describe the goal, current behavior, and any gaps or next steps needed before implementation or release.

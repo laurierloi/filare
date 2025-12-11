@@ -1,5 +1,14 @@
 # Functional examples test is skipped due to OOM risk
 
+uid: ISS-0045
+status: DONE
+priority: medium
+owner_role: REWORK
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 TEST
@@ -26,6 +35,7 @@ TEST
 - Adjusted `run_filare_cli` to render each example in its own `uv run filare run ...` subprocess, reusing the sanitized inputs but isolating memory between runs.
 - Re-ran `tests/documentation/test_examples_and_tutorial.py::test_examples_generate_outputs` with a 1 GB virtual memory limit (`ulimit -v 1048576`) and functional tests enabled; it now passes with ~105 MB max RSS.
 - Unskipped the test.
+- Verified header normalization and backlog validation with `just check-backlog-headers`.
 
 ## Status
 

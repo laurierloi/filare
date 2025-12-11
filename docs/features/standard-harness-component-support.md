@@ -1,6 +1,7 @@
 from: docs/research/harness-diagram-components.md
+
 uid: FEAT-BOM-0007
-status: PROPOSED
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD

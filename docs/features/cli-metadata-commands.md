@@ -1,7 +1,7 @@
 # CLI Commands: metadata domain
 
 uid: FEAT-CLI-0005
-status: DONE
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD
@@ -9,43 +9,9 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-## Status
-
-DONE
-
 ## Summary
 
 Add `filare metadata <command>` subcommands to inspect, validate, merge, and normalize metadata files. This lets users verify metadata before rendering and reuse merged outputs in pipelines.
-
-## Requirements
-
-- Provide `filare metadata` group with `validate`, `merge`, `describe`, and `edit` subcommands and listed flags/options.
-- Support YAML inputs (one or many) and optional schema override for validation; default to built-in schema.
-- Emit human-readable output plus optional JSON report where specified; merge can output YAML/JSON, describe supports table/JSON/YAML.
-- Honor CLI > ENV > CONFIG > DEFAULT precedence where settings apply; use `pathlib` for paths.
-- Keep behavior backward compatible with existing metadata parsing/validation.
-
-## Steps
-
-- [x] Map current metadata parsing/validation flow and available schema helpers to avoid duplication.
-- [x] Implement metadata load/merge/validate helpers (with schema override, strict option, source annotations) reusable by CLI.
-- [x] Add Typer `metadata` subcommands (`validate`, `merge`, `describe`) with formatting/output flags and exit codes.
-- [x] Add Typer `metadata edit` command to launch editor, re-load file, and validate post-edit (with optional skip), respecting schema override.
-- [x] Add tests for validation errors/warnings, merge precedence, describe summaries, JSON outputs, and edit flow (editor invocation stub + validation results).
-- [x] Update docs/help/examples as needed.
-
-## Progress Log
-
-2025-12-10: Added feature template and implementation plan; status set to IN_PROGRESS pending operator review.
-2025-12-10: Implemented metadata CLI (validate/merge/describe/edit), reusable helpers, and tests; marked feature DONE.
-
-## Sub-Features
-
-- None
-
-## Related Issues
-
-- None
 
 ## Commands
 
@@ -61,10 +27,6 @@ Add `filare metadata <command>` subcommands to inspect, validate, merge, and nor
   - Input: single metadata file.
   - Flags: `--format {table,json,yaml}`.
   - Output: human-readable summary to stdout.
-- `filare metadata edit <file>` — open metadata in user’s editor, then validate after save.
-  - Input: single metadata file.
-  - Flags: `--schema <path>` (optional schema override), `--strict` (fail on warnings), `--editor <cmd>` (override $EDITOR/$VISUAL), `--no-validate` (skip post-edit validation).
-  - Output: exit code based on validation; reprint validation summary after edit.
 
 ## Inputs & Formats
 
@@ -93,12 +55,3 @@ Add `filare metadata <command>` subcommands to inspect, validate, merge, and nor
 - Provide examples for validate/merge/describe with multiple files and ordering.
 - Surface default schema path and show how to emit JSON reports for CI alongside table output.
 - Clarify how conflicts are reported (source file/line when available).
-
-## Implementation
-
-- [x] Audit existing metadata parsing/validation utilities and schema definitions to decide reuse points and default schema resolution.
-- [x] Design merge behavior (ordering, override reporting, optional source annotations) and outputs (YAML/JSON) using pathlib paths.
-- [x] Implement reusable helpers for validate/merge/describe, then wire Typer subcommands with flags, exit codes, and formatting.
-- [x] Add Typer `metadata edit` command to launch editor, re-load file, and validate post-edit (with optional skip), respecting schema override.
-- [x] Add focused tests for validation errors/warnings, merge precedence, describe summaries, JSON outputs, and edit flow (editor invocation stub + validation results).
-- [x] Update docs/help/examples to reflect new metadata commands and flags.

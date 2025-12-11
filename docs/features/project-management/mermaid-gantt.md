@@ -13,7 +13,7 @@ from: docs/research/project-management.md
 
 ## Status
 
-BACKLOG
+DONE
 
 ## Summary
 
@@ -23,17 +23,17 @@ Generate Mermaid Gantt charts from the backlog manifest to visualize milestones,
 
 - Use the canonical manifest keyed by `uid` to build Gantt sections per workstream/milestone.
 - Include dependency ordering (`after <id>`) based on manifest dependencies.
-- Output location: `outputs/workplan/gantt.md` (Mermaid blocks embeddable in docs).
-- Regeneration via `just workplan` (or similar) with other planning artifacts.
+- Output locations: `outputs/workplan/gantt.md` (artifact) and `docs/workplan/gantt.md` (embedded in MkDocs).
+- Regeneration via `just mermaid-gantt` (runs `scripts/generate_mermaid_gantt.py`); validate via `just mermaid-gantt-check` which runs `scripts/check-mermaid.sh --files docs/workplan/gantt.md`.
 - Keep identifiers stable (uids) for cross-linking to issues/features.
 - Enforce UID format (`ISS-####`, `FEAT-<AREA>-####`) for consistent references in diagrams.
 
 ## Steps
 
-- [ ] Define mapping from manifest fields to Gantt (sections, start dates, durations/estimates, dependencies).
-- [ ] Implement generator producing Mermaid blocks grouped by milestone/workstream.
-- [ ] Add validation or linting step to ensure Mermaid syntax correctness.
-- [ ] Document embedding instructions for docs/mkdocs and regeneration workflow.
+- [x] Define mapping from manifest fields to Gantt (sections, start dates, durations/estimates, dependencies).
+- [x] Implement generator producing Mermaid blocks grouped by milestone/workstream.
+- [x] Add validation or linting step to ensure Mermaid syntax correctness (`just mermaid-gantt-check`).
+- [x] Document embedding instructions for docs/mkdocs and regeneration workflow.
 
 ## Progress Log
 

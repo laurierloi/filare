@@ -1,6 +1,6 @@
 # Make Filare CLI subcommands discoverable and cohesive
 
-uid: ISS-0004
+uid: ISS-0006
 status: BACKLOG
 priority: medium
 owner_role: REWORK

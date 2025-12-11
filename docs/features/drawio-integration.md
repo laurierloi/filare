@@ -1,6 +1,7 @@
 from: docs/features/drawio-svg-import.md
+
 uid: FEAT-DOCS-0002
-status: WAITING_FOR_OPERATOR
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD

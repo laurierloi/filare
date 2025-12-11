@@ -54,7 +54,9 @@ nav:
       - Text Overlap Checker: dev/text_overlap_checker.md
   - Projects:
       - Part Ingestion: projects/part-ingestion.md
-  - Work Tracking: tasks.md
+  - Work Tracking:
+      - Tasks: tasks.md
+      - Backlog Gantt: workplan/gantt.md
   - Refactor Plan: refactor.md
   - Collisions: collisions/summary.md
   - Changelog: changelog.md

@@ -1,6 +1,7 @@
 from: docs/features/graph/pins-in-graph.md
+
 uid: FEAT-GRAPH-0014
-status: PLANNED
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD

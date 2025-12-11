@@ -1,6 +1,6 @@
 # Template: Assembly/Test Checklist
 
-uid: ISS-0023
+uid: ISS-0030
 status: BACKLOG
 priority: medium
 owner_role: REWORK

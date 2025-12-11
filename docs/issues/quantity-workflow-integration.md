@@ -1,6 +1,6 @@
 # Make quantity workflow discoverable and integrated
 
-uid: ISS-0020
+uid: ISS-0027
 status: BACKLOG
 priority: medium
 owner_role: REWORK

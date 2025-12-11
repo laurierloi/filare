@@ -1,6 +1,6 @@
 # Titleblock formatting on titlepage is incorrect
 
-uid: ISS-0034
+uid: ISS-0041
 status: BACKLOG
 priority: medium
 owner_role: REWORK

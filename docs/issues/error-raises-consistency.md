@@ -1,6 +1,6 @@
 # Align error raises with input validation (RESOLVED)
 
-uid: ISS-0010
+uid: ISS-0013
 status: DONE
 priority: medium
 owner_role: REWORK

@@ -1,6 +1,6 @@
 # Template: Connector Pinout Summary
 
-uid: ISS-0024
+uid: ISS-0031
 status: BACKLOG
 priority: medium
 owner_role: REWORK

@@ -1,6 +1,6 @@
 # Clarify connection parsing errors
 
-uid: ISS-0006
+uid: ISS-0008
 status: BACKLOG
 priority: medium
 owner_role: REWORK

@@ -1,11 +1,13 @@
 uid: ISS-PM-0001
+
+uid: ISS-0002
 status: BACKLOG
-priority: high
-owner_role: TOOLS
-estimate: 2d
+priority: medium
+owner_role: REWORK
+estimate: TBD
 dependencies: []
 risk: medium
-milestone: Q1-2025
+milestone: backlog
 
 # Add standard headers to all backlog files
 

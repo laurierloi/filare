@@ -1,6 +1,6 @@
 # Add BaseModel for cut_table rows
 
-uid: ISS-0025
+uid: ISS-0032
 status: BACKLOG
 priority: medium
 owner_role: REWORK

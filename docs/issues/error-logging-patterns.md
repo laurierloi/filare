@@ -1,6 +1,6 @@
 # Standardize error logging when wrapping exceptions (OPEN)
 
-uid: ISS-0009
+uid: ISS-0012
 status: BACKLOG
 priority: medium
 owner_role: REWORK

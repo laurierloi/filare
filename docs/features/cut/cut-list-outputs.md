@@ -1,6 +1,7 @@
 from: docs/research/cut-diagram-requirements.md
+
 uid: FEAT-BOM-0002
-status: PROPOSED
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD

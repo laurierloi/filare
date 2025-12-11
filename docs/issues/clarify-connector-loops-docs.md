@@ -1,6 +1,6 @@
 # Clarify connector loop syntax and examples (Resolved)
 
-uid: ISS-0002
+uid: ISS-0004
 status: BACKLOG
 priority: medium
 owner_role: REWORK
