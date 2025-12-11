@@ -31,8 +31,8 @@ RUN apt-get update && \
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/root/.local/bin:${PATH}"
 
-# Install mermaid-cli and Playwright/Chromium
-RUN npm install --global @mermaid-js/mermaid-cli playwright && \
+# Install mermaid-cli, codex, and Playwright/Chromium
+RUN npm install --global @mermaid-js/mermaid-cli playwright @openai/codex && \
     npx playwright install chromium --with-deps
 
 # Create a non-root workspace/home location; actual UID/GID supplied at runtime via --user
