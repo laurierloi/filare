@@ -46,3 +46,19 @@ def test_connector_template_variants(ports_left, ports_right, has_pincolors):
     # When pin colors are enabled, expect the color table content
     if has_pincolors:
         assert "bgcolor" in rendered
+
+
+@pytest.mark.render
+@pytest.mark.parametrize("pincount", [1, 10, 50])
+def test_connector_template_pincounts(pincount):
+    factory = FakeConnectorTemplateFactory(pincount=pincount)
+    model = factory()
+    comp = model.component
+
+    rendered = get_template("connector.html").render(model.to_render_dict())
+
+    assert str(comp.pincount) in rendered
+    assert len(comp.pins) == pincount
+    # First and last pin IDs should appear
+    assert comp.pins[0].id in rendered
+    assert comp.pins[-1].id in rendered
