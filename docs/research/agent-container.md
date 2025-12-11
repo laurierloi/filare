@@ -12,6 +12,6 @@ Specification for a Docker image that bundles Filare tooling plus Codex CLI prer
 - Branch sync: mount the repo so you control branch/cleanliness; otherwise clone in the container entry if needed.
 
 ## Next Steps
-- Add `just codex-container-sh` variants to inject env files for Codex creds.
+- Add `just codex-container-sh` variants to inject env files for Codex creds. `just codex-container-run` wraps `scripts/run_codex_container.sh` and enforces SSH key/env file plus workspace seeding if empty.
 - Optional: entrypoint to auto-clone/checkout a branch when repo is not mounted.
 - Optional: volume for uv cache to speed repeated runs.

@@ -33,6 +33,7 @@ default:
   @echo "  just timeline-graphviz       # generate Graphviz timeline/timeline.svg"
   @echo "  just codex-container-build   # build codex-ready Docker image"
   @echo "  just codex-container-sh      # start shell in codex Docker image (bind-mount repo)"
+  @echo "  just codex-container-run     # run codex container with workspace/env/ssh key"
 
 # ---- Version ----
 version:
@@ -153,6 +154,9 @@ codex-container-sh:
     -w /home/agent/workspace \
     --user $(id -u):$(id -g) \
     filare-codex bash
+
+codex-container-run:
+  SSH_KEY=${SSH_KEY:?set SSH_KEY} ENV_FILE=${ENV_FILE:?set ENV_FILE} WORKSPACE=${WORKSPACE:-$PWD} ./scripts/run_codex_container.sh --ssh-key "$SSH_KEY" --env-file "$ENV_FILE" --workspace "$WORKSPACE"
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
