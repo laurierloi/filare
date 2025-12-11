@@ -25,6 +25,7 @@ from filare.models.interface.connector import (
     ConnectorInterfaceModel,
     LoopInterfaceModel,
 )
+from filare.models.interface.harness import HarnessInterfaceModel
 from filare.models.interface.metadata import (
     AuthorSignatureInterfaceModel,
     MetadataInterfaceModel,
@@ -177,3 +178,48 @@ class FakeConnectionInterfaceFactory(FakeInterfaceFactory):
         if kwargs.get("from_") is None and kwargs.get("to") is None:
             kwargs["from_"] = FakeConnectionEndpointInterfaceFactory.build()
         return super().build(**kwargs)
+
+
+class FakeHarnessInterfaceFactory(FakeInterfaceFactory):
+    class Meta:
+        model = HarnessInterfaceModel
+
+    metadata = SubFactory(FakeMetadataInterfaceFactory)
+    options = SubFactory(FakeOptionsInterfaceFactory)
+
+    @lazy_attribute
+    def connectors(self) -> Dict[str, ConnectorInterfaceModel]:
+        designators = [f"J{idx + 1}" for idx in range(2)]
+        return {
+            designator: FakeConnectorInterfaceFactory.build(designator=designator)
+            for designator in designators
+        }
+
+    @lazy_attribute
+    def cables(self) -> Dict[str, CableInterfaceModel]:
+        designators = [f"W{idx + 1}" for idx in range(1)]
+        return {
+            designator: FakeCableInterfaceFactory.build(designator=designator)
+            for designator in designators
+        }
+
+    @lazy_attribute
+    def connections(self) -> list[ConnectionInterfaceModel]:
+        connector_ids = list(self.connectors.keys())
+        cable_ids = list(self.cables.keys())
+        return [
+            ConnectionInterfaceModel(
+                from_=ConnectionEndpointInterfaceModel(
+                    parent=connector_ids[0],
+                    pin=1,
+                ),
+                via=ConnectionWireInterfaceModel(
+                    parent=cable_ids[0],
+                    wire=1,
+                ),
+                to=ConnectionEndpointInterfaceModel(
+                    parent=connector_ids[-1],
+                    pin=2,
+                ),
+            )
+        ]

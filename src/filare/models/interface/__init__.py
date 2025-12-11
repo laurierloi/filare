@@ -8,6 +8,7 @@ from .connection import (
     ConnectionWireInterfaceModel,
 )
 from .connector import ConnectorInterfaceModel, LoopInterfaceModel
+from .harness import HarnessInterfaceModel
 from .metadata import (
     AuthorSignatureInterfaceModel,
     MetadataInterfaceModel,
@@ -24,6 +25,7 @@ __all__ = [
     "ConnectionWireInterfaceModel",
     "ConnectorInterfaceModel",
     "FilareInterfaceModel",
+    "HarnessInterfaceModel",
     "LoopInterfaceModel",
     "MetadataInterfaceModel",
     "OptionsInterfaceModel",
