@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # Add just command to extract backlog headers
 
 Category: TOOLS

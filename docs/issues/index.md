@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 This section tracks documented issues and follow-ups that need code or documentation changes. Each page should summarize the problem, provide evidence (logs, repro YAML, screenshots), and list proposed next steps or owners.
 
 Use these entries to drive backlog triage: confirm scope, decide whether the fix belongs to FEATURE/REWORK/BUG workstreams, and link relevant tests or examples once resolved.

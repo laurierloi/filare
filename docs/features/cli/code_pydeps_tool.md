@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 ## Summary
 
 Implement the pydeps-based import graph generator, wired to `filare code graph --tool pydeps`, producing DOT/SVG (and optionally JSON) import graphs for the `filare` package.

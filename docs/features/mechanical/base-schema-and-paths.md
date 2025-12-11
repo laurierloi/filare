@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # Mechanical Base Schema and Paths
 
 ## Status

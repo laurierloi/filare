@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 The connector `loops` documentation was previously mis-indented, missing accepted keys, and lacked a working YAML example.
 
 ## Category

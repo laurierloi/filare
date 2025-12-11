@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 The quantity multiplier helper (`filare-qty`) is not documented anywhere alongside the primary CLI.
 
 ## Category

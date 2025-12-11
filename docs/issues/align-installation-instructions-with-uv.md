@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 Installation guidance previously pointed to `pip`/`virtualenv` instead of the uv-first workflow used throughout the repo. This was updated in this PR to use uv consistently.
 
 ## Category

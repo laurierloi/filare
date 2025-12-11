@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 ## Summary
 
 Introduce a unified, multi-level CLI (`filare <domain> <command>`) so users can target specific parts of the flow (metadata, documents, pages, harnesses, settings, drawio). This improves discoverability, enables segmented validation, and reduces cognitive load compared to separate executables.

@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 ## Summary
 
 Add `filare metadata <command>` subcommands to inspect, validate, merge, and normalize metadata files. This lets users verify metadata before rendering and reuse merged outputs in pipelines.

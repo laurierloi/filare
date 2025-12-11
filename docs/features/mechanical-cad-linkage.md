@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # Mechanical CAD/STEP Linkage and Viewer
 
 ## Status

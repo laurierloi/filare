@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 Pyright currently reports ~262 errors across CLI, flows, models, render, and tooling. This plan tracks goals and phased fixes.
 
 ## Goals

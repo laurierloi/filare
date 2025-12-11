@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # Termination Diagram from Graph Traversal
 
 ## Status

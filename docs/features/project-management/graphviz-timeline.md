@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 from: docs/research/project-management.md
 
 ## Status

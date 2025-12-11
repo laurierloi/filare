@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # BOM from Graph Traversal
 
 ## Status

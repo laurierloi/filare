@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 ## Summary
 
 Fold quantity multiplier management into the main Filare CLI (no separate `filare-qty`), with clear subcommands, defaults, and reports. Users can create, edit, validate, and apply multipliers directly alongside harness rendering.

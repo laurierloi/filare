@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # Mechanical Labels and Dimensions
 
 ## Status

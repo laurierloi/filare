@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 Use this header at the top of every file in `docs/issues/` and `docs/features/` to keep planning metadata consistent and to provide stable references for Taskwarrior/Mermaid/Graphviz exports.
 
 ```

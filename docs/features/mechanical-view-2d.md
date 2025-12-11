@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # 2D Mechanical Harness View (SVG/DXF)
 
 ## Status

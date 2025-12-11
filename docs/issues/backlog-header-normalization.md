@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # Add standard headers to all backlog files
 
 Category: TOOLS

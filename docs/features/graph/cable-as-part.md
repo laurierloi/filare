@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # Cable as Part (Graph-Based)
 
 ## Status

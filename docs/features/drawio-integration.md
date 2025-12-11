@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # DrawIO Authoring Integration
 
 ## Status

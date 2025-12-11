@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 ## Summary
 
 Add `filare document <command>` to manage full-document outputs (HTML/PDF bundles, title pages) and inspect render configuration.

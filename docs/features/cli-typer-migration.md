@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 ## Summary
 
 Adopt Typer for the Filare CLI to enable hierarchical subcommands, richer help/auto-completion, and consistent flag handling. The hierarchical command redesign depends on this migration for clean subcommand UX.

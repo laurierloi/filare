@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # Connector–Cable–Connector in Graph
 
 ## Status

@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 # Cut Diagram from Graph Traversal
 
 ## Status

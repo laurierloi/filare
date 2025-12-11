@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 Exception wrapping now uses typed Filare errors, but logging behavior is inconsistent (some wrappers log before raising, others do not). Define a consistent guideline to avoid duplicate log noise while preserving context.
 
 ## Category

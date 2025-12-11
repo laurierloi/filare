@@ -9,7 +9,6 @@ dependencies: []
 risk: medium
 milestone: backlog
 
-
 Generic `Exception` raises in the harness-building flow made it hard to distinguish user input errors from other failures. This update standardizes those cases to `ValueError` and adds regression tests for the failure paths.
 
 ## Category
