@@ -15,7 +15,6 @@ from filare.models.bom import BomContent, BomEntry, BomEntryBase, BomRenderOptio
 from filare.models.cable import CableModel
 from filare.models.component import ComponentModel
 from filare.models.connector import ConnectorModel
-from filare.models.dataclasses import Cable, Component, Connector
 from filare.models.document import DocumentRepresentation
 from filare.models.metadata import Metadata
 from filare.models.notes import Notes
@@ -34,6 +33,20 @@ from filare.render.imported_svg import prepare_imported_svg
 from filare.render.pdf import generate_pdf_output
 from filare.render.templates import get_template
 from filare.settings import settings
+
+# Compatibility dataclass aliases
+try:  # pragma: no cover
+    from filare.models.dataclasses import (
+        Cable as CableDC,
+        Component as ComponentDC,
+        Connector as ConnectorDC,
+    )
+except Exception:  # pragma: no cover
+    CableDC = ComponentDC = ConnectorDC = None  # type: ignore
+
+Cable = CableDC  # type: ignore
+Component = ComponentDC  # type: ignore
+Connector = ConnectorDC  # type: ignore
 
 
 @dataclass
@@ -59,6 +72,8 @@ class Harness:
         self, designator: Union[str, ConnectorModel, Dict[str, Any]], *args, **kwargs
     ) -> None:
         """Accept dataclass args, ConnectorModel, or mapping and store keyed by designator."""
+        if ConnectorDC is None:  # pragma: no cover
+            raise TypeError("Connector dataclass not available")
         if args or kwargs:
             conn = Connector(designator=designator, *args, **kwargs)
             key = designator
@@ -89,6 +104,8 @@ class Harness:
         self, designator: Union[str, CableModel, Dict[str, Any]], *args, **kwargs
     ) -> None:
         """Accept dataclass args, CableModel, or mapping and store keyed by designator."""
+        if CableDC is None:  # pragma: no cover
+            raise TypeError("Cable dataclass not available")
         if args or kwargs:
             cbl = Cable(designator=designator, *args, **kwargs)
             key = designator
@@ -114,6 +131,8 @@ class Harness:
         self.cables[cable.designator] = cable
 
     def add_additional_bom_item(self, item: Union[dict, ComponentModel]) -> None:
+        if ComponentDC is None:  # pragma: no cover
+            raise TypeError("Component dataclass not available")
         if isinstance(item, ComponentModel):
             new_item = item.to_component()
         else:
