@@ -78,41 +78,126 @@ def run_filare_cli(
         )
 
 
-def test_examples_generate_outputs(tmp_path):
-    examples_root = Path("examples")
-    groups = []
+def _collect_inputs(folder: Path) -> list[Path]:
+    return sorted(
+        p
+        for p in folder.glob("*.yml")
+        if p.name != "metadata.yml" and not p.name.endswith(".document.yaml")
+    )
 
-    for meta in sorted(examples_root.glob("*/metadata.yml")):
-        base = meta.parent
-        inputs = sorted(
-            p
-            for p in base.glob("*.yml")
-            if p.name != "metadata.yml" and not p.name.endswith(".document.yaml")
-        )
-        if inputs:
-            groups.append((base.name, meta, inputs))
 
-    assert groups, "No example YAMLs found"
+def _assert_outputs(output_dir: Path, yaml_inputs: list[Path]) -> None:
+    for inp in yaml_inputs:
+        stem = inp.stem
+        assert (output_dir / f"{stem}.html").exists()
 
-    base_output = Path("outputs") / "examples"
-    base_output.mkdir(parents=True, exist_ok=True)
 
-    for name, metadata_file, yaml_inputs in groups:
-        output_dir = base_output / name
-        output_dir.mkdir(parents=True, exist_ok=True)
-        run_filare_cli(
-            output_dir,
-            metadata_file,
-            yaml_inputs,
-            formats="h",
-            strip_cut_and_term=True,
-            scratch_dir=tmp_path / name,
-        )
+def test_basic_examples_generate_outputs(tmp_path):
+    base = Path("examples/basic")
+    metadata = base / "metadata.yml"
+    inputs = _collect_inputs(base)
+    assert inputs, "No basic examples found"
+    output_dir = Path("outputs") / "examples" / "basic"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    run_filare_cli(
+        output_dir,
+        metadata,
+        inputs,
+        formats="h",
+        strip_cut_and_term=True,
+        scratch_dir=tmp_path / "basic",
+    )
+    _assert_outputs(output_dir, inputs)
 
-        for inp in yaml_inputs:
-            stem = inp.stem
-            for ext in (".html",):
-                assert (output_dir / f"{stem}{ext}").exists()
+
+def test_minimal_document_examples_generate_outputs(tmp_path):
+    base = Path("examples/minimal-document")
+    metadata = base / "metadata.yml"
+    inputs = _collect_inputs(base)
+    assert inputs, "No minimal document examples found"
+    output_dir = Path("outputs") / "examples" / "minimal-document"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    run_filare_cli(
+        output_dir,
+        metadata,
+        inputs,
+        formats="h",
+        strip_cut_and_term=True,
+        scratch_dir=tmp_path / "minimal-document",
+    )
+    _assert_outputs(output_dir, inputs)
+
+
+def test_document_cut_examples_generate_outputs(tmp_path):
+    base = Path("examples/document-cut")
+    metadata = base / "metadata.yml"
+    inputs = _collect_inputs(base)
+    assert inputs, "No cut document examples found"
+    output_dir = Path("outputs") / "examples" / "document-cut"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    run_filare_cli(
+        output_dir,
+        metadata,
+        inputs,
+        formats="h",
+        strip_cut_and_term=True,
+        scratch_dir=tmp_path / "document-cut",
+    )
+    _assert_outputs(output_dir, inputs)
+
+
+def test_document_termination_examples_generate_outputs(tmp_path):
+    base = Path("examples/document-termination")
+    metadata = base / "metadata.yml"
+    inputs = _collect_inputs(base)
+    assert inputs, "No termination document examples found"
+    output_dir = Path("outputs") / "examples" / "document-termination"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    run_filare_cli(
+        output_dir,
+        metadata,
+        inputs,
+        formats="h",
+        strip_cut_and_term=True,
+        scratch_dir=tmp_path / "document-termination",
+    )
+    _assert_outputs(output_dir, inputs)
+
+
+def test_multi_page_examples_generate_outputs(tmp_path):
+    base = Path("examples/multi-page")
+    metadata = base / "metadata.yml"
+    inputs = _collect_inputs(base)
+    assert inputs, "No multi-page examples found"
+    output_dir = Path("outputs") / "examples" / "multi-page"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    run_filare_cli(
+        output_dir,
+        metadata,
+        inputs,
+        formats="h",
+        strip_cut_and_term=True,
+        scratch_dir=tmp_path / "multi-page",
+    )
+    _assert_outputs(output_dir, inputs)
+
+
+def test_all_document_examples_generate_outputs(tmp_path):
+    base = Path("examples/all-document")
+    metadata = base / "metadata.yml"
+    inputs = _collect_inputs(base)
+    assert inputs, "No all-document examples found"
+    output_dir = Path("outputs") / "examples" / "all-document"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    run_filare_cli(
+        output_dir,
+        metadata,
+        inputs,
+        formats="h",
+        strip_cut_and_term=True,
+        scratch_dir=tmp_path / "all-document",
+    )
+    _assert_outputs(output_dir, inputs)
 
 
 def test_tutorial_generates_outputs(tmp_path):
