@@ -6,6 +6,7 @@ WORKDIR /workspace
 # Install uv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
     echo "$HOME/.local/bin" >> /etc/environment
+ENV PATH="/root/.local/bin:${PATH}"
 
 COPY pyproject.toml uv.lock ./
 COPY src ./src
