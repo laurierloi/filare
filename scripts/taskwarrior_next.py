@@ -28,6 +28,9 @@ class Task(BaseModel):
     path: str = ""
 
 
+Task.model_rebuild()
+
+
 def load_tasks(path: pathlib.Path) -> List[Task]:
     data = json.loads(path.read_text(encoding="utf-8"))
     tasks: List[Task] = []
