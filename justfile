@@ -164,13 +164,10 @@ taskwarrior-update uid status="" note="" done="false":
   {{setup}} && uv run python scripts/taskwarrior_update.py --input outputs/workplan/taskwarrior.json "${args[@]}"
 
 # Generate a branch name from a Taskwarrior task UID (optionally check out)
-taskwarrior-branch uid index="1" checkout="false":
+taskwarrior-branch uid checkout="false":
   set -euo pipefail
-  branch=$( {{setup}} && uv run python scripts/taskwarrior_branch.py --input outputs/workplan/taskwarrior.json --uid {{uid}} --index {{index}} )
+  branch=$( {{setup}} && uv run python scripts/taskwarrior_branch.py --input outputs/workplan/taskwarrior.json --uid {{uid}} {{ if checkout == "true" { "--checkout" } else { "" } }} )
   echo "$branch"
-  if [ "{{checkout}}" = "true" ]; then
-    {{setup}} && git checkout -b "$branch"
-  fi
 
 # Generate Graphviz timeline (DOT + optional SVG)
 timeline-graphviz:
