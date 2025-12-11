@@ -132,6 +132,7 @@ def to_taskwarrior(item: BacklogItem) -> Dict[str, object]:
         "project": "filare",
         "tags": tags,
         "depends": item.dependencies if item.dependencies else [],
+        "owner_role": item.owner_role,
         # preserve UID as an annotation for round-tripping/backfill
         "annotations": [{"description": f"uid={item.uid} path={item.path.relative_to(REPO_ROOT)}"}],
         "uid": item.uid,

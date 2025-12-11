@@ -1,0 +1,12 @@
+---
+description: All tests unit tests
+---
+
+All tests unit tests
+Category: test.
+
+Command to run inside the repo:
+```bash
+source scripts/agent-setup.sh >/dev/null && just test-fast
+```
+After execution, summarize the outcome succinctly and mention any errors or next steps.

@@ -71,10 +71,10 @@ flowchart TD
 
 ## Extending/operating
 
-- Update metadata/templates: tweak `examples/metadata.yml` or the templates under `src/filare/templates/`.
+- Update metadata/templates: tweak the per-folder metadata files (e.g., `examples/basic/metadata.yml`) or the templates under `src/filare/templates/`.
 - Add formats or post-processing: extend `render/output.py` and, if needed, `flows/render_outputs.py`.
 - Batch generation: call `uv run --no-sync python src/filare/tools/build_examples.py` (uses the same pipeline as the CLI).
-- Build document YAML only (no render): `uv run --no-sync filare examples/ex01.yml -d examples/metadata.yml -f "" -o outputs` (document YAML and hashes are emitted alongside outputs).
+- Build document YAML only (no render): `uv run --no-sync filare examples/basic/basic01.yml -d examples/basic/metadata.yml -f "" -o outputs` (document YAML and hashes are emitted alongside outputs).
 - Force a document YAML refresh: remove `*.document.yaml` and `document_hashes.yaml` before rerun, or edit the YAML to keep your changes (hash guard prevents overwrite).
 - Page types: see `docs/pages.md` for the list of page types (title, harness, bom, cut, termination) and their roles; enable cut/termination via `options.include_cut_diagram` / `options.include_termination_diagram`.
 

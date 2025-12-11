@@ -1,0 +1,26 @@
+metadata:
+  title: Full Output Document
+  pn: ALL-DOC-01
+  company: Filare Examples
+  address: 500 Example Way
+
+  authors:
+    created:
+      name: Filare Team
+      date: 2024-04-01
+    reviewed:
+      name: n/a
+      date: n/a
+
+  revisions:
+    a:
+      name: Filare Team
+      date: 2024-04-01
+      changelog: full-output document with two complex harnesses
+
+  template:
+    name: din-6771
+    sheetsize: A3
+
+notes:
+  - Two harnesses with cut, termination, and all outputs enabled.

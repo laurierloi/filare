@@ -15,14 +15,14 @@ if [ ! -x "$python_bin" ]; then
   uv sync --group dev --python "$python_bin"
 fi
 
-echo "Running filare examples/ex08.yml -d examples/metadata.yml -f hs -o $outdir"
+echo "Running filare examples/all-document/all-h1.yml -d examples/all-document/metadata.yml -f hs -o $outdir"
 rm -rf "$outdir"
 mkdir -p "$outdir"
 
 UV_PROJECT_ENVIRONMENT="$venv" UV_PYTHON="$python_bin" \
-  uv run --python "$python_bin" --no-sync filare examples/ex08.yml -d examples/metadata.yml -f hs -o "$outdir" >/tmp/filare-bisect.log 2>&1
+  uv run --python "$python_bin" --no-sync filare examples/all-document/all-h1.yml -d examples/all-document/metadata.yml -f hs -o "$outdir" >/tmp/filare-bisect.log 2>&1
 
-if [ ! -f "$outdir/ex08.html" ] || [ ! -f "$outdir/ex08.svg" ]; then
-  echo "expected ex08.html and ex08.svg in $outdir" >&2
+if [ ! -f "$outdir/all-h1.html" ] || [ ! -f "$outdir/all-h1.svg" ]; then
+  echo "expected all-h1.html and all-h1.svg in $outdir" >&2
   exit 1
 fi

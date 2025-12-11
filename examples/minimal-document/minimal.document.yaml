@@ -1,0 +1,41 @@
+metadata:
+  title: Minimal DIN A4 Document
+  pn: MIN-DOC-01
+  company: Filare Examples
+  address: 200 Example Way
+  sheet_total: 3
+  sheet_current: 1
+  sheet_name: minimal
+  output_dir: .
+  titlepage: titlepage
+  output_names:
+    - minimal-h1
+    - minimal-h2
+  files:
+    - minimal-h1.yml
+    - minimal-h2.yml
+  use_qty_multipliers: false
+  multiplier_file_name: quantity_multipliers.txt
+
+pages:
+  - type: title
+    name: titlepage
+  - type: harness
+    name: MINIMAL-H1
+    formats: [html, svg]
+  - type: harness
+    name: MINIMAL-H2
+    formats: [html, svg]
+  - type: bom
+    name: bom
+    formats: [tsv]
+
+extras:
+  options:
+    include_bom: true
+    include_cut_diagram: false
+    include_termination_diagram: false
+    split_bom_page: false
+    split_notes_page: false
+    split_index_page: false
+    template_separator: "."

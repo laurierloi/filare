@@ -1,67 +1,10 @@
 # Example Gallery
 
-## Example 01
+Filare examples are grouped by scenario. Each folder includes its own `metadata.yml` and harness YAMLs:
 
-![](ex01.png)
-
-[Source](ex01.yml) - [Bill of Materials](ex01.tsv)
-
-## Example 02
-
-![](ex02.png)
-
-[Source](ex02.yml) - [Bill of Materials](ex02.tsv)
-
-## Example 03
-
-![](ex03.png)
-
-[Source](ex03.yml) - [Bill of Materials](ex03.tsv)
-
-## Example 04
-
-![](ex04.png)
-
-[Source](ex04.yml) - [Bill of Materials](ex04.tsv)
-
-## Example 05
-
-![](ex05.png)
-
-[Source](ex05.yml) - [Bill of Materials](ex05.tsv)
-
-## Example 06
-
-![](ex06.png)
-
-[Source](ex06.yml) - [Bill of Materials](ex06.tsv)
-
-## Example 07
-
-![](ex07.png)
-
-[Source](ex07.yml) - [Bill of Materials](ex07.tsv)
-
-## Example 08
-
-![](ex08.png)
-
-[Source](ex08.yml) - [Bill of Materials](ex08.tsv)
-
-## Example 09
-
-![](ex09.png)
-
-[Source](ex09.yml) - [Bill of Materials](ex09.tsv)
-
-## Example 10
-
-![](ex10.png)
-
-[Source](ex10.yml) - [Bill of Materials](ex10.tsv)
-
-## Example 11
-
-![](ex11.png)
-
-[Source](ex11.yml) - [Bill of Materials](ex11.tsv)
+- `basic/` — Single harness diagram (`basic01.yml`).
+- `minimal-document/` — Two-harness DIN A4 document (`minimal-h1.yml`, `minimal-h2.yml`, `minimal.document.yaml`).
+- `document-cut/` — Three-harness document with cut diagrams enabled.
+- `document-termination/` — Three-harness document with termination diagrams enabled.
+- `multi-page/` — Multi-page harness collection with split BOM/title pages.
+- `all-document/` — Two complex harnesses with all outputs enabled.

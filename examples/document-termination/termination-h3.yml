@@ -1,0 +1,35 @@
+metadata:
+  title: Termination Harness Gamma
+  pn: TERM-C
+  company: Filare Examples
+  template:
+    name: din-6771
+    sheetsize: A3
+
+connectors:
+  T3-J1:
+    type: Molex MicroFit 3.0
+    subtype: female
+    pinlabels: [1, 2, 3, 4, 5]
+  T3-J2:
+    type: Molex MicroFit 3.0
+    subtype: male
+    pinlabels: [1, 2, 3, 4, 5]
+
+cables:
+  T3-W1:
+    wirecount: 5
+    colors: [RD, BK, BU, YE, GN]
+    gauge: 0.5 mm2
+    length: 1.2 m
+
+connections:
+  -
+    - T3-J1: [1, 2, 3, 4, 5]
+    - T3-W1: [1, 2, 3, 4, 5]
+    - T3-J2: [5, 4, 3, 2, 1]
+
+options:
+  include_bom: true
+  include_cut_diagram: false
+  include_termination_diagram: true

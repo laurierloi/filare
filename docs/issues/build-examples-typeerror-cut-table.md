@@ -15,8 +15,8 @@ BUG
 
 ## Evidence
 
-- Running `source scripts/agent-setup.sh >/dev/null && just build-examples` aborts on the first example (`examples/ex01.yml`) with `TypeError: can only concatenate str (not "int") to str`.
-- Repro via `source scripts/agent-setup.sh >/dev/null && uv run filare run examples/ex01.yml -f ghpstb -o examples` shows the failure originates in `_build_cut_table` (`src/filare/models/harness.py`), at `{"wire": f"{cable.designator}-{idx + 1}", ...}`.
+- Running `source scripts/agent-setup.sh >/dev/null && just build-examples` aborts on the first example (`examples/all-document/all-h1.yml`) with `TypeError: can only concatenate str (not "int") to str`.
+- Repro via `source scripts/agent-setup.sh >/dev/null && uv run filare run examples/all-document/all-h1.yml -d examples/all-document/metadata.yml -f ghpstb -o examples` shows the failure originates in `_build_cut_table` (`src/filare/models/harness.py`), at `{"wire": f"{cable.designator}-{idx + 1}", ...}`.
 - The cut-table builder iterates `cable.wire_objects`, whose keys include the shield id `'s'`; adding `1` to `'s'` raises the TypeError.
 
 ## Hypothesis
@@ -25,7 +25,7 @@ BUG
 
 ## Steps Taken
 
-- Reproduced with `just build-examples` and `uv run filare run examples/ex01.yml -f ghpstb -o examples`.
+- Reproduced with `just build-examples` and `uv run filare run examples/all-document/all-h1.yml -d examples/all-document/metadata.yml -f ghpstb -o examples`.
 - Traced the stack to `_build_cut_table` (`src/filare/models/harness.py`) where `idx + 1` is evaluated on a shield id `"s"`.
 - Implemented a guard that formats wire suffixes by coercing numeric ids to int and leaving non-numeric ids as-is.
 - Added regression coverage for shielded cables with cut diagrams (`tests/models/test_harness_unit.py::test_build_cut_table_handles_shield_id`).

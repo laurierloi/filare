@@ -1,0 +1,48 @@
+metadata:
+  title: Termination Diagram Document
+  pn: TERM-DOC-01
+  company: Filare Examples
+  address: 400 Example Way
+  sheet_total: 4
+  sheet_current: 1
+  sheet_name: term-doc
+  output_dir: .
+  titlepage: titlepage
+  output_names:
+    - termination-h1
+    - termination-h2
+    - termination-h3
+  files:
+    - termination-h1.yml
+    - termination-h2.yml
+    - termination-h3.yml
+  use_qty_multipliers: false
+  multiplier_file_name: quantity_multipliers.txt
+
+pages:
+  - type: title
+    name: titlepage
+  - type: harness
+    name: TERM-H1
+    formats: [html, svg]
+  - type: harness
+    name: TERM-H2
+    formats: [html, svg]
+  - type: harness
+    name: TERM-H3
+    formats: [html, svg]
+  - type: bom
+    name: bom
+    formats: [tsv]
+  - type: termination
+    name: termination
+
+extras:
+  options:
+    include_bom: true
+    include_cut_diagram: false
+    include_termination_diagram: true
+    split_bom_page: false
+    split_notes_page: false
+    split_index_page: false
+    template_separator: "."

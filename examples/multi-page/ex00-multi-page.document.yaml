@@ -1,0 +1,51 @@
+metadata:
+  title: Multi-page Harness Collection
+  pn: MP-DOC-01
+  company: ACME Wiring
+  address: 1 Cable Way
+  sheet_total: 6
+  sheet_current: 1
+  sheet_name: multi-page
+  output_dir: .
+  titlepage: titlepage
+  output_names:
+    - ex01
+    - ex02
+    - ex03
+    - ex04
+  files:
+    - ex01.yml
+    - ex02.yml
+    - ex03.yml
+    - ex04.yml
+  use_qty_multipliers: false
+  multiplier_file_name: quantity_multipliers.txt
+
+pages:
+  - type: title
+    name: titlepage
+  - type: harness
+    name: EX01
+    formats: [html, svg]
+  - type: harness
+    name: EX02
+    formats: [html, svg]
+  - type: harness
+    name: EX03
+    formats: [html, svg]
+  - type: harness
+    name: EX04
+    formats: [html, svg]
+  - type: bom
+    name: bom
+    formats: [tsv]
+
+extras:
+  options:
+    include_bom: true
+    include_cut_diagram: false
+    include_termination_diagram: false
+    split_bom_page: true
+    split_notes_page: false
+    split_index_page: true
+    template_separator: "."

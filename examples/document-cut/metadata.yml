@@ -1,0 +1,26 @@
+metadata:
+  title: Cut Diagram Document
+  pn: CUT-DOC-01
+  company: Filare Examples
+  address: 300 Example Way
+
+  authors:
+    created:
+      name: Filare Team
+      date: 2024-03-01
+    reviewed:
+      name: n/a
+      date: n/a
+
+  revisions:
+    a:
+      name: Filare Team
+      date: 2024-03-01
+      changelog: initial cut-diagram document with three harnesses
+
+  template:
+    name: din-6771
+    sheetsize: A3
+
+notes:
+  - Three harnesses with cut diagrams enabled.

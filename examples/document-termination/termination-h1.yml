@@ -1,0 +1,35 @@
+metadata:
+  title: Termination Harness Alpha
+  pn: TERM-A
+  company: Filare Examples
+  template:
+    name: din-6771
+    sheetsize: A3
+
+connectors:
+  T1-J1:
+    type: Circular
+    subtype: female
+    pinlabels: [1, 2, 3]
+  T1-J2:
+    type: Circular
+    subtype: male
+    pinlabels: [1, 2, 3]
+
+cables:
+  T1-W1:
+    wirecount: 3
+    colors: [RD, BK, YE]
+    gauge: 0.5 mm2
+    length: 0.8 m
+
+connections:
+  -
+    - T1-J1: [1, 2, 3]
+    - T1-W1: [1, 2, 3]
+    - T1-J2: [1, 2, 3]
+
+options:
+  include_bom: true
+  include_cut_diagram: false
+  include_termination_diagram: true

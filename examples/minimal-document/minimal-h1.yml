@@ -1,0 +1,35 @@
+metadata:
+  title: Minimal Harness A
+  pn: MIN-A
+  company: Filare Examples
+  template:
+    name: din-6771
+    sheetsize: A4
+
+connectors:
+  H1-J1:
+    type: Molex KK 254
+    subtype: female
+    pinlabels: [1, 2, 3]
+  H1-J2:
+    type: Molex KK 254
+    subtype: male
+    pinlabels: [1, 2, 3]
+
+cables:
+  H1-W1:
+    wirecount: 3
+    colors: [RD, BK, WH]
+    gauge: 0.35 mm2
+    length: 0.25 m
+
+connections:
+  -
+    - H1-J1: [1, 2, 3]
+    - H1-W1: [1, 2, 3]
+    - H1-J2: [1, 2, 3]
+
+options:
+  include_bom: true
+  include_cut_diagram: false
+  include_termination_diagram: false

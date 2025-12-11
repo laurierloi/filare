@@ -16,7 +16,7 @@ TEST
 ## Evidence
 
 - `tests/documentation/test_examples_and_tutorial.py::test_examples_generate_outputs` is marked `@pytest.mark.skip(reason="This tests just gets the system OOM... there's some leak somewhere")`.
-- The test invokes `run_filare_cli(...)` to render all `examples/ex*.yml` (HTML) using the Typer callback `render_callback`, not a subprocess.
+- The test invokes `run_filare_cli(...)` to render all grouped examples (HTML) using the Typer callback `render_callback`, not a subprocess.
 - `just test-functional` reports this test as skipped.
 
 ## Hypothesis

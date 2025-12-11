@@ -129,7 +129,7 @@ Run common tasks (mount your working tree so outputs land on the host):
   ```
 - Build examples only:
   ```
-  docker run --rm -v "$PWD":/app filare uv run --no-sync filare examples/ex*.yml -d examples/metadata.yml -f hs -o outputs/examples
+  docker run --rm -v "$PWD":/app filare uv run --no-sync filare examples/basic/basic01.yml -d examples/basic/metadata.yml -f hs -o outputs/examples
   ```
 - Build tutorials only:
   ```
@@ -273,7 +273,7 @@ $ uv run filare --help
 #### Sample run all examples
 
 ```
-$ uv run filare -d examples/metadata.yml examples/ex*.yml
+$ uv run filare -d examples/basic/metadata.yml examples/basic/basic01.yml
 ```
 
 Then open `examples/titlepage.html` to open the document root

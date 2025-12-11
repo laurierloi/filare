@@ -143,12 +143,17 @@ def generate_html_output(
         raw_termination_rows if isinstance(raw_termination_rows, list) else None
     )
 
-    bom_render_options = _ensure_bom_render_options(
-        bom_render_options, metadata.template.has_bom_reversed()
-    )
-    bom_html, bom_rows, bom_pages = _render_bom_section(
-        bom, bom_render_options, options_for_render
-    )
+    include_bom = getattr(options_for_render, "include_bom", True)
+    if not include_bom:
+        options_for_render.show_bom = False
+        bom_html, bom_rows, bom_pages = ("", 0, [])
+    else:
+        bom_render_options = _ensure_bom_render_options(
+            bom_render_options, metadata.template.has_bom_reversed()
+        )
+        bom_html, bom_rows, bom_pages = _render_bom_section(
+            bom, bom_render_options, options_for_render
+        )
     options_for_render.bom_rows = bom_rows
     options.bom_rows = bom_rows
     rendered["bom"] = bom_html

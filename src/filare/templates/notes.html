@@ -1,10 +1,12 @@
 <style>
+  {% set titleblock_offset = (options.titleblock_rows + 1) * options.titleblock_row_height %}
+
   .A4 #notes { /* NOTES on top of BOM */
     position: absolute;
     {% if options.show_bom %}
-    bottom: {{ (options.titleblock_rows + 1) * options.titleblock_row_height + (options.bom_rows + 2) * options.bom_row_height }}mm;
+    bottom: {{ titleblock_offset + (options.bom_rows + 2) * options.bom_row_height }}mm;
     {% else %}
-    bottom: {{ (options.titleblock_rows + 1) * options.titleblock_row_height }}mm;
+    bottom: {{ titleblock_offset }}mm;
     {% endif %}
     right: 0;
   }
@@ -13,7 +15,7 @@
     position: absolute;
     {% if options.notes_on_right %}
     right: 10mm;
-    bottom: {{ (options.titleblock_rows + 1) * options.titleblock_row_height }}mm;
+    bottom: {{ titleblock_offset + (options.bom_rows + 2) * options.bom_row_height if options.show_bom else titleblock_offset }}mm;
     {% else %}
     left: 0;
     {% if options.show_bom %}
