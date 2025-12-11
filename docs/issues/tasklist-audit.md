@@ -22,13 +22,13 @@ Each active task in RefactorPlan/TODO/docs/tasks should be represented by a `doc
 
 ## Suggested Next Steps
 
-1) Create `docs/issues/coverage-hardening.md` to consolidate RefactorPlan steps 1–2 with current coverage data. ✅
-2) Create `docs/features/pydantic-migration.md` (covering RefactorPlan 3, 7, 8, 13 and `docs/tasks` pydantic item). ✅
-3) Create `docs/features/config-graph-models.md` (RefactorPlan 4 + docs/tasks networkx/config items). ✅
-4) Create `docs/issues/rendering-templating-audit.md` (RefactorPlan 5 + layout polish from step 10). ✅
-5) Create `docs/issues/release-hygiene.md` to track TODO.md release/branding tasks and RefactorPlan step 6. ✅
-6) Create `docs/issues/bom-and-splice-correctness.md` (RefactorPlan 9). ✅
-7) Triaging `docs/tasks.md`: add links to the above trackers, mark `bom_on_separate_page_by_config` as covered by `docs/features/bom_pagination.md`, and prune/close obsolete items after operator review. (Partially done: coverage note added.)
+1. Create `docs/issues/coverage-hardening.md` to consolidate RefactorPlan steps 1–2 with current coverage data. ✅
+2. Create `docs/features/pydantic-migration.md` (covering RefactorPlan 3, 7, 8, 13 and `docs/tasks` pydantic item). ✅
+3. Create `docs/features/config-graph-models.md` (RefactorPlan 4 + docs/tasks networkx/config items). ✅
+4. Create `docs/issues/rendering-templating-audit.md` (RefactorPlan 5 + layout polish from step 10). ✅
+5. Create `docs/issues/release-hygiene.md` to track TODO.md release/branding tasks and RefactorPlan step 6. ✅
+6. Create `docs/issues/bom-and-splice-correctness.md` (RefactorPlan 9). ✅
+7. Triaging `docs/tasks.md`: add links to the above trackers, mark `bom_on_separate_page_by_config` as covered by `docs/features/bom_pagination.md`, and prune/close obsolete items after operator review. (Partially done: coverage note added.)
 
 ## Impact
 
