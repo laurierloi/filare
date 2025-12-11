@@ -13,14 +13,22 @@
   - Per-role workflows for Taskwarrior usage.
 
 ## Deliverables
-- Taskwarrior helper/queries that list the next task for a given agent role, excluding blocked items.
-- Pool splitter that enforces dependency isolation and exports per-pool views.
+- Taskwarrior helper/queries that list the next task for a given agent role, excluding blocked items. (**done** via `just taskwarrior-next`)
+- Pool splitter that enforces dependency isolation and exports per-pool views. (**done** via `just taskwarrior-pools`)
 - Documentation updates:
-  - Visualization of pools.
-  - `docs/workflows/taskwarrior-agent.md`
-  - `docs/workflows/taskwarrior-project-manager.md`
+  - Visualization of pools (describe pool JSON + Mermaid/Gantt usage). (**done**)
+  - `docs/workflows/taskwarrior-agent.md` (**done**)
+  - `docs/workflows/taskwarrior-project-manager.md` (**done**)
+- Status/note updater with completion stamp. (**done** via `just taskwarrior-update`)
 
 ## Open Questions
 - Pool sizing policy: fixed N per operator input, or dynamic based on active agents?
-- Where to store per-pool exports (e.g., `outputs/taskwarrior/pool-*.json`)?
+- Where to store per-pool exports (e.g., `outputs/taskwarrior/pool-*.json`)? **Current**: `outputs/workplan/taskwarrior-pool-<n>.json`.
 - Priority rules when pools have uneven loads.
+
+## Usage (current)
+- Export backlog: `just taskwarrior-export` (writes `outputs/workplan/taskwarrior.json`).
+- Next ready tasks per role: `just taskwarrior-next role=FEATURE limit=5`.
+- Split into dependency-safe pools: `just taskwarrior-pools pools=3` (writes `outputs/workplan/taskwarrior-pool-*.json`; no cross-pool deps).
+- Visualize pools: load `taskwarrior-pool-*.json` into your preferred viewer or combine with Mermaid/Gantt (`just mermaid-gantt`) to confirm pool coverage.
+- Update status/notes with optional completion stamp: `just taskwarrior-update uid=<UID> status=IN_PROGRESS note="..." done=true`.

@@ -135,6 +135,34 @@ taskwarrior-backfill:
 taskwarrior-backfill-apply:
   {{setup}} && uv run python scripts/taskwarrior_backfill.py --apply outputs/workplan/taskwarrior.json
 
+# List next ready tasks for a role from Taskwarrior export
+taskwarrior-next role="" limit="10":
+  set -euo pipefail
+  role_args=()
+  if [ -n "{{role}}" ]; then
+    role_args=(--roles {{role}})
+  fi
+  {{setup}} && uv run python scripts/taskwarrior_next.py --input outputs/workplan/taskwarrior.json --limit {{limit}} "${role_args[@]}"
+
+# Split Taskwarrior backlog into dependency-safe pools
+taskwarrior-pools pools="2":
+  {{setup}} && uv run python scripts/taskwarrior_split_pools.py --pools {{pools}} --input outputs/workplan/taskwarrior.json --outdir outputs/workplan
+
+# Update a Taskwarrior task (status/notes) in the export; can stamp completion time
+taskwarrior-update uid status="" note="" done="false":
+  set -euo pipefail
+  args=(--uid {{uid}})
+  if [ -n "{{status}}" ]; then
+    args+=(--status {{status}})
+  fi
+  if [ -n "{{note}}" ]; then
+    args+=(--note "{{note}}")
+  fi
+  if [ "{{done}}" = "true" ]; then
+    args+=(--done)
+  fi
+  {{setup}} && uv run python scripts/taskwarrior_update.py --input outputs/workplan/taskwarrior.json "${args[@]}"
+
 # Generate Graphviz timeline (DOT + optional SVG)
 timeline-graphviz:
   {{setup}} && uv run python scripts/generate_graphviz_timeline.py

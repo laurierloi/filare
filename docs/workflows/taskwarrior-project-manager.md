@@ -9,11 +9,11 @@ Use Taskwarrior to publish ready queues per agent, enforce dependency order, and
    - Backfill from JSON (dry-run): `just taskwarrior-backfill`
    - Apply backfill: `just taskwarrior-backfill-apply`
 3. **Shard pools (when N agents run in parallel):**
-   - Partition tasks into N pools by role/priority.
+   - Partition tasks into N pools by role/priority: `just taskwarrior-pools pools=<N>` (writes `outputs/workplan/taskwarrior-pool-*.json`).
    - Ensure no cross-pool dependency; reassign or reorder until pools are independent.
 4. **Publish ready queues:**
-   - For each pool/role: provide the ready filter (`task +role:<ROLE> status:pending -BLOCKED next`)
-   - Optionally export per-pool JSON for clarity.
+   - For each pool/role: provide the ready filter (`task +role:<ROLE> status:pending -BLOCKED next`) or `just taskwarrior-next role=<ROLE>`.
+   - Export per-pool JSON for clarity (see pool outputs).
 5. **Monitor & adjust:**
    - Rebalance pools if one agent drains early.
    - Update priorities/dates based on operator feedback and dependency changes.
