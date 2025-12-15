@@ -2,11 +2,13 @@
 
 from collections import namedtuple
 from enum import Enum
-from typing import List, Optional
+from typing import Any, List, Optional, Union
 
+from faker import Faker
 from pydantic import BaseModel, ConfigDict, Field
 
 padding_amount = 1
+faker = Faker()
 
 ColorOutputMode = Enum(
     "ColorOutputMode", "EN_LOWER EN_UPPER DE_LOWER DE_UPPER HTML_LOWER HTML_UPPER"
@@ -95,7 +97,7 @@ class SingleColor(BaseModel):
 
     @property
     def html_padded(self):
-        html = self.html if self.html else "#FFFFFF"
+        html = self.html if self.html else "#000000"
         return ":".join([html] * padding_amount)
 
     def __len__(self):
@@ -113,6 +115,21 @@ class SingleColor(BaseModel):
             return convert_case(self.code_de)
         else:
             return convert_case(self.html)
+
+
+class FakeSingleColorFactory:
+    """faker-backed factory for SingleColor."""
+
+    @classmethod
+    def create(
+        cls, allow_unknown: bool = True, unknown_chance: int = 20
+    ) -> SingleColor:
+        """Create a SingleColor; unknown_chance is a 0-100 probability for random hex."""
+        # Use known codes most of the time; optionally allow unknown HTML colors.
+        if allow_unknown and faker.boolean(chance_of_getting_true=unknown_chance):
+            return SingleColor(html=faker.hex_color())
+        code = faker.random_element(elements=list(known_colors.keys()))
+        return SingleColor(code)
 
 
 class MultiColor(BaseModel):
@@ -185,7 +202,7 @@ class MultiColor(BaseModel):
     @property
     def html_padded(self):
         if len(self.html_padded_list) == 0:
-            return "#FFFFFF"
+            return "#000000"
         return ":".join(self.html_padded_list)
 
     @classmethod
@@ -217,6 +234,38 @@ class MultiColor(BaseModel):
             if all(known):
                 return [SingleColor(item) for item in items]
         return [SingleColor(inp_str)]
+
+
+class FakeMultiColorFactory:
+    """faker-backed factory for MultiColor."""
+
+    @classmethod
+    def create(
+        cls,
+        count: int = 2,
+        allow_unknown: bool = True,
+        unknown_chance: int = 20,
+        color_code: Optional[str] = None,
+    ) -> MultiColor:
+        """Create a MultiColor; optionally follow a COLOR_CODES sequence in order."""
+        if color_code and color_code in COLOR_CODES:
+            palette = COLOR_CODES[color_code]
+            colors: List[SingleColor] = []
+            for idx in range(count):
+                code_str = palette[idx % len(palette)]
+                if len(code_str) == 2 and code_str.upper() in known_colors:
+                    colors.append(SingleColor(code_str))
+                else:
+                    colors.append(SingleColor(code_str))
+            return MultiColor(colors=colors)
+
+        colors = [
+            FakeSingleColorFactory.create(
+                allow_unknown=allow_unknown, unknown_chance=unknown_chance
+            )
+            for _ in range(count)
+        ]
+        return MultiColor(colors=colors)
 
 
 COLOR_CODES = {

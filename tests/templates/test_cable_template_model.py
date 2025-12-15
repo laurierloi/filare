@@ -21,15 +21,20 @@ def test_cable_template_render_minimal():
 
 @pytest.mark.render
 @pytest.mark.parametrize(
-    "wirecount, with_shield",
+    "wirecount, with_shield, use_color_code_palette",
     [
-        (1, False),
-        (5, False),
-        (10, True),
+        (1, False, False),
+        (5, False, False),
+        (10, True, False),
+        (4, False, True),
     ],
 )
-def test_cable_template_variants(wirecount, with_shield):
-    factory = FakeCableTemplateFactory(wirecount=wirecount, with_shield=with_shield)
+def test_cable_template_variants(wirecount, with_shield, use_color_code_palette):
+    factory = FakeCableTemplateFactory(
+        wirecount=wirecount,
+        with_shield=with_shield,
+        use_color_code_palette=use_color_code_palette,
+    )
     model = factory()
     rendered = get_template("cable.html").render(model.to_render_dict())
 

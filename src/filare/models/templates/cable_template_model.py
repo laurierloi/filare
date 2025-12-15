@@ -7,44 +7,17 @@ from typing import ClassVar, Dict, List, Optional
 from faker import Faker
 from pydantic import BaseModel, ConfigDict, Field
 
-from filare.models.colors import MultiColor, SingleColor
+from filare.models.colors import (
+    COLOR_CODES,
+    FakeMultiColorFactory,
+    FakeSingleColorFactory,
+    MultiColor,
+    SingleColor,
+)
+from filare.models.partnumber import FakePartNumberInfoListFactory, PartnumberInfoList
 from filare.models.templates.template_model import TemplateModel, TemplateModelFactory
 
 faker = Faker()
-
-
-class TemplateWireColor(SingleColor):
-    """Wire color with padded HTML helper."""
-
-    @property
-    def html_padded(self) -> str:
-        return self.html or "#000000"
-
-
-class TemplateCableColor(MultiColor):
-    """Cable color bar with len helper."""
-
-    @property
-    def len(self) -> int:
-        return len(self.colors)
-
-
-class TemplatePartnumbers(BaseModel):
-    """Minimal partnumbers helper for cable template."""
-
-    values: List[List[str]]
-
-    model_config = ConfigDict(extra="forbid")
-
-    @property
-    def is_list(self) -> bool:
-        return True
-
-    def as_list(self, parent_partnumbers: Optional["TemplatePartnumbers"] = None) -> List[List[str]]:
-        return self.values
-
-    def keep_only_shared(self) -> "TemplatePartnumbers":
-        return self
 
 
 class TemplateWire(BaseModel):
@@ -52,9 +25,9 @@ class TemplateWire(BaseModel):
 
     id: str
     port: str
-    color: TemplateWireColor
+    color: SingleColor
     is_shield: bool = False
-    partnumbers: Optional[TemplatePartnumbers] = None
+    partnumbers: Optional[PartnumberInfoList] = None
 
     model_config = ConfigDict(extra="forbid")
 
@@ -72,8 +45,8 @@ class TemplateCableComponent(BaseModel):
     gauge_str_with_equiv: Optional[str] = None
     shield: bool = False
     length_str: Optional[str] = None
-    color: Optional[TemplateCableColor] = None
-    partnumbers: Optional[TemplatePartnumbers] = None
+    color: Optional[MultiColor] = None
+    partnumbers: Optional[PartnumberInfoList] = None
     wire_objects: Dict[str, TemplateWire] = Field(default_factory=dict)
     image: Optional[str] = None
     additional_components: List[object] = Field(default_factory=list)
@@ -102,12 +75,12 @@ class FakeTemplateWireFactory:
     """faker-backed factory for TemplateWire."""
 
     @classmethod
-    def create(cls, idx: int, is_shield: bool = False, with_partnumbers: bool = False) -> TemplateWire:
-        color = TemplateWireColor(code_en=faker.random_element(elements=["RD", "BK", "GN"]))
+    def create(
+        cls, idx: int, is_shield: bool = False, with_partnumbers: bool = False
+    ) -> TemplateWire:
+        color = FakeSingleColorFactory.create(allow_unknown=False)
         partnumbers = (
-            TemplatePartnumbers(values=[[faker.bothify(text="PN-###")]])
-            if with_partnumbers
-            else None
+            FakePartNumberInfoListFactory.create(count=1) if with_partnumbers else None
         )
         return TemplateWire(
             id=f"W{idx}",
@@ -124,18 +97,38 @@ class FakeCableTemplateFactory(TemplateModelFactory):
     class Meta:
         model = CableTemplateModel
 
-    def __init__(self, wirecount: int = 3, with_shield: bool = True, **kwargs):
+    def __init__(
+        self,
+        wirecount: int = 3,
+        with_shield: bool = True,
+        partnumber_unique_count: int = 2,
+        use_color_code_palette: bool = False,
+        **kwargs,
+    ):
         if "component" not in kwargs:
             wires: Dict[str, TemplateWire] = {}
             for idx in range(1, wirecount + 1):
                 wires[f"W{idx}"] = FakeTemplateWireFactory.create(
-                    idx, is_shield=False, with_partnumbers=True
+                    idx,
+                    is_shield=False,
+                    with_partnumbers=True,
                 )
             if with_shield:
                 wires["S1"] = FakeTemplateWireFactory.create(
                     idx=wirecount + 1, is_shield=True, with_partnumbers=False
                 )
-            partnumbers = TemplatePartnumbers(values=[[faker.bothify(text="PN-###")]])
+            partnumbers = FakePartNumberInfoListFactory.create(
+                count=partnumber_unique_count
+            )
+            if use_color_code_palette:
+                color_code = faker.random_element(elements=list(COLOR_CODES.keys()))
+                color_value = FakeMultiColorFactory.create(
+                    count=wirecount, allow_unknown=False, color_code=color_code
+                )
+            else:
+                color_value = FakeMultiColorFactory.create(
+                    count=wirecount, allow_unknown=False
+                )
             kwargs["component"] = TemplateCableComponent(
                 designator="C1",
                 type="cable",
@@ -144,7 +137,7 @@ class FakeCableTemplateFactory(TemplateModelFactory):
                 gauge_str_with_equiv="18AWG",
                 shield=with_shield,
                 length_str="1m",
-                color=TemplateCableColor(colors=[TemplateWireColor(code_en="RD")]),
+                color=color_value,
                 partnumbers=partnumbers,
                 wire_objects=wires,
             )

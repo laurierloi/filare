@@ -7,7 +7,12 @@ from typing import ClassVar, List
 from faker import Faker
 from pydantic import BaseModel, ConfigDict, Field
 
-from filare.models.colors import MultiColor, SingleColor
+from filare.models.colors import (
+    FakeMultiColorFactory,
+    FakeSingleColorFactory,
+    MultiColor,
+    SingleColor,
+)
 from filare.models.templates.template_model import TemplateModel, TemplateModelFactory
 
 faker = Faker()
@@ -38,23 +43,61 @@ class ColorsMacroTemplateModel(TemplateModel):
     colors: List[TemplateColorLegend] = Field(default_factory=list)
 
 
+class FakeTemplateColorLegendFactory:
+    """faker-backed factory for TemplateColorLegend."""
+
+    @classmethod
+    def create(
+        cls,
+        count: int = 1,
+        allow_unknown: bool = False,
+        unknown_chance: int = 20,
+        color_code: str | None = None,
+    ) -> TemplateColorLegend:
+        multicolor = FakeMultiColorFactory.create(
+            count=count,
+            allow_unknown=allow_unknown,
+            unknown_chance=unknown_chance,
+            color_code=color_code,
+        )
+        colors = list(multicolor.colors)
+        if not colors:
+            colors = [
+                FakeSingleColorFactory.create(
+                    allow_unknown=allow_unknown, unknown_chance=unknown_chance
+                )
+            ]
+        hex_color = colors[0].html or faker.hex_color()
+        return TemplateColorLegend(
+            name=faker.lexify(text="??").upper(),
+            hex=hex_color,
+            colors=colors,
+        )
+
+
 class FakeColorsMacroTemplateFactory(TemplateModelFactory):
     """Factory for ColorsMacroTemplateModel with faker defaults."""
 
     class Meta:
         model = ColorsMacroTemplateModel
 
-    def __init__(self, count: int = 3, **kwargs):
+    def __init__(
+        self,
+        count: int = 3,
+        allow_unknown: bool = False,
+        unknown_chance: int = 20,
+        color_code: str | None = None,
+        legend_color_count: int = 1,
+        **kwargs,
+    ):
         if "colors" not in kwargs:
-            legends = []
-            for _ in range(count):
-                hex_color = faker.hex_color()
-                legends.append(
-                    TemplateColorLegend(
-                        name=faker.lexify(text="??").upper(),
-                        hex=hex_color,
-                        colors=[SingleColor(hex_color)],
-                    )
+            kwargs["colors"] = [
+                FakeTemplateColorLegendFactory.create(
+                    count=legend_color_count,
+                    allow_unknown=allow_unknown,
+                    unknown_chance=unknown_chance,
+                    color_code=color_code,
                 )
-            kwargs["colors"] = legends
+                for _ in range(count)
+            ]
         super().__init__(**kwargs)
