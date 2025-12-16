@@ -63,6 +63,22 @@ from filare.models.templates.simple_template_model import (
     SimpleTemplateModel,
 )
 from filare.models.templates.template_model import TemplateModel, TemplateModelFactory
+from filare.models.templates.termination_table_template_model import (
+    FakeTerminationTableTemplateFactory,
+    TerminationTableTemplateModel,
+)
+from filare.models.templates.termination_template_model import (
+    FakeTerminationTemplateFactory,
+    TerminationTemplateModel,
+)
+from filare.models.templates.titleblock_template_model import (
+    FakeTitleblockTemplateFactory,
+    TitleblockTemplateModel,
+)
+from filare.models.templates.titlepage_template_model import (
+    FakeTitlePageTemplateFactory,
+    TitlePageTemplateModel,
+)
 
 __all__ = [
     "TemplateModel",
@@ -99,4 +115,12 @@ __all__ = [
     "FakeSimpleConnectorTemplateFactory",
     "SimpleTemplateModel",
     "FakeSimpleTemplateFactory",
+    "TitleblockTemplateModel",
+    "FakeTitleblockTemplateFactory",
+    "TitlePageTemplateModel",
+    "FakeTitlePageTemplateFactory",
+    "TerminationTableTemplateModel",
+    "FakeTerminationTableTemplateFactory",
+    "TerminationTemplateModel",
+    "FakeTerminationTemplateFactory",
 ]

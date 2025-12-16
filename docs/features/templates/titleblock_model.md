@@ -1,9 +1,18 @@
+uid: FEAT-RENDER-0011
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: 1d
+dependencies: []
+risk: medium
+milestone: templates-models
+
 from: docs/features/templates/models.md
 
 # Template Model: titleblock
 
 ## Status
-PLANNED
+DONE
 
 ## Summary
 Implement a model for `titleblock.html` and a factory covering title block metadata fields.
@@ -13,13 +22,14 @@ Implement a model for `titleblock.html` and a factory covering title block metad
 - Factory should populate required metadata and optional entries (authors/revisions variants).
 
 ## Steps
-- [ ] Identify context keys in `titleblock.html`.
-- [ ] Define titleblock template model with defaults.
-- [ ] Add factory_boy factory with author/revision variants.
-- [ ] Add template tests using factory outputs.
+- [x] Identify context keys in `titleblock.html`.
+- [x] Define titleblock template model with defaults.
+- [x] Add factory_boy factory with author/revision variants.
+- [x] Add template tests using factory outputs.
 
 ## Progress Log
 2025-12-10: Created sub-feature for titleblock template model/factory.
+2025-12-11: Implemented faker-backed metadata/options factories plus render tests.
 
 ## Sub-Features
 - None

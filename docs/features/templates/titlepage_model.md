@@ -1,9 +1,18 @@
+uid: FEAT-RENDER-0012
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: 1d
+dependencies: []
+risk: medium
+milestone: templates-models
+
 from: docs/features/templates/models.md
 
 # Template Model: titlepage
 
 ## Status
-PLANNED
+DONE
 
 ## Summary
 Implement a model for `titlepage.html` and a factory to cover title page metadata, notes, and assets.
@@ -13,13 +22,14 @@ Implement a model for `titlepage.html` and a factory to cover title page metadat
 - Factory should generate variants with optional logo/notes/authors.
 
 ## Steps
-- [ ] Extract context keys from `titlepage.html`.
-- [ ] Define titlepage template model with defaults.
-- [ ] Add factory_boy factory with metadata/logo/note variations.
-- [ ] Add template tests using factory outputs.
+- [x] Extract context keys from `titlepage.html`.
+- [x] Define titlepage template model with defaults.
+- [x] Add factory_boy factory with metadata/logo/note variations.
+- [x] Add template tests using factory outputs.
 
 ## Progress Log
 2025-12-10: Created sub-feature for titlepage template model/factory.
+2025-12-11: Added faker-backed page options factory and rendered child templates in tests.
 
 ## Sub-Features
 - None
