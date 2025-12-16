@@ -61,7 +61,11 @@ class FakeBomTemplateFactory(TemplateModelFactory):
             headers = ["ID", "QTY", "DESC"]
             columns_class = ["bom_col_id", "bom_col_qty", "bom_col_desc"]
             content = [
-                [f"{idx}", str(faker.random_int(min=1, max=5)), faker.sentence(nb_words=3)]
+                [
+                    f"{idx}",
+                    str(faker.random_int(min=1, max=5)),
+                    faker.sentence(nb_words=3),
+                ]
                 for idx in range(1, rows + 1)
             ]
             kwargs["bom"] = TemplateBomPayload(

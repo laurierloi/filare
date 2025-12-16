@@ -23,8 +23,12 @@ class BomEntry(BaseModel):
     """BOM-style entry for an additional component."""
 
     qty: Quantity
-    description: str = Field(..., description="Description of the additional component.")
-    id: Optional[str] = Field(default=None, description="Optional component identifier.")
+    description: str = Field(
+        ..., description="Description of the additional component."
+    )
+    id: Optional[str] = Field(
+        default=None, description="Optional component identifier."
+    )
 
     model_config = ConfigDict(extra="forbid")
 

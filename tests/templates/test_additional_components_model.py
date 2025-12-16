@@ -1,6 +1,9 @@
 import pytest
 
-from filare.models.templates import AdditionalComponentsFactory, AdditionalComponentsTemplateModel
+from filare.models.templates import (
+    AdditionalComponentsFactory,
+    AdditionalComponentsTemplateModel,
+)
 from filare.render.templates import get_template
 
 

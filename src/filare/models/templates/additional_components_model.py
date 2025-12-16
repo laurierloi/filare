@@ -6,7 +6,10 @@ from typing import ClassVar, List
 
 from pydantic import Field
 
-from filare.models.additional_component import AdditionalComponent, FakeAdditionalComponentFactory
+from filare.models.additional_component import (
+    AdditionalComponent,
+    FakeAdditionalComponentFactory,
+)
 from filare.models.templates.template_model import TemplateModel, TemplateModelFactory
 
 
