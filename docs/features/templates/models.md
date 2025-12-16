@@ -28,6 +28,7 @@ Add Pydantic template models under `src/filare/models/templates/` (one per templ
 2025-12-11: Implemented BomTemplateModel + faker factory and render tests (reverse header variants).
 2025-12-11: Implemented CableTemplateModel + faker factory and render tests (wirecount/shield variants).
 2025-12-11: Implemented ColorsMacroTemplateModel + faker factory and render tests (legend count variants).
+2025-12-11: Implemented ComponentTableTemplateModel + faker factory and render tests (partnumber list vs single, notes/images/additional components).
 
 ## Command & Testing Notes
 - Use `just test-specific <path> -- <args>` to target template model tests, e.g., `just test-specific tests/templates/test_additional_components_model.py`.

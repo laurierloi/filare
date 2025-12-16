@@ -1,6 +1,10 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+
+from faker import Faker
 
 from filare.models.utils import html_line_breaks
+
+faker = Faker()
 
 
 @dataclass
@@ -29,3 +33,12 @@ class MultilineHypertext:
 
     def is_empty(self):
         return not self.raw
+
+
+class FakeMultilineHypertextFactory:
+    """faker-backed factory for MultilineHypertext."""
+
+    @classmethod
+    def create(cls, lines: int = 1, words_per_line: int = 3) -> MultilineHypertext:
+        rows = [faker.sentence(nb_words=words_per_line) for _ in range(max(lines, 1))]
+        return MultilineHypertext.to("\n".join(rows))
