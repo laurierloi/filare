@@ -25,7 +25,20 @@ from filare.models.templates.connector_template_model import (
     ConnectorTemplateModel,
     FakeConnectorTemplateFactory,
 )
+from filare.models.templates.cut_table_template_model import (
+    CutTableTemplateModel,
+    FakeCutTableTemplateFactory,
+)
+from filare.models.templates.cut_template_model import (
+    CutTemplateModel,
+    FakeCutTemplateFactory,
+)
+from filare.models.templates.din_6771_template_model import (
+    Din6771TemplateModel,
+    FakeDin6771TemplateFactory,
+)
 from filare.models.templates.images_template_model import (
+    FakeImagesTemplateFactory,
     FakeTemplateImageFactory,
     ImagesTemplateModel,
 )
@@ -47,6 +60,13 @@ __all__ = [
     "FakeComponentTableTemplateFactory",
     "ColorsMacroTemplateModel",
     "FakeColorsMacroTemplateFactory",
+    "CutTableTemplateModel",
+    "FakeCutTableTemplateFactory",
+    "CutTemplateModel",
+    "FakeCutTemplateFactory",
+    "Din6771TemplateModel",
+    "FakeDin6771TemplateFactory",
     "ImagesTemplateModel",
+    "FakeImagesTemplateFactory",
     "FakeTemplateImageFactory",
 ]
