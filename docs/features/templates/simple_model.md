@@ -1,25 +1,35 @@
+uid: FEAT-RENDER-0009
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: 1d
+dependencies: []
+risk: medium
+milestone: templates-models
+
 from: docs/features/templates/models.md
 
 # Template Model: simple
 
 ## Status
-PLANNED
+DONE
 
 ## Summary
-Implement a model for `simple.html` and a factory generating minimal page metadata/content used by the simple template.
+Implement a model for `simple.html` and a factory generating page metadata/content (title, description, diagram, notes, BOM) and container styling.
 
 ## Requirements
-- Capture minimal fields required by `simple.html` (titles, basic metadata, notes).
-- Factory should generate content variants with optional fields.
+- Capture fields required by `simple.html` (titles, description, diagram, notes, BOM, container class/style).
+- Factory should generate content variants with optional fields and container styling.
 
 ## Steps
-- [ ] Extract context keys from `simple.html`.
-- [ ] Define simple template model with defaults.
-- [ ] Add factory_boy factory with optional field variations.
-- [ ] Add template tests using factory outputs.
+- [x] Extract context keys from `simple.html`.
+- [x] Define simple template model with defaults.
+- [x] Add factory_boy factory with optional field variations.
+- [x] Add template tests using factory outputs.
 
 ## Progress Log
 2025-12-10: Created sub-feature for simple template model/factory.
+2025-12-11: Implemented model + factory and render tests with container styling.
 
 ## Sub-Features
 - None
