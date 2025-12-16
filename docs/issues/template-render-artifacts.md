@@ -1,3 +1,4 @@
+# Issue: Save rendered template outputs for review
 uid: ISS-0105
 status: BACKLOG
 priority: medium
@@ -6,8 +7,6 @@ estimate: 1d
 dependencies: []
 risk: medium
 milestone: templates-models
-
-# Issue: Save rendered template outputs for review
 
 ## Summary
 

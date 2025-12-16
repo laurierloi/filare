@@ -1,3 +1,4 @@
+# Issue: Add fixtures for nested template rendering
 uid: ISS-0104
 status: BACKLOG
 priority: medium
@@ -6,8 +7,6 @@ estimate: 1d
 dependencies: []
 risk: medium
 milestone: templates-models
-
-# Issue: Add fixtures for nested template rendering
 
 ## Summary
 
