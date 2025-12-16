@@ -42,6 +42,10 @@ from filare.models.templates.images_template_model import (
     FakeTemplateImageFactory,
     ImagesTemplateModel,
 )
+from filare.models.templates.index_table_template_model import (
+    FakeIndexTableTemplateFactory,
+    IndexTableTemplateModel,
+)
 from filare.models.templates.template_model import TemplateModel, TemplateModelFactory
 
 __all__ = [
@@ -69,4 +73,6 @@ __all__ = [
     "ImagesTemplateModel",
     "FakeImagesTemplateFactory",
     "FakeTemplateImageFactory",
+    "IndexTableTemplateModel",
+    "FakeIndexTableTemplateFactory",
 ]
