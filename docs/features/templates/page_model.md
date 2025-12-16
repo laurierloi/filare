@@ -1,25 +1,35 @@
+uid: FEAT-RENDER-0007
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: 1d
+dependencies: []
+risk: medium
+milestone: templates-models
+
 from: docs/features/templates/models.md
 
 # Template Model: page
 
 ## Status
-PLANNED
+DONE
 
 ## Summary
-Implement a model for `page.html` and a factory covering page metadata, numbering, and layout flags.
+Implement a model for `page.html` and a factory covering page metadata, options (font/bg/titleblock rows), and titleblock content.
 
 ## Requirements
-- Capture page metadata (name, index, totals, notes) used by `page.html`.
-- Factory should generate page entries with/without optional notes and flags.
+- Capture page metadata (generator/title/template sizing) and styling options used by `page.html`.
+- Factory should generate page entries with configurable options/titleblock snippets.
 
 ## Steps
-- [ ] Extract context keys from `page.html`.
-- [ ] Define page template model with defaults.
-- [ ] Add factory_boy factory with variations in notes/flags.
-- [ ] Add template tests using factory outputs.
+- [x] Extract context keys from `page.html`.
+- [x] Define page template model with defaults.
+- [x] Add factory_boy factory with variations in options/metadata.
+- [x] Add template tests using factory outputs.
 
 ## Progress Log
 2025-12-10: Created sub-feature for page template model/factory.
+2025-12-11: Implemented model + faker factory using shared page metadata/options factories and render tests.
 
 ## Sub-Features
 - None

@@ -50,6 +50,10 @@ from filare.models.templates.notes_template_model import (
     FakeNotesTemplateFactory,
     NotesTemplateModel,
 )
+from filare.models.templates.page_template_model import (
+    FakePageTemplateFactory,
+    PageTemplateModel,
+)
 from filare.models.templates.template_model import TemplateModel, TemplateModelFactory
 
 __all__ = [
@@ -81,4 +85,6 @@ __all__ = [
     "FakeIndexTableTemplateFactory",
     "NotesTemplateModel",
     "FakeNotesTemplateFactory",
+    "PageTemplateModel",
+    "FakePageTemplateFactory",
 ]

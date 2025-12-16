@@ -34,6 +34,7 @@ Add Pydantic template models under `src/filare/models/templates/` (one per templ
 2025-12-11: Implemented Din6771TemplateModel + faker factory with notes/BOM toggles and diagram container styling plus render tests.
 2025-12-11: Implemented ImagesTemplateModel + faker factory (caption/fixed-size variants) and render tests.
 2025-12-11: Implemented IndexTableTemplateModel + faker factory with PDF variants/layout options and render tests.
+2025-12-11: Implemented PageTemplateModel + faker factory using shared page metadata/options and render tests.
 
 ## Command & Testing Notes
 - Use `just test-specific <path> -- <args>` to target template model tests, e.g., `just test-specific tests/templates/test_additional_components_model.py`.

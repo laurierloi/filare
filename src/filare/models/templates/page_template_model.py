@@ -102,16 +102,9 @@ class FakePageTemplateFactory(TemplateModelFactory):
 
     def __init__(self, **kwargs):
         if "metadata" not in kwargs:
-            kwargs["metadata"] = TemplatePageMetadata(
-                generator="Filare", title=faker.word().title()
-            )
+            kwargs["metadata"] = FakeTemplatePageMetadataFactory.create()
         if "options" not in kwargs:
-            kwargs["options"] = TemplatePageOptions(
-                fontname="Arial",
-                bgcolor=SingleColor("#FFFFFF"),
-                titleblock_rows=3,
-                titleblock_row_height=5.0,
-            )
+            kwargs["options"] = FakeTemplatePageOptionsFactory.create()
         if "titleblock" not in kwargs:
             kwargs["titleblock"] = "<div id='titleblock'>Titleblock</div>"
         super().__init__(**kwargs)
