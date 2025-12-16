@@ -1,4 +1,12 @@
 # Puppeteer-based doc/diagram preview
+uid: ISS-0209
+status: BACKLOG
+priority: medium
+owner_role: TOOLS
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Category
 

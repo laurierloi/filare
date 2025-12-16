@@ -1,3 +1,4 @@
+# Issue: Refine component_table template for varied partnumbers
 uid: ISS-0103
 status: BACKLOG
 priority: medium
@@ -6,8 +7,6 @@ estimate: 1d
 dependencies: []
 risk: medium
 milestone: templates-models
-
-# Issue: Refine component_table template for varied partnumbers
 
 ## Summary
 

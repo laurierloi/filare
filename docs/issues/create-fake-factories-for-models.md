@@ -1,8 +1,16 @@
 # Issue: Create Fake Factories for Models
+uid: ISS-0205
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: 3d
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Status
 
-OPEN
+BACKLOG
 
 ## Summary
 

@@ -1,4 +1,12 @@
 # Rendering split and templating audit
+uid: ISS-0210
+status: BACKLOG
+priority: medium
+owner_role: REWORK
+estimate: 3d
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Category
 

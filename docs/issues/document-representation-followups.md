@@ -1,4 +1,12 @@
 # Document representation: input + split behavior
+uid: ISS-0208
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: 2d
+dependencies: []
+risk: medium
+milestone: backlog
 
 ## Category
 

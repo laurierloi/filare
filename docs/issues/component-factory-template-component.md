@@ -1,3 +1,4 @@
+# Issue: Add FakeComponentFactory and TemplateComponent derivation helper
 uid: ISS-0102
 status: BACKLOG
 priority: medium
@@ -6,8 +7,6 @@ estimate: 1d
 dependencies: []
 risk: medium
 milestone: templates-models
-
-# Issue: Add FakeComponentFactory and TemplateComponent derivation helper
 
 ## Summary
 

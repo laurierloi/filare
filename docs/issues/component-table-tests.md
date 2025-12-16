@@ -1,8 +1,16 @@
 # Issue: Strengthen component_table template tests
+uid: ISS-0203
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: 1d
+dependencies: []
+risk: medium
+milestone: templates-models
 
 ## Status
 
-OPEN
+BACKLOG
 
 ## Summary
 
