@@ -1,4 +1,5 @@
 # Issue: Strengthen component_table template tests
+
 uid: ISS-0203
 status: BACKLOG
 priority: medium

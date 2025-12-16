@@ -1,4 +1,5 @@
 # Issue: Refine component_table template for varied partnumbers
+
 uid: ISS-0103
 status: BACKLOG
 priority: medium

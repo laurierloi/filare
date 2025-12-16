@@ -1,4 +1,5 @@
 # Issue: Add FakeComponentFactory and TemplateComponent derivation helper
+
 uid: ISS-0102
 status: BACKLOG
 priority: medium
