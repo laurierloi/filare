@@ -1,7 +1,16 @@
+uid: FEAT-RENDER-0020
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: 3d
+dependencies: []
+risk: medium
+milestone: templates-models
+
 # Template Models and Factories
 
 ## Status
-IN_PROGRESS
+DONE
 
 ## Summary
 Add Pydantic template models under `src/filare/models/templates/` (one per template in `src/filare/templates/*.html`) inheriting from `template_model.py`, plus factory_boy factories to cover all template attributes for testing.
@@ -16,8 +25,8 @@ Add Pydantic template models under `src/filare/models/templates/` (one per templ
 - [x] Inventory templates and align naming for model files and factories.
 - [x] Define shared/base fields in `template_model.py` and extend per-template models with specific fields.
 - [x] Add factory_boy-style factories for each template model with sensible defaults and complete attribute coverage.
-- [ ] Wire models/factories into tests that exercise templates with full attribute sets.
-- [ ] Update docs/help to describe template model coverage and factory usage.
+- [x] Wire models/factories into tests that exercise templates with full attribute sets.
+- [x] Update docs/help to describe template model coverage and factory usage.
 
 ## Progress Log
 2025-12-10: Created parent feature and outlined requirements/steps.
@@ -40,6 +49,7 @@ Add Pydantic template models under `src/filare/models/templates/` (one per templ
 2025-12-11: Implemented TerminationTemplateModel + faker factory rendering termination_table and render tests.
 2025-12-11: Implemented TitleblockTemplateModel + faker factories for metadata/options and render tests.
 2025-12-11: Implemented TitlePageTemplateModel with rendered child templates and page options factory.
+2025-12-11: Completed all template models/factories/tests; marking parent feature DONE.
 
 ## Command & Testing Notes
 - Use `just test-specific <path> -- <args>` to target template model tests, e.g., `just test-specific tests/templates/test_additional_components_model.py`.

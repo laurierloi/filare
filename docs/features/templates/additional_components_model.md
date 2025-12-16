@@ -1,9 +1,18 @@
+uid: FEAT-RENDER-0013
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: 1d
+dependencies: []
+risk: medium
+milestone: templates-models
+
 from: docs/features/templates/models.md
 
 # Template Model: additional_components
 
 ## Status
-IN_PROGRESS
+DONE
 
 ## Summary
 Implement a Pydantic model for `additional_components.html` (inherits from `template_model.py`) and a factory_boy factory that can populate all template fields for testing coverage.
@@ -23,6 +32,7 @@ Implement a Pydantic model for `additional_components.html` (inherits from `temp
 2025-12-10: Created sub-feature plan for additional_components template model/factory.
 2025-12-11: Implemented `AdditionalComponentsTemplateModel` + factory and render tests covering id/unit variants and multiple components (faker-backed).
 2025-12-11: Added command/testing notes; faker-backed factories generate dynamic IDs/descriptions, so tests should assert against model values, not hard-coded strings.
+2025-12-11: Marked complete with tests and factories in place.
 
 ## Command & Testing Notes
 - Run targeted suite: `just test-specific tests/templates/test_additional_components_model.py`.

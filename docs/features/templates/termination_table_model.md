@@ -1,9 +1,18 @@
+uid: FEAT-RENDER-0019
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: 1d
+dependencies: []
+risk: medium
+milestone: templates-models
+
 from: docs/features/templates/models.md
 
 # Template Model: termination_table
 
 ## Status
-PLANNED
+DONE
 
 ## Summary
 Implement a model for `termination_table.html` and a factory generating termination table rows with all optional fields.
@@ -20,6 +29,7 @@ Implement a model for `termination_table.html` and a factory generating terminat
 
 ## Progress Log
 2025-12-10: Created sub-feature for termination_table template model/factory.
+2025-12-11: Implemented termination_table model/factory and render tests; marking DONE.
 
 ## Sub-Features
 - None

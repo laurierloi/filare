@@ -1,9 +1,18 @@
+uid: FEAT-RENDER-0015
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: 1d
+dependencies: []
+risk: medium
+milestone: templates-models
+
 from: docs/features/templates/models.md
 
 # Template Model: cable
 
 ## Status
-IN_PROGRESS
+DONE
 
 ## Summary
 Implement a model for `cable.html` and a factory covering all cable-specific attributes (wire counts, labels, colors, lengths).
@@ -21,6 +30,7 @@ Implement a model for `cable.html` and a factory covering all cable-specific att
 ## Progress Log
 2025-12-10: Created sub-feature for cable template model/factory.
 2025-12-11: Added CableTemplateModel + faker factory and render tests (wirecount/shield variants).
+2025-12-11: Marked complete with all tests and factories in place.
 
 ## Sub-Features
 - None

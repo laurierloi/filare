@@ -1,9 +1,18 @@
+uid: FEAT-RENDER-0017
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: 1d
+dependencies: []
+risk: medium
+milestone: templates-models
+
 from: docs/features/templates/models.md
 
 # Template Model: connector
 
 ## Status
-IN_PROGRESS
+DONE
 
 ## Summary
 Implement a model for `connector.html` and a factory to cover connector pinouts, labels, sides, and styling flags.
@@ -22,6 +31,7 @@ Implement a model for `connector.html` and a factory to cover connector pinouts,
 ## Progress Log
 2025-12-10: Created sub-feature for connector template model/factory.
 2025-12-11: Added `ConnectorTemplateModel` + faker factory and render tests (ports/colors variants, pincount coverage).
+2025-12-11: Marked complete with model/factory/tests.
 
 ## Sub-Features
 - None

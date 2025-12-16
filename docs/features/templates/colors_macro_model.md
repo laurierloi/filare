@@ -1,9 +1,18 @@
+uid: FEAT-RENDER-0016
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: 1d
+dependencies: []
+risk: medium
+milestone: templates-models
+
 from: docs/features/templates/models.md
 
 # Template Model: colors_macro
 
 ## Status
-IN_PROGRESS
+DONE
 
 ## Summary
 Implement a model for `colors_macro.html` and a factory ensuring all color/legend combinations are covered for testing.
@@ -21,6 +30,7 @@ Implement a model for `colors_macro.html` and a factory ensuring all color/legen
 ## Progress Log
 2025-12-10: Created sub-feature for colors_macro template model/factory.
 2025-12-11: Added ColorsMacroTemplateModel + faker factory and render tests (count variants).
+2025-12-11: Marked complete with model/factory/tests.
 
 ## Sub-Features
 - None

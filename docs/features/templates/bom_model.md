@@ -1,9 +1,18 @@
+uid: FEAT-RENDER-0014
+status: DONE
+priority: medium
+owner_role: FEATURE
+estimate: 1d
+dependencies: []
+risk: medium
+milestone: templates-models
+
 from: docs/features/templates/models.md
 
 # Template Model: bom
 
 ## Status
-IN_PROGRESS
+DONE
 
 ## Summary
 Implement a Pydantic model for `bom.html` and a factory_boy factory to generate all field combinations used by the BOM template.
@@ -18,6 +27,9 @@ Implement a Pydantic model for `bom.html` and a factory_boy factory to generate 
 - [x] Define the BOM template model with typed defaults.
 - [x] Add a faker-backed factory with variants covering optional/edge fields.
 - [x] Wire into template tests to render BOM with full coverage.
+
+## Progress Log
+2025-12-11: Completed BOM template model, factory, and render tests; marking DONE.
 
 ## Progress Log
 2025-12-10: Created sub-feature for BOM template model/factory.
