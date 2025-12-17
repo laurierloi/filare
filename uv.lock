@@ -896,6 +896,7 @@ provides-extras = ["dev"]
 dev = [
     { name = "black", specifier = ">=24.0.0" },
     { name = "coverage", extras = ["toml"], specifier = ">=7.6.0" },
+    { name = "factory-boy", specifier = ">=3.3.0" },
     { name = "factory-boy", specifier = ">=3.3.3" },
     { name = "faker", specifier = ">=33.0.0" },
     { name = "isort", specifier = ">=5.12.0" },

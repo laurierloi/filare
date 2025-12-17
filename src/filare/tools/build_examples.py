@@ -58,6 +58,12 @@ groups = {
         readme: [],
         "title": "Full Output Document",
     },
+    "demos": {
+        "path": base_dir / "examples",
+        "prefix": "demo",
+        readme: [],
+        "title": f"{APP_NAME} Demos",
+    },
     "tutorial": {
         "path": base_dir / "tutorial",
         "prefix": "tutorial",

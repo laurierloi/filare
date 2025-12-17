@@ -104,18 +104,30 @@ jobs:
         run: |
           uv venv
           uv sync --group dev
-      - name: Build examples
+      - name: Build examples (basic)
         run: |
-          uv run python src/filare/tools/build_examples.py --output-dir outputs --group examples
+          uv run python src/filare/tools/build_examples.py --output-dir outputs/examples --groups basic
+      - name: Build examples (minimal-document)
+        run: |
+          uv run python src/filare/tools/build_examples.py --output-dir outputs/examples --groups minimal-document
+      - name: Build examples (document-cut)
+        run: |
+          uv run python src/filare/tools/build_examples.py --output-dir outputs/examples --groups document-cut
+      - name: Build examples (document-termination)
+        run: |
+          uv run python src/filare/tools/build_examples.py --output-dir outputs/examples --groups document-termination
+      - name: Build examples (multi-page)
+        run: |
+          uv run python src/filare/tools/build_examples.py --output-dir outputs/examples --groups multi-page
+      - name: Build examples (all-document)
+        run: |
+          uv run python src/filare/tools/build_examples.py --output-dir outputs/examples --groups all-document
+      - name: Build examples (demos)
+        run: |
+          uv run python src/filare/tools/build_examples.py --output-dir outputs/examples --groups demos
       - name: Build tutorials
         run: |
           uv run python src/filare/tools/build_examples.py --output-dir outputs --group tutorial
-      - name: Build demos
-        run: |
-          uv run python src/filare/tools/build_examples.py --output-dir outputs --group demos
-      - name: Build multi-page
-        run: |
-          uv run python src/filare/tools/build_examples.py --output-dir outputs --group multi-page
       - name: Upload example artifacts
         uses: actions/upload-artifact@v4
         with:
