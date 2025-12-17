@@ -31,6 +31,13 @@ Track and update call sites template by template to ensure consistency.
 - termination: model `TerminationTemplateModel`; usages in `render/html.py` aux pages, termination factory.
 - remaining templates (cable/component_table/simple/simple_connector/colors_macro/images/din_6771/page) to audit for direct render calls and align with the same pattern.
 
+## Remaining direct render call sites to migrate
+- `src/filare/index_table.py`: `get_template("index_table.html").render(...)`.
+- `src/filare/models/bom.py`: `get_template("bom.html").render(...)` and nested renders.
+- `src/filare/render/html.py`: titleblock/notes/page renders, aux page renders, table renders.
+- `src/filare/render/graphviz.py`: template renders for SVG generation.
+- `src/filare/models/templates/cut_template_model.py` and `termination_template_model.py`: embedded `get_template(...).render(...)`.
+
 ## Progress Log
 
 - 2025-12-11: Workplan created; reset workspace to start template-by-template refactor.

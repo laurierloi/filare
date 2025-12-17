@@ -2,16 +2,23 @@
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Dict, Optional
+from typing import Any, ClassVar, Dict, Optional, cast
 
 from faker import Faker
 from pydantic import ConfigDict, Field
 
-from filare.models.templates.bom_template_model import FakeBomTemplateFactory
+from filare.flows.templates import build_bom_model, build_notes_model
+from filare.models.templates.bom_template_model import (
+    BomTemplateModel,
+    FakeBomTemplateFactory,
+)
 from filare.models.templates.index_table_template_model import (
     FakeIndexTableTemplateFactory,
 )
-from filare.models.templates.notes_template_model import FakeNotesTemplateFactory
+from filare.models.templates.notes_template_model import (
+    FakeNotesTemplateFactory,
+    NotesTemplateModel,
+)
 from filare.models.templates.page_template_model import (
     FakeTemplatePageMetadataFactory,
     FakeTemplatePageOptionsFactory,
@@ -125,20 +132,25 @@ class FakeTitlePageTemplateFactory(TemplateModelFactory):
         if "titleblock" not in kwargs:
             if render_titleblock:
                 tb_model = titleblock_model or FakeTitleblockTemplateFactory()()
-                kwargs["titleblock"] = get_template("titleblock.html").render(
-                    tb_model.to_render_dict()
-                )
+                kwargs["titleblock"] = tb_model.render()
             else:
                 kwargs["titleblock"] = "<div id='titleblock'>Titleblock</div>"
 
         if with_notes and "notes" not in kwargs:
-            notes_model = FakeNotesTemplateFactory().create()
-            kwargs["notes"] = get_template("notes.html").render(
-                notes_model.to_render_dict()
+            notes_model = cast(NotesTemplateModel, FakeNotesTemplateFactory().create())
+            built_notes = build_notes_model(
+                notes_model.notes, options=notes_model.options
             )
+            kwargs["notes"] = built_notes.render()
         if with_bom and "bom" not in kwargs:
-            bom_model = FakeBomTemplateFactory(rows=2)()
-            kwargs["bom"] = get_template("bom.html").render(bom_model.to_render_dict())
+            bom_model = cast(BomTemplateModel, FakeBomTemplateFactory(rows=2)())
+            built_bom = build_bom_model(
+                headers=bom_model.bom.headers,
+                columns_class=bom_model.bom.columns_class,
+                content=bom_model.bom.content,
+                options=bom_model.options,
+            )
+            kwargs["bom"] = built_bom.render()
         if with_index and "index_table" not in kwargs:
             index_model = FakeIndexTableTemplateFactory(row_count=2)()
             kwargs["index_table"] = get_template("index_table.html").render(
