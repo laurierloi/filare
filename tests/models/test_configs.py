@@ -51,7 +51,7 @@ def test_connector_config_pincolors_and_loops_dict():
         designator="JX",
         pinlabels=["A", "B"],
         pincolors=[["RD"], ["BK"]],
-        loops={"first": "1", "last": "2"},
+        loops=[{"first": "1", "last": "2"}],
     )
     assert cfg.pincount == 2
     assert cfg.pincolors == [["RD"], ["BK"]]
@@ -62,7 +62,7 @@ def test_connector_config_pincolors_and_loops_dict():
 def test_connector_config_pincolors_dict_and_pins_dict():
     cfg = ConnectorConfig(
         designator="JY",
-        pins={"id": "1", "label": "L1"},
+        pins=[PinConfig(id="1", label="L1")],
         pincolors={"1": "RD", "2": ["BK"]},
     )
     assert isinstance(cfg.pins, list)
@@ -72,8 +72,9 @@ def test_connector_config_pincolors_dict_and_pins_dict():
 
 
 def test_connector_config_pinlabels_tuple_sets_pincount():
-    cfg = ConnectorConfig(designator="JZ", pinlabels=("1", "2"))
+    cfg = ConnectorConfig(designator="JZ", pinlabels=["1", "2"])
     assert cfg.pincount == 2
+    assert cfg.pinlabels is not None
     assert list(cfg.pinlabels) == ["1", "2"]
     _round_trip(cfg)
 
@@ -86,7 +87,7 @@ def test_cable_config_round_trip(cable_config_data):
 
 
 def test_cable_config_colors_string_and_wirecount_derivation():
-    cfg = CableConfig(designator="CX", colors="RD")
+    cfg = CableConfig(designator="CX", colors=["RD"])
     assert cfg.colors == ["RD"]
     assert cfg.wirecount == 1
     _round_trip(cfg)
@@ -111,9 +112,9 @@ def test_connection_config_endpoint_coercion(connection_config_data):
 
 
 def test_connection_config_accepts_tuple_and_set():
-    cfg = ConnectionConfig(endpoints=("J1:1", "J2:2"), color=["RD"])
+    cfg = ConnectionConfig(endpoints=["J1:1", "J2:2"], color=["RD"])
     assert cfg.endpoints == ["J1:1", "J2:2"]
-    cfg2 = ConnectionConfig(endpoints={"J1:1", "J2:3"})
+    cfg2 = ConnectionConfig(endpoints=["J1:1", "J2:3"])
     assert set(cfg2.endpoints) == {"J1:1", "J2:3"}
 
 

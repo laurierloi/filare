@@ -1,6 +1,7 @@
 from enum import Enum
 from pathlib import Path
 from types import SimpleNamespace
+from typing import cast
 
 from filare import filare as filare_module
 from filare.filare import _build_document_representation, _make_jsonable
@@ -32,6 +33,7 @@ def test_document_representation_round_trip(tmp_path: Path):
     assert loaded.metadata["title"] == "Harness"
     assert loaded.pages[0].name == "main"
     assert loaded.notes == "remember to torque"
+    assert loaded.bom is not None
     assert loaded.bom["items"][0]["id"] == "1"
 
 
@@ -62,10 +64,11 @@ def test_build_document_from_harness(basic_metadata, basic_page_options):
 
 
 def test_document_pages_are_models(tmp_path: Path):
-    doc = DocumentRepresentation(
-        metadata={"title": "Harness"},
-        pages=[HarnessPage(type="harness", name="H1", formats=["svg"])],
+    pages = cast(
+        list[PageBase],
+        [HarnessPage(type=PageType.harness, name="H1", formats=["svg"])],
     )
+    doc = DocumentRepresentation(metadata={"title": "Harness"}, pages=pages)
     path = tmp_path / "doc.yaml"
     doc.to_yaml(path)
 
@@ -75,7 +78,7 @@ def test_document_pages_are_models(tmp_path: Path):
 
 
 def test_document_recognizes_page_types(tmp_path: Path):
-    pages = [
+    pages: list[PageBase] = [
         HarnessPage(type=PageType.harness, name="H1"),
         BOMPage(type=PageType.bom, name="BOM"),
         CutPage(type=PageType.cut, name="CUT"),
@@ -138,8 +141,11 @@ def test_make_jsonable_handles_path_and_enum():
     class Dummy(Enum):
         VALUE = "value"
 
-    result = _make_jsonable(
-        {"path": Path("a/b.txt"), "choice": Dummy.VALUE, "items": [Path("c/d")]}
+    result = cast(
+        dict[str, object],
+        _make_jsonable(
+            {"path": Path("a/b.txt"), "choice": Dummy.VALUE, "items": [Path("c/d")]}
+        ),
     )
     assert result["path"] == "a/b.txt"
     assert result["choice"] == "value"

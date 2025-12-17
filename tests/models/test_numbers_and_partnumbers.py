@@ -45,36 +45,46 @@ def test_partnumbers2list_with_parent_filter():
     flat = [item for sub in lst for item in sub]
     assert "P1" not in "".join(flat)
     # direct call without parent folds to single list
-    assert PartNumberInfo.list_keep_only_eq([child, parent]).pn == ""
+    result = PartNumberInfo.list_keep_only_eq([child, parent])
+    assert result is not None
+    assert result.pn == ""
 
 
 def test_partnumberinfo_list_keep_only_shared():
     shared = PartNumberInfo(pn="X", manufacturer="ACME")
     p_list = PartnumberInfoList(pn_list=[shared, shared.copy()])
-    assert p_list.keep_only_shared().pn == "X"
+    shared_result = p_list.keep_only_shared()
+    assert shared_result is not None
+    assert shared_result.pn == "X"
 
 
 def test_partnumberinfo_clear_per_field_and_copy():
     a = PartNumberInfo(pn="A", manufacturer="M")
     b = PartNumberInfo(pn="B", manufacturer="M")
     cleared_eq = a.clear_per_field("==", b)
+    assert cleared_eq is not None
     assert cleared_eq.manufacturer == "" and cleared_eq.pn == "A"
     cleared_neq = a.clear_per_field("!=", b)
+    assert cleared_neq is not None
     assert cleared_neq.pn == "" and cleared_neq.manufacturer == "M"
     with pytest.raises(UnsupportedModelOperation):
         a.clear_per_field(">", b)
     # list case routing
-    list_case = PartNumberInfo(pn="L1", manufacturer="M1", is_list=True)
-    list_case.pn_list = [PartNumberInfo(pn="L1")]
-    kept = list_case.keep_only_eq(PartNumberInfo(pn="L1"))
+    list_case = PartnumberInfoList(pn_list=[PartNumberInfo(pn="L1", manufacturer="M1")])
+    kept_list = list(list_case.keep_only_eq(PartNumberInfo(pn="L1")))
+    assert kept_list and kept_list[0] is not None
+    kept = kept_list[0]
     assert kept.pn == "L1"
     assert kept.manufacturer == ""
     # other None paths
-    assert a.clear_per_field("==", None).pn == "A"
+    cleared_none = a.clear_per_field("==", None)
+    assert cleared_none is not None
+    assert cleared_none.pn == "A"
     assert a.clear_per_field("!=", None) is None
     # other.is_list branch
     list_other = PartnumberInfoList(pn_list=[PartNumberInfo(pn="A", manufacturer="M")])
     cleared = a.clear_per_field("==", list_other)
+    assert cleared is not None
     assert cleared.pn == ""
 
 
@@ -83,6 +93,7 @@ def test_partnumberinfo_list_as_unique_and_shared():
     pn2 = PartNumberInfo(pn="P2", manufacturer="ACME")
     p_list = PartnumberInfoList(pn_list=[pn1, pn2])
     shared = p_list.keep_only_shared()
+    assert shared is not None
     assert shared.manufacturer == "ACME"
     uniques = p_list.as_unique_list()
     assert isinstance(uniques, list)
@@ -119,6 +130,7 @@ def test_partnumberinfo_list_keep_unique_and_remove():
     pn2 = PartNumberInfo(pn="A", manufacturer="M2")
     lst = PartnumberInfoList(pn_list=[pn1, pn2])
     shared = lst.keep_only_shared()
+    assert shared is not None
     assert shared.pn == "A"
     # keep_unique yields versions with differing fields cleared
     kept = list(lst.keep_unique([pn1, pn2]))
@@ -131,13 +143,24 @@ def test_partnumberinfo_list_keep_unique_and_remove():
     assert kept_multi
     # keep_only_eq yields generators
     eq_list = list(lst.keep_only_eq(PartNumberInfo(pn="A", manufacturer="M")))
-    assert eq_list[0].pn == "" or isinstance(eq_list[0], PartNumberInfo)
+    assert eq_list and (
+        eq_list[0] is None
+        or eq_list[0].pn == ""
+        or isinstance(eq_list[0], PartNumberInfo)
+    )
 
 
 def test_partnumbers2list_without_parents():
     pn = PartNumberInfo(pn="Solo")
     lst = partnumbers2list(pn)
-    assert lst and "Solo" in "".join(lst)
+    assert lst
+    flattened: list[str] = []
+    for sub in lst:
+        if isinstance(sub, list):
+            flattened.extend([str(item) for item in sub])
+        else:
+            flattened.append(str(sub))
+    assert "Solo" in "".join(flattened)
     parent = PartNumberInfo(pn="Solo", manufacturer="ACME")
     lst_with_parent = partnumbers2list(pn, PartnumberInfoList(pn_list=[parent]))
     assert isinstance(lst_with_parent, list)

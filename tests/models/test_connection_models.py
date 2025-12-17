@@ -1,46 +1,50 @@
+from filare.models.colors import MultiColor
 from filare.models.connections import ConnectionModel, LoopModel, PinModel
 from filare.models.dataclasses import Connection, Loop, PinClass
-from filare.models.wire import WireModel
 from filare.models.types import Side
+from filare.models.wire import WireModel
 
 
 def test_pin_model_roundtrip():
-    pin = PinClass(index=0, id="1", label="A", color="RD", parent="X1")
+    pin = PinClass(index=0, id="1", label="A", color=MultiColor("RD"), parent="X1")
     model = PinModel.from_pinclass(pin)
     cloned = model.to_pinclass()
     assert cloned.id == pin.id
-    assert cloned.color[0].html.startswith("#")
+    assert cloned.color is not None and len(cloned.color) > 0
+    first_color = cloned.color[0]
+    assert first_color is not None and first_color.html is not None
+    assert first_color.html.startswith("#")
     assert cloned.parent == "X1"
 
 
 def test_loop_model_roundtrip():
-    first = PinClass(index=0, id="1", label="A", color="RD", parent="X1")
-    second = PinClass(index=1, id="2", label="B", color="GN", parent="X1")
-    loop = Loop(first=first, second=second, side="left")
+    first = PinClass(index=0, id="1", label="A", color=MultiColor("RD"), parent="X1")
+    second = PinClass(index=1, id="2", label="B", color=MultiColor("GN"), parent="X1")
+    loop = Loop(first=first, second=second, side=Side.LEFT)
     model = LoopModel.from_loop(loop)
     reconstructed = model.to_loop()
-    assert reconstructed.first.id == "1"
-    assert reconstructed.second.id == "2"
+    assert reconstructed.first is not None and reconstructed.first.id == "1"
+    assert reconstructed.second is not None and reconstructed.second.id == "2"
     assert reconstructed.side == Side.LEFT
 
 
 def test_connection_model_roundtrip():
-    left = PinClass(index=0, id="1", label="A", color="RD", parent="X1")
-    wire = PinClass(index=1, id="w1", label="", color="BK", parent="W1")
-    right = PinClass(index=2, id="2", label="B", color="BU", parent="X2")
+    left = PinClass(index=0, id="1", label="A", color=MultiColor("RD"), parent="X1")
+    wire = PinClass(index=1, id="w1", label="", color=MultiColor("BK"), parent="W1")
+    right = PinClass(index=2, id="2", label="B", color=MultiColor("BU"), parent="X2")
     connection = Connection(from_=left, via=wire, to=right)
     model = ConnectionModel.from_connection(connection)
     reconstructed = model.to_connection()
-    assert reconstructed.from_.id == "1"
-    assert reconstructed.via.id == "w1"
-    assert reconstructed.to.id == "2"
+    assert reconstructed.from_ is not None and reconstructed.from_.id == "1"
+    assert reconstructed.via is not None and reconstructed.via.id == "w1"
+    assert reconstructed.to is not None and reconstructed.to.id == "2"
 
 
 def test_connection_model_accepts_wire_models():
-    left = PinClass(index=0, id="1", label="A", color="RD", parent="X1")
-    wire_model = WireModel(parent="W1", index=0, id="w1", color="BK")
-    right = PinClass(index=1, id="2", label="B", color="GN", parent="X2")
+    left = PinClass(index=0, id="1", label="A", color=MultiColor("RD"), parent="X1")
+    wire_model = WireModel(parent="W1", index=0, id="w1", color=MultiColor("BK"))
+    right = PinClass(index=1, id="2", label="B", color=MultiColor("GN"), parent="X2")
     model = ConnectionModel(from_=left, via=wire_model, to=right)
     reconstructed = model.to_connection()
-    assert reconstructed.via.id == "w1"
-    assert reconstructed.via.parent == "W1"
+    assert reconstructed.via is not None and reconstructed.via.id == "w1"
+    assert reconstructed.via is not None and reconstructed.via.parent == "W1"

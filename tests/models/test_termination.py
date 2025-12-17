@@ -13,6 +13,7 @@ def test_termination_end_allows_numbers():
         notes="near connector",
     )
 
+    assert end.length is not None
     assert end.length.number == 10
     assert end.length.unit == "cm"
     assert end.splice == "SPL1"
@@ -31,5 +32,7 @@ def test_termination_row_aggregates_fields():
 
     assert row.from_end.connector == "J1"
     assert row.to_end.pin == "2"
+    assert row.gauge is not None
     assert row.gauge.unit == "AWG"
+    assert row.color is not None
     assert row.color == "RD"

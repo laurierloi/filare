@@ -10,6 +10,7 @@ from filare.errors import (
     UnsupportedLoopSide,
 )
 from filare.models.colors import MultiColor
+from filare.models.connector import ConnectorModel
 from filare.models.numbers import NumberAndUnit
 from filare.models.utils import smart_file_resolve
 from filare.render.graphviz import gv_connector_loops
@@ -33,13 +34,12 @@ def test_color_padding_unsupported(monkeypatch):
 
 
 def test_unsupported_loop_side():
-    dummy = type(
-        "DummyConnector",
-        (),
-        {"ports_left": False, "ports_right": False, "loops": [], "designator": "X"},
-    )()
+    connector = ConnectorModel(designator="X", pins=[{"label": "1"}]).to_connector()
+    connector.ports_left = False
+    connector.ports_right = False
+    connector.loops = []
     with pytest.raises(UnsupportedLoopSide):
-        gv_connector_loops(dummy)
+        gv_connector_loops(connector)
 
 
 def test_harness_qty_multiplier_read_error(tmp_path, monkeypatch):

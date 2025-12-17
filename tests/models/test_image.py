@@ -22,7 +22,7 @@ def test_image_fixedsize_and_scale_inference(monkeypatch, tmp_path):
     src = tmp_path / "img.png"
     src.write_text("content")
     monkeypatch.setattr("filare.models.image.aspect_ratio", lambda _src: 2)
-    img = Image(src=str(src), width=4, height=0, fixedsize=True, scale=None)
+    img = Image(src=str(src), width=4, height=0, fixedsize=True, scale="")
     assert img.height == 2  # computed from aspect ratio
     assert img.scale in ("true", "both")
 

@@ -1,3 +1,5 @@
+from typing import cast
+
 import pytest
 
 from filare.models.templates import (
@@ -9,13 +11,14 @@ from filare.render.templates import get_template
 
 def test_additional_components_render_minimal():
     factory = AdditionalComponentsFactory()
-    model = factory()
+    model = cast(AdditionalComponentsTemplateModel, factory())
     first = model.additional_components[0].bom_entry
     desc = first.description
     ident = first.id
     rendered = get_template("additional_components.html").render(model.to_render_dict())
 
     assert desc in rendered
+    assert ident is not None
     assert ident in rendered
     assert str(first.qty.number) in rendered
 
@@ -32,7 +35,7 @@ def test_additional_components_render_minimal():
 )
 def test_additional_components_render_variants(with_id, with_unit):
     factory = AdditionalComponentsFactory()
-    model = factory()
+    model = cast(AdditionalComponentsTemplateModel, factory())
     comp = model.additional_components[0]
     desc = comp.bom_entry.description
     comp.bom_entry.id = comp.bom_entry.id if with_id else None
@@ -53,7 +56,7 @@ def test_additional_components_render_variants(with_id, with_unit):
 
 def test_additional_components_render_multiple():
     factory = AdditionalComponentsFactory()
-    model = factory()
+    model = cast(AdditionalComponentsTemplateModel, factory())
     second = model.additional_components[0].model_copy(deep=True)
     second.bom_entry.id = "AC2"
     second.bom_entry.qty.number = 5
@@ -64,13 +67,14 @@ def test_additional_components_render_multiple():
 
     rendered = get_template("additional_components.html").render(model.to_render_dict())
 
+    assert first_entry.id is not None
     assert first_entry.id in rendered and "AC2" in rendered
     assert first_desc in rendered and "Another part" in rendered
 
 
 def test_additional_components_factory_count_and_faker():
     factory = AdditionalComponentsFactory(count=3)
-    model = factory()
+    model = cast(AdditionalComponentsTemplateModel, factory())
 
     assert len(model.additional_components) == 3
     assert isinstance(model, AdditionalComponentsTemplateModel)

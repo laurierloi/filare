@@ -3,7 +3,13 @@ from datetime import datetime
 import pytest
 
 from filare.errors import MetadataValidationError
-from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
+from filare.models.metadata import (
+    AuthorSignature,
+    Metadata,
+    PageTemplateConfig,
+    PageTemplateTypes,
+    RevisionSignature,
+)
 from filare.models.options import get_page_options
 
 
@@ -40,8 +46,10 @@ def test_metadata_generator_and_lists(tmp_path):
         files=["f.yml"],
         use_qty_multipliers=False,
         multiplier_file_name="m.txt",
-        authors={"created": {"name": "Alice", "date": "2024-01-01"}},
-        revisions={"a": {"name": "Bob", "date": "2024-01-02", "changelog": "init"}},
+        authors={"created": AuthorSignature(name="Alice", date="2024-01-01")},
+        revisions={
+            "a": RevisionSignature(name="Bob", date="2024-01-02", changelog="init")
+        },
     )
     assert "Filare" in md.generator
     assert md.authors_list[0].role == "created"

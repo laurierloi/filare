@@ -1,4 +1,7 @@
 from pathlib import Path
+from typing import cast
+
+from graphviz import Graph
 
 from filare.flows.build_harness import _resolve_diagram_svg
 from filare.models.harness import Harness
@@ -10,18 +13,20 @@ from filare.models.options import ImportedSVGOptions, PageOptions
 def test_resolves_imported_svg_path(tmp_path):
     svg_path = tmp_path / "drawio.svg"
     svg_path.write_text("<svg/>")
-    options = PageOptions(diagram_svg={"src": "drawio.svg"})
+    options = PageOptions(diagram_svg=ImportedSVGOptions(src="drawio.svg"))
 
     _resolve_diagram_svg(options, [tmp_path])
 
+    assert options.diagram_svg is not None
     assert Path(options.diagram_svg.src) == svg_path
 
 
 def test_imported_svg_is_embedded_in_outputs(
     tmp_path, basic_metadata, basic_page_options
 ):
-    class DummyGraph:
+    class DummyGraph(Graph):
         def __init__(self, content: str):
+            super().__init__()
             self.format = "svg"
             self._content = content
 
@@ -70,8 +75,9 @@ def test_png_is_skipped_when_diagram_svg_set(
 ):
     calls = {"render_png": 0}
 
-    class DummyGraph:
+    class DummyGraph(Graph):
         def __init__(self, content: str):
+            super().__init__()
             self.format = "svg"
             self._content = content
 
@@ -107,8 +113,9 @@ def test_simple_template_wraps_imported_svg(
     options.diagram_svg = ImportedSVGOptions(src=str(svg_src), align="right")
     harness = Harness(metadata=metadata, options=options, notes=Notes([]))
 
-    class DummyGraph:
+    class DummyGraph(Graph):
         def __init__(self, content: str):
+            super().__init__()
             self.format = "svg"
             self._content = content
 

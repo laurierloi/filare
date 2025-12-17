@@ -39,7 +39,7 @@ class TemplateModelFactory:
         model_class: Type[TemplateModel] = self.Meta.model  # type: ignore[attr-defined]
         return model_class(**self._kwargs)
 
-    def __call__(self) -> TemplateModel:
+    def __call__(self) -> Any:
         return self._build()
 
     def __getattr__(self, name: str) -> Any:
