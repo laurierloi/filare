@@ -29,6 +29,7 @@ class TemplateModelFactory:
 
     def __init__(self, **kwargs: Any):
         self._kwargs = kwargs
+        self._instance: TemplateModel | None = None
 
     @classmethod
     def create(cls, **kwargs: Any) -> TemplateModel:
@@ -40,3 +41,11 @@ class TemplateModelFactory:
 
     def __call__(self) -> TemplateModel:
         return self._build()
+
+    def __getattr__(self, name: str) -> Any:
+        """Delegate attribute access to a built model for convenience."""
+        if name.startswith("_"):
+            raise AttributeError(name)
+        if self._instance is None:
+            self._instance = self._build()
+        return getattr(self._instance, name)
