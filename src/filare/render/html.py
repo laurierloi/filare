@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple, Union
 from pydantic import BaseModel, ConfigDict
 
 import filare
+from filare.flows.templates import build_notes_model
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
 from filare.models.harness_quantity import HarnessQuantity
@@ -16,6 +17,7 @@ from filare.models.metadata import Metadata
 from filare.models.notes import Notes, get_page_notes
 from filare.models.options import PageOptions, get_page_options
 from filare.models.table_models import TablePage, TablePaginationOptions, letter_suffix
+from filare.models.templates.notes_template_model import TemplateNotesOptions
 from filare.render.imported_svg import (
     build_import_container_style,
     build_import_inner_style,
@@ -261,7 +263,9 @@ def generate_html_output(
 
     notes_candidate = replacements.get("notes")
     if isinstance(notes_candidate, Notes) and notes_candidate.notes:
-        rendered["notes"] = get_template("notes.html").render(replacements)
+        rendered["notes"] = _render_notes_section(
+            notes_candidate, options_for_render, bom_rows
+        )
 
     filtered = _filtered_sections(options_for_render, rendered)
 
@@ -332,6 +336,21 @@ def _render_bom_section(
             page_options=options, bom_options=bom_render_options
         )
     return (bom_html, bom_rows, bom_pages)
+
+
+def _render_notes_section(notes: Notes, options: PageOptions, bom_rows: int) -> str:
+    """Render the notes section through the notes template model."""
+    template_options = TemplateNotesOptions(
+        show_bom=options.show_bom,
+        notes_on_right=options.notes_on_right,
+        titleblock_rows=options.titleblock_rows,
+        titleblock_row_height=options.titleblock_row_height,
+        bom_rows=bom_rows,
+        bom_row_height=options.bom_row_height,
+        notes_width=options.notes_width,
+    )
+    model = build_notes_model(notes.notes, options=template_options)
+    return model.render()
 
 
 def _derive_harness_number(filename: Path, sheet_current: int) -> int:
