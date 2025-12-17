@@ -34,13 +34,13 @@ Track and update call sites template by template to ensure consistency.
 ## Remaining direct render call sites to migrate
 - `src/filare/render/html.py`: titleblock/page renders, aux page renders, table renders.
 - `src/filare/render/graphviz.py`: template renders for SVG generation.
-- `src/filare/models/templates/cut_template_model.py` and `termination_template_model.py`: embedded `get_template(...).render(...)`.
 
 ## Progress Log
 
 - 2025-12-11: Workplan created; reset workspace to start template-by-template refactor.
 - 2025-12-11: Converted DIN 6771/titlepage factories to use notes/bom builders and TemplateModel.render; BomRender now uses `build_bom_model`; HTML flow renders notes through `build_notes_model`.
 - 2025-12-11: Index table now built via `build_index_table_model` (HTML flow, IndexTable.render), removing direct template renders.
+- 2025-12-11: Cut and termination templates/factories plus harness aux rows now render via `build_cut_table_model`/`build_termination_table_model`.
 
 ## Related
 

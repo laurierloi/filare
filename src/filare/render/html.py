@@ -9,7 +9,12 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple, Union
 from pydantic import BaseModel, ConfigDict
 
 import filare
-from filare.flows.templates import build_index_table_model, build_notes_model
+from filare.flows.templates import (
+    build_cut_table_model,
+    build_index_table_model,
+    build_notes_model,
+    build_termination_table_model,
+)
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
 from filare.models.harness_quantity import HarnessQuantity
@@ -538,19 +543,19 @@ def _write_aux_pages(
                 pages,
             )
         )
-    if getattr(options, "include_termination_diagram", False):
-        pages = termination_pages
-        if pages is None:
-            pages = _chunk_rows(
-                termination_rows,
-                getattr(options, "termination_rows_per_page", None),
-                getattr(options, "table_page_suffix_letters", True),
-            )
+        if getattr(options, "include_termination_diagram", False):
+            pages = termination_pages
+            if pages is None:
+                pages = _chunk_rows(
+                    termination_rows,
+                    getattr(options, "termination_rows_per_page", None),
+                    getattr(options, "table_page_suffix_letters", True),
+                )
         aux_pages.append(
             (
                 "termination",
                 get_template("termination", ".html"),
-                get_template("termination_table", ".html"),
+                build_termination_table_model,
                 rendered.get("termination_table", ""),
                 pages,
             )
@@ -560,7 +565,13 @@ def _write_aux_pages(
             pages = [("", [])]
         total_pages = len(pages)
         for idx, (page_suffix, rows) in enumerate(pages):
-            table_html = table_template.render({"rows": rows}) if rows else default_html
+            if rows:
+                if suffix == "cut":
+                    table_html = build_cut_table_model(rows).render()
+                else:
+                    table_html = build_termination_table_model(rows).render()
+            else:
+                table_html = default_html
             suffix_for_file = (
                 f".{page_suffix or letter_suffix(idx)}" if total_pages > 1 else ""
             )
