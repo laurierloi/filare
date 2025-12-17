@@ -1,4 +1,5 @@
 import logging
+from typing import Any, List, cast
 
 import pytest
 from pydantic import ValidationError
@@ -23,7 +24,7 @@ def test_bom_content_render_filters_columns():
         partnumbers=PartNumberInfo(pn="PN-TEST"),
         id="1",
         description="Test",
-        category=BomCategory.ADDITIONAL,
+        category=str(BomCategory.ADDITIONAL),
         designators=["X1"],
     )
     content = BomContent({hash(entry): entry})
@@ -39,12 +40,12 @@ def test_bom_entry_scale_qty_invalid_multiplier_and_amount():
             qty=NumberAndUnit(2, None),
             amount=NumberAndUnit(3, "m"),
             partnumbers=PartNumberInfo(pn="PN"),
-            qty_multiplier="bad",
+            qty_multiplier=cast(Any, "bad"),
         )
 
 
 def test_bom_entry_add_and_designators_str():
-    a = BomEntry(
+    base = BomEntry(
         qty=NumberAndUnit(1, None),
         partnumbers=PartNumberInfo(pn="A"),
         designators=["D1", "D2", "D3"],
@@ -54,15 +55,15 @@ def test_bom_entry_add_and_designators_str():
         partnumbers=PartNumberInfo(pn="A"),
         designators=["D4"],
     )
-    a += b
+    a = cast(BomEntry, base + b)
     assert a.qty.number == 3
     assert a.designators_str.endswith("(...)")
     with pytest.raises(UnsupportedModelOperation):
-        a.__add__(object())
+        cast(Any, a).__add__(object())
     assert (a == []) is False
     assert (a == 123) is None
-    lst = a + [b]
-    assert isinstance(lst, list) and lst[0].qty.number == 5
+    plus_list = cast(List[BomEntry], cast(Any, a + [b]))
+    assert plus_list and plus_list[0].qty.number == 5
     filtered = a.as_list(filter_empty=True, include_per_harness=False)
     assert "" not in filtered
 

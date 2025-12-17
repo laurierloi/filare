@@ -2,7 +2,7 @@ import pytest
 
 from filare.models.bom import BomEntry
 from filare.models.cable import Cable
-from filare.models.colors import MultiColor
+from filare.models.colors import MultiColor, SingleColor
 from filare.models.configs import (
     CableConfig,
     ConnectionConfig,
@@ -14,7 +14,15 @@ from filare.models.configs import (
 )
 from filare.models.connector import Connector, Loop, PinClass
 from filare.models.dataclasses import Component
-from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
+from filare.models.hypertext import MultilineHypertext
+from filare.models.metadata import (
+    AuthorSignature,
+    Metadata,
+    PageTemplateConfig,
+    PageTemplateTypes,
+    RevisionSignature,
+    SheetSizes,
+)
 from filare.models.numbers import NumberAndUnit
 from filare.models.options import PageOptions, get_page_options
 from filare.models.partnumber import PartNumberInfo
@@ -46,8 +54,8 @@ def cable_args():
         "length": NumberAndUnit(2, "m"),
         "additional_components": [
             Component(
-                type="Sleeve",
-                category=BomCategory.ADDITIONAL,
+                type=MultilineHypertext("Sleeve"),
+                category=str(BomCategory.ADDITIONAL),
                 qty=NumberAndUnit(1, None),
                 qty_multiplier=QtyMultiplierCable.LENGTH,
             )
@@ -77,15 +85,21 @@ def basic_metadata(tmp_path):
         files=[],
         use_qty_multipliers=False,
         multiplier_file_name="qty.txt",
-        template=PageTemplateConfig(name=PageTemplateTypes.din_6771, sheetsize="A4"),
-        authors={"created": {"name": "Alice", "date": "2023-01-01"}},
-        revisions={"a": {"name": "Bob", "date": "2023-01-02", "changelog": "init"}},
+        template=PageTemplateConfig(
+            name=PageTemplateTypes.din_6771, sheetsize=SheetSizes.A4
+        ),
+        authors={"created": AuthorSignature(name="Alice", date="2023-01-01")},
+        revisions={
+            "a": RevisionSignature(name="Bob", date="2023-01-02", changelog="init")
+        },
     )
 
 
 @pytest.fixture
 def basic_page_options():
-    return PageOptions(bgcolor="0xFFFFFF", bgcolor_connector="0xCCCCCC")
+    return PageOptions(
+        bgcolor=SingleColor("0xFFFFFF"), bgcolor_connector=SingleColor("0xCCCCCC")
+    )
 
 
 @pytest.fixture
@@ -95,7 +109,7 @@ def bom_entry_sample():
         partnumbers=PartNumberInfo(pn="PN-BOM"),
         id="1",
         description="Test Part",
-        category=BomCategory.ADDITIONAL,
+        category=str(BomCategory.ADDITIONAL),
         designators=["X1"],
         per_harness={"H1": {"qty": NumberAndUnit(1, None)}},
     )

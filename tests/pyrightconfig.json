@@ -1,0 +1,13 @@
+{
+  "typeCheckingMode": "basic",
+  "include": ["."],
+  "diagnosticSeverityOverrides": {
+    "reportArgumentType": "none",
+    "reportAttributeAccessIssue": "none",
+    "reportOptionalMemberAccess": "none",
+    "reportOptionalOperand": "none",
+    "reportOperatorIssue": "none",
+    "reportCallIssue": "none",
+    "reportGeneralTypeIssues": "none"
+  }
+}
