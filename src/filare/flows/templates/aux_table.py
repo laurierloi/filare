@@ -4,7 +4,11 @@ from __future__ import annotations
 
 from typing import Mapping, Optional, Sequence, Union
 
-from filare.flows.templates import build_cut_table_model, build_termination_table_model
+from filare.flows.templates import (
+    build_cut_table_model,
+    build_termination_table_model,
+    build_titleblock_model,
+)
 from filare.models.colors import SingleColor
 from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
 from filare.models.options import PageOptions
@@ -69,13 +73,9 @@ def build_aux_table_model(
             table_html = build_termination_table_model(rows).render()
 
     if titleblock_html is None:
-        titleblock_html = get_template("titleblock.html").render(
-            {
-                "metadata": page_metadata,
-                "options": options,
-                "partno": partno,
-            }
-        )
+        titleblock_html = build_titleblock_model(
+            page_metadata, options, partno
+        ).render()
 
     if suffix == "cut":
         return CutTemplateModel(
