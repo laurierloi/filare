@@ -10,6 +10,7 @@ from pydantic import BaseModel, ConfigDict
 
 import filare
 from filare.flows.templates import (
+    build_aux_table_model,
     build_cut_table_model,
     build_index_table_model,
     build_notes_model,
@@ -17,12 +18,19 @@ from filare.flows.templates import (
 )
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
+from filare.models.colors import SingleColor
 from filare.models.harness_quantity import HarnessQuantity
-from filare.models.metadata import Metadata
+from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
 from filare.models.notes import Notes, get_page_notes
 from filare.models.options import PageOptions, get_page_options
 from filare.models.table_models import TablePage, TablePaginationOptions, letter_suffix
+from filare.models.templates.cut_template_model import CutTemplateModel
 from filare.models.templates.notes_template_model import TemplateNotesOptions
+from filare.models.templates.page_template_model import (
+    TemplatePageMetadata,
+    TemplatePageOptions,
+)
+from filare.models.templates.termination_template_model import TerminationTemplateModel
 from filare.render.imported_svg import (
     build_import_container_style,
     build_import_inner_style,
@@ -526,6 +534,9 @@ def _write_aux_pages(
 ) -> None:
     """Emit auxiliary pages such as cut/termination placeholders when requested."""
     aux_pages = []
+    generator_str = (
+        f"{getattr(filare, 'APP_NAME', 'Filare')} {getattr(filare, '__version__', '')}"
+    )
     if getattr(options, "include_cut_diagram", False):
         pages = cut_pages
         if pages is None:
@@ -535,13 +546,7 @@ def _write_aux_pages(
                 getattr(options, "table_page_suffix_letters", True),
             )
         aux_pages.append(
-            (
-                "cut",
-                get_template("cut", ".html"),
-                build_cut_table_model,
-                rendered.get("cut_table", ""),
-                pages,
-            )
+            ("cut", rendered.get("cut_table", ""), pages or []),
         )
     if getattr(options, "include_termination_diagram", False):
         pages = termination_pages
@@ -552,23 +557,13 @@ def _write_aux_pages(
                 getattr(options, "table_page_suffix_letters", True),
             )
         aux_pages.append(
-            (
-                "termination",
-                get_template("termination", ".html"),
-                build_termination_table_model,
-                rendered.get("termination_table", ""),
-                pages,
-            )
+            ("termination", rendered.get("termination_table", ""), pages or []),
         )
-    for suffix, template, table_template, default_html, pages in aux_pages:
+    for suffix, default_html, pages in aux_pages:
         if not pages:
             pages = [("", [])]
         total_pages = len(pages)
         for idx, (page_suffix, rows) in enumerate(pages):
-            if rows:
-                table_html = table_template(rows).render()
-            else:
-                table_html = default_html
             suffix_for_file = (
                 f".{page_suffix or letter_suffix(idx)}" if total_pages > 1 else ""
             )
@@ -594,18 +589,19 @@ def _write_aux_pages(
                     "partno": page_partno,
                 }
             )
-            page = template.render(
-                {
-                    f"{suffix}_table": table_html,
-                    "metadata": page_metadata,
-                    "options": options,
-                    "titleblock": page_titleblock,
-                    "notes": rendered.get("notes", ""),
-                    "bom": rendered.get("bom", ""),
-                    "diagram": rendered.get("diagram", ""),
-                }
+            model = build_aux_table_model(
+                suffix,
+                rows,
+                default_html,
+                page_metadata,
+                options,
+                page_suffix=sheet_suffix,
+                generator=generator_str,
+                partno=page_partno,
+                titleblock_html=page_titleblock,
+                title=getattr(page_metadata, "title", "") or suffix.title(),
             )
-            target.write_text(page, encoding="utf-8")
+            target.write_text(model.render(), encoding="utf-8")
 
 
 def generate_titlepage(yaml_data, extra_metadata, shared_bom, for_pdf=False):
