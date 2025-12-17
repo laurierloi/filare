@@ -15,6 +15,7 @@ from filare.flows.templates import (
     build_index_table_model,
     build_notes_model,
     build_termination_table_model,
+    build_titleblock_model,
 )
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
@@ -276,7 +277,9 @@ def generate_html_output(
     # TODO: all rendering should be done within their respective classes
 
     # prepare titleblock
-    rendered["titleblock"] = get_template("titleblock.html").render(replacements)
+    rendered["titleblock"] = build_titleblock_model(
+        metadata, options_for_render, partno
+    ).render()
 
     notes_candidate = replacements.get("notes")
     if isinstance(notes_candidate, Notes) and notes_candidate.notes:
@@ -582,13 +585,9 @@ def _write_aux_pages(
                 getattr(page_metadata, "sheet_current", 0),
                 getattr(getattr(page_metadata, "template", None), "name", ""),
             )
-            page_titleblock = get_template("titleblock.html").render(
-                {
-                    "metadata": page_metadata,
-                    "options": options,
-                    "partno": page_partno,
-                }
-            )
+            page_titleblock = build_titleblock_model(
+                page_metadata, options, page_partno
+            ).render()
             model = build_aux_table_model(
                 suffix,
                 rows,
