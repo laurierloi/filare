@@ -11,34 +11,25 @@ from pydantic import BaseModel, ConfigDict
 import filare
 from filare.flows.templates import (
     build_aux_table_model,
-    build_cut_table_model,
     build_index_table_model,
     build_notes_model,
-    build_termination_table_model,
+    build_page_model,
     build_titleblock_model,
 )
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
-from filare.models.colors import SingleColor
 from filare.models.harness_quantity import HarnessQuantity
-from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
+from filare.models.metadata import Metadata
 from filare.models.notes import Notes, get_page_notes
 from filare.models.options import PageOptions, get_page_options
 from filare.models.table_models import TablePage, TablePaginationOptions, letter_suffix
-from filare.models.templates.cut_template_model import CutTemplateModel
 from filare.models.templates.notes_template_model import TemplateNotesOptions
-from filare.models.templates.page_template_model import (
-    TemplatePageMetadata,
-    TemplatePageOptions,
-)
-from filare.models.templates.termination_template_model import TerminationTemplateModel
 from filare.render.imported_svg import (
     build_import_container_style,
     build_import_inner_style,
     prepare_imported_svg,
     strip_svg_declarations,
 )
-from filare.render.templates import get_template
 
 
 def generate_shared_bom(
@@ -290,12 +281,22 @@ def generate_html_output(
     filtered = _filtered_sections(options_for_render, rendered)
 
     # generate page template
-    page_rendered = get_template(template_name, ".html").render(
-        {
-            **replacements,
-            **filtered,
-        }
+    page_model = build_page_model(
+        template_name=template_name,
+        metadata=metadata,
+        options=options_for_render,
+        titleblock_html=rendered["titleblock"],
+        diagram_html=rendered.get("diagram", ""),
+        diagram_container_class=diagram_container_class,
+        diagram_container_style=diagram_container_style,
+        notes_html=filtered.get("notes", ""),
+        bom_html=filtered.get("bom", ""),
+        index_table_html=filtered.get("index_table", ""),
+        generator=str(replacements.get("generator", "")),
+        title=str(replacements.get("title", "")),
+        bom_rows=bom_rows,
     )
+    page_rendered = page_model.render()
 
     # save generated file
     filename.with_suffix(".html").open("w").write(page_rendered)
@@ -628,7 +629,6 @@ def generate_titlepage(yaml_data, extra_metadata, shared_bom, for_pdf=False):
         reverse=False,
     )
 
-    # todo: index table options as a dataclass
     options = get_page_options(yaml_data, "titlepage")
 
     # Auto-split sections that cannot reasonably fit on the titlepage.
