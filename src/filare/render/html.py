@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple, Union
 from pydantic import BaseModel, ConfigDict
 
 import filare
-from filare.flows.templates import build_notes_model
+from filare.flows.templates import build_index_table_model, build_notes_model
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
 from filare.models.harness_quantity import HarnessQuantity
@@ -203,11 +203,15 @@ def generate_html_output(
     should_render_index = options.show_index_table or options.split_index_page
     options_for_render.show_index_table = options.show_index_table
     if should_render_index:
-        rendered["index_table"] = IndexTable.from_pages_metadata(
-            metadata.pages_metadata,
+        rendered["index_table"] = _render_index_table_section(
+            IndexTable.from_pages_metadata(
+                metadata.pages_metadata,
+                options_for_render,
+                paginated_pages=pagination_hints,
+            ),
             options_for_render,
-            paginated_pages=pagination_hints,
-        ).render(options_for_render)
+            bom_rows,
+        )
 
     diagram_container_class = "diagram-default"
     diagram_container_style = ""
@@ -350,6 +354,19 @@ def _render_notes_section(notes: Notes, options: PageOptions, bom_rows: int) -> 
         notes_width=options.notes_width,
     )
     model = build_notes_model(notes.notes, options=template_options)
+    return model.render()
+
+
+def _render_index_table_section(
+    index_table: IndexTable, options: PageOptions, bom_rows: int
+) -> str:
+    """Render the index table through the index_table template model."""
+    model = build_index_table_model(
+        index_table=index_table,
+        options=options,
+        bom_rows=bom_rows,
+        bom_row_height=options.bom_row_height,
+    )
     return model.render()
 
 

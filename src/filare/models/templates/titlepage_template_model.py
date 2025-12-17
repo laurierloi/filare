@@ -31,7 +31,6 @@ from filare.models.templates.titleblock_template_model import (
     FakeTitleblockTemplateFactory,
     TitleblockTemplateModel,
 )
-from filare.render.templates import get_template
 
 faker = Faker()
 
@@ -153,8 +152,6 @@ class FakeTitlePageTemplateFactory(TemplateModelFactory):
             kwargs["bom"] = built_bom.render()
         if with_index and "index_table" not in kwargs:
             index_model = FakeIndexTableTemplateFactory(row_count=2)()
-            kwargs["index_table"] = get_template("index_table.html").render(
-                index_model.to_render_dict()
-            )
+            kwargs["index_table"] = index_model.render()
 
         super().__init__(**kwargs)
