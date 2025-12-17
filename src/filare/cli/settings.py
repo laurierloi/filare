@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, List, Literal, Optional
+from typing import Dict, List, Literal, Mapping, Optional
 
 import typer
 import yaml
@@ -54,7 +54,7 @@ def _parse_value(raw: str, value_type: str) -> object:
     return raw
 
 
-def _format_table(data: Dict[str, object]) -> str:
+def _format_table(data: Mapping[str, object]) -> str:
     if not data:
         return "No settings set."
     width = max(len(key) for key in data.keys())

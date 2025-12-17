@@ -3,26 +3,31 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional, Union, cast
 
 from pydantic import BaseModel, ConfigDict, field_validator
 
 from filare.models.colors import MultiColor
-from filare.models.wire import ShieldModel, WireModel
 from filare.models.types import Side
+from filare.models.wire import ShieldModel, WireModel
+
+if TYPE_CHECKING:
+    from filare.models.dataclasses import Connection as ConnectionType
+    from filare.models.dataclasses import Loop as LoopType
+    from filare.models.dataclasses import PinClass as PinClassType
+else:  # pragma: no cover
+    ConnectionType = LoopType = PinClassType = Any  # type: ignore
 
 try:  # pragma: no cover
-    from filare.models.dataclasses import (
-        Connection as ConnectionDC,
-        Loop as LoopDC,
-        PinClass as PinClassDC,
-    )
+    from filare.models.dataclasses import Connection as ConnectionDC
+    from filare.models.dataclasses import Loop as LoopDC
+    from filare.models.dataclasses import PinClass as PinClassDC
 except Exception:  # pragma: no cover
     ConnectionDC = LoopDC = PinClassDC = None  # type: ignore
 
-PinClass = PinClassDC  # type: ignore
-Loop = LoopDC  # type: ignore
-Connection = ConnectionDC  # type: ignore
+PinClass = cast(PinClassType, PinClassDC)
+Loop = cast(LoopType, LoopDC)
+Connection = cast(ConnectionType, ConnectionDC)
 
 
 class PinModel(BaseModel):
@@ -45,7 +50,7 @@ class PinModel(BaseModel):
         return MultiColor(value)
 
     @classmethod
-    def from_pinclass(cls, pin: PinClass) -> "PinModel":
+    def from_pinclass(cls, pin: PinClassType) -> "PinModel":
         if PinClassDC is None:  # pragma: no cover
             raise TypeError("PinClass dataclass not available")
         return cls(
@@ -58,10 +63,11 @@ class PinModel(BaseModel):
             _simple=pin._simple,
         )
 
-    def to_pinclass(self) -> PinClass:
+    def to_pinclass(self) -> PinClassType:
         if PinClassDC is None:  # pragma: no cover
             raise TypeError("PinClass dataclass not available")
-        return PinClassDC(
+        pin_class = cast(Any, PinClassDC)
+        return pin_class(
             index=self.index or 0,
             id=self.id,
             label=self.label,
@@ -75,8 +81,8 @@ class PinModel(BaseModel):
 class LoopModel(BaseModel):
     """Pydantic mirror of Loop for safer transport and manipulation."""
 
-    first: Union[PinModel, PinClass, Any]
-    second: Union[PinModel, PinClass, Any]
+    first: Union[PinModel, PinClassType, Any]
+    second: Union[PinModel, PinClassType, Any]
     side: Optional[Side] = None
     show_label: bool = True
     color: Optional[MultiColor] = None
@@ -119,7 +125,7 @@ class LoopModel(BaseModel):
             return PinModel(**value)
         return value
 
-    def to_loop(self) -> Loop:
+    def to_loop(self) -> LoopType:
         if LoopDC is None:  # pragma: no cover
             raise TypeError("Loop dataclass not available")
         first_pin = (
@@ -130,7 +136,8 @@ class LoopModel(BaseModel):
             if isinstance(self.second, PinModel)
             else self.second
         )
-        return LoopDC(
+        loop_dc = cast(Any, LoopDC)
+        return loop_dc(
             first=first_pin,
             second=second_pin,
             side=self.side,
@@ -139,7 +146,7 @@ class LoopModel(BaseModel):
         )
 
     @classmethod
-    def from_loop(cls, loop: Loop) -> "LoopModel":
+    def from_loop(cls, loop: LoopType) -> "LoopModel":
         return cls(
             first=PinModel.from_pinclass(loop.first) if loop.first else None,
             second=PinModel.from_pinclass(loop.second) if loop.second else None,
@@ -152,9 +159,9 @@ class LoopModel(BaseModel):
 class ConnectionModel(BaseModel):
     """Pydantic mirror of Connection for later flow refactors."""
 
-    from_: Optional[Union[PinModel, PinClass, Any]] = None
-    via: Optional[Union[PinModel, PinClass, Any]] = None
-    to: Optional[Union[PinModel, PinClass, Any]] = None
+    from_: Optional[Union[PinModel, PinClassType, WireModel, ShieldModel, Any]] = None
+    via: Optional[Union[PinModel, PinClassType, WireModel, ShieldModel, Any]] = None
+    to: Optional[Union[PinModel, PinClassType, WireModel, ShieldModel, Any]] = None
 
     model_config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
 
@@ -172,7 +179,7 @@ class ConnectionModel(BaseModel):
             return PinModel(**value)
         return value
 
-    def to_connection(self) -> Connection:
+    def to_connection(self) -> ConnectionType:
         if ConnectionDC is None:  # pragma: no cover
             raise TypeError("Connection dataclass not available")
 
@@ -185,14 +192,15 @@ class ConnectionModel(BaseModel):
                 return val.to_wireclass()
             return val
 
-        return ConnectionDC(
+        connection_dc = cast(Any, ConnectionDC)
+        return connection_dc(
             from_=_cast(self.from_),
             via=_cast(self.via),
             to=_cast(self.to),
         )
 
     @classmethod
-    def from_connection(cls, connection: Connection) -> "ConnectionModel":
+    def from_connection(cls, connection: ConnectionType) -> "ConnectionModel":
         def _to_model(value: Any):
             if value is None:
                 return None
