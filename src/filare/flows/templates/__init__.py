@@ -1,6 +1,8 @@
 """Explicit template model builders."""
 
 from filare.flows.templates.bom import build_bom_model
+from filare.flows.templates.cable import build_cable_model
+from filare.flows.templates.connector import build_connector_model
 from filare.flows.templates.cut_table import build_cut_table_model
 from filare.flows.templates.index_table import build_index_table_model
 from filare.flows.templates.notes import build_notes_model
@@ -12,4 +14,6 @@ __all__ = [
     "build_index_table_model",
     "build_cut_table_model",
     "build_termination_table_model",
+    "build_connector_model",
+    "build_cable_model",
 ]
