@@ -118,31 +118,39 @@ def gv_edge_wire(
     """Return Graphviz edge descriptors for a connection through a wire/shield."""
     if isinstance(connection, ConnectionModel):
         connection = connection.to_connection()
-    if connection.via.color:
+    via = getattr(connection, "via", None)
+    via_color = getattr(via, "color", None)
+    if via_color and getattr(via_color, "html_padded", None):
         # check if it's an actual wire and not a shield
-        color = f"#000000:{connection.via.color.html_padded}:#000000"
+        color = f"#000000:{via_color.html_padded}:#000000"
     else:  # it's a shield connection
         color = "#000000"
 
     if connection.from_ is not None:  # connect to left
+        from_index = getattr(connection.from_, "index", None)
+        from_index_safe = (from_index if isinstance(from_index, int) else 0) + 1
         from_port_str = (
-            f":p{connection.from_.index+1}r"
+            f":p{from_index_safe}r"
             if harness.connectors[str(connection.from_.parent)].style != "simple"
             else ""
         )
         code_left_1 = f"{str(connection.from_.parent)}{from_port_str}:e"
-        code_left_2 = f"{str(connection.via.parent)}:w{connection.via.index+1}:w"
+        code_left_2 = f"{str(via.parent)}:w{via.index+1}:w" if via is not None else None
         # ports in GraphViz are 1-indexed for more natural maping to pin/wire numbers
     else:
         code_left_1, code_left_2 = None, None
 
     if connection.to is not None:  # connect to right
+        to_index = getattr(connection.to, "index", None)
+        to_index_safe = (to_index if isinstance(to_index, int) else 0) + 1
         to_port_str = (
-            f":p{connection.to.index+1}l"
+            f":p{to_index_safe}l"
             if harness.connectors[str(connection.to.parent)].style != "simple"
             else ""
         )
-        code_right_1 = f"{str(connection.via.parent)}:w{connection.via.index+1}:e"
+        code_right_1 = (
+            f"{str(via.parent)}:w{via.index+1}:e" if via is not None else None
+        )
         code_right_2 = f"{str(connection.to.parent)}{to_port_str}:w"
     else:
         code_right_1, code_right_2 = None, None
