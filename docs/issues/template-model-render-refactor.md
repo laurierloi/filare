@@ -32,6 +32,7 @@ Track and update call sites template by template to ensure consistency.
 - remaining templates (cable/component_table/simple/simple_connector/colors_macro/images/page) to audit for direct render calls and align with the same pattern. ✅ audited; no remaining direct renders.
 
 ## Remaining direct render call sites to migrate
+
 - None; all audited call sites now use template models/flows.
 
 ## Progress Log

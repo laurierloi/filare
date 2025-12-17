@@ -12,7 +12,7 @@ from filare.models.templates.cut_table_template_model import (
 
 
 def _coerce_row(
-    row: Union[TemplateCutTableRow, Mapping[str, object]]
+    row: Union[TemplateCutTableRow, Mapping[str, object]],
 ) -> TemplateCutTableRow:
     """Normalize a row into TemplateCutTableRow."""
     if isinstance(row, TemplateCutTableRow):
@@ -32,7 +32,7 @@ def _coerce_row(
 
 
 def build_cut_table_model(
-    rows: Sequence[Union[TemplateCutTableRow, Mapping[str, object]]]
+    rows: Sequence[Union[TemplateCutTableRow, Mapping[str, object]]],
 ) -> CutTableTemplateModel:
     """Construct a CutTableTemplateModel from row data."""
     normalized = [_coerce_row(row) for row in rows]

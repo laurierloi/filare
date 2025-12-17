@@ -51,7 +51,7 @@ def _build_pins(
 
 
 def build_connector_model(
-    connector: Union[ConnectorModel, Any]
+    connector: Union[ConnectorModel, Any],
 ) -> Union[ConnectorTemplateModel, SimpleConnectorTemplateModel]:
     """Construct a connector template model (simple or full) from connector data."""
     # Normalize to ConnectorModel for consistent field access when possible.

@@ -11,7 +11,7 @@ from filare.models.templates.termination_table_template_model import (
 
 
 def _coerce_row(
-    row: Union[TemplateTerminationRow, Mapping[str, object]]
+    row: Union[TemplateTerminationRow, Mapping[str, object]],
 ) -> TemplateTerminationRow:
     if isinstance(row, TemplateTerminationRow):
         return row
@@ -24,7 +24,7 @@ def _coerce_row(
 
 
 def build_termination_table_model(
-    rows: Sequence[Union[TemplateTerminationRow, Mapping[str, object]]]
+    rows: Sequence[Union[TemplateTerminationRow, Mapping[str, object]]],
 ) -> TerminationTableTemplateModel:
     """Construct a TerminationTableTemplateModel from row data."""
     normalized = [_coerce_row(row) for row in rows]

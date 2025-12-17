@@ -15,7 +15,7 @@ from filare.models.templates.index_table_template_model import (
 
 
 def _coerce_rows(
-    rows: Union[Sequence[IndexTableRow], Sequence[TemplateIndexTableRow]]
+    rows: Union[Sequence[IndexTableRow], Sequence[TemplateIndexTableRow]],
 ) -> Sequence[TemplateIndexTableRow]:
     """Convert index table rows into TemplateIndexTableRow objects."""
     if not rows:
