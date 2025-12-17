@@ -1,0 +1,6 @@
+demo01.document.yaml:
+  allow_override: true
+  hash: 3fdd2dd6e367dcb3accf4ee246ffcbd62e3b808fe3369df82dbb376a74ab0fed
+demo02.document.yaml:
+  allow_override: true
+  hash: 7a6adccbbe827b2a7f39b69b38d2ff3bce66dd6b55b9dc379ba7c8f92a0a7614

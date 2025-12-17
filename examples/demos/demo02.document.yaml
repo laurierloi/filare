@@ -1,0 +1,115 @@
+bom: {}
+extras:
+  options:
+    bgcolor:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_bundle:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_cable:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_connector:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_node:
+      code_en: WH
+      html: '#ffffff'
+    bom_force_single_page: false
+    bom_row_height: 4.25
+    bom_rows: 0
+    bom_rows_per_page: null
+    bom_updated_position: ''
+    color_output_mode: 2
+    cut_rows_per_page: null
+    diagram_svg: null
+    fontname: arial
+    for_pdf: false
+    image_paths: []
+    include_bom: true
+    include_cut_diagram: false
+    include_termination_diagram: false
+    index_table_on_right: true
+    index_table_row_height: 4.25
+    index_table_updated_position: ''
+    mini_bom_mode: true
+    notes_on_right: false
+    notes_width: 180mm
+    pad: 0
+    show_bom: false
+    show_index_table: true
+    show_notes: true
+    split_bom_page: false
+    split_index_page: false
+    split_notes_page: false
+    table_page_suffix_letters: true
+    template_paths: []
+    template_separator: .
+    termination_rows_per_page: null
+    titleblock_row_height: 4.25
+    titleblock_rows: 9
+metadata:
+  address: 8989 fancy street east
+  authors:
+    Approved:
+      date: 2020-05-20
+      name: D. Rojas
+    Created:
+      date: 2020-05-20
+      name: D. Rojas
+  company: some company
+  files:
+  - /home/runner/work/filare/filare/examples/demo01.yml
+  - /home/runner/work/filare/filare/examples/demo02.yml
+  git_status: ''
+  logo: null
+  multiplier_file_name: quantity_multipliers.txt
+  output_dir: outputs/examples/demos
+  output_name: demo02
+  output_names:
+  - titlepage
+  - demo01
+  - demo02
+  pages_notes: {}
+  pn: WV-DEMO-02
+  revisions:
+    A:
+      changelog: Filare 0.2 release
+      date: 2020-10-17
+      name: D. Rojas
+  sheet_current: 3
+  sheet_name: DEMO02
+  sheet_suffix: ''
+  sheet_total: 3
+  template:
+    name: din-6771
+    orientation: landscape
+    sheetsize: A3
+  title: Filare Demo 2
+  titlepage: titlepage
+  use_qty_multipliers: false
+notes: "<ol>\n  <li><b> NO BOM by config! WOW! </b></li>\n  <li>Wire color is a recommendation</li>\n\
+  \  <li>Label harnesses with text given in diagram</li>\n  <li>Label every connector\
+  \ to match the designation in the drawing</li>\n  <li>Zip tie entire harness at\
+  \ 1ft increments where required.</li>\n  <li>Cover all cables with 1/2\" or 1/8\"\
+  \ black sleeving as required. Make it very long for wrapping test</li>\n</ol>"
+pages:
+- formats: []
+  include: true
+  name: titlepage
+  type: title
+- formats:
+  - html
+  - svg
+  - png
+  - gv
+  - shared_bom
+  - tsv
+  name: WV-DEMO-02-demo02
+  type: harness
+- formats:
+  - tsv
+  include: true
+  name: bom
+  type: bom

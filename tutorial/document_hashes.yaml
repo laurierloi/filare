@@ -1,0 +1,24 @@
+tutorial01.document.yaml:
+  allow_override: true
+  hash: 8fb8f0494c454f73237f4b7a0cda8b851504487d945953cc38b20db8c318965b
+tutorial02.document.yaml:
+  allow_override: true
+  hash: b16c64ccbf2958ca72fe1b9929577116367ceef6e19b4bc16e17e87863573c19
+tutorial03.document.yaml:
+  allow_override: true
+  hash: 5140a0e346ad7534bb858ef49656cfd41c7cee132a680c0a5ed96ab826d3876f
+tutorial04.document.yaml:
+  allow_override: true
+  hash: ebda337f795c0cfae058c88b789d67f0a5abeaebb844d3c57312c0da20f385ad
+tutorial05.document.yaml:
+  allow_override: true
+  hash: 7dc062c0c175fa1cb2fafe913ab1aac22e18b46c7f172f04b53e92d52bd26ec2
+tutorial06.document.yaml:
+  allow_override: true
+  hash: 5a44ea474868870c042b66c3634070214f8ac2a54c25017e62ef117184fa9938
+tutorial07.document.yaml:
+  allow_override: true
+  hash: 8ccd4873e87cb7ad08843c5ecbd8fcefaebdecd907282a5228b30ac5ca2899cf
+tutorial08.document.yaml:
+  allow_override: true
+  hash: b53fa5377d0576bdcef83e3d2656b1696b87048bc1fcefcd3329fea09fef3c84

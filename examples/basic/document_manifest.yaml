@@ -1,0 +1,45 @@
+documents:
+- name: basic01.document
+  path: basic01.document.yaml
+shared_bom: shared_bom.tsv
+split_combined_bom: false
+split_index: false
+split_notes: false
+title_metadata:
+  address: 100 Example Way
+  authors:
+    created:
+      date: '2024-01-01'
+      name: Filare Team
+    reviewed:
+      date: n/a
+      name: n/a
+  company: Filare Examples
+  files:
+  - /home/runner/work/filare/filare/examples/basic/basic01.yml
+  git_status: ''
+  logo: null
+  multiplier_file_name: quantity_multipliers.txt
+  output_dir: outputs/examples/basic
+  output_name: basic01
+  output_names:
+  - titlepage
+  - basic01
+  pages_notes: {}
+  pn: BASIC-01
+  revisions:
+    a:
+      changelog: initial single-diagram example
+      date: '2024-01-01'
+      name: Filare Team
+  sheet_current: '2'
+  sheet_name: BASIC01
+  sheet_suffix: ''
+  sheet_total: '2'
+  template:
+    name: din-6771
+    orientation: landscape
+    sheetsize: A3
+  title: Basic Harness Example
+  titlepage: titlepage
+  use_qty_multipliers: false

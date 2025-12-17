@@ -1,0 +1,9 @@
+  #	  Qty	Unit  	Description                                  	Designators  	Per Harness
+  1	    1	      	Cable, 4 x 0.5 mm²                           	             	CUT-DOC-01-cut-h1: 1
+  2	    1	      	Connector, Circular, female, 4 pins          	             	CUT-DOC-01-cut-h1: 1
+  3	    1	      	Connector, Circular, male, 4 pins            	             	CUT-DOC-01-cut-h1: 1
+  4	    1	      	Cable, 3 x 0.75 mm²                          	             	CUT-DOC-01-cut-h2: 1
+  5	    2	      	Connector, Terminal Block, female, 3 pins    	             	CUT-DOC-01-cut-h2: 2
+  6	    1	      	Cable, 5 x 0.5 mm²                           	             	CUT-DOC-01-cut-h3: 1
+  7	    1	      	Connector, Molex MicroFit 3.0, female, 5 pins	             	CUT-DOC-01-cut-h3: 1
+  8	    1	      	Connector, Molex MicroFit 3.0, male, 5 pins  	             	CUT-DOC-01-cut-h3: 1

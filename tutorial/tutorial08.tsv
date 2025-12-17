@@ -1,11 +1,11 @@
   #	  Qty	Unit  	Description                            	Designators  	Per Harness
- 18	    2	      	Connector, Molex KK 254, female, 4 pins	             	test-01-tutorial08: 2
- 19	    1	      	Connector, Molex KK 254, female, 4 pins	             	test-01-tutorial08: 1
- 20	    1	      	Cable, 4 x 0.25 mm²                    	             	test-01-tutorial08: 1
- 21	    2	m     	Wire, 0.25 mm², BK                     	             	test-01-tutorial08: 2 m
- 22	    1	m     	Wire, 0.25 mm², RD                     	             	test-01-tutorial08: 1 m
- 23	    1	m     	Wire, 0.25 mm², YE                     	             	test-01-tutorial08: 1 m
- 24	   48	      	Crimp, Molex KK 254, 22-30 AWG         	             	test-01-tutorial08: 48
- 25	    2	      	Label, pinout information              	X2, X3       	test-01-tutorial08: 2
- 26	    1	      	Sleeve, Braided nylon, black, 3mm      	             	test-01-tutorial08: 1
- 27	    3	      	Test                                   	             	test-01-tutorial08: 3
+ 18	   48	      	Crimp, Molex KK 254, 22-30 AWG         	             	test-01-tutorial08: 48
+ 19	    2	      	Label, pinout information              	X2, X3       	test-01-tutorial08: 2
+ 20	    1	      	Sleeve, Braided nylon, black, 3mm      	             	test-01-tutorial08: 1
+ 21	    3	      	Test                                   	             	test-01-tutorial08: 3
+ 22	    1	      	Cable, 4 x 0.25 mm²                    	             	test-01-tutorial08: 1
+ 23	    2	      	Connector, Molex KK 254, female, 4 pins	             	test-01-tutorial08: 2
+ 24	    1	      	Connector, Molex KK 254, female, 4 pins	             	test-01-tutorial08: 1
+ 25	    2	m     	Wire, 0.25 mm², BK                     	             	test-01-tutorial08: 2 m
+ 26	    1	m     	Wire, 0.25 mm², RD                     	             	test-01-tutorial08: 1 m
+ 27	    1	m     	Wire, 0.25 mm², YE                     	             	test-01-tutorial08: 1 m

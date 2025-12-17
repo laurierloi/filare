@@ -1,0 +1,57 @@
+documents:
+- name: ex01.document
+  path: ex01.document.yaml
+- name: ex02.document
+  path: ex02.document.yaml
+- name: ex03.document
+  path: ex03.document.yaml
+- name: ex04.document
+  path: ex04.document.yaml
+shared_bom: shared_bom.tsv
+split_combined_bom: true
+split_index: false
+split_notes: false
+title_metadata:
+  address: 1 Cable Way
+  authors:
+    created:
+      date: '2024-01-01'
+      name: tester
+    reviewed:
+      date: n/a
+      name: n/a
+  company: ACME Wiring
+  files:
+  - /home/runner/work/filare/filare/examples/multi-page/ex01.yml
+  - /home/runner/work/filare/filare/examples/multi-page/ex02.yml
+  - /home/runner/work/filare/filare/examples/multi-page/ex03.yml
+  - /home/runner/work/filare/filare/examples/multi-page/ex04.yml
+  git_status: ''
+  logo: null
+  multiplier_file_name: quantity_multipliers.txt
+  output_dir: outputs/examples/multi-page
+  output_name: ex01
+  output_names:
+  - titlepage
+  - ex01
+  - ex02
+  - ex03
+  - ex04
+  pages_notes: {}
+  pn: mp-examples
+  revisions:
+    a:
+      changelog: initial release
+      date: '2024-01-01'
+      name: tester
+  sheet_current: '2'
+  sheet_name: EX01
+  sheet_suffix: ''
+  sheet_total: '5'
+  template:
+    name: din-6771
+    orientation: landscape
+    sheetsize: A3
+  title: Multi-page examples
+  titlepage: titlepage
+  use_qty_multipliers: false

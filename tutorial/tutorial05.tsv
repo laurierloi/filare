@@ -1,1 +1,6 @@
-#  	Qty  	Unit  	Description  	Designators  	Per Harness
+  #	  Qty	Unit  	Description                          	Designators  	Per Harness
+  8	  4  	      	Connector, Crimp ferrule, 0.5 mm², OG	             	test-01-tutorial05: 4
+  9	  1  	      	Connector, Molex 8981, female, 4 pins	             	test-01-tutorial05: 1
+ 10	  0.6	m     	Wire, 0.5 mm², BK                    	             	test-01-tutorial05: 0.60 m
+ 11	  0.3	m     	Wire, 0.5 mm², RD                    	             	test-01-tutorial05: 0.30 m
+ 12	  0.3	m     	Wire, 0.5 mm², YE                    	             	test-01-tutorial05: 0.30 m

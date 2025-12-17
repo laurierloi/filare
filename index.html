@@ -1345,6 +1345,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="workflows/taskwarrior-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Taskwarrior (Agent)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="workflows/taskwarrior-project-manager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Taskwarrior (Project Manager)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2057,34 +2113,6 @@
   
   
     <li class="md-nav__item">
-      <a href="tasks.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Tasks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="workplan/gantt/" class="md-nav__link">
         
   
@@ -2756,7 +2784,7 @@ uv run filare --help
   <div class="highlight"><pre><span></span><code>docker run --rm -v &quot;$PWD&quot;:/app filare uv run --no-sync python src/filare/tools/build_examples.py
 </code></pre></div></li>
 <li>Build examples only:
-  <div class="highlight"><pre><span></span><code>docker run --rm -v &quot;$PWD&quot;:/app filare uv run --no-sync filare examples/ex*.yml -d examples/metadata.yml -f hs -o outputs/examples
+  <div class="highlight"><pre><span></span><code>docker run --rm -v &quot;$PWD&quot;:/app filare uv run --no-sync filare examples/basic/basic01.yml -d examples/basic/metadata.yml -f hs -o outputs/examples
 </code></pre></div></li>
 <li>Build tutorials only:
   <div class="highlight"><pre><span></span><code>docker run --rm -v &quot;$PWD&quot;:/app filare uv run --no-sync filare tutorial/tutorial*.yml -d tutorial/metadata.yml -f hs -o outputs/tutorial
@@ -2851,7 +2879,7 @@ myharness{1,2}.html       HTML page with wiring diagram and BOM embedded
 <div class="highlight"><pre><span></span><code>$ uv run filare --help
 </code></pre></div>
 <h4 id="sample-run-all-examples">Sample run all examples<a class="headerlink" href="#sample-run-all-examples" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code>$ uv run filare -d examples/metadata.yml examples/ex*.yml
+<div class="highlight"><pre><span></span><code>$ uv run filare -d examples/basic/metadata.yml examples/basic/basic01.yml
 </code></pre></div>
 <p>Then open <code>examples/titlepage.html</code> to open the document root</p>
 <h3 id="quantity-multipliers-filare-qty">Quantity multipliers (<code>filare-qty</code>)<a class="headerlink" href="#quantity-multipliers-filare-qty" title="Permanent link">&para;</a></h3>

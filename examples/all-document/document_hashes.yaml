@@ -1,0 +1,6 @@
+all-h1.document.yaml:
+  allow_override: true
+  hash: f7b8ad57173c496e159032c239c809490b9511b7ea3d6fcfc9e5487f0aa56581
+all-h2.document.yaml:
+  allow_override: true
+  hash: 7cd08fb6b2d9cfed4422d7b07ce18a9b1983748269cb2f19bb5f208be4ae7ca2

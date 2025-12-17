@@ -1,0 +1,120 @@
+bom: {}
+extras:
+  options:
+    bgcolor:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_bundle:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_cable:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_connector:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_node:
+      code_en: WH
+      html: '#ffffff'
+    bom_force_single_page: false
+    bom_row_height: 4.25
+    bom_rows: 0
+    bom_rows_per_page: null
+    bom_updated_position: ''
+    color_output_mode: 2
+    cut_rows_per_page: null
+    diagram_svg: null
+    fontname: arial
+    for_pdf: false
+    image_paths: []
+    include_bom: true
+    include_cut_diagram: true
+    include_termination_diagram: true
+    index_table_on_right: true
+    index_table_row_height: 4.25
+    index_table_updated_position: ''
+    mini_bom_mode: true
+    notes_on_right: true
+    notes_width: 180mm
+    pad: 0
+    show_bom: true
+    show_index_table: true
+    show_notes: true
+    split_bom_page: false
+    split_index_page: false
+    split_notes_page: false
+    table_page_suffix_letters: true
+    template_paths: []
+    template_separator: .
+    termination_rows_per_page: null
+    titleblock_row_height: 4.25
+    titleblock_rows: 9
+metadata:
+  address: 500 Example Way
+  authors:
+    created:
+      date: 2024-04-01
+      name: Filare Team
+    reviewed:
+      date: n/a
+      name: n/a
+  company: Filare Examples
+  files:
+  - /home/runner/work/filare/filare/examples/all-document/all-h1.yml
+  - /home/runner/work/filare/filare/examples/all-document/all-h2.yml
+  git_status: ''
+  logo: null
+  multiplier_file_name: quantity_multipliers.txt
+  output_dir: outputs/examples/all-document
+  output_name: all-h2
+  output_names:
+  - titlepage
+  - all-h1
+  - all-h2
+  pages_notes: {}
+  pn: ALL-DOC-01
+  revisions:
+    a:
+      changelog: full-output document with two complex harnesses
+      date: 2024-04-01
+      name: Filare Team
+  sheet_current: 3
+  sheet_name: ALL-H2
+  sheet_suffix: ''
+  sheet_total: 3
+  template:
+    name: din-6771
+    orientation: landscape
+    sheetsize: A3
+  title: Full Output Document
+  titlepage: titlepage
+  use_qty_multipliers: false
+notes: "<ol>\n  <li>Two harnesses with cut, termination, and all outputs enabled.</li>\n\
+  </ol>"
+pages:
+- formats: []
+  include: true
+  name: titlepage
+  type: title
+- formats:
+  - shared_bom
+  - tsv
+  - gv
+  - html
+  - svg
+  - png
+  name: ALL-DOC-01-all-h2
+  type: harness
+- formats:
+  - tsv
+  include: true
+  name: bom
+  type: bom
+- formats: []
+  include: false
+  name: cut
+  type: cut
+- formats: []
+  include: false
+  name: termination
+  type: termination

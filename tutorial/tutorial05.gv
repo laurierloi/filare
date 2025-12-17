@@ -108,19 +108,19 @@ graph {
   <table border="0" cellborder="1" cellpadding="3" cellspacing="0">
     <tr>
         <td port="p1l"> 1 </td>
-      <td colspan="2"> +12V </td>
+        <td colspan="2"> +12V </td>
     </tr>
     <tr>
         <td port="p2l"> 2 </td>
-      <td colspan="2"> GND </td>
+        <td colspan="2"> GND </td>
     </tr>
     <tr>
         <td port="p3l"> 3 </td>
-      <td colspan="2"> GND </td>
+        <td colspan="2"> GND </td>
     </tr>
     <tr>
         <td port="p4l"> 4 </td>
-      <td colspan="2"> +5V </td>
+        <td colspan="2"> +5V </td>
     </tr>
   </table>
     </td>

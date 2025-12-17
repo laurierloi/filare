@@ -1,0 +1,53 @@
+documents:
+- name: termination-h1.document
+  path: termination-h1.document.yaml
+- name: termination-h2.document
+  path: termination-h2.document.yaml
+- name: termination-h3.document
+  path: termination-h3.document.yaml
+shared_bom: shared_bom.tsv
+split_combined_bom: false
+split_index: false
+split_notes: false
+title_metadata:
+  address: 400 Example Way
+  authors:
+    created:
+      date: '2024-03-15'
+      name: Filare Team
+    reviewed:
+      date: n/a
+      name: n/a
+  company: Filare Examples
+  files:
+  - /home/runner/work/filare/filare/examples/document-termination/termination-h1.yml
+  - /home/runner/work/filare/filare/examples/document-termination/termination-h2.yml
+  - /home/runner/work/filare/filare/examples/document-termination/termination-h3.yml
+  git_status: ''
+  logo: null
+  multiplier_file_name: quantity_multipliers.txt
+  output_dir: outputs/examples/document-termination
+  output_name: termination-h1
+  output_names:
+  - titlepage
+  - termination-h1
+  - termination-h2
+  - termination-h3
+  pages_notes: {}
+  pn: TERM-DOC-01
+  revisions:
+    a:
+      changelog: initial termination-diagram document with three harnesses
+      date: '2024-03-15'
+      name: Filare Team
+  sheet_current: '2'
+  sheet_name: TERMINATION-H1
+  sheet_suffix: ''
+  sheet_total: '4'
+  template:
+    name: din-6771
+    orientation: landscape
+    sheetsize: A3
+  title: Termination Diagram Document
+  titlepage: titlepage
+  use_qty_multipliers: false

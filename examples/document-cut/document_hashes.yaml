@@ -1,0 +1,9 @@
+cut-h1.document.yaml:
+  allow_override: true
+  hash: c5b802c3a127d2b872c0f426c55c4af4e27351164b04aa53b57bb2f65154a727
+cut-h2.document.yaml:
+  allow_override: true
+  hash: 818f3b172839389a642b177663c520468b7280d3fa64ebb5402ee60a38109855
+cut-h3.document.yaml:
+  allow_override: true
+  hash: 0e4ca51695a6d09bd578a4eeb6a67604321beeaf36625f9302da3170aee8f5d7

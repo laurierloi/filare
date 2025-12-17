@@ -1,0 +1,12 @@
+ex01.document.yaml:
+  allow_override: true
+  hash: 76eb40c1873a52c81379c01b97f49ab7b66a3fcb0356c84212d482752303ead4
+ex02.document.yaml:
+  allow_override: true
+  hash: 0fa6e4f7d938acfb11bed450c2513d5be869a2b77dd31b302be6020ffc99829d
+ex03.document.yaml:
+  allow_override: true
+  hash: faf7e3286f4b886554771ac99c4c6a819d97f678c86ca9c9d6a502617f41a61f
+ex04.document.yaml:
+  allow_override: true
+  hash: 50ba7f3dfa30d54704c6e978d7555ebe86066162ee0df7a339012d36a7cc2bfe

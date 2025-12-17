@@ -1,0 +1,53 @@
+documents:
+- name: cut-h1.document
+  path: cut-h1.document.yaml
+- name: cut-h2.document
+  path: cut-h2.document.yaml
+- name: cut-h3.document
+  path: cut-h3.document.yaml
+shared_bom: shared_bom.tsv
+split_combined_bom: false
+split_index: false
+split_notes: false
+title_metadata:
+  address: 300 Example Way
+  authors:
+    created:
+      date: '2024-03-01'
+      name: Filare Team
+    reviewed:
+      date: n/a
+      name: n/a
+  company: Filare Examples
+  files:
+  - /home/runner/work/filare/filare/examples/document-cut/cut-h1.yml
+  - /home/runner/work/filare/filare/examples/document-cut/cut-h2.yml
+  - /home/runner/work/filare/filare/examples/document-cut/cut-h3.yml
+  git_status: ''
+  logo: null
+  multiplier_file_name: quantity_multipliers.txt
+  output_dir: outputs/examples/document-cut
+  output_name: cut-h1
+  output_names:
+  - titlepage
+  - cut-h1
+  - cut-h2
+  - cut-h3
+  pages_notes: {}
+  pn: CUT-DOC-01
+  revisions:
+    a:
+      changelog: initial cut-diagram document with three harnesses
+      date: '2024-03-01'
+      name: Filare Team
+  sheet_current: '2'
+  sheet_name: CUT-H1
+  sheet_suffix: ''
+  sheet_total: '4'
+  template:
+    name: din-6771
+    orientation: landscape
+    sheetsize: A3
+  title: Cut Diagram Document
+  titlepage: titlepage
+  use_qty_multipliers: false

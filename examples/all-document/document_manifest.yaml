@@ -1,0 +1,49 @@
+documents:
+- name: all-h1.document
+  path: all-h1.document.yaml
+- name: all-h2.document
+  path: all-h2.document.yaml
+shared_bom: shared_bom.tsv
+split_combined_bom: false
+split_index: false
+split_notes: false
+title_metadata:
+  address: 500 Example Way
+  authors:
+    created:
+      date: '2024-04-01'
+      name: Filare Team
+    reviewed:
+      date: n/a
+      name: n/a
+  company: Filare Examples
+  files:
+  - /home/runner/work/filare/filare/examples/all-document/all-h1.yml
+  - /home/runner/work/filare/filare/examples/all-document/all-h2.yml
+  git_status: ''
+  logo: null
+  multiplier_file_name: quantity_multipliers.txt
+  output_dir: outputs/examples/all-document
+  output_name: all-h1
+  output_names:
+  - titlepage
+  - all-h1
+  - all-h2
+  pages_notes: {}
+  pn: ALL-DOC-01
+  revisions:
+    a:
+      changelog: full-output document with two complex harnesses
+      date: '2024-04-01'
+      name: Filare Team
+  sheet_current: '2'
+  sheet_name: ALL-H1
+  sheet_suffix: ''
+  sheet_total: '3'
+  template:
+    name: din-6771
+    orientation: landscape
+    sheetsize: A3
+  title: Full Output Document
+  titlepage: titlepage
+  use_qty_multipliers: false

@@ -35,19 +35,19 @@ graph {
     <td>
   <table border="0" cellborder="1" cellpadding="3" cellspacing="0">
     <tr>
-      <td colspan="2"> GND </td>
+        <td colspan="2"> GND </td>
        <td port="p1r"> 1 </td>
     </tr>
     <tr>
-      <td colspan="2"> VCC </td>
+        <td colspan="2"> VCC </td>
        <td port="p2r"> 2 </td>
     </tr>
     <tr>
-      <td colspan="2"> SCL </td>
+        <td colspan="2"> SCL </td>
        <td port="p3r"> 3 </td>
     </tr>
     <tr>
-      <td colspan="2"> SDA </td>
+        <td colspan="2"> SDA </td>
        <td port="p4r"> 4 </td>
     </tr>
   </table>
@@ -99,22 +99,22 @@ graph {
   <table border="0" cellborder="1" cellpadding="3" cellspacing="0">
     <tr>
         <td port="p1l"> 1 </td>
-      <td colspan="2"> GND </td>
+        <td colspan="2"> GND </td>
        <td port="p1r"> 1 </td>
     </tr>
     <tr>
         <td port="p2l"> 2 </td>
-      <td colspan="2"> VCC </td>
+        <td colspan="2"> VCC </td>
        <td port="p2r"> 2 </td>
     </tr>
     <tr>
         <td port="p3l"> 3 </td>
-      <td colspan="2"> SCL </td>
+        <td colspan="2"> SCL </td>
        <td port="p3r"> 3 </td>
     </tr>
     <tr>
         <td port="p4l"> 4 </td>
-      <td colspan="2"> SDA </td>
+        <td colspan="2"> SDA </td>
        <td port="p4r"> 4 </td>
     </tr>
   </table>
@@ -166,19 +166,19 @@ graph {
   <table border="0" cellborder="1" cellpadding="3" cellspacing="0">
     <tr>
         <td port="p1l"> 1 </td>
-      <td colspan="2"> GND </td>
+        <td colspan="2"> GND </td>
     </tr>
     <tr>
         <td port="p2l"> 2 </td>
-      <td colspan="2"> VCC </td>
+        <td colspan="2"> VCC </td>
     </tr>
     <tr>
         <td port="p3l"> 3 </td>
-      <td colspan="2"> SCL </td>
+        <td colspan="2"> SCL </td>
     </tr>
     <tr>
         <td port="p4l"> 4 </td>
-      <td colspan="2"> SDA </td>
+        <td colspan="2"> SDA </td>
     </tr>
   </table>
     </td>

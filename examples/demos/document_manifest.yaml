@@ -1,0 +1,49 @@
+documents:
+- name: demo01.document
+  path: demo01.document.yaml
+- name: demo02.document
+  path: demo02.document.yaml
+shared_bom: shared_bom.tsv
+split_combined_bom: false
+split_index: false
+split_notes: false
+title_metadata:
+  address: 8888 fancy street west
+  authors:
+    created:
+      date: '2023-03-29'
+      name: bob ross
+    reviewed:
+      date: n/a
+      name: n/a
+  company: some company
+  files:
+  - /home/runner/work/filare/filare/examples/demo01.yml
+  - /home/runner/work/filare/filare/examples/demo02.yml
+  git_status: ''
+  logo: null
+  multiplier_file_name: quantity_multipliers.txt
+  output_dir: outputs/examples/demos
+  output_name: demo01
+  output_names:
+  - titlepage
+  - demo01
+  - demo02
+  pages_notes: {}
+  pn: demo-01
+  revisions:
+    a:
+      changelog: initial release
+      date: '2023-03-29'
+      name: bob ross
+  sheet_current: '2'
+  sheet_name: DEMO01
+  sheet_suffix: ''
+  sheet_total: '3'
+  template:
+    name: din-6771
+    orientation: landscape
+    sheetsize: A3
+  title: demo01
+  titlepage: titlepage
+  use_qty_multipliers: false

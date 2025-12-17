@@ -963,6 +963,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflows/taskwarrior-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Taskwarrior (Agent)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflows/taskwarrior-project-manager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Taskwarrior (Project Manager)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1675,34 +1731,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Tasks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../workplan/gantt/" class="md-nav__link">
         
   
@@ -2019,8 +2047,8 @@ milestone: backlog</p>
 <p>BUG</p>
 <h2 id="evidence">Evidence<a class="headerlink" href="#evidence" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Running <code>source scripts/agent-setup.sh &gt;/dev/null &amp;&amp; just build-examples</code> aborts on the first example (<code>examples/ex01.yml</code>) with <code>TypeError: can only concatenate str (not "int") to str</code>.</li>
-<li>Repro via <code>source scripts/agent-setup.sh &gt;/dev/null &amp;&amp; uv run filare run examples/ex01.yml -f ghpstb -o examples</code> shows the failure originates in <code>_build_cut_table</code> (<code>src/filare/models/harness.py</code>), at <code>{"wire": f"{cable.designator}-{idx + 1}", ...}</code>.</li>
+<li>Running <code>source scripts/agent-setup.sh &gt;/dev/null &amp;&amp; just build-examples</code> aborts on the first example (<code>examples/all-document/all-h1.yml</code>) with <code>TypeError: can only concatenate str (not "int") to str</code>.</li>
+<li>Repro via <code>source scripts/agent-setup.sh &gt;/dev/null &amp;&amp; uv run filare run examples/all-document/all-h1.yml -d examples/all-document/metadata.yml -f ghpstb -o examples</code> shows the failure originates in <code>_build_cut_table</code> (<code>src/filare/models/harness.py</code>), at <code>{"wire": f"{cable.designator}-{idx + 1}", ...}</code>.</li>
 <li>The cut-table builder iterates <code>cable.wire_objects</code>, whose keys include the shield id <code>'s'</code>; adding <code>1</code> to <code>'s'</code> raises the TypeError.</li>
 </ul>
 <h2 id="hypothesis">Hypothesis<a class="headerlink" href="#hypothesis" title="Permanent link">&para;</a></h2>
@@ -2029,7 +2057,7 @@ milestone: backlog</p>
 </ul>
 <h2 id="steps-taken">Steps Taken<a class="headerlink" href="#steps-taken" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Reproduced with <code>just build-examples</code> and <code>uv run filare run examples/ex01.yml -f ghpstb -o examples</code>.</li>
+<li>Reproduced with <code>just build-examples</code> and <code>uv run filare run examples/all-document/all-h1.yml -d examples/all-document/metadata.yml -f ghpstb -o examples</code>.</li>
 <li>Traced the stack to <code>_build_cut_table</code> (<code>src/filare/models/harness.py</code>) where <code>idx + 1</code> is evaluated on a shield id <code>"s"</code>.</li>
 <li>Implemented a guard that formats wire suffixes by coercing numeric ids to int and leaving non-numeric ids as-is.</li>
 <li>Added regression coverage for shielded cables with cut diagrams (<code>tests/models/test_harness_unit.py::test_build_cut_table_handles_shield_id</code>).</li>

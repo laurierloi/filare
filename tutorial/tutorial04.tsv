@@ -1,1 +1,4 @@
-#  	Qty  	Unit  	Description  	Designators  	Per Harness
+  #	  Qty	Unit  	Description                            	Designators  	Per Harness
+  4	    2	      	Connector, Molex KK 254, female, 4 pins
+  6	    2	      	Cable, 4 x 24 AWG                      	             	test-01-tutorial04: 2
+  7	    1	      	Connector, Molex KK 254, male, 4 pins  	             	test-01-tutorial04: 1

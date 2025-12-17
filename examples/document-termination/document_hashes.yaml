@@ -1,0 +1,9 @@
+termination-h1.document.yaml:
+  allow_override: true
+  hash: ec79f1d16988d11175c075284cd3ac7d7416393da2eb8c5e6d255e53a333d6af
+termination-h2.document.yaml:
+  allow_override: true
+  hash: 252ffa04e002a684b5fd728ac1a02742f1011fd09e8fe5b41a36a00d944d2578
+termination-h3.document.yaml:
+  allow_override: true
+  hash: cc6ccc584fc8f99071d37e9bac688fe0b300e63c9e5aabdd3dc363ae7883df1f

@@ -1069,6 +1069,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/taskwarrior-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Taskwarrior (Agent)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/taskwarrior-project-manager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Taskwarrior (Project Manager)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1781,34 +1837,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../tasks.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Tasks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../workplan/gantt/" class="md-nav__link">
         
   
@@ -2168,10 +2196,10 @@
 </ol>
 <h2 id="extendingoperating">Extending/operating<a class="headerlink" href="#extendingoperating" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Update metadata/templates: tweak <code>examples/metadata.yml</code> or the templates under <code>src/filare/templates/</code>.</li>
+<li>Update metadata/templates: tweak the per-folder metadata files (e.g., <code>examples/basic/metadata.yml</code>) or the templates under <code>src/filare/templates/</code>.</li>
 <li>Add formats or post-processing: extend <code>render/output.py</code> and, if needed, <code>flows/render_outputs.py</code>.</li>
 <li>Batch generation: call <code>uv run --no-sync python src/filare/tools/build_examples.py</code> (uses the same pipeline as the CLI).</li>
-<li>Build document YAML only (no render): <code>uv run --no-sync filare examples/ex01.yml -d examples/metadata.yml -f "" -o outputs</code> (document YAML and hashes are emitted alongside outputs).</li>
+<li>Build document YAML only (no render): <code>uv run --no-sync filare examples/basic/basic01.yml -d examples/basic/metadata.yml -f "" -o outputs</code> (document YAML and hashes are emitted alongside outputs).</li>
 <li>Force a document YAML refresh: remove <code>*.document.yaml</code> and <code>document_hashes.yaml</code> before rerun, or edit the YAML to keep your changes (hash guard prevents overwrite).</li>
 <li>Page types: see <code>docs/pages.md</code> for the list of page types (title, harness, bom, cut, termination) and their roles; enable cut/termination via <code>options.include_cut_diagram</code> / <code>options.include_termination_diagram</code>.</li>
 </ul>

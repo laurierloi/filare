@@ -1,0 +1,111 @@
+bom: {}
+extras:
+  options:
+    bgcolor:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_bundle:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_cable:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_connector:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_node:
+      code_en: WH
+      html: '#ffffff'
+    bom_force_single_page: false
+    bom_row_height: 4.25
+    bom_rows: 0
+    bom_rows_per_page: null
+    bom_updated_position: ''
+    color_output_mode: 2
+    cut_rows_per_page: null
+    diagram_svg: null
+    fontname: arial
+    for_pdf: false
+    image_paths: []
+    include_bom: true
+    include_cut_diagram: false
+    include_termination_diagram: false
+    index_table_on_right: true
+    index_table_row_height: 4.25
+    index_table_updated_position: ''
+    mini_bom_mode: true
+    notes_on_right: true
+    notes_width: 180mm
+    pad: 0
+    show_bom: true
+    show_index_table: true
+    show_notes: true
+    split_bom_page: false
+    split_index_page: false
+    split_notes_page: false
+    table_page_suffix_letters: true
+    template_paths: []
+    template_separator: .
+    termination_rows_per_page: null
+    titleblock_row_height: 4.25
+    titleblock_rows: 9
+metadata:
+  address: 200 Example Way
+  authors:
+    created:
+      date: 2024-02-01
+      name: Filare Team
+    reviewed:
+      date: n/a
+      name: n/a
+  company: Filare Examples
+  files:
+  - /home/runner/work/filare/filare/examples/minimal-document/minimal-h1.yml
+  - /home/runner/work/filare/filare/examples/minimal-document/minimal-h2.yml
+  git_status: ''
+  logo: null
+  multiplier_file_name: quantity_multipliers.txt
+  output_dir: outputs/examples/minimal-document
+  output_name: minimal-h2
+  output_names:
+  - titlepage
+  - minimal-h1
+  - minimal-h2
+  pages_notes: {}
+  pn: MIN-DOC-01
+  revisions:
+    a:
+      changelog: initial minimal document with two harnesses
+      date: 2024-02-01
+      name: Filare Team
+  sheet_current: 3
+  sheet_name: MINIMAL-H2
+  sheet_suffix: ''
+  sheet_total: 3
+  template:
+    name: din-6771
+    orientation: portrait
+    sheetsize: A4
+  title: Minimal DIN A4 Document
+  titlepage: titlepage
+  use_qty_multipliers: false
+notes: "<ol>\n  <li>Two harnesses on DIN A4 with BOM only.</li>\n</ol>"
+pages:
+- formats: []
+  include: true
+  name: titlepage
+  type: title
+- formats:
+  - shared_bom
+  - svg
+  - gv
+  - tsv
+  - html
+  - png
+  name: MIN-DOC-01-minimal-h2
+  type: harness
+- formats:
+  - tsv
+  include: true
+  name: bom
+  type: bom

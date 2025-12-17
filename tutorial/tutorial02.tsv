@@ -1,1 +1,3 @@
-#  	Qty  	Unit  	Description  	Designators  	Per Harness
+  #	  Qty	Unit  	Description                            	Designators  	Per Harness
+  3	    1	      	Cable, 4 x 0.25 mm²                    	             	test-01-tutorial02: 1
+  4	    2	      	Connector, Molex KK 254, female, 4 pins	             	test-01-tutorial02: 2

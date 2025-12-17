@@ -1,0 +1,124 @@
+bom: {}
+extras:
+  options:
+    bgcolor:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_bundle:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_cable:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_connector:
+      code_en: WH
+      html: '#ffffff'
+    bgcolor_node:
+      code_en: WH
+      html: '#ffffff'
+    bom_force_single_page: false
+    bom_row_height: 4.25
+    bom_rows: 0
+    bom_rows_per_page: 10
+    bom_updated_position: ''
+    color_output_mode: 2
+    cut_rows_per_page: 12
+    diagram_svg: null
+    fontname: arial
+    for_pdf: false
+    image_paths: []
+    include_bom: true
+    include_cut_diagram: true
+    include_termination_diagram: true
+    index_table_on_right: true
+    index_table_row_height: 4.25
+    index_table_updated_position: ''
+    mini_bom_mode: true
+    notes_on_right: true
+    notes_width: 180mm
+    pad: 0
+    show_bom: true
+    show_index_table: true
+    show_notes: true
+    split_bom_page: true
+    split_index_page: false
+    split_notes_page: false
+    table_page_suffix_letters: true
+    template_paths: []
+    template_separator: .
+    termination_rows_per_page: 8
+    titleblock_row_height: 4.25
+    titleblock_rows: 9
+metadata:
+  address: 1 Cable Way
+  authors:
+    created:
+      date: 2024-01-01
+      name: tester
+    reviewed:
+      date: n/a
+      name: n/a
+  company: ACME Wiring
+  files:
+  - /home/runner/work/filare/filare/examples/multi-page/ex01.yml
+  - /home/runner/work/filare/filare/examples/multi-page/ex02.yml
+  - /home/runner/work/filare/filare/examples/multi-page/ex03.yml
+  - /home/runner/work/filare/filare/examples/multi-page/ex04.yml
+  git_status: ''
+  logo: null
+  multiplier_file_name: quantity_multipliers.txt
+  output_dir: outputs/examples/multi-page
+  output_name: ex04
+  output_names:
+  - titlepage
+  - ex01
+  - ex02
+  - ex03
+  - ex04
+  pages_notes: {}
+  pn: mp-examples
+  revisions:
+    a:
+      changelog: initial release
+      date: 2024-01-01
+      name: tester
+  sheet_current: 5
+  sheet_name: EX04
+  sheet_suffix: ''
+  sheet_total: 5
+  template:
+    name: din-6771
+    orientation: landscape
+    sheetsize: A3
+  title: Multi-page examples
+  titlepage: titlepage
+  use_qty_multipliers: false
+notes: "<ol>\n  <li>Multi-page pagination examples for BOM, cut, and termination tables.</li>\n\
+  </ol>"
+pages:
+- formats: []
+  include: true
+  name: titlepage
+  type: title
+- formats:
+  - html
+  - tsv
+  - shared_bom
+  - png
+  - gv
+  - svg
+  name: mp-examples-ex04
+  type: harness
+- formats:
+  - tsv
+  include: true
+  name: bom
+  type: bom
+- formats: []
+  include: false
+  name: cut
+  type: cut
+- formats: []
+  include: false
+  name: termination
+  type: termination

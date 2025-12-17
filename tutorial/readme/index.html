@@ -1102,6 +1102,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflows/taskwarrior-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Taskwarrior (Agent)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflows/taskwarrior-project-manager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Taskwarrior (Project Manager)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1814,34 +1870,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Tasks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../workplan/gantt/" class="md-nav__link">
         
   
@@ -2185,9 +2213,14 @@
 <span class="w">    </span><span class="nt">length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 
 <span class="nt">connections</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="nt">options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">split_bom_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_notes_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_index_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><img alt="" src="../tutorial01.png" /></p>
 <p><a href="../tutorial01.yml">Source</a> - <a href="../tutorial01.tsv">Bill of Materials</a></p>
@@ -2218,10 +2251,15 @@
 <span class="w">    </span><span class="nt">colors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">WH</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">BN</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">GN</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">YE</span><span class="p p-Indicator">]</span>
 
 <span class="nt">connections</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="c1"># non-sequential wiring:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="nv">3</span><span class="p p-Indicator">]</span>
+<span class="nt">options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">split_bom_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_notes_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_index_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><img alt="" src="../tutorial02.png" /></p>
 <p><a href="../tutorial02.yml">Source</a> - <a href="../tutorial02.tsv">Bill of Materials</a></p>
@@ -2251,12 +2289,17 @@
 <span class="w">    </span><span class="nt">shield</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># add cable shielding</span>
 
 <span class="nt">connections</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="nv">3</span><span class="p p-Indicator">]</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="c1"># connect the shielding to a pin</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">s</span>
+<span class="nt">options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">split_bom_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_notes_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_index_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><img alt="" src="../tutorial03.png" /></p>
 <p><a href="../tutorial03.yml">Source</a> - <a href="../tutorial03.tsv">Bill of Materials</a></p>
@@ -2276,7 +2319,7 @@
 <span class="w">    </span><span class="nt">notes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">to microcontroller</span><span class="w"> </span><span class="c1"># add notes</span>
 <span class="w">  </span><span class="nt">X2</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*template_con</span><span class="w"> </span><span class="c1"># use template</span>
-<span class="w">    </span><span class="nt">subtype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">female</span><span class="w"> </span><span class="c1"># but override certain parameters</span>
+<span class="w">    </span><span class="nt">subtype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">female</span><span class="w">   </span><span class="c1"># but override certain parameters</span>
 <span class="w">    </span><span class="nt">notes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">to accelerometer</span>
 <span class="w">  </span><span class="nt">X3</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*template_con</span>
@@ -2296,13 +2339,18 @@
 <span class="w">    </span><span class="nt">notes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">This cable is a bit shorter</span>
 
 <span class="nt">connections</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="c1"># daisy chain connectors (in line)</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X3</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="nt">options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">split_bom_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_notes_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_index_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><img alt="" src="../tutorial04.png" /></p>
 <p><a href="../tutorial04.yml">Source</a> - <a href="../tutorial04.tsv">Bill of Materials</a></p>
@@ -2339,9 +2387,14 @@
 <span class="w">    </span><span class="nt">colors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">YE</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">BK</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">BK</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">RD</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># custom colors, wirecount is implicit</span>
 
 <span class="nt">connections</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">F1.</span><span class="w"> </span><span class="c1"># a new ferrule is auto-generated for each of the four wires</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">F1.</span><span class="w"> </span><span class="c1"># a new ferrule is auto-generated for each of the four wires</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="nt">options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">split_bom_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_notes_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_index_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><img alt="" src="../tutorial05.png" /></p>
 <p><a href="../tutorial05.yml">Source</a> - <a href="../tutorial05.tsv">Bill of Materials</a></p>
@@ -2375,9 +2428,14 @@
 <span class="w">    </span><span class="nt">colors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">YE</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">BK</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">BK</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">RD</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># custom colors, wirecount is implicit</span>
 
 <span class="nt">connections</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">F_05.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">F_10.F1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">F_10.F1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">F_05.</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="p p-Indicator">-</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">F_05.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">F_10.F1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">F_10.F1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">F_05.</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="nt">options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">split_bom_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_notes_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_index_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><img alt="" src="../tutorial06.png" /></p>
 <p><a href="../tutorial06.yml">Source</a> - <a href="../tutorial06.tsv">Bill of Materials</a></p>
@@ -2418,21 +2476,30 @@
 <span class="w">    </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*template_wire</span>
 
 <span class="nt">connections</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X3</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X3</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X3</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X3</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W3</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X4</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X5</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X5</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W4</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X4</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X5</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X5</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W5</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X6</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="nt">options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">split_bom_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_notes_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_index_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><img alt="" src="../tutorial07.png" /></p>
 <p><a href="../tutorial07.yml">Source</a> - <a href="../tutorial07.tsv">Bill of Materials</a></p>
@@ -2445,6 +2512,9 @@
 <li>quantities of additional components can be multiplied by features from parent connector or cable</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="nt">options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">split_bom_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_notes_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">split_index_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">mini_bom_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 
 <span class="nt">connectors</span><span class="p">:</span>
@@ -2458,12 +2528,14 @@
 <span class="w">    </span><span class="nt">spn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1234</span>
 <span class="w">    </span><span class="c1"># add a list of additional components to a part (shown in graph)</span>
 <span class="w">    </span><span class="nt">additional_components</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Crimp</span><span class="w"> </span><span class="c1"># short identifier used in graph</span>
+<span class="w">      </span><span class="p p-Indicator">-</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Crimp</span><span class="w"> </span><span class="c1"># short identifier used in graph</span>
 <span class="w">        </span><span class="nt">subtype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Molex KK 254, 22-30 AWG</span><span class="w"> </span><span class="c1"># extra information added to type in bom</span>
 <span class="w">        </span><span class="nt">qty_multiplier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">populated</span><span class="w"> </span><span class="c1"># multipier for quantity (number of populated pins)</span>
 <span class="w">        </span><span class="nt">manufacturer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Molex</span><span class="w"> </span><span class="c1"># set manufacter name</span>
 <span class="w">        </span><span class="nt">mpn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">08500030</span><span class="w"> </span><span class="c1"># set manufacturer part number</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Test</span>
+<span class="w">      </span><span class="p p-Indicator">-</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Test</span>
 <span class="w">        </span><span class="nt">qty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">        </span><span class="nt">pn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ABC</span>
 <span class="w">        </span><span class="nt">manufacturer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Molex</span>
@@ -2492,23 +2564,27 @@
 <span class="w">    </span><span class="nt">length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">    </span><span class="nt">gauge</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.25 mm2</span>
 <span class="w">    </span><span class="nt">colors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">YE</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">BK</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">BK</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">RD</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">manufacturer</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">WiresCo</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">WiresCo</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">WiresCo</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">WiresCo</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># set a manufacter per wire</span>
-<span class="w">    </span><span class="nt">mpn</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">W1-YE</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">W1-BK</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">W1-BK</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">W1-RD</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">supplier</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">WireShack</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">WireShack</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">WireShack</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">WireShack</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">spn</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1001</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1002</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1002</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1009</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">pn</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">WIRE1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">WIRE2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">WIRE2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">WIRE3</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">manufacturer</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">WiresCo</span><span class="p p-Indicator">,</span><span class="nv">WiresCo</span><span class="p p-Indicator">,</span><span class="nv">WiresCo</span><span class="p p-Indicator">,</span><span class="nv">WiresCo</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># set a manufacter per wire</span>
+<span class="w">    </span><span class="nt">mpn</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">W1-YE</span><span class="p p-Indicator">,</span><span class="nv">W1-BK</span><span class="p p-Indicator">,</span><span class="nv">W1-BK</span><span class="p p-Indicator">,</span><span class="nv">W1-RD</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">supplier</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">WireShack</span><span class="p p-Indicator">,</span><span class="nv">WireShack</span><span class="p p-Indicator">,</span><span class="nv">WireShack</span><span class="p p-Indicator">,</span><span class="nv">WireShack</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">spn</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1001</span><span class="p p-Indicator">,</span><span class="nv">1002</span><span class="p p-Indicator">,</span><span class="nv">1002</span><span class="p p-Indicator">,</span><span class="nv">1009</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">pn</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">WIRE1</span><span class="p p-Indicator">,</span><span class="nv">WIRE2</span><span class="p p-Indicator">,</span><span class="nv">WIRE2</span><span class="p p-Indicator">,</span><span class="nv">WIRE3</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="c1"># add a list of additional components to a part (shown in graph)</span>
 <span class="w">    </span><span class="nt">additional_components</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sleeve</span><span class="w"> </span><span class="c1"># short identifier used in graph</span>
+<span class="w">      </span><span class="p p-Indicator">-</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sleeve</span><span class="w"> </span><span class="c1"># short identifier used in graph</span>
 <span class="w">        </span><span class="nt">subtype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Braided nylon, black, 3mm</span><span class="w"> </span><span class="c1"># extra information added to type in bom</span>
 <span class="w">        </span><span class="nt">qty_multiplier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">length</span><span class="w"> </span><span class="c1"># multipier for quantity (length of cable)</span>
 <span class="w">        </span><span class="nt">pn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SLV-1</span>
 
+
 <span class="nt">connections</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">W2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">X3</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1-4</span><span class="p p-Indicator">]</span>
 

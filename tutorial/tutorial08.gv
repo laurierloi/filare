@@ -45,19 +45,19 @@ graph {
     <td>
   <table border="0" cellborder="1" cellpadding="3" cellspacing="0">
     <tr>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 1 </td>
        <td port="p1r"> 1 </td>
     </tr>
     <tr>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 2 </td>
        <td port="p2r"> 2 </td>
     </tr>
     <tr>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 3 </td>
        <td port="p3r"> 3 </td>
     </tr>
     <tr>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 4 </td>
        <td port="p4r"> 4 </td>
     </tr>
   </table>
@@ -127,19 +127,19 @@ graph {
   <table border="0" cellborder="1" cellpadding="3" cellspacing="0">
     <tr>
         <td port="p1l"> 1 </td>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 1 </td>
     </tr>
     <tr>
         <td port="p2l"> 2 </td>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 2 </td>
     </tr>
     <tr>
         <td port="p3l"> 3 </td>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 3 </td>
     </tr>
     <tr>
         <td port="p4l"> 4 </td>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 4 </td>
     </tr>
   </table>
     </td>
@@ -207,19 +207,19 @@ graph {
   <table border="0" cellborder="1" cellpadding="3" cellspacing="0">
     <tr>
         <td port="p1l"> 1 </td>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 1 </td>
     </tr>
     <tr>
         <td port="p2l"> 2 </td>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 2 </td>
     </tr>
     <tr>
         <td port="p3l"> 3 </td>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 3 </td>
     </tr>
     <tr>
         <td port="p4l"> 4 </td>
-      <td colspan="2"> None </td>
+        <td colspan="2"> 4 </td>
     </tr>
   </table>
     </td>
