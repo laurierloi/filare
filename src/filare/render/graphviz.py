@@ -3,7 +3,7 @@
 import logging
 import re
 from pathlib import Path
-from typing import Any, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, List, Optional, Tuple, Type, Union, cast
 
 from filare import APP_NAME, APP_URL, __version__
 from filare.errors import UnsupportedLoopSide
@@ -18,20 +18,24 @@ from filare.render.html_utils import Img, Table, Td, Tr
 from filare.render.templates import get_template
 from filare.settings import settings
 
+if TYPE_CHECKING:
+    from filare.models.dataclasses import Cable as CableType
+    from filare.models.dataclasses import Connector as ConnectorType
+else:  # pragma: no cover
+    CableType = ConnectorType = Any  # type: ignore
+
 # Compatibility dataclass aliases
 try:  # pragma: no cover
-    from filare.models.dataclasses import (
-        Cable as CableDC,
-        Connector as ConnectorDC,
-    )
+    from filare.models.dataclasses import Cable as CableDC
+    from filare.models.dataclasses import Connector as ConnectorDC
 except Exception:  # pragma: no cover
     CableDC = ConnectorDC = None  # type: ignore
 
-Cable = CableDC  # type: ignore
-Connector = ConnectorDC  # type: ignore
+Cable = cast(Type[CableType], CableDC)
+Connector = cast(Type[ConnectorType], ConnectorDC)
 
 
-def gv_node_connector(connector: Connector) -> str:
+def gv_node_connector(connector: ConnectorType) -> str:
     """Render a connector node as an HTML-like table for Graphviz."""
     if isinstance(connector, ConnectorModel):
         connector = connector.to_connector()
@@ -47,7 +51,7 @@ def gv_node_connector(connector: Connector) -> str:
     return cleaned_render
 
 
-def gv_node_cable(cable: Cable) -> str:
+def gv_node_cable(cable: CableType) -> str:
     """Render a cable node as an HTML-like table for Graphviz."""
     if isinstance(cable, CableModel):
         cable = cable.to_cable()
@@ -76,7 +80,7 @@ def _node_image_attrs(image: Optional[Image]) -> dict:
     return attrs
 
 
-def gv_connector_loops(connector: Connector) -> List:
+def gv_connector_loops(connector: ConnectorType) -> List:
     """Return loop edges for a connector with placement hints."""
     if isinstance(connector, ConnectorModel):
         connector = connector.to_connector()
@@ -90,6 +94,8 @@ def gv_connector_loops(connector: Connector) -> List:
     else:
         raise UnsupportedLoopSide(connector.designator)
     for loop in connector.loops:
+        if isinstance(loop, LoopModel):
+            loop = loop.to_loop()
         this_loop_side = loop_side
         this_loop_dir = loop_dir
         if loop.side == Side.RIGHT:
@@ -101,8 +107,6 @@ def gv_connector_loops(connector: Connector) -> List:
 
         if loop.first is None or loop.second is None:
             continue
-        if isinstance(loop, LoopModel):
-            loop = loop.to_loop()
         head = (
             f"{connector.designator}:p{loop.first.pin}{this_loop_side}:{this_loop_dir}"
         )
@@ -117,35 +121,45 @@ def gv_edge_wire(
     harness, cable, connection
 ) -> Tuple[str, Optional[str], Optional[str], Optional[str], Optional[str]]:
     """Return Graphviz edge descriptors for a connection through a wire/shield."""
-    if isinstance(connection, ConnectionModel):
-        connection = connection.to_connection()
-    if connection.via.color:
+    connection_obj = (
+        connection.to_connection()
+        if isinstance(connection, ConnectionModel)
+        else connection
+    )
+    if connection_obj.via is None:
+        raise ValueError("Connection missing via wire")
+    via = connection_obj.via
+    if via.color:
         # check if it's an actual wire and not a shield
-        color = f"#000000:{connection.via.color.html_padded}:#000000"
+        color = f"#000000:{via.color.html_padded}:#000000"
     else:  # it's a shield connection
         color = "#000000"
 
-    if connection.from_ is not None:  # connect to left
+    if connection_obj.from_ is not None:  # connect to left
+        from_pin = connection_obj.from_
         from_port_str = (
-            f":p{connection.from_.index+1}r"
-            if harness.connectors[str(connection.from_.parent)].style != "simple"
+            f":p{(from_pin.index or 0)+1}r"
+            if harness.connectors[str(from_pin.parent)].style != "simple"
             else ""
         )
-        code_left_1 = f"{str(connection.from_.parent)}{from_port_str}:e"
-        code_left_2 = f"{str(connection.via.parent)}:w{connection.via.index+1}:w"
+        code_left_1 = f"{str(from_pin.parent)}{from_port_str}:e"
+        code_left_2 = f"{str(via.parent)}:w{(via.index or 0)+1}:w"
         # ports in GraphViz are 1-indexed for more natural maping to pin/wire numbers
     else:
+        from_port_str = ""
         code_left_1, code_left_2 = None, None
 
-    if connection.to is not None:  # connect to right
+    if connection_obj.to is not None:  # connect to right
+        to_pin = connection_obj.to
         to_port_str = (
-            f":p{connection.to.index+1}l"
-            if harness.connectors[str(connection.to.parent)].style != "simple"
+            f":p{(to_pin.index or 0)+1}l"
+            if harness.connectors[str(to_pin.parent)].style != "simple"
             else ""
         )
-        code_right_1 = f"{str(connection.via.parent)}:w{connection.via.index+1}:e"
-        code_right_2 = f"{str(connection.to.parent)}{to_port_str}:w"
+        code_right_1 = f"{str(via.parent)}:w{(via.index or 0)+1}:e"
+        code_right_2 = f"{str(to_pin.parent)}{to_port_str}:w"
     else:
+        to_port_str = ""
         code_right_1, code_right_2 = None, None
 
     return color, code_left_1, code_left_2, code_right_1, code_right_2

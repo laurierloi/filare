@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import random
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, cast
 
 import factory  # type: ignore[reportPrivateImportUsage]
 from factory import Factory  # type: ignore[reportPrivateImportUsage]
@@ -205,21 +205,22 @@ class FakeHarnessInterfaceFactory(FakeInterfaceFactory):
 
     @lazy_attribute
     def connections(self) -> list[ConnectionInterfaceModel]:
-        connector_ids = list(self.connectors.keys())
-        cable_ids = list(self.cables.keys())
-        return [
-            ConnectionInterfaceModel(
-                from_=ConnectionEndpointInterfaceModel(
-                    parent=connector_ids[0],
-                    pin=1,
-                ),
-                via=ConnectionWireInterfaceModel(
-                    parent=cable_ids[0],
-                    wire=1,
-                ),
-                to=ConnectionEndpointInterfaceModel(
-                    parent=connector_ids[-1],
-                    pin=2,
-                ),
-            )
-        ]
+        connector_map = cast(Dict[str, ConnectorInterfaceModel], self.connectors)
+        cable_map = cast(Dict[str, CableInterfaceModel], self.cables)
+        connector_ids = list(connector_map.keys())
+        cable_ids = list(cable_map.keys())
+        connection_data = {
+            "from": {
+                "parent": connector_ids[0],
+                "pin": 1,
+            },
+            "via": {
+                "parent": cable_ids[0],
+                "wire": 1,
+            },
+            "to": {
+                "parent": connector_ids[-1],
+                "pin": 2,
+            },
+        }
+        return [ConnectionInterfaceModel.model_validate(connection_data)]

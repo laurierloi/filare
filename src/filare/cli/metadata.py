@@ -7,7 +7,7 @@ import os
 import shlex
 import subprocess
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Tuple
+from typing import Dict, List, Literal, Mapping, Optional, Tuple, cast
 
 import typer
 import yaml
@@ -126,7 +126,7 @@ def _validate_payload(
     return not errors, warnings, errors
 
 
-def _format_table(data: Dict[str, object]) -> str:
+def _format_table(data: Mapping[str, object]) -> str:
     if not data:
         return "No data."
     width = max(len(key) for key in data.keys())
@@ -134,14 +134,18 @@ def _format_table(data: Dict[str, object]) -> str:
     return "\n".join(lines)
 
 
-def _describe_payload(payload: Dict[str, object]) -> Dict[str, object]:
+def _describe_payload(payload: Mapping[str, object]) -> Dict[str, object]:
+    authors = payload.get("authors", {})
+    revisions = payload.get("revisions", {})
+    authors_keys = list(authors.keys()) if isinstance(authors, Mapping) else []
+    revision_keys = list(revisions.keys()) if isinstance(revisions, Mapping) else []
     return {
         "title": payload.get("title"),
         "pn": payload.get("pn"),
         "company": payload.get("company"),
         "address": payload.get("address"),
-        "authors": list(payload.get("authors", {}).keys()),
-        "revisions": list(payload.get("revisions", {}).keys()),
+        "authors": authors_keys,
+        "revisions": revision_keys,
         "template": payload.get("template"),
         "keys": sorted(payload.keys()),
     }
@@ -192,7 +196,7 @@ def validate_command(
     except MetadataValidationError as exc:
         typer.echo(str(exc), err=True)
         raise typer.Exit(code=1)
-    payload = merged.get("metadata", merged)
+    payload = cast(Mapping[str, object], merged.get("metadata", merged))
     ok, warnings, errors = _validate_payload(payload, strict)
 
     report = {"ok": ok, "warnings": warnings, "errors": errors}
@@ -290,7 +294,7 @@ def describe_command(
     except MetadataValidationError as exc:
         typer.echo(str(exc), err=True)
         raise typer.Exit(code=1)
-    payload = merged.get("metadata", merged)
+    payload = cast(Mapping[str, object], merged.get("metadata", merged))
     summary = _describe_payload(payload)
     _print_output(summary, format)
 

@@ -3,7 +3,7 @@
 import logging
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Dict, List, Optional, Sequence, Tuple, Union, cast
 
 from filare.errors import (
     ComponentTypeMismatch,
@@ -505,10 +505,10 @@ def build_harness_from_files(
 
     if connector_view == "overview":
         for connector in harness.connectors.values():
-            if connector.style != "simple":
-                connector.style = "overview"
+            if getattr(connector, "style", None) != "simple":
+                setattr(connector, "style", "overview")
         for cable in harness.cables.values():
-            cable.style = "overview"
+            setattr(cable, "style", "overview")
 
     harness.populate_bom()
 

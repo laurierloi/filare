@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, List, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, List, Optional, Type, Union, cast
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -12,17 +12,21 @@ from filare.models.image import Image
 from filare.models.numbers import NumberAndUnit
 from filare.models.types import BomCategory
 
+if TYPE_CHECKING:
+    from filare.models.dataclasses import ShieldClass as ShieldClassType
+    from filare.models.dataclasses import WireClass as WireClassType
+else:  # pragma: no cover
+    ShieldClassType = WireClassType = Any  # type: ignore
+
 # Compatibility dataclass aliases
 try:  # pragma: no cover
-    from filare.models.dataclasses import (
-        ShieldClass as ShieldClassDC,
-        WireClass as WireClassDC,
-    )  # noqa: F401
+    from filare.models.dataclasses import ShieldClass as ShieldClassDC  # noqa: F401
+    from filare.models.dataclasses import WireClass as WireClassDC
 except Exception:  # pragma: no cover
     ShieldClassDC = WireClassDC = None  # type: ignore
 
-WireClass = WireClassDC  # type: ignore
-ShieldClass = ShieldClassDC  # type: ignore
+WireClass = cast(Type[WireClassType], WireClassDC)
+ShieldClass = cast(Type[ShieldClassType], ShieldClassDC)
 
 
 class WireModel(BaseModel):
@@ -31,7 +35,7 @@ class WireModel(BaseModel):
     designator: str = ""
     parent: Optional[str] = None
     index: Optional[int] = None
-    id: Optional[Union[str, int]] = None
+    id: Optional[str] = None
     label: str = ""
     color: Optional[MultiColor] = None
     type: Optional[MultilineHypertext] = None
@@ -86,10 +90,17 @@ class WireModel(BaseModel):
             return None
         return str(value)
 
-    def to_wireclass(self) -> WireClass:
+    @field_validator("id", mode="before")
+    def _coerce_id(cls, value: Any) -> Optional[str]:
+        if value is None:
+            return None
+        return str(value)
+
+    def to_wireclass(self) -> WireClassType:
         if WireClassDC is None:  # pragma: no cover
             raise TypeError("WireClass dataclass not available")
-        return WireClassDC(
+        wire_class = cast(Type[WireClassType], WireClassDC)
+        return wire_class(
             designator=self.designator,
             parent=self.parent,
             index=self.index,
@@ -100,7 +111,7 @@ class WireModel(BaseModel):
             subtype=self.subtype,
             image=self.image,
             notes=self.notes,
-            additional_components=cast(List[WireClass], self.additional_components),
+            additional_components=cast(List[Any], self.additional_components),
             bgcolor=self.bgcolor,
             bgcolor_title=self.bgcolor_title,
             show_name=self.show_name,
@@ -112,7 +123,7 @@ class WireModel(BaseModel):
         )
 
     @classmethod
-    def from_wireclass(cls, wire: WireClass) -> "WireModel":
+    def from_wireclass(cls, wire: WireClassType) -> "WireModel":
         if WireClassDC is None:  # pragma: no cover
             raise TypeError("WireClass dataclass not available")
         return cls(
@@ -141,10 +152,11 @@ class WireModel(BaseModel):
 class ShieldModel(WireModel):
     """Pydantic representation for ShieldClass with conversion helpers."""
 
-    def to_wireclass(self) -> ShieldClass:
+    def to_wireclass(self) -> ShieldClassType:
         if ShieldClassDC is None:  # pragma: no cover
             raise TypeError("ShieldClass dataclass not available")
-        return ShieldClassDC(
+        shield_class = cast(Type[ShieldClassType], ShieldClassDC)
+        return shield_class(
             designator=self.designator,
             parent=self.parent,
             index=self.index,
@@ -155,7 +167,7 @@ class ShieldModel(WireModel):
             subtype=self.subtype,
             image=self.image,
             notes=self.notes,
-            additional_components=cast(List[WireClass], self.additional_components),
+            additional_components=cast(List[Any], self.additional_components),
             bgcolor=self.bgcolor,
             bgcolor_title=self.bgcolor_title,
             show_name=self.show_name,
@@ -167,7 +179,7 @@ class ShieldModel(WireModel):
         )
 
     @classmethod
-    def from_wireclass(cls, wire: ShieldClass) -> "ShieldModel":
+    def from_wireclass(cls, wire: ShieldClassType) -> "ShieldModel":
         if ShieldClassDC is None:  # pragma: no cover
             raise TypeError("ShieldClass dataclass not available")
         return cls(
