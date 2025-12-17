@@ -1,7 +1,6 @@
 import pytest
 
 from filare.models.templates import CableTemplateModel, FakeCableTemplateFactory
-from filare.render.templates import get_template
 
 
 def test_cable_template_render_minimal():
@@ -9,7 +8,7 @@ def test_cable_template_render_minimal():
     model = factory()
     assert isinstance(model, CableTemplateModel)
 
-    rendered = get_template("cable.html").render(model.to_render_dict())
+    rendered = model.render()
 
     comp = model.component
     assert comp.designator in rendered
@@ -36,7 +35,7 @@ def test_cable_template_variants(wirecount, with_shield, use_color_code_palette)
         use_color_code_palette=use_color_code_palette,
     )
     model = factory()
-    rendered = get_template("cable.html").render(model.to_render_dict())
+    rendered = model.render()
 
     comp = model.component
     assert len(comp.wire_objects) >= wirecount

@@ -1,7 +1,6 @@
 import pytest
 
 from filare.models.templates import BomTemplateModel, FakeBomTemplateFactory
-from filare.render.templates import get_template
 
 
 def test_bom_template_render_minimal():
@@ -9,7 +8,7 @@ def test_bom_template_render_minimal():
     model = factory()
     assert isinstance(model, BomTemplateModel)
 
-    rendered = get_template("bom.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert "BOM" in rendered
     for header in model.bom.headers:
@@ -32,7 +31,7 @@ def test_bom_template_render_minimal():
 def test_bom_template_rows_and_header_variants(rows, reverse):
     factory = FakeBomTemplateFactory(rows=rows, options={"reverse": reverse})
     model = factory()
-    rendered = get_template("bom.html").render(model.to_render_dict())
+    rendered = model.render()
 
     # Headers appear either before or after rows based on reverse flag
     assert model.bom.headers[0] in rendered

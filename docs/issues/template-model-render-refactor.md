@@ -1,0 +1,42 @@
+uid: ISS-0215
+status: IN_PROGRESS
+priority: medium
+owner_role: REWORK
+estimate: 3d
+dependencies: []
+risk: medium
+milestone: templates-models
+
+# Refactor template rendering to use explicit model flows
+
+## Summary
+
+For each template, replace ad-hoc `get_template(...).render(...)` calls with an explicit flow that:
+
+- Accepts the concrete inputs for that template (metadata/options/payload).
+- Computes any derived fields.
+- Instantiates the corresponding `TemplateModel`.
+- Returns the model (render happens via `model.render()`).
+
+Track and update call sites template by template to ensure consistency.
+
+## Workplan by template
+
+- notes: model `NotesTemplateModel`; usages in `render/html.py`, `din_6771` factory.
+- bom: model `BomTemplateModel`; usages in `render/html.py`, `din_6771` factory.
+- index_table: model `IndexTableTemplateModel`; usages in `render/html.py`, `index_table.py`.
+- cut_table: model `CutTableTemplateModel`; usages in `cut` factory, `render/html.py` aux pages.
+- cut: model `CutTemplateModel`; usages in `render/html.py` aux pages, cut factory.
+- termination_table: model `TerminationTableTemplateModel`; usages in `termination` factory, `render/html.py` aux pages.
+- termination: model `TerminationTemplateModel`; usages in `render/html.py` aux pages, termination factory.
+- remaining templates (cable/component_table/simple/simple_connector/colors_macro/images/din_6771/page) to audit for direct render calls and align with the same pattern.
+
+## Progress Log
+
+- 2025-12-11: Workplan created; reset workspace to start template-by-template refactor.
+
+## Related
+
+- src/filare/render/html.py
+- src/filare/render/graphviz.py
+- src/filare/models/templates/\*

@@ -4,14 +4,13 @@ import pytest
 
 from filare.models.templates import FakeDin6771TemplateFactory
 from filare.models.templates.din_6771_template_model import Din6771TemplateModel
-from filare.render.templates import get_template
 
 
 def test_din_6771_template_render_minimal():
     model = FakeDin6771TemplateFactory(with_notes=True, with_bom=True)()
     assert isinstance(model, Din6771TemplateModel)
 
-    rendered = get_template("din-6771.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert model.diagram in rendered
     assert model.metadata.template.sheetsize.value in rendered
@@ -38,7 +37,7 @@ def test_din_6771_template_toggle_sections(
         diagram_container_class="diagram-default",
         diagram_container_style="max-height:50mm;",
     )()
-    rendered = get_template("din-6771.html").render(model.to_render_dict())
+    rendered = model.render()
 
     # Notes
     if with_notes:

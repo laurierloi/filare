@@ -1,14 +1,13 @@
 import pytest
 
 from filare.models.templates import FakeSimpleTemplateFactory, SimpleTemplateModel
-from filare.render.templates import get_template
 
 
 def test_simple_template_render_minimal():
     model = FakeSimpleTemplateFactory()()
     assert isinstance(model, SimpleTemplateModel)
 
-    rendered = get_template("simple.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert model.title in rendered
     assert model.description in rendered
@@ -23,7 +22,7 @@ def test_simple_template_container_options():
         diagram_container_class="diagram-default",
         diagram_container_style="max-height:50mm;",
     )()
-    rendered = get_template("simple.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert "diagram-default" in rendered
     assert "max-height:50mm;" in rendered
@@ -42,7 +41,7 @@ def test_simple_template_options(fontname, bgcolor, generator):
         generator=generator,
         options={"fontname": fontname, "bgcolor": bgcolor},
     )()
-    rendered = get_template("simple.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert fontname in rendered
     assert bgcolor in rendered
@@ -55,7 +54,7 @@ def test_simple_template_custom_classes():
     model.diagram_container_class = "diagram-class"
     model.diagram_container_style = "height:100px;"
 
-    rendered = get_template("simple.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert model.diagram_container_class in rendered
     assert model.diagram_container_style in rendered

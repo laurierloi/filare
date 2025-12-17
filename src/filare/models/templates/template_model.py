@@ -20,6 +20,12 @@ class TemplateModel(BaseModel):
         payload["template_name"] = self.template_name
         return payload
 
+    def render(self) -> str:
+        """Render this template model using its template_name."""
+        from filare.render.templates import get_template
+
+        return get_template(f"{self.template_name}.html").render(self.to_render_dict())
+
 
 class TemplateModelFactory:
     """Minimal factory-style helper aligned with factory_boy semantics."""

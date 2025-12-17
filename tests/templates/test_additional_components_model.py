@@ -15,7 +15,7 @@ def test_additional_components_render_minimal():
     first = model.additional_components[0].bom_entry
     desc = first.description
     ident = first.id
-    rendered = get_template("additional_components.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert desc in rendered
     assert ident is not None
@@ -41,7 +41,7 @@ def test_additional_components_render_variants(with_id, with_unit):
     comp.bom_entry.id = comp.bom_entry.id if with_id else None
     comp.bom_entry.qty.unit = "pcs" if with_unit else None
 
-    rendered = get_template("additional_components.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert desc in rendered
     if with_id and comp.bom_entry.id:
@@ -65,7 +65,7 @@ def test_additional_components_render_multiple():
     first_entry = model.additional_components[0].bom_entry
     first_desc = first_entry.description
 
-    rendered = get_template("additional_components.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert first_entry.id is not None
     assert first_entry.id in rendered and "AC2" in rendered

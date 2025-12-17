@@ -4,7 +4,6 @@ from filare.models.templates import (
     ComponentTableTemplateModel,
     FakeComponentTableTemplateFactory,
 )
-from filare.render.templates import get_template
 
 
 @pytest.mark.render
@@ -13,7 +12,7 @@ def test_component_table_renders_partnumbers(partnumber_count):
     model = FakeComponentTableTemplateFactory(
         partnumber_count=partnumber_count, with_partnumbers=True
     )()
-    rendered = get_template("component_table.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert isinstance(model.component.partnumbers, object)
     if partnumber_count == 1:
@@ -29,7 +28,7 @@ def test_component_table_additional_components():
     model = FakeComponentTableTemplateFactory(
         additional_component_count=2, with_partnumbers=False, with_notes=False
     )()
-    rendered = get_template("component_table.html").render(model.to_render_dict())
+    rendered = model.render()
 
     for subitem in model.component.additional_components:
         assert subitem.bom_entry.description in rendered
@@ -41,7 +40,7 @@ def test_component_table_notes_and_image():
     model = FakeComponentTableTemplateFactory(
         with_notes=True, with_image=True, with_partnumbers=False
     )()
-    rendered = get_template("component_table.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert model.component.notes.clean in rendered  # type: ignore[union-attr]
     assert model.component.image.src in rendered  # type: ignore[union-attr]

@@ -8,7 +8,6 @@ from filare.models.templates.titleblock_template_model import (
     FakeTemplateTitleblockMetadataFactory,
     FakeTemplateTitleblockOptionsFactory,
 )
-from filare.render.templates import get_template
 
 
 @pytest.mark.render
@@ -31,7 +30,7 @@ def test_titleblock_template_render_variants(
     )()
     assert isinstance(model, TitleblockTemplateModel)
 
-    rendered = get_template("titleblock.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert model.metadata.company in rendered
     assert model.metadata.title in rendered
@@ -57,7 +56,7 @@ def test_titleblock_respects_metadata_and_options_overrides():
         metadata=metadata, options=options, partno="PN-9000"
     )
 
-    rendered = get_template("titleblock.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert "PN-9000" in rendered
     assert "Sheet 1" in rendered

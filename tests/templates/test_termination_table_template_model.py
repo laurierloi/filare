@@ -4,14 +4,13 @@ from filare.models.templates import (
     FakeTerminationTableTemplateFactory,
     TerminationTableTemplateModel,
 )
-from filare.render.templates import get_template
 
 
 def test_termination_table_render_rows():
     model = FakeTerminationTableTemplateFactory(row_count=2)()
     assert isinstance(model, TerminationTableTemplateModel)
 
-    rendered = get_template("termination_table.html").render(model.to_render_dict())
+    rendered = model.render()
 
     for row in model.rows:
         assert row.source in rendered
@@ -24,6 +23,6 @@ def test_termination_table_render_rows():
 @pytest.mark.parametrize("row_count", [1, 4])
 def test_termination_table_row_variants(row_count):
     model = FakeTerminationTableTemplateFactory(row_count=row_count)()
-    rendered = get_template("termination_table.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert rendered.count("<tr>") >= row_count

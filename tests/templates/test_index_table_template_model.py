@@ -4,14 +4,13 @@ from filare.models.templates import (
     FakeIndexTableTemplateFactory,
     IndexTableTemplateModel,
 )
-from filare.render.templates import get_template
 
 
 def test_index_table_render_minimal():
     model = FakeIndexTableTemplateFactory(row_count=2)()
     assert isinstance(model, IndexTableTemplateModel)
 
-    rendered = get_template("index_table.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert model.index_table.header[0] in rendered
     assert model.options.index_table_title in rendered
@@ -25,7 +24,7 @@ def test_index_table_pdf_items_used_when_flag_enabled():
     model = FakeIndexTableTemplateFactory(row_count=1)()
     model.options.for_pdf = True
 
-    rendered = get_template("index_table.html").render(model.to_render_dict())
+    rendered = model.render()
 
     pdf_items = model.index_table.rows[0].pdf_items
     assert pdf_items is not None
@@ -53,7 +52,7 @@ def test_index_table_positioning(
     model.options.index_table_updated_position = index_table_updated_position
     model.options.for_pdf = for_pdf
 
-    rendered = get_template("index_table.html").render(model.to_render_dict())
+    rendered = model.render()
 
     # Ensure table content renders regardless of positioning flags
     for item in model.index_table.rows[0].get_items(model.options.for_pdf):

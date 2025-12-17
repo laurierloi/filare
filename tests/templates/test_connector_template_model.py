@@ -2,7 +2,6 @@ import pytest
 
 from filare.models.templates import FakeConnectorTemplateFactory
 from filare.models.templates.connector_template_model import ConnectorTemplateModel
-from filare.render.templates import get_template
 
 
 def test_connector_template_render_minimal():
@@ -10,7 +9,7 @@ def test_connector_template_render_minimal():
     model = factory()
 
     assert isinstance(model, ConnectorTemplateModel)
-    rendered = get_template("connector.html").render(model.to_render_dict())
+    rendered = model.render()
 
     comp = model.component
     assert comp.designator in rendered
@@ -38,7 +37,7 @@ def test_connector_template_variants(ports_left, ports_right, has_pincolors):
     comp.ports_right = ports_right
     comp.has_pincolors = has_pincolors
 
-    rendered = get_template("connector.html").render(model.to_render_dict())
+    rendered = model.render()
 
     # Ensure pins render regardless of port sides; verify labels or ids appear
     for pin in comp.pins:
@@ -55,7 +54,7 @@ def test_connector_template_pincounts(pincount):
     model = factory()
     comp = model.component
 
-    rendered = get_template("connector.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert str(comp.pincount) in rendered
     assert len(comp.pins) == pincount
