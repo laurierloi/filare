@@ -4,7 +4,9 @@ from filare.render import html_utils
 def test_table_tr_td_render():
     table = html_utils.Table(contents=[], border=1, cellborder=1, cellspacing=0)
     row = html_utils.Tr(contents=[])
+    assert row.contents is not None
     row.contents.append(html_utils.Td("cell", align="left", port="p1"))
+    assert table.contents is not None
     table.contents.append(row)
     rendered = str(table)
     assert "<table" in rendered
@@ -22,6 +24,7 @@ def test_img_render_and_defaults():
 
 def test_table_adds_multiple_rows():
     table = html_utils.Table(contents=[])
+    assert table.contents is not None
     table.contents.append(html_utils.Tr(html_utils.Td("a")))
     table.contents.append(html_utils.Tr(html_utils.Td("b")))
     rendered = str(table)

@@ -10,8 +10,10 @@ def test_images_template_render_minimal():
 
     rendered = get_template("images.html").render(model.to_render_dict())
 
+    assert model.image is not None
     assert model.image.src in rendered
     assert str(model.image.scale) in rendered
+    assert model.image.caption is not None
     assert model.image.caption in rendered
 
 
@@ -20,6 +22,7 @@ def test_images_template_fixedsize_variant():
     model = FakeImagesTemplateFactory(fixedsize=True, with_caption=False)()
     rendered = get_template("images.html").render(model.to_render_dict())
 
+    assert model.image is not None
     assert str(model.image.width) in rendered
     assert str(model.image.height) in rendered
     assert model.image.caption is None

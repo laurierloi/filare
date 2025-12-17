@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 import pytest
 
 from filare.models.templates import (
@@ -9,7 +11,7 @@ from filare.render.templates import get_template
 
 def _render_legend(legend):
     template = get_template("colors_macro.html")
-    module = template.module
+    module = cast(Any, template.module)
     return module.color_minitable(legend, legend.len)
 
 
@@ -21,6 +23,7 @@ def test_colors_macro_render_minimal():
     for legend in model.colors:
         rendered = _render_legend(legend)
         assert legend.colors
+        assert legend.colors[0].html is not None
         assert (
             legend.colors[0].html in rendered
             or legend.colors[0].html_padded in rendered

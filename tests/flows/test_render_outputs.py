@@ -2,7 +2,7 @@ from pathlib import Path
 
 from filare.flows.render_outputs import render_harness_outputs
 from filare.models.harness import Harness
-from filare.models.metadata import Metadata, PageTemplateConfig
+from filare.models.metadata import Metadata, PageTemplateConfig, RevisionSignature
 from filare.models.notes import Notes
 from filare.models.options import PageOptions
 
@@ -24,7 +24,9 @@ def test_render_harness_outputs_generates_files(tmp_path):
         use_qty_multipliers=False,
         multiplier_file_name="",
         authors={},
-        revisions={"a": {"name": "r", "date": "2020-01-01", "changelog": "init"}},
+        revisions={
+            "a": RevisionSignature(name="r", date="2020-01-01", changelog="init")
+        },
         template=PageTemplateConfig(),
     )
     harness = Harness(

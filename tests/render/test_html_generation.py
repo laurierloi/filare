@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from filare.models.bom import BomContent, BomEntry, BomRenderOptions
-from filare.models.metadata import Metadata, PageTemplateConfig
+from filare.models.metadata import Metadata, PageTemplateConfig, RevisionSignature
 from filare.models.notes import Notes
 from filare.models.numbers import NumberAndUnit
 from filare.models.options import PageOptions
@@ -27,7 +27,9 @@ def test_generate_html_output_creates_file(tmp_path):
         use_qty_multipliers=False,
         multiplier_file_name="",
         authors={},
-        revisions={"a": {"name": "r", "date": "2020-01-01", "changelog": "init"}},
+        revisions={
+            "a": RevisionSignature(name="r", date="2020-01-01", changelog="init")
+        },
         template=PageTemplateConfig(),
     )
     options = PageOptions()
@@ -37,13 +39,13 @@ def test_generate_html_output_creates_file(tmp_path):
         partnumbers=PartNumberInfo(pn="PN"),
         id="1",
         description="Test",
-        category=BomCategory.ADDITIONAL,
+        category=BomCategory.ADDITIONAL.name,
         designators=[],
     )
     bom_render = BomContent({hash(entry): entry}).get_bom_render(
         options=BomRenderOptions(no_per_harness=True)
     )
-    options.bom_rows = bom_render.rows
+    options.bom_rows = len(bom_render.rows)
     # precreate a placeholder svg expected by generate_html_output
     (tmp_path / "h.svg").write_text("<svg></svg>")
     generate_html_output(

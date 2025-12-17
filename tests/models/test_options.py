@@ -1,14 +1,15 @@
+from filare.models.colors import SingleColor
 from filare.models.options import PageOptions, get_page_options
 
 
 def test_page_options_color_defaults_and_coercion():
     opts = PageOptions(
-        bgcolor="RD",
-        bgcolor_node=None,
+        bgcolor=SingleColor("RD"),
+        bgcolor_node=SingleColor("RD"),
         bgcolor_connector=None,
         bgcolor_cable=None,
-        bom_rows=["a", "b"],
-        bom_row_height="5.5",
+        bom_rows=2,
+        bom_row_height=5.5,
     )
     # bgcolor_node None falls back to bgcolor
     assert opts.bgcolor_node.code_en == "RD"

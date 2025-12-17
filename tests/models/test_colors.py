@@ -12,13 +12,16 @@ from filare.models.colors import (
 def test_single_color_known_and_html():
     c = SingleColor(inp="RD")
     assert c.code_en == "RD"
+    assert c.html is not None
     assert c.html.startswith("#")
     assert str(c) == "RD"
 
 
 def test_single_color_unknown_defaults_html():
     c = SingleColor(inp="magenta")
+    assert c.code_en is not None
     assert c.code_en.lower() == "magenta"
+    assert c.html is not None
     assert c.html.lower() == "magenta"
 
 
@@ -158,8 +161,10 @@ def test_multi_color_padding_variants(monkeypatch):
 def test_color_output_mode_changes(monkeypatch, mode):
     monkeypatch.setattr("filare.models.colors.color_output_mode", mode)
     c = SingleColor(inp="RD")
+    assert c.code_en is not None
     s = str(c)
     if "EN_" in mode.name:
         assert s.lower() == c.code_en.lower()
     elif "HTML_" in mode.name:
+        assert c.html is not None
         assert s.lower().startswith("#") or s == c.html

@@ -1,5 +1,9 @@
+from typing import Any, cast
+
+from filare.models.colors import SingleColor
 from filare.models.component import ComponentModel
 from filare.models.dataclasses import Component
+from filare.models.hypertext import MultilineHypertext
 from filare.models.numbers import NumberAndUnit
 from filare.models.types import BomCategory
 
@@ -7,20 +11,24 @@ from filare.models.types import BomCategory
 def test_component_model_to_from_dataclass():
     comp = Component(
         category=BomCategory.ADDITIONAL,
-        type="Label",
+        type=MultilineHypertext.to("Label"),
         pn="PN-1",
         qty=NumberAndUnit(2, None),
         additional_components=[{"type": "Tape", "qty": 1}],
     )
     model = ComponentModel.from_component(comp)
     assert model.category == BomCategory.ADDITIONAL
+    assert model.qty is not None
     assert model.qty.number == 2
     roundtrip = model.to_component()
     assert roundtrip.category == comp.category
+    assert roundtrip.qty is not None
+    assert comp.qty is not None
     assert roundtrip.qty.number == comp.qty.number
+    assert roundtrip.additional_components[0].type is not None
     assert roundtrip.additional_components[0].type.raw == "Tape"
     # parent gets cleared when not a primitive
-    comp.parent = {"invalid": True}
+    comp.parent = cast(Any, {"invalid": True})
     model_with_parent = ComponentModel.from_component(comp)
     assert model_with_parent.parent is None
 
@@ -28,19 +36,25 @@ def test_component_model_to_from_dataclass():
 def test_component_model_validates_fields():
     model = ComponentModel(
         category=BomCategory.CONNECTOR,
-        type=["Line1", "Line2"],
-        bgcolor="0xFFFFFF",
-        qty="3",
+        type=MultilineHypertext.to(["Line1", "Line2"]),
+        bgcolor=SingleColor("0xFFFFFF"),
+        qty=NumberAndUnit.to_number_and_unit("3"),
     )
+    assert model.type is not None
     assert model.type.raw == "Line1<br>Line2"
+    assert model.qty is not None
     assert model.qty.number == 3
+    assert model.bgcolor is not None
+    assert model.bgcolor.html is not None
     assert model.bgcolor.html.lower() in ("#ffffff", "0xffffff")
 
 
 def test_component_model_additional_coercion_and_categories():
     raw_sub = {"type": "Sub", "category": BomCategory.ADDITIONAL}
-    comp_sub = Component(category=BomCategory.ADDITIONAL, type="Inner")
-    model_sub = ComponentModel(category="misc", type="text")
+    comp_sub = Component(
+        category=BomCategory.ADDITIONAL, type=MultilineHypertext.to("Inner")
+    )
+    model_sub = ComponentModel(category="misc", type=MultilineHypertext.to("text"))
 
     model = ComponentModel(
         category="UnknownCategory",
@@ -53,4 +67,5 @@ def test_component_model_additional_coercion_and_categories():
     assert len(model.additional_components) == 3
     assert isinstance(model.additional_components[1], ComponentModel)
     comp = model.to_component()
+    assert comp.additional_components[0].type is not None
     assert comp.additional_components[0].type.raw == "text"

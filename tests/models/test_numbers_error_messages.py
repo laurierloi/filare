@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 import pytest
 
 from filare.errors import InvalidNumberFormat
@@ -14,7 +16,7 @@ def test_number_and_unit_invalid_string_context():
 
 def test_cable_length_error_includes_context():
     with pytest.raises(InvalidNumberFormat) as excinfo:
-        Cable(designator="W1", wirecount=1, length="abc")
+        Cable(designator="W1", wirecount=1, length=cast(Any, "abc"))
     msg = str(excinfo.value)
     assert "cable w1 length" in msg.lower()
     assert "abc" in msg

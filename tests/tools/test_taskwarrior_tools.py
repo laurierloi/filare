@@ -7,8 +7,9 @@ def load_module(name: str, rel_path: str):
     repo_root = pathlib.Path(__file__).resolve().parents[2]
     path = repo_root / rel_path
     spec = importlib.util.spec_from_file_location(name, path)
+    assert spec is not None
     module = importlib.util.module_from_spec(spec)
-    assert spec and spec.loader
+    assert spec.loader
     spec.loader.exec_module(module)  # type: ignore[attr-defined]
     return module
 

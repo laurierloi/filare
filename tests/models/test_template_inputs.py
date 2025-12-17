@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 import pytest
 
 from filare.errors import ComponentValidationError
@@ -7,6 +9,7 @@ from filare.models.configs import (
     ConnectorConfig,
     WireConfig,
 )
+from filare.models.numbers import NumberAndUnit
 from filare.models.template_inputs import (
     TemplateCable,
     TemplateConnection,
@@ -44,7 +47,11 @@ def test_template_cable_from_wire_objects(wire_config_data):
 
 
 def test_template_cable_from_colors_only():
-    cfg = CableConfig(designator="C3", colors=["RD", "GN"], length="1 m")
+    cfg = CableConfig(
+        designator="C3",
+        colors=["RD", "GN"],
+        length=NumberAndUnit.to_number_and_unit("1 m"),
+    )
     cable = TemplateCable.from_config(cfg)
     assert [w.color for w in cable.wires] == [["RD"], ["GN"]]
     assert str(cable.length) == "1 m"
@@ -59,7 +66,7 @@ def test_template_connection_from_config(connection_config_data):
 
 
 def test_template_connection_validates_and_coerces():
-    cfg = ConnectionConfig(endpoints=("J1:1", "J2:2"), color="BK", net=None)
+    cfg = ConnectionConfig(endpoints=["J1:1", "J2:2"], color=["BK"], net=None)
     conn = TemplateConnection.from_config(cfg)
     assert conn.endpoints == ["J1:1", "J2:2"]
     assert conn.color == ["BK"]
@@ -78,23 +85,25 @@ def test_template_connector_from_pinlabels():
 
 
 def test_template_wire_validators():
-    wire = TemplateWire(color="RD", length="2 m")
+    wire = TemplateWire(color=["RD"], length=NumberAndUnit.to_number_and_unit("2 m"))
     assert wire.color == ["RD"]
     assert str(wire.length) == "2 m"
-    assert TemplateWire(color=None).color == []
+    assert TemplateWire(color=cast(Any, None)).color == []
 
 
 def test_template_models_forbid_extra():
     with pytest.raises(ComponentValidationError):
-        TemplateConnector(designator="JX", pins=[], extra="nope")
+        TemplateConnector(
+            **cast(Any, {"designator": "JX", "pins": [], "extra": "nope"})
+        )
 
 
 def test_template_pin_color_none_and_id():
-    pin = TemplatePin(label="L", color=None, id="1")
+    pin = TemplatePin(label="L", color=cast(Any, None), id="1")
     assert pin.color == []
 
 
 def test_template_connection_coercions():
-    conn = TemplateConnection(endpoints="J1:1", color=None, net="N")
+    conn = TemplateConnection(endpoints=["J1:1"], color=[], net="N")
     assert conn.endpoints == ["J1:1"]
     assert conn.color == []

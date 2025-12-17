@@ -1,10 +1,12 @@
 from pathlib import Path
+from typing import Any, cast
 
 import filare.models.harness as harness_module
 from filare.models.cable import CableModel
 from filare.models.component import ComponentModel
 from filare.models.connector import ConnectorModel
 from filare.models.harness import Harness
+from filare.models.hypertext import MultilineHypertext
 from filare.models.notes import Notes
 from filare.models.options import PageOptions
 from filare.settings import settings
@@ -15,7 +17,9 @@ def test_harness_add_models_and_name(basic_metadata):
 
     harness.add_connector_model(ConnectorModel(designator="J1", pincount=1))
     harness.add_cable_model(CableModel(designator="C1", wirecount=1, colors=["RD"]))
-    harness.add_additional_bom_item(ComponentModel(category="additional", type="Label"))
+    harness.add_additional_bom_item(
+        ComponentModel(category="additional", type=MultilineHypertext.to("Label"))
+    )
 
     assert harness.name == basic_metadata.name
     assert "J1" in harness.connectors
@@ -65,7 +69,7 @@ def test_harness_output_and_tables(tmp_path, basic_metadata, monkeypatch):
         def attr(self, *args, **kwargs):
             return None
 
-    harness._graph = FakeGraph()
+    harness._graph = cast(Any, FakeGraph())
 
     monkeypatch.setattr(harness_module, "embed_svg_images_file", lambda path: None)
     template_calls = []

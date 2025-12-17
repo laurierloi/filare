@@ -5,10 +5,10 @@ import pytest
 
 from filare.errors import UnsupportedLoopSide
 from filare.models.cable import CableModel
-from filare.models.colors import SingleColor
+from filare.models.colors import MultiColor, SingleColor
 from filare.models.connections import ConnectionModel, LoopModel, PinModel
 from filare.models.connector import ConnectorModel
-from filare.models.dataclasses import Cable, Connector, Loop, WireClass
+from filare.models.dataclasses import Cable, Connector, Loop, PinClass, WireClass
 from filare.models.types import Side
 from filare.models.wire import WireModel
 from filare.render import graphviz as gv
@@ -29,7 +29,7 @@ def test_node_connector_simple_template_loads(tmp_path, monkeypatch):
 
 def test_node_connector_accepts_model(tmp_path, monkeypatch):
     model = ConnectorModel(designator="X1", pincount=1, style="simple")
-    rendered = gv.gv_node_connector(model)
+    rendered = gv.gv_node_connector(model.to_connector())
     assert "<table" in rendered.lower()
 
 
@@ -41,7 +41,7 @@ def test_node_cable_template_loads():
 
 def test_node_cable_accepts_model():
     cable_model = CableModel(designator="W1", colors=["RD"], wirecount=1)
-    rendered = gv.gv_node_cable(cable_model)
+    rendered = gv.gv_node_cable(cable_model.to_cable())
     assert "table" in rendered.lower()
 
 
@@ -76,11 +76,8 @@ def test_node_image_attrs_relative_with_scale(monkeypatch, tmp_path):
 
 def test_connector_loops_builds_edges():
     c = make_connector("X1", 2)
-    wire1 = WireClass(index=0)
-    wire2 = WireClass(index=1)
-    # Graphviz uses pin number for port naming; wire index maps to pin index
-    wire1.pin = 1  # type: ignore[attr-defined]
-    wire2.pin = 2  # type: ignore[attr-defined]
+    wire1 = PinClass(index=0, id="1", parent="X1")
+    wire2 = PinClass(index=1, id="2", parent="X1")
     c.loops = [Loop(first=wire1, second=wire2, side=Side.LEFT)]
     loops = gv.gv_connector_loops(c)
     assert loops and len(loops[0]) == 3
@@ -90,10 +87,8 @@ def test_connector_loops_right_and_missing_side():
     c = make_connector("X1", 2)
     c.ports_left = False
     c.ports_right = True
-    wire1 = WireClass(index=0)
-    wire2 = WireClass(index=1)
-    wire1.pin = 1  # type: ignore[attr-defined]
-    wire2.pin = 2  # type: ignore[attr-defined]
+    wire1 = PinClass(index=0, id="1", parent="X1")
+    wire2 = PinClass(index=1, id="2", parent="X1")
     c.loops = [Loop(first=wire1, second=wire2, side=Side.RIGHT)]
     loops = gv.gv_connector_loops(c)
     assert loops[0][1].endswith(":p1r:e")
@@ -113,7 +108,7 @@ def test_connector_loops_accepts_loop_model():
     )
     loops = gv.gv_connector_loops(c)
     # empty initially, so assign model and retry
-    c.loops = [loop_model]
+    c.loops = [loop_model.to_loop()]
     loops = gv.gv_connector_loops(c)
     assert loops and loops[0][1].startswith("X1")
 
@@ -128,9 +123,9 @@ def test_gv_edge_wire_builds_ports(monkeypatch):
 
     harness = DummyHarness()
     cable = Cable(designator="W1", wirecount=1)
-    wire = WireClass(parent=cable, index=0, color=SingleColor("RD"))
-    conn_from = WireClass(parent="X1", index=0)
-    conn_to = WireClass(parent="X2", index=0)
+    wire = WireClass(parent="W1", index=0, color=MultiColor(["RD"]))
+    conn_from = PinClass(parent="X1", index=0, id="1")
+    conn_to = PinClass(parent="X2", index=0, id="1")
 
     class DummyConnection:
         from_ = conn_from
@@ -141,9 +136,12 @@ def test_gv_edge_wire_builds_ports(monkeypatch):
         harness, cable, DummyConnection()
     )
     assert "#000000" in color
+    assert left1 is not None
     assert "X1" in left1
     # wire parent is a Cable; the port includes cable designator implicitly
+    assert left2 is not None
     assert "w1" in left2
+    assert right2 is not None
     assert "X2" in right2
 
 
@@ -152,7 +150,7 @@ def test_gv_edge_wire_handles_missing_endpoints():
         connectors = {}
 
     cable = Cable(designator="W1", wirecount=1)
-    wire = WireClass(parent=cable, index=0, color=None)
+    wire = WireClass(parent="W1", index=0, color=None)
 
     class DummyConnection:
         from_ = None
@@ -177,9 +175,9 @@ def test_gv_edge_wire_accepts_connection_model():
     harness = DummyHarness()
     cable = Cable(designator="W1", wirecount=1)
     connection_model = ConnectionModel(
-        from_=PinModel(parent="X1", id="1", index=0, color="RD"),
-        via=WireModel(parent="W1", id="1", index=0, color="BK"),
-        to=PinModel(parent="X2", id="1", index=0, color="GN"),
+        from_=PinModel(parent="X1", id="1", index=0, color=MultiColor(["RD"])),
+        via=WireModel(parent="W1", id="1", index=0, color=MultiColor(["BK"])),
+        to=PinModel(parent="X2", id="1", index=0, color=MultiColor(["GN"])),
     )
     color, left1, left2, right1, right2 = gv.gv_edge_wire(
         harness, cable, connection_model

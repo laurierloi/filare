@@ -46,15 +46,19 @@ def test_titlepage_template_toggle_sections(
 
     rendered = get_template("titlepage.html").render(model.to_render_dict())
 
+    assert model.metadata.title is not None
     assert model.metadata.title in rendered
     assert (model.notes is not None) == with_notes
     assert (model.bom is not None) == with_bom
     assert (model.index_table is not None) == with_index
     if with_notes:
+        assert model.notes is not None
         assert model.notes in rendered
     if with_bom:
+        assert model.bom is not None
         assert model.bom in rendered
     if with_index:
+        assert model.index_table is not None
         assert model.index_table in rendered
     # Titleblock should be injected into the final render.
     assert tb_model.metadata.company in rendered
@@ -85,11 +89,15 @@ def test_titlepage_respects_page_options(rendered_titleblock):
     rendered = get_template("titlepage.html").render(model.to_render_dict())
 
     assert "Configured Title" in rendered
+    assert options.fontname is not None
     assert f"font-family:  {options.fontname}" in rendered
+    assert bgcolor.html is not None
     assert f"background-color:  {bgcolor.html}" in rendered
     expected_bottom = (options.titleblock_rows + 1) * options.titleblock_row_height + 10
     assert f"bottom: {expected_bottom}mm;" in rendered
+    assert model.notes is not None
     assert model.notes in rendered
     assert model.bom is None
+    assert model.index_table is not None
     assert model.index_table in rendered
     assert tb_model.metadata.company in rendered
