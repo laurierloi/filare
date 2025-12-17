@@ -538,19 +538,19 @@ def _write_aux_pages(
             (
                 "cut",
                 get_template("cut", ".html"),
-                get_template("cut_table", ".html"),
+                build_cut_table_model,
                 rendered.get("cut_table", ""),
                 pages,
             )
         )
-        if getattr(options, "include_termination_diagram", False):
-            pages = termination_pages
-            if pages is None:
-                pages = _chunk_rows(
-                    termination_rows,
-                    getattr(options, "termination_rows_per_page", None),
-                    getattr(options, "table_page_suffix_letters", True),
-                )
+    if getattr(options, "include_termination_diagram", False):
+        pages = termination_pages
+        if pages is None:
+            pages = _chunk_rows(
+                termination_rows,
+                getattr(options, "termination_rows_per_page", None),
+                getattr(options, "table_page_suffix_letters", True),
+            )
         aux_pages.append(
             (
                 "termination",
@@ -566,10 +566,7 @@ def _write_aux_pages(
         total_pages = len(pages)
         for idx, (page_suffix, rows) in enumerate(pages):
             if rows:
-                if suffix == "cut":
-                    table_html = build_cut_table_model(rows).render()
-                else:
-                    table_html = build_termination_table_model(rows).render()
+                table_html = table_template(rows).render()
             else:
                 table_html = default_html
             suffix_for_file = (
