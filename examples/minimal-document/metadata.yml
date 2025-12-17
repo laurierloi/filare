@@ -1,0 +1,26 @@
+metadata:
+  title: Minimal DIN A4 Document
+  pn: MIN-DOC-01
+  company: Filare Examples
+  address: 200 Example Way
+
+  authors:
+    created:
+      name: Filare Team
+      date: 2024-02-01
+    reviewed:
+      name: n/a
+      date: n/a
+
+  revisions:
+    a:
+      name: Filare Team
+      date: 2024-02-01
+      changelog: initial minimal document with two harnesses
+
+  template:
+    name: din-6771
+    sheetsize: A4
+
+notes:
+  - Two harnesses on DIN A4 with BOM only.

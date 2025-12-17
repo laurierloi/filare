@@ -1,0 +1,549 @@
+---
+# extra_commands.yaml
+# Provide commands for the agent which can provide utility to the user and
+# increase the agent's coherance
+commands:
+  lint-and-test-fast:
+    name: "lint-and-test-fast"
+    origin: "extra"
+    run: "bash -lc 'just lint && just test-fast'"
+    description: "Run linting and fast tests together for quick feedback."
+    category: "test"
+    safe_for_agents: true
+    actions:
+      - name: "validate-env"
+        stage: "before"
+        params:
+          checks: ["repo-present", "python-available"]
+      - name: "run-shell-command"
+        stage: "main"
+        params:
+          capture_output: true
+          print_live: false
+      - name: "parse-test-output"
+        stage: "on_error"
+        params:
+          framework: "pytest"
+      - name: "summarize-output"
+        stage: "on_success"
+        params:
+          show_tail_lines: 40
+          include_suggestions: false
+      - name: "summarize-error"
+        stage: "on_error"
+        params:
+          show_tail_lines: 80
+          classify_error: true
+          suggest_next_actions: true
+
+  full-ci-sanity:
+    name: "full-ci-sanity"
+    origin: "extra"
+    run: >
+      bash -lc 'just check-tools && just lint && just test-fast && just example-first'
+    description: >
+      Quick CI-like sanity check: tools, lint, fast tests and first example build.
+    category: "test"
+    safe_for_agents: true
+    actions:
+      - name: "validate-env"
+        stage: "before"
+        params:
+          checks: ["repo-present", "python-available"]
+      - name: "run-shell-command"
+        stage: "main"
+        params:
+          capture_output: true
+          print_live: false
+      - name: "parse-test-output"
+        stage: "on_error"
+        params:
+          framework: "pytest"
+      - name: "summarize-output"
+        stage: "on_success"
+        params:
+          show_tail_lines: 60
+          include_suggestions: true
+      - name: "summarize-error"
+        stage: "on_error"
+        params:
+          show_tail_lines: 80
+          classify_error: true
+          suggest_next_actions: true
+
+  filare-quick-sanity:
+    name: "filare-quick-sanity"
+    origin: "extra"
+    run: "bash -lc 'just example-first && just check-overlap && just bom-check'"
+    description: "Run a minimal Filare sanity: example build, overlap check, BOM check."
+    category: "filare"
+    safe_for_agents: true
+    actions:
+      - name: "validate-env"
+        stage: "before"
+        params:
+          checks: ["repo-present", "python-available", "filare-installed"]
+      - name: "run-shell-command"
+        stage: "main"
+        params:
+          capture_output: true
+          print_live: false
+      - name: "validate-filare-output"
+        stage: "on_success"
+        params: {}
+      - name: "summarize-output"
+        stage: "on_success"
+        params:
+          show_tail_lines: 40
+          include_suggestions: false
+      - name: "summarize-error"
+        stage: "on_error"
+        params:
+          show_tail_lines: 80
+          classify_error: true
+          suggest_next_actions: true
+
+  docs-ci:
+    name: "docs-ci"
+    origin: "extra"
+    run: >
+      bash -lc 'just build-docs && just mermaid-gantt-check && just check-backlog-headers'
+    description: "Build documentation, validate Mermaid diagrams and backlog headers."
+    category: "project_management"
+    safe_for_agents: true
+    actions:
+      - name: "validate-env"
+        stage: "before"
+        params:
+          checks: ["repo-present", "python-available"]
+      - name: "run-shell-command"
+        stage: "main"
+        params:
+          capture_output: true
+          print_live: false
+      - name: "check-docs-artifacts"
+        stage: "on_success"
+        params: {}
+      - name: "summarize-output"
+        stage: "on_success"
+        params:
+          show_tail_lines: 60
+          include_suggestions: false
+      - name: "summarize-error"
+        stage: "on_error"
+        params:
+          show_tail_lines: 80
+          classify_error: true
+          suggest_next_actions: true
+
+  project-snapshot:
+    name: "project-snapshot"
+    origin: "extra"
+    run: >
+      bash -lc 'git status -sb && just version'
+    description: "Show current git status and Filare version as a quick snapshot."
+    category: "meta"
+    safe_for_agents: true
+    actions:
+      - name: "run-shell-command"
+        stage: "main"
+        params:
+          capture_output: true
+          print_live: false
+      - name: "summarize-output"
+        stage: "on_success"
+        params:
+          show_tail_lines: 40
+          include_suggestions: false
+
+  review-cycle:
+    name: "review-cycle"
+    origin: "extra"
+    run: >
+      bash -lc 'just review agent_role="{agent_role}" task_id="{task_id}" &&
+                just get-structured-review agent_role="{agent_role}" task_id="{task_id}"'
+    description: >
+      Run interactive human review, then print the structured review so the agent
+      can consume it in the next step. Intended for orchestrator/human use.
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "validate-env"
+        stage: "before"
+        params:
+          checks: ["repo-present", "python-available"]
+          require_agent_role: true
+          require_task_id: true
+      - name: "run-shell-command"
+        stage: "main"
+        params:
+          capture_output: False    # interactive review
+          print_live: True
+      - name: "summarize-review-log"
+        stage: "on_success"
+        params:
+          review_dir_pattern: "outputs/review/{agent_role}-{task_id}-*"
+
+  orchestrator-plan:
+    name: "orchestrator-plan"
+    origin: "extra"
+    run: "true"
+    description: "Ask orchestrator to create a work plan for the current task."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-gather-context"
+        stage: "before"
+        params:
+          include_files: ["AGENT.md", "AGENTS.ORCHESTRATOR.md", "filare_commands.yaml"]
+      - name: "orchestrator-generate-plan"
+        stage: "main"
+        params:
+          min_steps: 3
+          max_steps: 10
+      - name: "orchestrator-store-plan"
+        stage: "on_success"
+        params:
+          plan_path: "outputs/orchestrator/plan-{task_id}.md"
+
+  orchestrator-status:
+    name: "orchestrator-status"
+    origin: "extra"
+    run: "true"
+    description: "Summarize status of all agents and pending reviews for the current task."
+    category: "project_management"
+    safe_for_agents: true
+    actions:
+      - name: "orchestrator-collect-agent-status"
+        stage: "main"
+        params:
+          status_dir: "outputs/orchestrator/status"
+      - name: "summarize-output"
+        stage: "on_success"
+        params:
+          show_tail_lines: 80
+          include_suggestions: false
+
+  orchestrator-delegate-coverage:
+    name: "orchestrator-delegate-coverage"
+    origin: "extra"
+    run: "true"
+    description: "Ask orchestrator to delegate the current problem to the COVERAGE agent."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "COVERAGE"
+      - name: "orchestrator-create-subtask"
+        stage: "main"
+        params:
+          label: "improve-coverage"
+          inherit_context: true
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "COVERAGE"
+          task_id_from_subtask: true
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"
+
+  orchestrator-delegate-documentation:
+    name: "orchestrator-delegate-documentation"
+    origin: "extra"
+    run: "true"
+    description: "Delegate documentation updates to the DOCUMENTATION agent."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "DOCUMENTATION"
+      - name: "orchestrator-create-subtask"
+        stage: "main"
+        params:
+          label: "update-documentation"
+          inherit_context: true
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "DOCUMENTATION"
+          task_id_from_subtask: true
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"
+
+  orchestrator-delegate-explorator:
+    name: "orchestrator-delegate-explorator"
+    origin: "extra"
+    run: "true"
+    description: "Delegate research/exploration to the EXPLORATOR agent."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "EXPLORATOR"
+      - name: "orchestrator-create-subtask"
+        stage: "main"
+        params:
+          label: "exploration-research"
+          inherit_context: true
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "EXPLORATOR"
+          task_id_from_subtask: true
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"
+
+  orchestrator-delegate-feature:
+    name: "orchestrator-delegate-feature"
+    origin: "extra"
+    run: "true"
+    description: "Delegate feature delivery to the FEATURE agent."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "FEATURE"
+      - name: "orchestrator-create-subtask"
+        stage: "main"
+        params:
+          label: "deliver-feature"
+          inherit_context: true
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "FEATURE"
+          task_id_from_subtask: true
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"
+
+  orchestrator-delegate-fixer:
+    name: "orchestrator-delegate-fixer"
+    origin: "extra"
+    run: "true"
+    description: "Ask orchestrator to delegate the current problem to the FIXER agent."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "FIXER"
+      - name: "orchestrator-create-subtask"
+        stage: "main"
+        params:
+          label: "fix-issue"
+          inherit_context: true
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "FIXER"
+          task_id_from_subtask: true
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"
+
+  orchestrator-delegate-judge:
+    name: "orchestrator-delegate-judge"
+    origin: "extra"
+    run: "true"
+    description: "Delegate review duties to the JUDGE agent."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "JUDGE"
+      - name: "orchestrator-create-subtask"
+        stage: "main"
+        params:
+          label: "code-review"
+          inherit_context: true
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "JUDGE"
+          task_id_from_subtask: true
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"
+
+  orchestrator-delegate-project-manager:
+    name: "orchestrator-delegate-project-manager"
+    origin: "extra"
+    run: "true"
+    description: "Delegate planning and backlog coordination to the PROJECT_MANAGER agent."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "PROJECT_MANAGER"
+      - name: "orchestrator-create-subtask"
+        stage: "main"
+        params:
+          label: "project-planning"
+          inherit_context: true
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "PROJECT_MANAGER"
+          task_id_from_subtask: true
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"
+
+  orchestrator-delegate-rework:
+    name: "orchestrator-delegate-rework"
+    origin: "extra"
+    run: "true"
+    description: "Delegate refactors to the REWORK agent."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "REWORK"
+      - name: "orchestrator-create-subtask"
+        stage: "main"
+        params:
+          label: "refactor-rework"
+          inherit_context: true
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "REWORK"
+          task_id_from_subtask: true
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"
+
+  orchestrator-delegate-tools:
+    name: "orchestrator-delegate-tools"
+    origin: "extra"
+    run: "true"
+    description: "Delegate tooling or CI tasks to the TOOLS agent."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "TOOLS"
+      - name: "orchestrator-create-subtask"
+        stage: "main"
+        params:
+          label: "tooling-update"
+          inherit_context: true
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "TOOLS"
+          task_id_from_subtask: true
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"
+
+  orchestrator-delegate-ui:
+    name: "orchestrator-delegate-ui"
+    origin: "extra"
+    run: "true"
+    description: "Delegate UI work to the UI agent."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "UI"
+      - name: "orchestrator-create-subtask"
+        stage: "main"
+        params:
+          label: "ui-iteration"
+          inherit_context: true
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "UI"
+          task_id_from_subtask: true
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"
+
+  orchestrator-delegate-validator:
+    name: "orchestrator-delegate-validator"
+    origin: "extra"
+    run: "true"
+    description: "Delegate validation to the VALIDATOR agent."
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "VALIDATOR"
+      - name: "orchestrator-create-subtask"
+        stage: "main"
+        params:
+          label: "validate-changes"
+          inherit_context: true
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "VALIDATOR"
+          task_id_from_subtask: true
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"
+
+  orchestrator-apply-review-feedback:
+    name: "orchestrator-apply-review-feedback"
+    origin: "extra"
+    run: "true"
+    description: >
+      Orchestrator instructs a FIXER agent to read structured review data and
+      apply feedback to the codebase, then run lint-and-test-fast.
+    category: "project_management"
+    safe_for_agents: false
+    actions:
+      - name: "orchestrator-select-agent"
+        stage: "before"
+        params:
+          role: "FIXER"
+      - name: "orchestrator-launch-agent"
+        stage: "main"
+        params:
+          role: "FILARE-FIXER"
+          task_id: "{task_id}"
+          initial_commands:
+            - "get-structured-review"
+            - "lint-and-test-fast"
+      - name: "orchestrator-log-delegation"
+        stage: "on_success"
+        params:
+          log_path: "outputs/orchestrator/delegations.log"

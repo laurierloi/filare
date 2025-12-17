@@ -34,6 +34,8 @@ nav:
   - Workflows:
       - Basic Output Generation: workflows/basic-output-generation.md
       - Quantity Multipliers (Current): workflows/quantity-multipliers-current.md
+      - Taskwarrior (Agent): workflows/taskwarrior-agent.md
+      - Taskwarrior (Project Manager): workflows/taskwarrior-project-manager.md
   - Advanced Images: advanced_image_usage.md
   - Build Script: buildscript.md
   - CI: ci.md
@@ -55,7 +57,6 @@ nav:
   - Projects:
       - Part Ingestion: projects/part-ingestion.md
   - Work Tracking:
-      - Tasks: tasks.md
       - Backlog Gantt: workplan/gantt.md
       - Timeline: workplan/timeline.md
   - Refactor Plan: refactor.md

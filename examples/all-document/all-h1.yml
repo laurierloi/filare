@@ -1,0 +1,36 @@
+metadata:
+  title: All Outputs Harness One
+  pn: ALL-01
+  company: Filare Examples
+  template:
+    name: din-6771
+    sheetsize: A3
+
+connectors:
+  A1-J1:
+    type: D-Sub
+    subtype: female
+    pinlabels: [1, 2, 3, 4, 5, 6, 7, 8]
+  A1-J2:
+    type: Terminal Block
+    subtype: female
+    pinlabels: [1, 2, 3, 4, 5, 6, 7, 8]
+
+cables:
+  A1-W1:
+    wirecount: 8
+    colors: [RD, BK, BU, GN, YE, WH, VT, OR]
+    gauge: 0.5 mm2
+    length: 2.0 m
+    shield: true
+
+connections:
+  -
+    - A1-J1: [1, 2, 3, 4, 5, 6, 7, 8]
+    - A1-W1: [1, 2, 3, 4, 5, 6, 7, 8]
+    - A1-J2: [8, 7, 6, 5, 4, 3, 2, 1]
+
+options:
+  include_bom: true
+  include_cut_diagram: true
+  include_termination_diagram: true

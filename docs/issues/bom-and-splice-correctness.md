@@ -1,5 +1,14 @@
 # BOM and splice correctness
 
+uid: ISS-0200
+status: BACKLOG
+priority: medium
+owner_role: FEATURE
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 FIXER

@@ -1,0 +1,35 @@
+metadata:
+  title: Cut Harness Alpha
+  pn: CUT-A
+  company: Filare Examples
+  template:
+    name: din-6771
+    sheetsize: A3
+
+connectors:
+  C1-J1:
+    type: Circular
+    subtype: female
+    pinlabels: [1, 2, 3, 4]
+  C1-J2:
+    type: Circular
+    subtype: male
+    pinlabels: [1, 2, 3, 4]
+
+cables:
+  C1-W1:
+    wirecount: 4
+    colors: [RD, BK, GN, YE]
+    gauge: 0.5 mm2
+    length: 1.0 m
+
+connections:
+  -
+    - C1-J1: [1, 2, 3, 4]
+    - C1-W1: [1, 2, 3, 4]
+    - C1-J2: [4, 3, 2, 1]
+
+options:
+  include_bom: true
+  include_cut_diagram: true
+  include_termination_diagram: false

@@ -1,7 +1,7 @@
 # Data structures and parts library roadmap
 
 uid: FEAT-DATA-0001
-status: PLANNED
+status: BACKLOG
 priority: medium
 owner_role: FEATURE
 estimate: TBD

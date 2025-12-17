@@ -127,7 +127,7 @@ if command -v gh >/dev/null 2>&1; then
     echo "$GH_TOKEN" | gh auth login \
       --hostname github.com \
       --git-protocol ssh \
-      --with-token >/dev/null
+      --with-token 2>&1 /dev/null
     echo "gh: authentication configured for github.com."
   fi
 else
