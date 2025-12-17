@@ -4,7 +4,7 @@ import logging
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Sequence, Type, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Sequence, Union
 
 from graphviz import Graph
 
@@ -31,27 +31,24 @@ from filare.render.graphviz import (
 from filare.render.html import generate_html_output
 from filare.render.imported_svg import prepare_imported_svg
 from filare.render.pdf import generate_pdf_output
-from filare.render.templates import get_template
 from filare.settings import settings
 
-if TYPE_CHECKING:
-    from filare.models.dataclasses import Cable as CableType
-    from filare.models.dataclasses import Component as ComponentType
-    from filare.models.dataclasses import Connector as ConnectorType
-else:  # pragma: no cover
-    CableType = ComponentType = ConnectorType = Any  # type: ignore
-
 # Compatibility dataclass aliases
-try:  # pragma: no cover
+if TYPE_CHECKING:
     from filare.models.dataclasses import Cable as CableDC
     from filare.models.dataclasses import Component as ComponentDC
     from filare.models.dataclasses import Connector as ConnectorDC
-except Exception:  # pragma: no cover
-    CableDC = ComponentDC = ConnectorDC = None  # type: ignore
+else:  # pragma: no cover
+    try:
+        from filare.models.dataclasses import Cable as CableDC
+        from filare.models.dataclasses import Component as ComponentDC
+        from filare.models.dataclasses import Connector as ConnectorDC
+    except Exception:  # pragma: no cover
+        CableDC = ComponentDC = ConnectorDC = None  # type: ignore
 
-Cable = cast(Type[CableType], CableDC)
-Component = cast(Type[ComponentType], ComponentDC)
-Connector = cast(Type[ConnectorType], ConnectorDC)
+Cable = CableDC  # type: ignore
+Component = ComponentDC  # type: ignore
+Connector = ConnectorDC  # type: ignore
 
 
 @dataclass
@@ -59,14 +56,14 @@ class Harness:
     metadata: Metadata
     options: PageOptions
     notes: Notes
-    additional_bom_items: List[ComponentType] = field(default_factory=list)
-    shared_bom: Dict[int, BomEntry] = field(default_factory=dict)
+    additional_bom_items: List[Component] = field(default_factory=list)
+    shared_bom: Dict = field(default_factory=dict)
     document: Optional[DocumentRepresentation] = None
 
     def __post_init__(self):
-        self.connectors: Dict[str, ConnectorType] = {}
-        self.cables: Dict[str, CableType] = {}
-        self.bom: Dict[int, BomEntry] = {}
+        self.connectors = {}
+        self.cables = {}
+        self.bom = {}
         self.additional_bom_items = []
 
     @property
@@ -79,20 +76,20 @@ class Harness:
         """Accept dataclass args, ConnectorModel, or mapping and store keyed by designator."""
         if ConnectorDC is None:  # pragma: no cover
             raise TypeError("Connector dataclass not available")
-        connector_cls = cast(Type[ConnectorType], ConnectorDC)
+        assert Connector is not None
         if args or kwargs:
-            conn = connector_cls(designator=str(designator), *args, **kwargs)
-            key = str(designator)
+            conn = Connector(designator=str(designator), *args, **kwargs)
+            key = designator
         elif isinstance(designator, ConnectorModel):
             conn = designator.to_connector()
             key = conn.designator
         elif isinstance(designator, dict):
-            conn = connector_cls(**designator)
+            conn = Connector(**designator)
             key = conn.designator
         else:
-            conn = connector_cls(designator=str(designator))
-            key = str(designator)
-        self.connectors[str(key)] = conn
+            conn = Connector(designator=designator)
+            key = designator
+        self.connectors[key] = conn
 
     def add_connector_model(
         self, connector_model: Union[ConnectorModel, Dict[str, Any]]
@@ -112,20 +109,20 @@ class Harness:
         """Accept dataclass args, CableModel, or mapping and store keyed by designator."""
         if CableDC is None:  # pragma: no cover
             raise TypeError("Cable dataclass not available")
-        cable_cls = cast(Type[CableType], CableDC)
+        assert Cable is not None
         if args or kwargs:
-            cbl = cable_cls(designator=str(designator), *args, **kwargs)
-            key = str(designator)
+            cbl = Cable(designator=str(designator), *args, **kwargs)
+            key = designator
         elif isinstance(designator, CableModel):
             cbl = designator.to_cable()
             key = cbl.designator
         elif isinstance(designator, dict):
-            cbl = cable_cls(**designator)
+            cbl = Cable(**designator)
             key = cbl.designator
         else:
-            cbl = cable_cls(designator=str(designator))
-            key = str(designator)
-        self.cables[str(key)] = cbl
+            cbl = Cable(designator=designator)
+            key = designator
+        self.cables[key] = cbl
 
     def add_cable_model(self, cable_model: Union[CableModel, Dict[str, Any]]) -> None:
         """Accept a CableModel (or similar with to_cable()) and store the dataclass."""
@@ -143,8 +140,7 @@ class Harness:
         if isinstance(item, ComponentModel):
             new_item = item.to_component()
         else:
-            component_cls = cast(Type[ComponentType], ComponentDC)
-            new_item = component_cls(**item, category=BomCategory.ADDITIONAL)
+            new_item = Component(**item, category=BomCategory.ADDITIONAL)
         self.additional_bom_items.append(new_item)
 
     def orient_connectors_overview(self):
@@ -195,7 +191,7 @@ class Harness:
             + all_subitems
         )
 
-        def add_to_bom(entry: Any) -> None:
+        def add_to_bom(entry):
             if isinstance(entry, list):
                 for e in entry:
                     add_to_bom(e)
@@ -208,15 +204,14 @@ class Harness:
                     return obj.dict()
                 return obj
 
-            if isinstance(entry, BomEntry):
-                entry_obj: BomEntry = entry
-            else:
+            if not isinstance(entry, BomEntry):
+                base = entry
                 if isinstance(entry, BomEntryBase):
                     base = entry
                 else:
                     maybe_dict = _as_dict(entry)
                     base = BomEntryBase(**maybe_dict)
-                entry_obj = BomEntry(
+                entry = BomEntry(
                     qty=base.qty,
                     partnumbers=base.partnumbers,
                     amount=base.amount,
@@ -229,16 +224,20 @@ class Harness:
                     id=base.id,
                 )
 
-            if hash(entry_obj) in self.bom:
-                updated = self.bom[hash(entry_obj)] + entry_obj
-                self.bom[hash(entry_obj)] = cast(BomEntry, updated)
+            if isinstance(entry, list):
+                for e in entry:
+                    add_to_bom(e)
+                return
+
+            if hash(entry) in self.bom:
+                self.bom[hash(entry)] += entry
             else:
-                self.bom[hash(entry_obj)] = entry_obj
+                self.bom[hash(entry)] = entry
 
             try:
-                self.bom[hash(entry_obj)]
+                self.bom[hash(entry)]
             except KeyError:
-                raise BomEntryHashError(entry_obj)
+                raise BomEntryHashError(entry)
 
         # add items to BOM
         for item in all_bom_relevant_items:
@@ -271,7 +270,7 @@ class Harness:
                 existing.qty += values.qty
                 values.id = existing.id
             else:
-                values.id = str(next_id)
+                values.id = next_id
                 self.shared_bom[key] = values
                 existing = values
                 next_id += 1
@@ -445,11 +444,7 @@ class Harness:
             to_pin_obj = None
 
         try:
-            self.cables[via_name]._connect(  # type: ignore[arg-type,call-arg]
-                cast(Any, from_pin_obj),
-                str(via_wire),
-                cast(Any, to_pin_obj),
-            )
+            self.cables[via_name]._connect(from_pin_obj, via_wire, to_pin_obj)
         except Exception as e:
             logging.warning(
                 f"fail to connect cable {via_name}, from_pin: {from_pin}, via_wire: {via_wire}, to_pin: {to_pin}\n\texception:{e}"
@@ -514,12 +509,11 @@ class Harness:
                 for loop, head, tail in loops:
                     dot.edge(head, tail, xlabel=loop.label, color=loop.html_color())
 
-        wire_is_multicolor: List[bool] = []
-        for cable in self.cables.values():
-            for wire in cable.wire_objects.values():
-                if wire.color is None:
-                    continue
-                wire_is_multicolor.append(len(wire.color) > 1)
+        wire_is_multicolor = [
+            len(wire.color) > 1
+            for cable in self.cables.values()
+            for wire in cable.wire_objects.values()
+        ]
         if any(wire_is_multicolor):
             colors.padding_amount = 3
         else:
@@ -675,8 +669,10 @@ def _build_cut_table(harness):
                     "length": length or "",
                 }
             )
-    tpl = get_template("cut_table", ".html")
-    return rows, tpl.render({"rows": rows})
+    from filare.flows.templates import build_cut_table_model
+
+    model = build_cut_table_model(rows)
+    return rows, model.render()
 
 
 def _build_termination_table(harness):
@@ -696,5 +692,7 @@ def _build_termination_table(harness):
                     "target_termination": tgt_term,
                 }
             )
-    tpl = get_template("termination_table", ".html")
-    return rows, tpl.render({"rows": rows})
+    from filare.flows.templates import build_termination_table_model
+
+    model = build_termination_table_model(rows)
+    return rows, model.render()
