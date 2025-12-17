@@ -17,8 +17,12 @@ from pydantic import BaseModel, ConfigDict, ValidationError, field_validator
 USING_PYDANTIC_V1 = False
 
 
+from faker import Faker
+
 from filare.errors import PartNumberValidationError, UnsupportedModelOperation
 from filare.models.utils import awg_equiv, mm2_equiv, remove_links
+
+faker = Faker()
 
 
 class PartNumberInfo(BaseModel):
@@ -254,9 +258,17 @@ class PartnumberInfoList(BaseModel):
                 if result:
                     yield result
 
-    def as_list(self, parent_partnumbers=None):
-        for pn in self.pn_list:
-            yield pn.as_list()
+    def as_list(
+        self, parent_partnumbers: Optional["PartnumberInfoList"] = None
+    ) -> List[List[str]]:
+        """Return list-of-lists of stringified partnumber data."""
+        if parent_partnumbers:
+            flattened: List[List[str]] = []
+            for pn in self.keep_unique(parent_partnumbers.pn_list):
+                if pn:
+                    flattened.append(pn.str_list)
+            return flattened
+        return [pn.str_list for pn in self.pn_list]
 
     if USING_PYDANTIC_V1:
 
@@ -265,6 +277,29 @@ class PartnumberInfoList(BaseModel):
 
     else:
         model_config = ConfigDict(arbitrary_types_allowed=True)
+
+
+class FakePartNumberInfoFactory:
+    """faker-backed factory for PartNumberInfo."""
+
+    @classmethod
+    def create(cls) -> PartNumberInfo:
+        return PartNumberInfo(
+            pn=faker.bothify(text="PN-###"),
+            manufacturer=faker.company(),
+            mpn=faker.bothify(text="MPN-####"),
+            supplier=faker.company(),
+            spn=faker.bothify(text="SPN-###"),
+        )
+
+
+class FakePartNumberInfoListFactory:
+    """faker-backed factory for PartnumberInfoList."""
+
+    @classmethod
+    def create(cls, count: int = 2) -> PartnumberInfoList:
+        pn_list = [FakePartNumberInfoFactory.create() for _ in range(count)]
+        return PartnumberInfoList(pn_list=pn_list)
 
 
 def partnumbers2list(

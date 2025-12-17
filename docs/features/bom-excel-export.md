@@ -1,7 +1,7 @@
 # BOM Excel export
 
-uid: FEAT-BOM-EXCEL-0001
-status: PLANNED
+uid: FEAT-BOM-0100
+status: BACKLOG
 priority: low
 owner_role: FEATURE
 estimate: TBD

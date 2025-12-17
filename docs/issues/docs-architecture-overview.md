@@ -1,5 +1,14 @@
 # Architecture and feature overview docs
 
+uid: ISS-0207
+status: BACKLOG
+priority: medium
+owner_role: DOCUMENTATION
+estimate: TBD
+dependencies: []
+risk: medium
+milestone: backlog
+
 ## Category
 
 DOCUMENTATION
