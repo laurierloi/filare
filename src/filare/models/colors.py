@@ -202,7 +202,7 @@ class MultiColor(BaseModel):
     @property
     def html_padded(self):
         if len(self.html_padded_list) == 0:
-            return "#000000"
+            return "#FFFFFF"
         return ":".join(self.html_padded_list)
 
     @classmethod
