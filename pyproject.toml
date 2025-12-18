@@ -98,6 +98,7 @@ markers = [
     "functional: slow functional/integration tests (>10s)",
     "unit: fast unit tests",
     "render: template rendering and model coverage tests",
+    "agent: orchestrator/agent tooling tests (opt-in)",
 ]
 
 [tool.coverage.run]

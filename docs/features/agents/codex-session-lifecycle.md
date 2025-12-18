@@ -47,3 +47,9 @@ Add lifecycle controls that let the orchestrator start, monitor, pause, resume, 
 
 - Uses container helpers from `FEAT-TOOLS-0003` and configs from `FEAT-TOOLS-0004`.
 - IO routing defined in `FEAT-TOOLS-0006` and operator prompts in `FEAT-TOOLS-0007` rely on this lifecycle state.
+
+## Progress / Notes
+
+- Registry writes implemented in `agents/src/orchestrator/runtime.py` when planning/launching sessions; includes branch/workspace metadata and dry-run flag.
+- CLI `start` and `resume-all` surface minimal lifecycle state; no pause/restart/health checks yet.
+- Next: add state transitions beyond planned/running, heartbeat/backoff, and pause/resume hooks once IO layer is ready.

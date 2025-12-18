@@ -41,3 +41,8 @@ Design the read/write channels that let the ORCHESTRATOR agent send instructions
 
 - Requires lifecycle and registry from `FEAT-TOOLS-0005`.
 - Consumed by operator feedback loop (`FEAT-TOOLS-0007`) and CLI tools (`FEAT-TOOLS-0008`).
+
+## Progress / Notes
+
+- Added `resume-all` support in CLI/runtime to reconnect to recorded sessions and emit hints; IO piping not yet implemented.
+- Next: wire tmux-based send/receive and NDJSON transcripts with branch metadata, then validate via agent-marked tests.

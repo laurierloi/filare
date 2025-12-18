@@ -42,3 +42,7 @@ Provide a structured way for running codex sessions to request operator input (a
 
 - Relies on session state (`FEAT-TOOLS-0005`) and message routing (`FEAT-TOOLS-0006`).
 - CLI plumbing provided in `FEAT-TOOLS-0008`.
+
+## Progress / Notes
+
+- Not yet implemented; pending IO routing and session lifecycle hooks. Plan to respect per-session policy for auto-allowing network/destructive actions while logging decisions.

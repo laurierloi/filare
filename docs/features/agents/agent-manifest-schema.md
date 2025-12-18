@@ -39,3 +39,10 @@ Define a declarative manifest for each agent session so the orchestrator can con
 
 - Builds on `FEAT-TOOLS-0002` (overall orchestrator design) and feeds launch helpers in `FEAT-TOOLS-0003`.
 - Upstream consumers: session lifecycle (`FEAT-TOOLS-0005`) and IO routing (`FEAT-TOOLS-0006`).
+
+## Progress / Notes
+
+- Implemented manifest loader/validator in `agents/src/orchestrator/config.py` with required fields (`id`, `role`, `branch`, `workspace`, `env_file`, `ssh_key`) and default merging.
+- Added agent-marked tests (`agents/tests/test_config.py`) covering defaults, duplicate detection, and missing branch errors.
+- Added a gitignored sample manifest at `agents/manifest/test.yml` for local dry-run/testing.
+- Next: document sample manifest under `configs/agents/demo.yml` and extend schema for operator policy defaults.

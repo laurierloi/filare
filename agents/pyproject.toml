@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "filare-agent"
+version = "0.0.0"
+description = "Orchestrator tooling for Filare agents (standalone, tooling-only)"
+requires-python = ">=3.9"
+dependencies = [
+    "typer>=0.9",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["agents/tests"]
+markers = [
+    "agent: orchestrator/agent tooling tests (opt-in)",
+]
+
+[tool.setuptools]
+package-dir = { "" = "agents/src" }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["agents/src"]
+namespaces = false

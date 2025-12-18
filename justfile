@@ -4,6 +4,7 @@
 set shell := ["bash", "-cu"]
 
 setup := "source scripts/agent-setup.sh >/dev/null"
+import "agents/justfile"
 
 default:
   @echo "Available recipes:"
@@ -254,6 +255,8 @@ codex-container-sh:
 
 codex-container-run:
   SSH_KEY=${SSH_KEY:?set SSH_KEY} ENV_FILE=${ENV_FILE:?set ENV_FILE} WORKSPACE=${WORKSPACE:-$PWD} ./scripts/run_codex_container.sh --ssh-key "$SSH_KEY" --env-file "$ENV_FILE" --workspace "$WORKSPACE"
+
+# Orchestrator CLI wrappers (PYTHONPATH scoped to agents/src)
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:

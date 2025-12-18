@@ -29,6 +29,7 @@ __pycache__
 .*.swp
 mermaid_failed.txt
 docs/README.md
+agents/manifest/
 
 # Built examples
 examples/*
