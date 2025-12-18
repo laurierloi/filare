@@ -19,6 +19,12 @@ Allow `filare code graph` to consume a YAML configuration (mapped to `CodeGraphC
 - Centralizing config ensures `pydeps`, `grimp`, and `pyan3` all share a consistent schema.
 - Keeps the CLI flexible: provide quick overrides via flags while persisting deeper options in YAML.
 
+## Implementation Assessment (2025-02-04)
+
+- Current support: No config consumption in CLI; code graph commands not present yet.
+- Clarity: Config shape implied (`CodeGraphConfig`) but needs concrete schema and flow location.
+- Difficulty: Medium — requires defining the config model, loaders, and merging with CLI flags alongside new graph commands.
+
 ## Proposal
 
 - Introduce `CodeGraphConfig` + tool-specific child models (see `docs/features/config/code_graph.md`).

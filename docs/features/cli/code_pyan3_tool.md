@@ -18,6 +18,12 @@ Implement a pyan3-based static call graph generator exposed via `filare code gra
 - Understand call relationships and entrypoints beyond imports.
 - Useful for debugging flows and assessing impact of changes.
 
+## Implementation Assessment (2025-02-04)
+
+- Current support: No pyan3 integration or `code graph` command yet.
+- Clarity: Desired outputs are clear; need to define node/edge filtering and file locations.
+- Difficulty: Medium-High — add dependency and flow; leverage shared graph CLI once available.
+
 ## Proposal
 
 - Add dependency: `uv add --group dev pyan3 graphviz` (or optional import with hint).

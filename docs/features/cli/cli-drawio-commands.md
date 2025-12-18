@@ -18,6 +18,18 @@ Add `filare drawio <command>` to manage Draw.io integrations, keeping diagram as
 - Provide `filare drawio` group with `import`, `export`, `sync`, `validate`, `edit`, and `review` subcommands and listed flags/options.
 - Support Draw.io (.drawio/.xml) inputs plus YAML/JSON mapping/rules; harness YAML for export/sync.
 - Emit human-readable and JSON outputs for validation/sync reports; keep backward compatibility with existing harness rendering.
+
+## Implementation Assessment (2025-02-04)
+
+- Current support: Typer group exists with `validate` and `import` implemented; missing `export`, `sync`, `edit`, `review`, and full mapping/report formats.
+- Clarity: Inputs/outputs and desired subcommands are clear; data flow for sync/export still needs design.
+- Difficulty: Medium — command scaffolding exists; need wiring to harness parser and Draw.io writer plus tests.
+
+## Implementation Progress (2025-02-04)
+
+- Implemented `validate`, `import`, `export`, `sync`, `edit`, and `review` subcommands with corresponding options.
+- CLI tests cover validate/import/export/sync/edit/review flows (`tests/cli/test_drawio_cli.py`).
+- Remaining work: richer mapping/sync semantics and improved report formats if needed.
 - Honor CLI > ENV > CONFIG > DEFAULT precedence where settings apply; use `pathlib` for all paths.
 - Ensure non-interactive-friendly behaviors (backups, dry-run) for CI workflows.
 

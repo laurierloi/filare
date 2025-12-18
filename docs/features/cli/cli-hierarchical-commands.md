@@ -19,6 +19,25 @@ Introduce a unified, multi-level CLI (`filare <domain> <command>`) so users can 
 - Persona B: Wants deterministic, segmented flows to validate each stage (metadata → harness → document → bundle).
 - Persona C: Needs stable, scriptable subcommands with predictable names and options for CI.
 
+## Implementation Assessment (2025-02-04)
+
+- Current support: Typer root exists with `run`, `qty`, `settings`, `metadata`, `drawio`; missing `document`, `harness`, `page`, `interface`, `schema`, and code-analysis domains.
+- Clarity: Target domains are enumerated; need decisions on nesting order and backward-compatible aliases.
+- Difficulty: Medium — requires reorganizing existing Typer apps and adding new stubs while keeping legacy `filare run` path functional.
+
+## Implementation Plan (next steps)
+
+- Introduce new Typer groups incrementally (start with `harness` and `document/page` as they reuse existing flows).
+- Keep `filare run` as a backward-compatible alias during transition; document deprecation path.
+- Update `cli.main` wiring and CLI help to reflect the hierarchy; add smoke tests for new entrypoints.
+- Defer interface/schema/code domains to later phases once scoped.
+
+## Implementation Progress (2025-02-04)
+
+- Added `harness` Typer group (`filare harness render`) as harness-only entrypoint.
+- Added `document` (`filare document render`) and `page` (`filare page render`) Typer groups; document/page commands accept model configs (DocumentRepresentation/Page) to drive formats and inclusion.
+- Next: consider preview/info subcommands and deprecation messaging for `run`.
+
 ## Proposal
 
 - Restructure CLI into domains:

@@ -18,6 +18,12 @@ Add a CI job to run `filare code graph` and publish artifacts (JSON/DOT/SVG) for
 - Ensure code graph outputs stay in sync with code changes.
 - Provide downloadable artifacts for reviewers without running tools locally.
 
+## Implementation Assessment (2025-02-04)
+
+- Current support: No CI job or `filare code graph` hook in pipelines.
+- Clarity: Requires decision on which graph tools to run and artifact paths.
+- Difficulty: Medium-High — needs CI workflow changes plus stable CLI outputs from the code graph feature.
+
 ## Proposal
 
 - CI job (GitHub Actions) runs after tests, using repo venv and uv commands.

@@ -18,6 +18,12 @@ Implement the pydeps-based import graph generator, wired to `filare code graph -
 - Quick, visual module import graph to spot coupling/cycles.
 - Uses a mature tool (`pydeps`) with Graphviz output, familiar to developers.
 
+## Implementation Assessment (2025-02-04)
+
+- Current support: No pydeps integration or `code graph` command yet.
+- Clarity: Output formats and tool are known; need to settle CLI flags and output paths.
+- Difficulty: Medium — dependency and flow wiring once base `code graph` scaffold exists.
+
 ## Proposal
 
 - Add dependency: `uv add --group dev pydeps graphviz` (or gate with optional import and error message).
