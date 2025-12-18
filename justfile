@@ -305,15 +305,15 @@ orchestrator-test:
 
 orchestrator-generate-manifest base output role branch session_id goal_file="" context_file="" *issues:
 	{{setup}} && export PYTHONPATH="agents/src" && \
-	uv run python -m orchestrator.generate_manifest \
-	  --base {{base}} \
-	  --output {{output}} \
-	  --role {{role}} \
-	  --branch {{branch}} \
-	  --id {{session_id}} \
-	  {{ if goal_file != "" { "--goal-file " + goal_file } else { "" } }} \
-	  {{ if context_file != "" { "--context-file " + context_file } else { "" } }} \
-	  {{ issues | join(" --issue ") | prepend(" --issue ") }}
+  uv run python -m orchestrator.generate_manifest \
+    --base {{base}} \
+    --output {{output}} \
+    --role {{role}} \
+    --branch {{branch}} \
+    --id {{session_id}} \
+    {{ if goal_file != "" { "--goal-file " + goal_file } else { "" } }} \
+    {{ if context_file != "" { "--context-file " + context_file } else { "" } }} \
+    {{ issues | map(|f| "--issue " + f) | join(" ") }}
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:

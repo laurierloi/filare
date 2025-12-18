@@ -136,3 +136,12 @@ def select_sessions(sessions: List[AgentSessionConfig], session_id: Optional[str
         if session.id == session_id:
             return [session]
     raise ManifestError(f"Session id '{session_id}' not found in manifest.")
+
+
+def render_manifest(
+    base_defaults: Dict[str, Any],
+    sessions: List[Dict[str, Any]],
+) -> str:
+    """Render a manifest dict to YAML."""
+    data: Dict[str, Any] = {"defaults": base_defaults, "sessions": sessions}
+    return yaml.safe_dump(data, sort_keys=False)

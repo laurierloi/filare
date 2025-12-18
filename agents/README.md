@@ -13,6 +13,19 @@ This repo includes role guides (AGENT.*.md), prompt definitions, and orchestrati
 - Feedback queue: `just orchestrator-feedback-list|add|resolve`
 - Dashboard: `just orchestrator-dashboard [-- --json]`
 - Agent tests (tooling only): `just orchestrator-test`
+- Generate a task-specific manifest from a base defaults file:
+  ```
+  just orchestrator-generate-manifest \
+    base=agents/manifest/example.yaml \
+    output=outputs/agents/manifest-out.yml \
+    role=FEATURE \
+    branch=feat/123 \
+    session_id=feat-123 \
+    goal_file=goal.txt \
+    context_file=ctx.txt \
+    --issue docs/issues/ISS-0001.md
+  ```
+  Then: `just orchestrator-start manifest=outputs/agents/manifest-out.yml --execute`
 
 ## When implementing a feature
 
