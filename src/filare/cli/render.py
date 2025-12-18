@@ -11,6 +11,7 @@ import filare.filare as wv
 from filare import APP_NAME, __version__
 from filare.flows.index_pages import build_pdf_bundle, build_titlepage
 from filare.flows.shared_bom import build_shared_bom
+from filare.settings import typer_kwargs
 
 format_codes = {
     "c": "csv",
@@ -30,14 +31,13 @@ epilog = (
 )
 
 run_app = typer.Typer(
-    add_completion=True,
-    no_args_is_help=True,
     context_settings={
         "help_option_names": ["-h", "--help"],
         "allow_interspersed_args": True,
     },
     epilog=epilog,
     help="Parses the provided harness files and generates the requested outputs.",
+    **typer_kwargs(),
 )
 
 

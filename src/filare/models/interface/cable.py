@@ -25,3 +25,10 @@ class CableInterfaceModel(FilareInterfaceModel):
         default=False, description="Whether the cable includes shielding."
     )
     type: Optional[str] = Field(None, description="Cable type or family (e.g., CAT5e).")
+
+
+class CableConfigurationInterfaceModel(FilareInterfaceModel):
+    """Configuration options controlling cable parsing/normalization."""
+
+    # Placeholder for future parsing toggles; keeps a dedicated config object per cable type.
+    pass

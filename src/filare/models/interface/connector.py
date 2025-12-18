@@ -55,3 +55,10 @@ class ConnectorInterfaceModel(FilareInterfaceModel):
     style: Optional[str] = Field(
         None, description="Rendering style override (e.g., simple)."
     )
+
+
+class ConnectorConfigurationInterfaceModel(FilareInterfaceModel):
+    """Configuration options controlling connector parsing/normalization."""
+
+    # Placeholder for future parsing toggles; keeps a dedicated config object per connector type.
+    pass

@@ -32,3 +32,10 @@ class OptionsInterfaceModel(FilareInterfaceModel):
         default=False,
         description="Whether to emit the index table on a dedicated page when rendering documents.",
     )
+
+
+class OptionsConfigurationInterfaceModel(FilareInterfaceModel):
+    """Configuration options controlling options parsing/normalization."""
+
+    # Placeholder for future parsing toggles; keeps a dedicated config object per options payload.
+    pass
