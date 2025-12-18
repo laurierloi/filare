@@ -32,6 +32,12 @@ Introduce a unified, multi-level CLI (`filare <domain> <command>`) so users can 
 - Update `cli.main` wiring and CLI help to reflect the hierarchy; add smoke tests for new entrypoints.
 - Defer interface/schema/code domains to later phases once scoped.
 
+## Implementation Progress (2025-02-04)
+
+- Added `harness` Typer group (`filare harness render`) as harness-only entrypoint.
+- Added `document` (`filare document render`) and `page` (`filare page render`) Typer groups; document/page commands accept model configs (DocumentRepresentation/Page) to drive formats and inclusion.
+- Next: consider preview/info subcommands and deprecation messaging for `run`.
+
 ## Proposal
 
 - Restructure CLI into domains:

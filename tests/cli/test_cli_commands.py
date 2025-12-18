@@ -184,3 +184,142 @@ def test_harness_cli_help():
     result = runner.invoke(cli, ["harness", "render", "--help"])
     assert result.exit_code == 0
     assert "harness-only outputs" in result.output
+
+
+def test_document_cli_help():
+    runner = CliRunner()
+    result = runner.invoke(cli, ["document", "render", "--help"])
+    assert result.exit_code == 0
+    assert "title page" in result.output.lower()
+
+
+def test_page_cli_help():
+    runner = CliRunner()
+    result = runner.invoke(cli, ["page", "render", "--help"])
+    assert result.exit_code == 0
+    assert "single harness" in result.output.lower()
+
+
+def test_document_cli_uses_document_config(monkeypatch, tmp_path):
+    runner = CliRunner()
+    harness_path, metadata_path = _write_minimal_files(tmp_path)
+
+    doc_cfg = tmp_path / "doc.yml"
+    doc_cfg.write_text(
+        textwrap.dedent(
+            """\
+            metadata: {}
+            pages:
+              - type: harness
+                formats: [html]
+              - type: bom
+                include: false
+            """
+        )
+    )
+
+    captured = {}
+
+    def fake_render_callback(**kwargs):
+        captured["create_titlepage"] = kwargs.get("create_titlepage")
+        captured["formats"] = kwargs.get("formats")
+
+    monkeypatch.setattr("filare.cli.render.render_callback", fake_render_callback)
+
+    result = runner.invoke(
+        cli,
+        [
+            "--document-config",
+            str(doc_cfg),
+            "document",
+            "render",
+            str(harness_path),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert captured["create_titlepage"] is False
+    assert captured["formats"] == "h"
+
+
+def test_page_cli_uses_page_config(monkeypatch, tmp_path):
+    runner = CliRunner()
+    harness_path, metadata_path = _write_minimal_files(tmp_path)
+
+    page_cfg = tmp_path / "page.yml"
+    page_cfg.write_text(
+        textwrap.dedent(
+            """\
+            type: harness
+            formats: [html, svg]
+            """
+        )
+    )
+
+    captured = {}
+
+    def fake_render_callback(**kwargs):
+        captured["formats"] = kwargs.get("formats")
+
+    monkeypatch.setattr("filare.cli.render.render_callback", fake_render_callback)
+
+    result = runner.invoke(
+        cli,
+        [
+            "page",
+            "render",
+            "--page-config",
+            str(page_cfg),
+            str(harness_path),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert captured["formats"] == "hs"
+
+
+def test_page_cli_title_page_config(monkeypatch, tmp_path):
+    runner = CliRunner()
+    harness_path, metadata_path = _write_minimal_files(tmp_path)
+
+    page_cfg = tmp_path / "title.yml"
+    page_cfg.write_text(
+        textwrap.dedent(
+            """\
+            type: title
+            formats: [html]
+            """
+        )
+    )
+
+    calls = {}
+
+    def fake_build_titlepage(metadata_files, extra_metadata, shared_bom, for_pdf=False):
+        calls["titlepage"] = {
+            "metadata": list(metadata_files),
+            "extra": extra_metadata,
+            "for_pdf": for_pdf,
+        }
+
+    def fake_render_callback(**_kwargs):
+        calls["render_called"] = True
+
+    monkeypatch.setattr("filare.cli.render.build_titlepage", fake_build_titlepage)
+    monkeypatch.setattr("filare.cli.render.render_callback", fake_render_callback)
+
+    result = runner.invoke(
+        cli,
+        [
+            "page",
+            "render",
+            str(harness_path),
+            "-d",
+            str(metadata_path),
+            "--page-config",
+            str(page_cfg),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "titlepage" in calls
+    assert "render_called" not in calls

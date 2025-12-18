@@ -25,6 +25,9 @@ Add `filare page <command>` to operate on a single page/sheet without full-docum
 - Clarity: Inputs mirror harness render; need to define single-page context (metadata defaults, sheet numbering) and outputs.
 - Difficulty: Medium — reuse render pipeline but add CLI wrapper and tests for standalone page output.
   - Output: page-level artifacts (HTML/PNG/SVG/TSV/PDF as requested).
+- Added `filare page render` Typer command that reuses the render flow without titlepage/PDF bundling (formats limited to h/s/t).
+- Added `--page-config` to accept a Page model YAML (type/formats) and drive rendering (including titlepage-only generation when type=title).
+- TODO: add preview/info subcommands if still desired.
 - `filare page preview <file>` — quick render to a temp location for visual check.
   - Input: single harness file.
   - Flags: `--format {html,png,svg}`, `--open` (attempt to open), `--keep` (retain temp output).
