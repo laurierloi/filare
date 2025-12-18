@@ -23,6 +23,10 @@ Support reusable manifest defaults and pattern-based workspace allocation so the
   - On launch, if `workspace` does not exist and `workspace_template/prefix` is provided, orchestrator picks the lowest available `{n}` not in the registry for that role.
   - If `reuse_existing` is true and a stopped session with the same id/role exists, reuse its workspace path; otherwise pick a new one.
   - Only seed from repo when the chosen workspace is empty.
+- Manifest generation helper:
+  - CLI: `python -m orchestrator.generate_manifest --base agents/manifest/example.yaml --output outputs/agents/manifest-out.yml --role FEATURE --branch feat/123 --id feat-123 --goal-file goal.txt --issue docs/issues/ISS-0001.md ...`
+  - Just wrapper: `just orchestrator-generate-manifest base=... output=... role=... branch=... session_id=... [goal_file=...] [context_file=...] [--issue <file> ...]`.
+  - Reuses defaults (env/ssh/prefix) from the base, filling in session-specific fields and attaching context/issue files into metadata.
 - Provide base manifest + derived manifests:
   - Base: shared defaults (`env_file`, `ssh_key`, optional `workspace_prefix`).
   - Derived: per-context files overriding `id/role/branch/goal` and optional `workspace_template`.
