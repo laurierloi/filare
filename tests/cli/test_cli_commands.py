@@ -104,6 +104,13 @@ def test_cli_pdf_and_shared_bom_flow(monkeypatch, tmp_path):
         calls["parse_formats"] = set(output_formats)
         shared_bom = kwargs["shared_bom"]
         shared_bom["h"] = {"qty": 1}
+        output_dir = kwargs.get("output_dir")
+        if output_dir:
+            out_path = (
+                output_dir
+                / f"{kwargs.get('metadata_output_name', harness_path.stem)}.tsv"
+            )
+            out_path.write_text("Header\tQty\n", encoding="utf-8")
         return {"shared_bom": shared_bom}
 
     def fake_shared_bom(**_kwargs):
@@ -150,6 +157,13 @@ def test_harness_cli_skips_titlepage(monkeypatch, tmp_path):
         calls["parse_formats"] = set(output_formats)
         shared_bom = kwargs["shared_bom"]
         shared_bom["h"] = {"qty": 1}
+        output_dir = kwargs.get("output_dir")
+        if output_dir:
+            out_path = (
+                output_dir
+                / f"{kwargs.get('metadata_output_name', harness_path.stem)}.tsv"
+            )
+            out_path.write_text("Header\tQty\n", encoding="utf-8")
         return {"shared_bom": shared_bom}
 
     def fake_titlepage(*_args, **_kwargs):
@@ -163,9 +177,8 @@ def test_harness_cli_skips_titlepage(monkeypatch, tmp_path):
         [
             "harness",
             "render",
+            "--",
             str(harness_path),
-            "-d",
-            str(metadata_path),
             "-f",
             "ht",
             "-o",
