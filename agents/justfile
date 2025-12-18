@@ -1,11 +1,7 @@
 # Justfile for filare-agent orchestrator tooling
 
-set shell := ["bash", "-cu"]
-
-setup := "cd .. && source scripts/agent-setup.sh >/dev/null"
-
-default:
-  @echo "Available agent recipes:"
+agents-help:
+  @echo "Agent recipes:"
   @echo "  just orchestrator-validate manifest=agents/manifest/test.yml"
   @echo "  just orchestrator-start manifest=agents/manifest/test.yml [session=<id>] [execute=true]"
   @echo "  just orchestrator-resume-all"
@@ -15,27 +11,27 @@ default:
   @echo "  just codex-container-run     # run codex container with workspace/env/ssh key"
 
 orchestrator-validate manifest session="":
-  set -euo pipefail; MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; {{setup}} && export PYTHONPATH="agents/src:src" && uv run python -m orchestrator.cli validate "$MANIFEST" {{ if session != "" { "--session " + session } else { "" } }}
+  bash -lc 'set -eu; MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; cd ..; source scripts/agent-setup.sh; export PYTHONPATH="agents/src:src"; uv run python -m orchestrator.cli validate "$MANIFEST" {{ if session != "" { "--session " + session } else { "" } }}'
 
 orchestrator-start manifest session="" execute="false":
-  set -euo pipefail; MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; {{setup}} && export PYTHONPATH="agents/src:src" && uv run python -m orchestrator.cli start "$MANIFEST" {{ if session != "" { "--session " + session } else { "" } }} {{ if execute == "true" { "--execute" } else { "" } }}
+  bash -lc 'set -eu; MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; cd ..; source scripts/agent-setup.sh; export PYTHONPATH="agents/src:src"; uv run python -m orchestrator.cli start "$MANIFEST" {{ if session != "" { "--session " + session } else { "" } }} {{ if execute == "true" { "--execute" } else { "" } }}'
 
 orchestrator-resume-all:
-  {{setup}} && export PYTHONPATH="agents/src:src" && uv run python -m orchestrator.cli resume-all
+  bash -lc 'cd ..; source scripts/agent-setup.sh; export PYTHONPATH="agents/src:src"; uv run python -m orchestrator.cli resume-all'
 
 orchestrator-test:
-  {{setup}} && export PYTHONPATH="agents/src:src" && uv run pytest agents/tests -m agent -q
+  bash -lc 'cd ..; source scripts/agent-setup.sh; export PYTHONPATH="agents/src:src"; uv run pytest agents/tests -m agent -q'
 
 codex-container-build:
-  {{setup}} && docker build -f docker/Dockerfile.codex -t filare-codex .
+  bash -lc 'cd ..; source scripts/agent-setup.sh; docker build -f docker/Dockerfile.codex -t filare-codex .'
 
 codex-container-sh:
-  {{setup}} && docker run --rm -it \
+  bash -lc 'cd ..; source scripts/agent-setup.sh; docker run --rm -it \
     -v "$PWD":/home/agent/workspace \
     -v "$HOME"/.codex:/home/agent/.codex \
     -w /home/agent/workspace \
     --user $(id -u):$(id -g) \
-    filare-codex bash
+    filare-codex bash'
 
 codex-container-run:
-  {{setup}} && SSH_KEY=${SSH_KEY:?set SSH_KEY} ENV_FILE=${ENV_FILE:?set ENV_FILE} WORKSPACE=${WORKSPACE:-$PWD} ./scripts/run_codex_container.sh --ssh-key "$SSH_KEY" --env-file "$ENV_FILE" --workspace "$WORKSPACE"
+  bash -lc 'cd ..; source scripts/agent-setup.sh; SSH_KEY=${SSH_KEY:?set SSH_KEY}; ENV_FILE=${ENV_FILE:?set ENV_FILE}; WORKSPACE=${WORKSPACE:-$PWD}; ./scripts/run_codex_container.sh --ssh-key "$SSH_KEY" --env-file "$ENV_FILE" --workspace "$WORKSPACE"'
