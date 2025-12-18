@@ -228,7 +228,7 @@ commands:
     name: "orchestrator-delegate-coverage"
     origin: "extra"
     run: "true"
-    description: "Ask orchestrator to delegate the current problem to the COVERAGE agent."
+    description: "Delegate current task to COVERAGE agent (runs /orchestrator-delegate-coverage prompt)."
     category: "project_management"
     safe_for_agents: false
     actions:
@@ -255,7 +255,7 @@ commands:
     name: "orchestrator-delegate-documentation"
     origin: "extra"
     run: "true"
-    description: "Delegate documentation updates to the DOCUMENTATION agent."
+    description: "Delegate docs updates to DOCUMENTATION agent (runs /orchestrator-delegate-documentation)."
     category: "project_management"
     safe_for_agents: false
     actions:
@@ -273,6 +273,9 @@ commands:
         params:
           role: "DOCUMENTATION"
           task_id_from_subtask: true
+          initial_commands:
+            - "orchestrator-plan"
+            - "orchestrator-status"
       - name: "orchestrator-log-delegation"
         stage: "on_success"
         params:
@@ -282,7 +285,7 @@ commands:
     name: "orchestrator-delegate-explorator"
     origin: "extra"
     run: "true"
-    description: "Delegate research/exploration to the EXPLORATOR agent."
+    description: "Delegate research/exploration to EXPLORATOR agent (runs /orchestrator-delegate-explorator)."
     category: "project_management"
     safe_for_agents: false
     actions:
@@ -309,7 +312,7 @@ commands:
     name: "orchestrator-delegate-feature"
     origin: "extra"
     run: "true"
-    description: "Delegate feature delivery to the FEATURE agent."
+    description: "Delegate feature delivery to FEATURE agent (runs /orchestrator-delegate-feature)."
     category: "project_management"
     safe_for_agents: false
     actions:
@@ -327,6 +330,9 @@ commands:
         params:
           role: "FEATURE"
           task_id_from_subtask: true
+          initial_commands:
+            - "orchestrator-plan"
+            - "orchestrator-status"
       - name: "orchestrator-log-delegation"
         stage: "on_success"
         params:
@@ -336,7 +342,7 @@ commands:
     name: "orchestrator-delegate-fixer"
     origin: "extra"
     run: "true"
-    description: "Ask orchestrator to delegate the current problem to the FIXER agent."
+    description: "Delegate bugfix to FIXER agent (runs /orchestrator-delegate-fixer)."
     category: "project_management"
     safe_for_agents: false
     actions:
@@ -354,6 +360,9 @@ commands:
         params:
           role: "FIXER"
           task_id_from_subtask: true
+          initial_commands:
+            - "orchestrator-plan"
+            - "orchestrator-status"
       - name: "orchestrator-log-delegation"
         stage: "on_success"
         params:
@@ -363,7 +372,7 @@ commands:
     name: "orchestrator-delegate-judge"
     origin: "extra"
     run: "true"
-    description: "Delegate review duties to the JUDGE agent."
+    description: "Delegate code review to JUDGE agent (runs /orchestrator-delegate-judge)."
     category: "project_management"
     safe_for_agents: false
     actions:
@@ -390,7 +399,7 @@ commands:
     name: "orchestrator-delegate-project-manager"
     origin: "extra"
     run: "true"
-    description: "Delegate planning and backlog coordination to the PROJECT_MANAGER agent."
+    description: "Delegate planning/backlog to PROJECT_MANAGER agent (runs /orchestrator-delegate-project-manager)."
     category: "project_management"
     safe_for_agents: false
     actions:
@@ -417,7 +426,7 @@ commands:
     name: "orchestrator-delegate-rework"
     origin: "extra"
     run: "true"
-    description: "Delegate refactors to the REWORK agent."
+    description: "Delegate refactor to REWORK agent (runs /orchestrator-delegate-rework)."
     category: "project_management"
     safe_for_agents: false
     actions:
@@ -435,6 +444,9 @@ commands:
         params:
           role: "REWORK"
           task_id_from_subtask: true
+          initial_commands:
+            - "orchestrator-plan"
+            - "orchestrator-status"
       - name: "orchestrator-log-delegation"
         stage: "on_success"
         params:
@@ -444,7 +456,7 @@ commands:
     name: "orchestrator-delegate-tools"
     origin: "extra"
     run: "true"
-    description: "Delegate tooling or CI tasks to the TOOLS agent."
+    description: "Delegate tooling/CI tasks to TOOLS agent (runs /orchestrator-delegate-tools)."
     category: "project_management"
     safe_for_agents: false
     actions:
@@ -462,6 +474,9 @@ commands:
         params:
           role: "TOOLS"
           task_id_from_subtask: true
+          initial_commands:
+            - "orchestrator-plan"
+            - "orchestrator-status"
       - name: "orchestrator-log-delegation"
         stage: "on_success"
         params:
@@ -471,7 +486,7 @@ commands:
     name: "orchestrator-delegate-ui"
     origin: "extra"
     run: "true"
-    description: "Delegate UI work to the UI agent."
+    description: "Delegate UI work to UI agent (runs /orchestrator-delegate-ui)."
     category: "project_management"
     safe_for_agents: false
     actions:
@@ -489,6 +504,9 @@ commands:
         params:
           role: "UI"
           task_id_from_subtask: true
+          initial_commands:
+            - "orchestrator-plan"
+            - "orchestrator-status"
       - name: "orchestrator-log-delegation"
         stage: "on_success"
         params:
@@ -498,7 +516,7 @@ commands:
     name: "orchestrator-delegate-validator"
     origin: "extra"
     run: "true"
-    description: "Delegate validation to the VALIDATOR agent."
+    description: "Delegate validation to VALIDATOR agent (runs /orchestrator-delegate-validator)."
     category: "project_management"
     safe_for_agents: false
     actions:
@@ -516,6 +534,9 @@ commands:
         params:
           role: "VALIDATOR"
           task_id_from_subtask: true
+          initial_commands:
+            - "orchestrator-plan"
+            - "orchestrator-status"
       - name: "orchestrator-log-delegation"
         stage: "on_success"
         params:
