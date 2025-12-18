@@ -51,4 +51,5 @@ Provide scripted entrypoints that let an ORCHESTRATOR agent consistently build, 
 - Added dry-run command assembly and registry recording in `agents/src/orchestrator/runtime.py` plus CLI `start` (defaults to dry-run) and root `just` wrappers (`orchestrator-validate/start/resume-all`).
 - Tests in `agents/tests/test_runtime.py` cover command assembly and state recording (agent-marked).
 - Introduced Python-based container runner `python -m orchestrator.run_container` (used by `just codex-container-run` and orchestrator runtime) to replace the shell script path for launches.
+- Runner now prefers a workspace-local temp dir for SSH key mounts (`<workspace>/.orchestrator/tmp` or `--ssh-temp-dir`) to avoid `/tmp` space issues.
 - Next: extend script/wrapper to inject container labels and add `just`/generator-backed shortcuts once execution flow is finalized.

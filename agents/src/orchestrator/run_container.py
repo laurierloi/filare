@@ -33,6 +33,11 @@ def run_container(
     image: str = typer.Option("filare-codex", "--image", help="Docker image name"),
     seed_from: Optional[Path] = typer.Option(None, "--seed-from", help="If workspace is empty, seed from this path"),
     codex_dir: Optional[Path] = typer.Option(None, "--codex-dir", help="Host .codex cache directory"),
+    ssh_temp_dir: Optional[Path] = typer.Option(
+        None,
+        "--ssh-temp-dir",
+        help="Directory for temporary SSH mount; defaults to <workspace>/.orchestrator/tmp to avoid /tmp pressure",
+    ),
 ) -> None:
     """
     Run the codex container with the given workspace, SSH key, and env file.
@@ -63,7 +68,10 @@ def run_container(
 
     codex_dir.mkdir(parents=True, exist_ok=True)
 
-    ssh_tmp = Path(tempfile.mkdtemp(prefix="codex-ssh-"))
+    # Prefer a workspace-local temp area to avoid /tmp exhaustion
+    tmp_base = ssh_temp_dir.expanduser().resolve() if ssh_temp_dir else (workspace / ".orchestrator" / "tmp")
+    tmp_base.mkdir(parents=True, exist_ok=True)
+    ssh_tmp = Path(tempfile.mkdtemp(prefix="codex-ssh-", dir=tmp_base))
     try:
         os.chmod(ssh_tmp, 0o700)
         ssh_target = ssh_tmp / "id_rsa"
