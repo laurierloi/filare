@@ -269,20 +269,20 @@ orchestrator-validate manifest session="":
   set -euo pipefail; MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli validate "$MANIFEST" {{ if session != "" { "--session " + session } else { "" } }}
 
 orchestrator-start manifest session="" execute="false" *extra_args:
-	set -euo pipefail
-	MANIFEST="{{manifest}}"
-	MANIFEST="${MANIFEST#manifest=}"
-	{{setup}} && export PYTHONPATH="agents/src"
-	cmd=(uv run python -m orchestrator.cli start "$MANIFEST")
-	if [ -n "{{session}}" ]; then
-		cmd+=(--session "{{session}}")
-	fi
-	if [ "{{execute}}" = "true" ]; then
-		cmd+=(--execute)
-	fi
-	# shell parameter expansion preserves extra_args as provided
-	cmd+=({{extra_args}})
-	"${cmd[@]}"
+  set -euo pipefail
+  MANIFEST="{{manifest}}"
+  MANIFEST="${MANIFEST#manifest=}"
+  {{setup}} && export PYTHONPATH="agents/src"
+  cmd=(uv run python -m orchestrator.cli start "$MANIFEST")
+  if [ -n "{{session}}" ]; then
+    cmd+=(--session "{{session}}")
+  fi
+  if [ "{{execute}}" = "true" ]; then
+    cmd+=(--execute)
+  fi
+  # shell parameter expansion preserves extra_args as provided
+  cmd+=({{extra_args}})
+  "${cmd[@]}"
 
 orchestrator-resume-all:
   {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli resume-all
