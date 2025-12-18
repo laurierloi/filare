@@ -212,37 +212,37 @@ taskwarrior-backfill-apply:
 
 # List next ready tasks for a role from Taskwarrior export
 taskwarrior-next role="" limit="10":
-  set -euo pipefail
-  role_args=()
-  if [ -n "{{role}}" ]; then
-  role_args=(--roles {{role}})
-  fi
-  {{setup}} && uv run python scripts/taskwarrior_next.py --input outputs/workplan/taskwarrior.json --limit {{limit}} "${role_args[@]}"
+	set -euo pipefail
+	role_args=()
+	if [ -n "{{role}}" ]; then
+	role_args=(--roles {{role}})
+	fi
+	{{setup}} && uv run python scripts/taskwarrior_next.py --input outputs/workplan/taskwarrior.json --limit {{limit}} "${role_args[@]}"
 
 # Split Taskwarrior backlog into dependency-safe pools
 taskwarrior-pools pools="2":
-  {{setup}} && uv run python scripts/taskwarrior_split_pools.py --pools {{pools}} --input outputs/workplan/taskwarrior.json --outdir outputs/workplan
+	{{setup}} && uv run python scripts/taskwarrior_split_pools.py --pools {{pools}} --input outputs/workplan/taskwarrior.json --outdir outputs/workplan
 
 # Update a Taskwarrior task (status/notes) in the export; can stamp completion time
 taskwarrior-update uid status="" note="" done="false":
-  set -euo pipefail
-  args=(--uid {{uid}})
-  if [ -n "{{status}}" ]; then
-  args+=(--status {{status}})
-  fi
-  if [ -n "{{note}}" ]; then
-  args+=(--note "{{note}}")
-  fi
-  if [ "{{done}}" = "true" ]; then
-  args+=(--done)
-  fi
-  {{setup}} && uv run python scripts/taskwarrior_update.py --input outputs/workplan/taskwarrior.json "${args[@]}"
+	set -euo pipefail
+	args=(--uid {{uid}})
+	if [ -n "{{status}}" ]; then
+	args+=(--status {{status}})
+	fi
+	if [ -n "{{note}}" ]; then
+	args+=(--note "{{note}}")
+	fi
+	if [ "{{done}}" = "true" ]; then
+	args+=(--done)
+	fi
+	{{setup}} && uv run python scripts/taskwarrior_update.py --input outputs/workplan/taskwarrior.json "${args[@]}"
 
 # Generate a branch name from a Taskwarrior task UID (optionally check out)
 taskwarrior-branch uid checkout="false":
-  set -euo pipefail
-  branch=$( {{setup}} && uv run python scripts/taskwarrior_branch.py --input outputs/workplan/taskwarrior.json --uid {{uid}} {{ if checkout == "true" { "--checkout" } else { "" } }} )
-  echo "$branch"
+	set -euo pipefail
+	branch=$( {{setup}} && uv run python scripts/taskwarrior_branch.py --input outputs/workplan/taskwarrior.json --uid {{uid}} {{ if checkout == "true" { "--checkout" } else { "" } }} )
+	echo "$branch"
 
 # Generate Graphviz timeline (DOT + optional SVG)
 timeline-graphviz:
@@ -266,18 +266,19 @@ codex-container-run:
 
 # Orchestrator CLI wrappers (PYTHONPATH scoped to agents/src)
 orchestrator-validate manifest session="":
-  set +u; set -eo pipefail; MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli validate "$MANIFEST" {{ if session != "" { "--session " + session } else { "" } }}
+  set -euo pipefail; MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli validate "$MANIFEST" {{ if session != "" { "--session " + session } else { "" } }}
 
 orchestrator-start manifest session="" execute="false" *extra_args:
-  set +u; set -eo pipefail
-  MANIFEST="{{manifest}}"
-  {{setup}} && export PYTHONPATH="agents/src"
-  cmd=(uv run python -m orchestrator.cli start "$MANIFEST")
-  if [ -n "{{session}}" ]; then cmd+=(--session "{{session}}"); fi
-  if [ "{{execute}}" = "true" ]; then cmd+=(--execute) ; fi
-  # shell parameter expansion preserves extra_args as provided
-  cmd+=({{extra_args}})
-  "${cmd[@]}"
+	set -eo pipefail
+	MANIFEST="{{manifest}}"
+	MANIFEST="${MANIFEST#manifest=}"
+	{{setup}} && export PYTHONPATH="agents/src"
+	cmd=(uv run python -m orchestrator.cli start "$MANIFEST")
+	if [ -n "{{session}}" ]; then cmd+=(--session "{{session}}"); fi
+	if [ "{{execute}}" = "true" ]; then cmd+=(--execute) ; fi
+	# shell parameter expansion preserves extra_args as provided
+	cmd+=({{extra_args}})
+	"${cmd[@]}"
 
 orchestrator-resume-all:
   {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli resume-all
