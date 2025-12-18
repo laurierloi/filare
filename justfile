@@ -268,12 +268,12 @@ codex-container-run:
 orchestrator-validate manifest *cli_args:
 	{{setup}} && export PYTHONPATH="agents/src" && \
 	MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; \
-	uv run python -m orchestrator.cli validate "$MANIFEST" {{cli_args}}
+	uv run python -m orchestrator.cli validate {{cli_args}} "$MANIFEST"
 
 orchestrator-start manifest *cli_args:
 	{{setup}} && export PYTHONPATH="agents/src" && \
 	MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; \
-	uv run python -m orchestrator.cli start "$MANIFEST" {{cli_args}}
+	uv run python -m orchestrator.cli start {{cli_args}} "$MANIFEST"
 
 orchestrator-resume-all:
 	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli resume-all
