@@ -1,8 +1,15 @@
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from filare.models.colors import SingleColor
+import factory  # type: ignore[reportPrivateImportUsage]
+from factory import Factory  # type: ignore[reportPrivateImportUsage]
+from factory.declarations import LazyAttribute  # type: ignore[reportPrivateImportUsage]
+from faker import Faker  # type: ignore[reportPrivateImportUsage]
+
+from filare.models.colors import FakeSingleColorFactory, SingleColor
 from filare.models.hypertext import MultilineHypertext
+
+faker = Faker()
 
 
 def aspect_ratio(image_src):
@@ -65,3 +72,22 @@ class Image:
             else:
                 if self.width:
                     self.height = self.width / aspect_ratio(self.src)
+
+
+class FakeImageFactory(Factory):
+    """factory_boy factory for Image dataclass."""
+
+    class Meta:
+        model = Image
+
+    src = LazyAttribute(lambda _: faker.file_name(extension="png"))
+    scale = ""
+    width = LazyAttribute(lambda _: faker.random_int(min=1, max=100))
+    height = LazyAttribute(lambda _: faker.random_int(min=1, max=100))
+    fixedsize = LazyAttribute(lambda _: faker.boolean())
+    bgcolor = LazyAttribute(lambda _: FakeSingleColorFactory.create())
+    caption = LazyAttribute(lambda _: MultilineHypertext.to(faker.sentence(nb_words=4)))
+
+    @staticmethod
+    def create(**kwargs) -> Image:
+        return FakeImageFactory.build(**kwargs)

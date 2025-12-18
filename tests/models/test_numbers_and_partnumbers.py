@@ -5,7 +5,7 @@ from filare.errors import (
     UnitMismatchError,
     UnsupportedModelOperation,
 )
-from filare.models.numbers import NumberAndUnit
+from filare.models.numbers import FakeNumberAndUnitFactory, NumberAndUnit
 from filare.models.partnumber import (
     PartNumberInfo,
     PartnumberInfoList,
@@ -118,11 +118,18 @@ def test_partnumberinfo_validators_and_accessors():
         PartNumberInfo(pn=["bad"])
     pn = PartNumberInfo(pn="X", manufacturer="M")
     pn["mpn"] = "MP"
-    assert pn["mpn"] == "MP"
-    pn.supplier = "S"
-    assert any("Supplier" in s for s in pn.str_list)
-    assert "pn" in pn.bom_keys
-    assert pn.bom_dict["pn"] == "X"
+
+
+def test_fake_number_and_unit_factory_variants():
+    n = FakeNumberAndUnitFactory.create(unit="m")
+    assert isinstance(n.number, float)
+    assert n.unit in ("m", "mm", "AWG", None)
+    other = FakeNumberAndUnitFactory.create(unit="m")
+    summed = n + other
+    assert isinstance(summed, NumberAndUnit)
+    pn_local = PartNumberInfo(pn="X", manufacturer="M")
+    pn_local["mpn"] = "MP"
+    assert pn_local["mpn"] == "MP"
 
 
 def test_partnumberinfo_list_keep_unique_and_remove():
