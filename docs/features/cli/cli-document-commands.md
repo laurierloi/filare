@@ -18,6 +18,12 @@ Add `filare document <command>` to manage full-document outputs (HTML/PDF bundle
 - `filare document render <files...>` — render full documents (multi-page) with optional title page and PDF bundle.
   - Input: harness YAML files; optional metadata/components.
   - Flags: `-f, --formats <codes>` (e.g., hpstP), `-c, --components <file...>`, `-d, --metadata <file...>`, `-o, --output-dir`, `-O, --output-name`, `--no-titlepage`, `--pdf-bundle`, `--use-qty-multipliers`, `-m, --multiplier-file-name`.
+
+## Implementation Assessment (2025-02-04)
+
+- Current support: No `document` Typer group; `filare run` renders harness outputs and titlepage but not scoped document subcommands.
+- Clarity: Inputs/flags match existing `render` command; wiring to a new Typer group is straightforward.
+- Difficulty: Medium — reuse existing render flow and bundle helpers; needs CLI plumbing and tests.
   - Output: HTML/PNG/SVG/TSV/PDF artifacts; console summary of outputs.
 - `filare document inspect <file>` — show document-level options (page sizes, fonts, metadata applied).
   - Input: single harness file (or merged metadata file).

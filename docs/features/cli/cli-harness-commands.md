@@ -18,6 +18,12 @@ Add `filare harness <command>` to build harness artifacts and shared BOM slices,
 - `filare harness render <files...>` — render harness outputs (SVG/PNG/TSV/GV/CSV) without document/title pages.
   - Input: one or more harness YAML files; optional metadata/components.
   - Flags: `-f, --formats <codes>`, `-c, --components <file...>`, `-d, --metadata <file...>`, `-o, --output-dir`, `--use-qty-multipliers`, `-m, --multiplier-file-name`.
+
+## Implementation Assessment (2025-02-04)
+
+- Current support: No dedicated `harness` group; existing `filare run` handles harness rendering with similar flags.
+- Clarity: Command shape mirrors current `run`; straightforward to split into a namespaced Typer group.
+- Difficulty: Low-Medium — mostly CLI refactor and documentation/tests to preserve backward compatibility.
   - Output: harness artifacts per file; console summary.
 - `filare harness bom <files...>` — generate harness-level BOMs (with optional shared BOM scaling).
   - Input: harness YAML files.

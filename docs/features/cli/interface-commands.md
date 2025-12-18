@@ -18,6 +18,12 @@ Add a `filare interface` command set to work directly with interface models: par
 - `filare interface parse <file>`: load user YAML into interface models and report validation details.
 - `filare interface example`: emit sample YAML snippets for supported interface models (based on factories).
 - `filare interface edit <file>`: open an interface model for interactive editing (non-interactive flags for scripted updates) and save back.
+
+## Implementation Assessment (2025-02-04)
+
+- Current support: No `interface` CLI group; interface models exist under `filare.models.interface` but unused in CLI.
+- Clarity: Goals clear; need UX decisions for edit flow (non-interactive vs editor) and output locations.
+- Difficulty: Medium — requires building parsers around existing models and adding Typer commands plus tests.
 - Reuse `FakeInterfaceFactory`/`Fake<ModelName>Factory` to produce examples and default values.
 
 ## Non-Goals

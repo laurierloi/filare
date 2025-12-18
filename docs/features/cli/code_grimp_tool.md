@@ -18,6 +18,12 @@ Implement a grimp-based import graph generator that emits JSON (and optional DOT
 - Need a programmable graph representation for search/filter/highlighting in docs/UI.
 - Grimp API provides module graph data without parsing DOT.
 
+## Implementation Assessment (2025-02-04)
+
+- Current support: No `code graph` command or grimp integration present.
+- Clarity: Output expectations are defined; need to pick defaults (JSON path, optional DOT/SVG).
+- Difficulty: Medium-High — new dependency and flow plus tests; depends on base `code` CLI scaffold.
+
 ## Proposal
 
 - Add dependency: `uv add --group dev grimp` (or optional import with guidance).

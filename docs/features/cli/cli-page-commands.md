@@ -18,6 +18,12 @@ Add `filare page <command>` to operate on a single page/sheet without full-docum
 - `filare page render <file>` — render one harness page to selected formats.
   - Input: single harness YAML file; optional metadata/components.
   - Flags: `-f, --formats <codes>`, `-c, --components <file...>`, `-d, --metadata <file...>`, `-o, --output-dir`, `-O, --output-name`, `--use-qty-multipliers`, `-m, --multiplier-file-name`.
+
+## Implementation Assessment (2025-02-04)
+
+- Current support: No `page` CLI group; page rendering occurs inside document flow (`filare run`) without isolated command.
+- Clarity: Inputs mirror harness render; need to define single-page context (metadata defaults, sheet numbering) and outputs.
+- Difficulty: Medium — reuse render pipeline but add CLI wrapper and tests for standalone page output.
   - Output: page-level artifacts (HTML/PNG/SVG/TSV/PDF as requested).
 - `filare page preview <file>` — quick render to a temp location for visual check.
   - Input: single harness file.

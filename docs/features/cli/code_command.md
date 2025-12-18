@@ -19,6 +19,12 @@ Add a Typer-powered `filare code` command (implemented in `src/filare/cli/code.p
 - Prepare for multiple graph generation backends without changing the UX.
 - Enable both manual and CI refresh of code graphs from a single entrypoint.
 
+## Implementation Assessment (2025-02-04)
+
+- Current support: No `filare code` Typer group yet; no CLI entry for code graphs.
+- Clarity: Scope is clear (new Typer group with `graph` subcommand scaffold).
+- Difficulty: Medium — needs new CLI module and wiring to graph-generation flows once tools are available.
+
 ## Proposal
 
 - Create `src/filare/cli/code.py` Typer app and register it from the main CLI.
