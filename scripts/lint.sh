@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
 
 root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
@@ -13,12 +12,20 @@ if ! command -v prettier >/dev/null 2>&1; then
   exit 1
 fi
 
-cd "$root_dir"
-
-# Try to fix
-uv run black src tests
-prettier --write "docs/**/*.{md,html}"
-
 # Check
+echo "Running black"
 uv run black --check src tests
+if [ $? -ne 0 ]; then
+    echo "Code is not properly formatted. Running black formatter..."
+    uv run black src tests
+fi
+
+echo "Running prettier"
 prettier --check "docs/**/*.{md,html}"
+if [ $? -ne 0 ]; then
+    echo "Documentation is not properly formatted. Running prettier formatter..."
+    prettier --write "docs/**/*.{md,html}"
+fi
+
+echo "Running pyright"
+uv run pyright src

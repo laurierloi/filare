@@ -1,14 +1,13 @@
 import pytest
 
 from filare.models.templates import FakeNotesTemplateFactory, NotesTemplateModel
-from filare.render.templates import get_template
 
 
 def test_notes_template_render_minimal():
     model = FakeNotesTemplateFactory()()
     assert isinstance(model, NotesTemplateModel)
 
-    rendered = get_template("notes.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert "Notes:" in rendered
     assert model.notes.clean in rendered
@@ -41,7 +40,7 @@ def test_notes_template_option_effects(
             "bom_row_height": bom_row_height,
         }
     )()
-    rendered = get_template("notes.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert notes_width in rendered
     if show_bom and not notes_on_right:

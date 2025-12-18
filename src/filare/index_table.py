@@ -7,7 +7,6 @@ from typing import Dict, List, Optional, Tuple, Union, cast
 from filare.models.harness_quantity import HarnessQuantity
 from filare.models.metadata import PagesMetadata
 from filare.models.table_models import letter_suffix
-from filare.render.templates import get_template
 
 TABLE_COLUMNS = ["sheet", "page", "quantity", "notes"]
 
@@ -224,9 +223,14 @@ class IndexTable:
         return cls(rows=rows, header=header)
 
     def render(self, options):
-        return get_template("index_table.html").render(
-            {
-                "index_table": self,
-                "options": options,
-            }
-        )
+        from filare.flows.templates import build_index_table_model
+        from filare.models.options import PageOptions
+
+        if isinstance(options, PageOptions):
+            page_opts = options
+        elif isinstance(options, dict):
+            page_opts = PageOptions(**options)
+        else:
+            page_opts = PageOptions(**vars(options))
+        model = build_index_table_model(self, page_opts)
+        return model.render()

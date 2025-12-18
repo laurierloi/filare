@@ -9,6 +9,13 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple, Union
 from pydantic import BaseModel, ConfigDict
 
 import filare
+from filare.flows.templates import (
+    build_aux_table_model,
+    build_index_table_model,
+    build_notes_model,
+    build_page_model,
+    build_titleblock_model,
+)
 from filare.index_table import IndexTable
 from filare.models.bom import BomContent, BomRenderOptions
 from filare.models.harness_quantity import HarnessQuantity
@@ -16,13 +23,13 @@ from filare.models.metadata import Metadata
 from filare.models.notes import Notes, get_page_notes
 from filare.models.options import PageOptions, get_page_options
 from filare.models.table_models import TablePage, TablePaginationOptions, letter_suffix
+from filare.models.templates.notes_template_model import TemplateNotesOptions
 from filare.render.imported_svg import (
     build_import_container_style,
     build_import_inner_style,
     prepare_imported_svg,
     strip_svg_declarations,
 )
-from filare.render.templates import get_template
 
 
 def generate_shared_bom(
@@ -201,11 +208,15 @@ def generate_html_output(
     should_render_index = options.show_index_table or options.split_index_page
     options_for_render.show_index_table = options.show_index_table
     if should_render_index:
-        rendered["index_table"] = IndexTable.from_pages_metadata(
-            metadata.pages_metadata,
+        rendered["index_table"] = _render_index_table_section(
+            IndexTable.from_pages_metadata(
+                metadata.pages_metadata,
+                options_for_render,
+                paginated_pages=pagination_hints,
+            ),
             options_for_render,
-            paginated_pages=pagination_hints,
-        ).render(options_for_render)
+            bom_rows,
+        )
 
     diagram_container_class = "diagram-default"
     diagram_container_style = ""
@@ -257,21 +268,35 @@ def generate_html_output(
     # TODO: all rendering should be done within their respective classes
 
     # prepare titleblock
-    rendered["titleblock"] = get_template("titleblock.html").render(replacements)
+    rendered["titleblock"] = build_titleblock_model(
+        metadata, options_for_render, partno
+    ).render()
 
     notes_candidate = replacements.get("notes")
     if isinstance(notes_candidate, Notes) and notes_candidate.notes:
-        rendered["notes"] = get_template("notes.html").render(replacements)
+        rendered["notes"] = _render_notes_section(
+            notes_candidate, options_for_render, bom_rows
+        )
 
     filtered = _filtered_sections(options_for_render, rendered)
 
     # generate page template
-    page_rendered = get_template(template_name, ".html").render(
-        {
-            **replacements,
-            **filtered,
-        }
+    page_model = build_page_model(
+        template_name=template_name,
+        metadata=metadata,
+        options=options_for_render,
+        titleblock_html=rendered["titleblock"],
+        diagram_html=rendered.get("diagram", ""),
+        diagram_container_class=diagram_container_class,
+        diagram_container_style=diagram_container_style,
+        notes_html=filtered.get("notes", ""),
+        bom_html=filtered.get("bom", ""),
+        index_table_html=filtered.get("index_table", ""),
+        generator=str(replacements.get("generator", "")),
+        title=str(replacements.get("title", "")),
+        bom_rows=bom_rows,
     )
+    page_rendered = page_model.render()
 
     # save generated file
     filename.with_suffix(".html").open("w").write(page_rendered)
@@ -332,6 +357,34 @@ def _render_bom_section(
             page_options=options, bom_options=bom_render_options
         )
     return (bom_html, bom_rows, bom_pages)
+
+
+def _render_notes_section(notes: Notes, options: PageOptions, bom_rows: int) -> str:
+    """Render the notes section through the notes template model."""
+    template_options = TemplateNotesOptions(
+        show_bom=options.show_bom,
+        notes_on_right=options.notes_on_right,
+        titleblock_rows=options.titleblock_rows,
+        titleblock_row_height=options.titleblock_row_height,
+        bom_rows=bom_rows,
+        bom_row_height=options.bom_row_height,
+        notes_width=options.notes_width,
+    )
+    model = build_notes_model(notes.notes, options=template_options)
+    return model.render()
+
+
+def _render_index_table_section(
+    index_table: IndexTable, options: PageOptions, bom_rows: int
+) -> str:
+    """Render the index table through the index_table template model."""
+    model = build_index_table_model(
+        index_table=index_table,
+        options=options,
+        bom_rows=bom_rows,
+        bom_row_height=options.bom_row_height,
+    )
+    return model.render()
 
 
 def _derive_harness_number(filename: Path, sheet_current: int) -> int:
@@ -485,6 +538,9 @@ def _write_aux_pages(
 ) -> None:
     """Emit auxiliary pages such as cut/termination placeholders when requested."""
     aux_pages = []
+    generator_str = (
+        f"{getattr(filare, 'APP_NAME', 'Filare')} {getattr(filare, '__version__', '')}"
+    )
     if getattr(options, "include_cut_diagram", False):
         pages = cut_pages
         if pages is None:
@@ -494,13 +550,7 @@ def _write_aux_pages(
                 getattr(options, "table_page_suffix_letters", True),
             )
         aux_pages.append(
-            (
-                "cut",
-                get_template("cut", ".html"),
-                get_template("cut_table", ".html"),
-                rendered.get("cut_table", ""),
-                pages,
-            )
+            ("cut", rendered.get("cut_table", ""), pages or []),
         )
     if getattr(options, "include_termination_diagram", False):
         pages = termination_pages
@@ -511,20 +561,13 @@ def _write_aux_pages(
                 getattr(options, "table_page_suffix_letters", True),
             )
         aux_pages.append(
-            (
-                "termination",
-                get_template("termination", ".html"),
-                get_template("termination_table", ".html"),
-                rendered.get("termination_table", ""),
-                pages,
-            )
+            ("termination", rendered.get("termination_table", ""), pages or []),
         )
-    for suffix, template, table_template, default_html, pages in aux_pages:
+    for suffix, default_html, pages in aux_pages:
         if not pages:
             pages = [("", [])]
         total_pages = len(pages)
         for idx, (page_suffix, rows) in enumerate(pages):
-            table_html = table_template.render({"rows": rows}) if rows else default_html
             suffix_for_file = (
                 f".{page_suffix or letter_suffix(idx)}" if total_pages > 1 else ""
             )
@@ -543,25 +586,22 @@ def _write_aux_pages(
                 getattr(page_metadata, "sheet_current", 0),
                 getattr(getattr(page_metadata, "template", None), "name", ""),
             )
-            page_titleblock = get_template("titleblock.html").render(
-                {
-                    "metadata": page_metadata,
-                    "options": options,
-                    "partno": page_partno,
-                }
+            page_titleblock = build_titleblock_model(
+                page_metadata, options, page_partno
+            ).render()
+            model = build_aux_table_model(
+                suffix,
+                rows,
+                default_html,
+                page_metadata,
+                options,
+                page_suffix=sheet_suffix,
+                generator=generator_str,
+                partno=page_partno,
+                titleblock_html=page_titleblock,
+                title=getattr(page_metadata, "title", "") or suffix.title(),
             )
-            page = template.render(
-                {
-                    f"{suffix}_table": table_html,
-                    "metadata": page_metadata,
-                    "options": options,
-                    "titleblock": page_titleblock,
-                    "notes": rendered.get("notes", ""),
-                    "bom": rendered.get("bom", ""),
-                    "diagram": rendered.get("diagram", ""),
-                }
-            )
-            target.write_text(page, encoding="utf-8")
+            target.write_text(model.render(), encoding="utf-8")
 
 
 def generate_titlepage(yaml_data, extra_metadata, shared_bom, for_pdf=False):
@@ -589,7 +629,6 @@ def generate_titlepage(yaml_data, extra_metadata, shared_bom, for_pdf=False):
         reverse=False,
     )
 
-    # todo: index table options as a dataclass
     options = get_page_options(yaml_data, "titlepage")
 
     # Auto-split sections that cannot reasonably fit on the titlepage.

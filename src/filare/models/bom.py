@@ -14,8 +14,8 @@ from filare.models.table_models import (
     TableRow,
     paginate_rows,
 )
+from filare.models.templates.bom_template_model import TemplateBomOptions
 from filare.models.utils import remove_links
-from filare.render.templates import get_template
 
 
 class BomEntryBase(BaseModel):
@@ -183,6 +183,15 @@ class BomRender:
             page_options = {}
         if bom_options is None:
             bom_options = BomRenderOptions()
+
+        def _from_opts(obj, attr: str, default):
+            if obj is None:
+                return default
+            if isinstance(obj, dict):
+                return obj.get(attr, default)
+            value = getattr(obj, attr, None)
+            return default if value is None else value
+
         if self.strip_empty_columns:
             # remove empty columns in header and rows
             index_to_remove = [i for i, v in enumerate(self.header) if v == ""]
@@ -200,14 +209,24 @@ class BomRender:
             rows = self.rows
 
         self.options = bom_options
-        return get_template("bom.html").render(
-            {
-                "bom": self,
-                "table_header": header,
-                "table_rows": rows,
-                "options": page_options,
-            }
+        from filare.flows.templates import build_bom_model
+
+        template_options = TemplateBomOptions(
+            titleblock_rows=_from_opts(page_options, "titleblock_rows", 0),
+            titleblock_row_height=_from_opts(
+                page_options, "titleblock_row_height", 5.0
+            ),
+            bom_updated_position=_from_opts(page_options, "bom_updated_position", None),
+            bom_row_height=_from_opts(page_options, "bom_row_height", 5.0),
+            reverse=getattr(bom_options, "reverse", False),
         )
+        model = build_bom_model(
+            headers=header,
+            columns_class=self.columns_class,
+            content=rows,
+            options=template_options,
+        )
+        return model.render()
 
     def to_table_rows(self) -> List[TableRow]:
         """Return rows as TableRow objects with css classes preserved."""

@@ -10,7 +10,6 @@ from filare.models.templates.titlepage_template_model import (
     FakeTemplateTitlePageOptionsFactory,
     TitlePageTemplateModel,
 )
-from filare.render.templates import get_template
 
 
 @pytest.fixture
@@ -18,7 +17,7 @@ def rendered_titleblock():
     model = FakeTitleblockTemplateFactory(
         author_count=1, revision_count=1, with_logo=False
     )()
-    html = get_template("titleblock.html").render(model.to_render_dict())
+    html = model.render()
     return html, model
 
 
@@ -44,7 +43,7 @@ def test_titlepage_template_toggle_sections(
     )()
     assert isinstance(model, TitlePageTemplateModel)
 
-    rendered = get_template("titlepage.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert model.metadata.title is not None
     assert model.metadata.title in rendered
@@ -86,7 +85,7 @@ def test_titlepage_respects_page_options(rendered_titleblock):
         titleblock=titleblock_html,
     )()
 
-    rendered = get_template("titlepage.html").render(model.to_render_dict())
+    rendered = model.render()
 
     assert "Configured Title" in rendered
     assert options.fontname is not None

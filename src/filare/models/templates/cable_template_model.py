@@ -14,6 +14,7 @@ from filare.models.colors import (
     MultiColor,
     SingleColor,
 )
+from filare.models.hypertext import FakeMultilineHypertextFactory, MultilineHypertext
 from filare.models.partnumber import FakePartNumberInfoListFactory, PartnumberInfoList
 from filare.models.templates.template_model import TemplateModel, TemplateModelFactory
 
@@ -50,7 +51,7 @@ class TemplateCableComponent(BaseModel):
     wire_objects: Dict[str, TemplateWire] = Field(default_factory=dict)
     image: Optional[str] = None
     additional_components: List[object] = Field(default_factory=list)
-    notes: Optional[str] = None
+    notes: Optional[MultilineHypertext] = None
 
     model_config = ConfigDict(extra="forbid", arbitrary_types_allowed=True)
 
@@ -140,5 +141,6 @@ class FakeCableTemplateFactory(TemplateModelFactory):
                 color=color_value,
                 partnumbers=partnumbers,
                 wire_objects=wires,
+                notes=FakeMultilineHypertextFactory.create(),
             )
         super().__init__(**kwargs)
