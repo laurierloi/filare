@@ -14,10 +14,7 @@ import yaml
 script_path = Path(__file__).absolute()
 sys.path.insert(0, str(script_path.parent.parent.parent))  # to find filare module
 
-import filare.cli as filare_cli
 from filare import APP_NAME, __version__
-
-cli = filare_cli.cli
 
 base_dir = script_path.parent.parent.parent.parent
 readme = "readme.md"
@@ -79,6 +76,16 @@ generated_extensions = (
     extensions_not_containing_graphviz_output + extensions_containing_graphviz_output
 )
 
+cli = None
+
+
+def _get_cli():
+    if cli is not None:
+        return cli
+    import filare.cli as filare_cli
+
+    return filare_cli.cli
+
 
 def collect_filenames(description, groupkey, ext_list):
     """Collect a sorted list of files in a group folder.
@@ -131,7 +138,7 @@ def build_generated(groupkeys, output_base=None):
             # Demo YAMLs already carry full metadata; avoid overriding them.
             if key != "demos" and metadata_file.exists():
                 metadata_arg = ["--metadata", str(metadata_file)]
-            cli(
+            _get_cli()(
                 [
                     "run",
                     "--formats",
