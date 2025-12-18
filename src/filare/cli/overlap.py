@@ -20,6 +20,27 @@ overlap_app = typer.Typer(
 )
 
 
+def _ensure_playwright_ready() -> None:
+    """Fail fast when Playwright/Chromium is unavailable."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except Exception as exc:  # pragma: no cover - exercised via runtime guard
+        typer.secho(f"Playwright is not available: {exc}", fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1)
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            browser.close()
+    except Exception as exc:  # pragma: no cover - exercised via runtime guard
+        typer.secho(
+            f"Chromium is not available for Playwright: {exc}",
+            fg=typer.colors.RED,
+            err=True,
+        )
+        raise typer.Exit(code=1)
+
+
 @overlap_app.callback(invoke_without_command=True)
 def overlap(
     paths: List[str] = typer.Argument(
@@ -67,6 +88,7 @@ def overlap(
     ),
 ) -> None:
     """Proxy to the text overlap checker while reusing its parsing/formatting."""
+    _ensure_playwright_ready()
     argv = list(paths)
     argv.extend(["--viewport", viewport])
     argv.extend(["--warn-threshold", str(warn_threshold)])

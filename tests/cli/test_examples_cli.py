@@ -24,6 +24,7 @@ def test_examples_cli_build_calls_tool(monkeypatch, tmp_path):
             "build",
             "--groups",
             "basic",
+            "--groups",
             "minimal-document",
             "--output-dir",
             str(tmp_path),

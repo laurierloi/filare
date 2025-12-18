@@ -1,5 +1,6 @@
-from typer.testing import CliRunner
+import importlib
 
+from typer.testing import CliRunner
 from filare.cli import cli
 from filare.tools import text_overlap
 
@@ -12,6 +13,8 @@ def test_overlap_cli_passes_arguments(monkeypatch, tmp_path):
         called["argv"] = argv
         return 0
 
+    overlap_module = importlib.import_module("filare.cli.overlap")
+    monkeypatch.setattr(overlap_module, "_ensure_playwright_ready", lambda: None)
     monkeypatch.setattr(text_overlap, "main", fake_main)
 
     html_file = tmp_path / "page.html"
