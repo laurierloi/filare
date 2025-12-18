@@ -45,4 +45,6 @@ Provide a structured way for running codex sessions to request operator input (a
 
 ## Progress / Notes
 
-- Not yet implemented; pending IO routing and session lifecycle hooks. Plan to respect per-session policy for auto-allowing network/destructive actions while logging decisions.
+- Added minimal prompt queue implementation (`agents/src/orchestrator/feedback.py`) with CLI commands `feedback-list`, `feedback-add`, `feedback-resolve` plus `just` wrappers.
+- Tests (`agents/tests/test_feedback.py`, agent-marked) cover add/list/resolve flows on a temp queue.
+- Next: integrate with session lifecycle/IO to emit prompts automatically and feed decisions back to agents; enforce per-session policy for auto-allowing network/destructive actions while logging.

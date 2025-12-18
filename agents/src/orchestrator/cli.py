@@ -6,6 +6,7 @@ from typing import Optional
 import typer
 
 from .config import ManifestError, load_manifest, select_sessions
+from .feedback import Prompt, add_prompt, list_prompts, resolve_prompt
 from .io import IoTarget, send_message, snapshot_transcript
 from .runtime import find_repo_root, launch_session, resume_plan
 
@@ -102,6 +103,61 @@ def snapshot(
         typer.echo(" ".join(result))  # type: ignore[arg-type]
         return
     typer.echo(result.stdout)
+
+
+@app.command("feedback-list")
+def feedback_list(queue: Path = typer.Option(Path("outputs/agents/prompts.json"), "--queue", help="Queue file")) -> None:
+    """List pending/decided prompts."""
+    prompts = list_prompts(queue)
+    if not prompts:
+        typer.echo("No prompts recorded.")
+        return
+    for prompt in prompts:
+        status = prompt.decision or "pending"
+        typer.echo(f"- id={prompt.id} session={prompt.session_id} role={prompt.role} status={status} reason={prompt.reason}")
+
+
+@app.command("feedback-add")
+def feedback_add(
+    prompt_id: str = typer.Option(..., "--id", help="Prompt id"),
+    session_id: str = typer.Option(..., "--session-id", help="Session id"),
+    role: str = typer.Option(..., "--role", help="Agent role"),
+    workspace: str = typer.Option(..., "--workspace", help="Workspace path"),
+    branch: str = typer.Option(..., "--branch", help="Branch name"),
+    reason: str = typer.Option(..., "--reason", help="Reason for prompt"),
+    requested_action: str = typer.Option(..., "--requested-action", help="Requested action"),
+    suggested_reply: Optional[str] = typer.Option(None, "--suggested-reply", help="Suggested reply text"),
+    severity: str = typer.Option("info", "--severity", help="Severity label"),
+    queue: Path = typer.Option(Path("outputs/agents/prompts.json"), "--queue", help="Queue file"),
+) -> None:
+    """Insert a prompt into the queue (useful for tests/demo)."""
+    prompt = Prompt(
+        id=prompt_id,
+        session_id=session_id,
+        role=role,
+        workspace=workspace,
+        branch=branch,
+        reason=reason,
+        requested_action=requested_action,
+        suggested_reply=suggested_reply,
+        severity=severity,
+    )
+    add_prompt(queue, prompt)
+    typer.echo(f"Added prompt {prompt_id} -> {queue}")
+
+
+@app.command("feedback-resolve")
+def feedback_resolve(
+    prompt_id: str = typer.Option(..., "--id", help="Prompt id"),
+    decision: str = typer.Option(..., "--decision", help="approved|rejected"),
+    reply: Optional[str] = typer.Option(None, "--reply", help="Reply text"),
+    queue: Path = typer.Option(Path("outputs/agents/prompts.json"), "--queue", help="Queue file"),
+) -> None:
+    """Resolve a prompt with a decision and optional reply."""
+    if decision not in {"approved", "rejected"}:
+        raise typer.BadParameter("decision must be approved|rejected")
+    prompt = resolve_prompt(queue, prompt_id, decision=decision, reply=reply)  # type: ignore[arg-type]
+    typer.echo(f"Updated prompt {prompt.id} decision={prompt.decision}")
 
 
 if __name__ == "__main__":
