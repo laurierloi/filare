@@ -262,7 +262,9 @@ codex-container-sh:
     filare-codex bash
 
 codex-container-run:
-  SSH_KEY=${SSH_KEY:?set SSH_KEY} ENV_FILE=${ENV_FILE:?set ENV_FILE} WORKSPACE=${WORKSPACE:-$PWD} ./scripts/run_codex_container.sh --ssh-key "$SSH_KEY" --env-file "$ENV_FILE" --workspace "$WORKSPACE"
+  SSH_KEY=${SSH_KEY:?set SSH_KEY} ENV_FILE=${ENV_FILE:?set ENV_FILE} WORKSPACE=${WORKSPACE:-$PWD} IMAGE=${IMAGE:-filare-codex}; \
+  {{setup}} && export PYTHONPATH="agents/src" && \
+  uv run python -m orchestrator.run_container --workspace "$WORKSPACE" --ssh-key "$SSH_KEY" --env-file "$ENV_FILE" --image "$IMAGE"
 
 # Orchestrator CLI wrappers (PYTHONPATH scoped to agents/src)
 orchestrator-validate manifest *cli_args:

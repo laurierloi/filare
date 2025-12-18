@@ -92,9 +92,12 @@ class SessionRegistry:
 
 def build_run_command(session: AgentSessionConfig, repo_root: Optional[Path] = None) -> List[str]:
     root = find_repo_root(repo_root)
-    script = root / "scripts" / "run_codex_container.sh"
     cmd = [
-        str(script),
+        "uv",
+        "run",
+        "python",
+        "-m",
+        "orchestrator.run_container",
         "--workspace",
         str(session.workspace),
         "--ssh-key",

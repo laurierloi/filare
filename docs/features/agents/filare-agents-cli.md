@@ -56,5 +56,6 @@ Ship a Python helper library under `src/filare/agents/` plus a Typer CLI `filare
 - Implemented initial Typer CLI (`agents/src/orchestrator/cli.py`) with `validate`, `start` (dry-run by default), and `resume-all`; commands locate repo root from the manifest directory. Added `just` wrappers for these commands.
 - Added standalone `agents/pyproject.toml` to scope orchestrator dependencies/commands without touching Filare runtime.
 - Orchestrator commands now live in the root `justfile` for discoverability and to feed the command generator.
+- Container launch path now uses `python -m orchestrator.run_container` (wired into `just codex-container-run` and orchestrator runtime) instead of the shell script.
 - Added agent-marked tests for config/runtime pieces; CLI not yet covered.
 - Next: add stop/restart/send/tail/feedback commands and wire `just` shortcuts plus generator integration.

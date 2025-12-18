@@ -44,6 +44,7 @@ Design a lightweight orchestration layer that uses the codex-ready container (`d
 - Next: integrate IO routing, operator prompts, labels for container discovery, and expand `just` wrappers once the CLI stabilizes.
 - Created a standalone `agents/pyproject.toml` for orchestrator tooling to keep dependencies isolated from Filare runtime.
 - Orchestrator and codex container recipes live in the root `justfile` for discoverability and command generation.
+- Container launches now route through a Python runner (`python -m orchestrator.run_container`) invoked by `just codex-container-run` and orchestrator runtime.
 
 ## Dependencies and Interactions
 
