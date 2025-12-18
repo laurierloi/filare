@@ -28,7 +28,7 @@ Design a lightweight orchestration layer that uses the codex-ready container (`d
 5. **Operator feedback loop**: Allow the orchestrator to pause an agent with a prompt, surface a summarized question to the operator, then inject the response back into the session.
 6. **Lifecycle**: Support start/stop/restart, health checks (container alive, codex responsiveness), and cleanup (workspace sync optional).
 7. **CLI wrapper**: Provide `uv run filare-agents ...` commands for manual kicks (list agents, start/stop, tail logs) that delegate to the library.
-8. **Tasking via `just`**: Add orchestration-focused `just` recipes that wrap the CLI (e.g., start/stop/tail/feedback) so human operators have one-touch entrypoints; update `agents/extra_commands.yml` to mirror new recipes for Codex hints. Avoid duplicating command definitions—reuse the `scripts/generate_filare_agent_commands.py` flow that already compiles `just` targets into agent command metadata, and keep agent-specific recipes inside `agents/justfile` (with root wrappers for generation).
+8. **Tasking via `just`**: Add orchestration-focused `just` recipes that wrap the CLI (e.g., start/stop/tail/feedback) so human operators have one-touch entrypoints; update `agents/extra_commands.yml` to mirror new recipes for Codex hints. Avoid duplicating command definitions—reuse the `scripts/generate_filare_agent_commands.py` flow that already compiles `just` targets into agent command metadata; keep the canonical recipes in the root `justfile`.
 
 ## Acceptance / Validation Outline
 
@@ -42,8 +42,8 @@ Design a lightweight orchestration layer that uses the codex-ready container (`d
 - Implemented initial orchestrator skeleton under `agents/src/orchestrator/` with manifest validation, dry-run container launch planning, registry writes, and `resume-all` planning. Added Typer CLI commands `validate`, `start`, and `resume-all`, plus `just` wrappers for quick invocation.
 - Added agent-marked tests under `agents/tests/` for manifest parsing and registry/command assembly (opt-in via `-m agent`).
 - Next: integrate IO routing, operator prompts, labels for container discovery, and expand `just` wrappers once the CLI stabilizes.
-- Created a standalone `agents/pyproject.toml` and `agents/justfile` for orchestrator tooling to keep dependencies isolated from Filare runtime.
-- Root `justfile` now imports `agents/justfile`; orchestrator and codex container recipes live under agents while top-level wrappers remain available for command generation.
+- Created a standalone `agents/pyproject.toml` for orchestrator tooling to keep dependencies isolated from Filare runtime.
+- Orchestrator and codex container recipes live in the root `justfile` for discoverability and command generation.
 
 ## Dependencies and Interactions
 
@@ -57,4 +57,4 @@ Design a lightweight orchestration layer that uses the codex-ready container (`d
 - Choose IO transport inside container (plain PTY via `docker exec -it`, named pipes, or tmux piping); target minimal dependencies.
 - Define transcript retention/rotation strategy to avoid bloated `outputs/`.
 - Determine the exact set of new `just` targets and corresponding `agents/extra_commands.yml` entries to keep operator UX aligned with orchestrator CLI, without double-defining commands already emitted by `scripts/generate_filare_agent_commands.py`.
-- Clarify the split between root just wrappers (for command generation) and agent-local recipes in `agents/justfile`.
+- Clarify final `just` command set for orchestrator tasks now that everything lives in the root `justfile`.

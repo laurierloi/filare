@@ -4,7 +4,6 @@
 set shell := ["bash", "-cu"]
 
 setup := "source scripts/agent-setup.sh >/dev/null"
-import "agents/justfile"
 
 default:
   @echo "Available recipes:"
@@ -43,6 +42,15 @@ default:
   @echo "  just codex-container-build   # build codex-ready Docker image"
   @echo "  just codex-container-sh      # start shell in codex Docker image (bind-mount repo)"
   @echo "  just codex-container-run     # run codex container with workspace/env/ssh key"
+  @echo "  just orchestrator-validate   # validate orchestrator manifest (dry-run)"
+  @echo "  just orchestrator-start      # plan/start orchestrated codex sessions"
+  @echo "  just orchestrator-resume-all # show reconnection hints for sessions"
+  @echo "  just codex-container-build   # build codex-ready Docker image"
+  @echo "  just codex-container-sh      # start shell in codex Docker image (bind-mount repo)"
+  @echo "  just codex-container-run     # run codex container with workspace/env/ssh key"
+  @echo "  just orchestrator-validate   # validate orchestrator manifest (dry-run)"
+  @echo "  just orchestrator-start      # plan/start orchestrated codex sessions"
+  @echo "  just orchestrator-resume-all # show reconnection hints for sessions"
 
 # ---- Version ----
 version:
@@ -257,6 +265,14 @@ codex-container-run:
   SSH_KEY=${SSH_KEY:?set SSH_KEY} ENV_FILE=${ENV_FILE:?set ENV_FILE} WORKSPACE=${WORKSPACE:-$PWD} ./scripts/run_codex_container.sh --ssh-key "$SSH_KEY" --env-file "$ENV_FILE" --workspace "$WORKSPACE"
 
 # Orchestrator CLI wrappers (PYTHONPATH scoped to agents/src)
+orchestrator-validate manifest session="":
+  set -euo pipefail; MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli validate "$MANIFEST" {{ if session != "" { "--session " + session } else { "" } }}
+
+orchestrator-start manifest session="" execute="false":
+  set -euo pipefail; MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli start "$MANIFEST" {{ if session != "" { "--session " + session } else { "" } }} {{ if execute == "true" { "--execute" } else { "" } }}
+
+orchestrator-resume-all:
+  {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli resume-all
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
