@@ -265,20 +265,15 @@ codex-container-run:
   SSH_KEY=${SSH_KEY:?set SSH_KEY} ENV_FILE=${ENV_FILE:?set ENV_FILE} WORKSPACE=${WORKSPACE:-$PWD} ./scripts/run_codex_container.sh --ssh-key "$SSH_KEY" --env-file "$ENV_FILE" --workspace "$WORKSPACE"
 
 # Orchestrator CLI wrappers (PYTHONPATH scoped to agents/src)
-orchestrator-validate manifest session="":
+orchestrator-validate manifest *cli_args:
 	{{setup}} && export PYTHONPATH="agents/src" && \
 	MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; \
-	cmd="uv run python -m orchestrator.cli validate \"$MANIFEST\""; \
-	if [ -n "{{session}}" ]; then cmd="$cmd --session {{session}}"; fi; \
-	eval "$cmd"
+	uv run python -m orchestrator.cli validate "$MANIFEST" {{cli_args}}
 
-orchestrator-start manifest session="" execute="false":
+orchestrator-start manifest *cli_args:
 	{{setup}} && export PYTHONPATH="agents/src" && \
 	MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; \
-	cmd="uv run python -m orchestrator.cli start \"$MANIFEST\""; \
-	if [ -n "{{session}}" ]; then cmd="$cmd --session {{session}}"; fi; \
-	if [ "{{execute}}" = "true" ]; then cmd="$cmd --execute"; fi; \
-	eval "$cmd"
+	uv run python -m orchestrator.cli start "$MANIFEST" {{cli_args}}
 
 orchestrator-resume-all:
 	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli resume-all
