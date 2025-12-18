@@ -108,6 +108,16 @@ def build_run_command(session: AgentSessionConfig, repo_root: Optional[Path] = N
     ]
     if session.image and session.image != "filare-codex":
         cmd.extend(["--image", session.image])
+    cmd.extend(
+        [
+            "--session-id",
+            session.id,
+            "--role",
+            session.role,
+            "--branch",
+            session.branch,
+        ]
+    )
     return cmd
 
 
