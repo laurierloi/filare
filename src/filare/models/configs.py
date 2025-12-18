@@ -196,7 +196,9 @@ class FakeConnectorConfigFactory(Factory):
 
     designator = Sequence(lambda n: f"J{n+1}")
     pincount = 2
-    pins = LazyAttribute(lambda _: [FakePinConfigFactory.create(), FakePinConfigFactory.create()])
+    pins = LazyAttribute(
+        lambda _: [FakePinConfigFactory.create(), FakePinConfigFactory.create()]
+    )
     pinlabels = LazyAttribute(lambda obj: [pin.label for pin in obj.pins])
     pincolors = LazyAttribute(lambda _: [["RD"], ["BK"]])
     loops = LazyAttribute(lambda _: [{"first": "1", "second": "2"}])
@@ -226,7 +228,9 @@ class FakeCableConfigFactory(Factory):
     colors = LazyAttribute(lambda _: ["RD", "BK"])
     shields = LazyAttribute(lambda _: [])
     length = LazyAttribute(lambda _: "1 m")
-    wires = LazyAttribute(lambda _: [FakeWireConfigFactory.create(), FakeWireConfigFactory.create()])
+    wires = LazyAttribute(
+        lambda _: [FakeWireConfigFactory.create(), FakeWireConfigFactory.create()]
+    )
     notes = LazyAttribute(lambda _: ["cable note"])
     style = "default"
 
