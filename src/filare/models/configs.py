@@ -2,7 +2,17 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Union
 
+import factory  # type: ignore[reportPrivateImportUsage]
+from factory import Factory  # type: ignore[reportPrivateImportUsage]
+from factory.declarations import (  # type: ignore[reportPrivateImportUsage]
+    LazyAttribute,
+    Sequence,
+    SubFactory,
+)
+from faker import Faker  # type: ignore[reportPrivateImportUsage]
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
+faker = Faker()
 
 
 class ConfigBaseModel(BaseModel):
@@ -168,3 +178,124 @@ class PageOptionsConfig(ConfigBaseModel):
         if isinstance(value, str):
             return [value]
         return list(value)
+
+
+class FakePinConfigFactory(Factory):
+    class Meta:
+        model = PinConfig
+
+    id = LazyAttribute(lambda _: faker.random_element(["1", "2", "A", "B"]))
+    label = LazyAttribute(lambda _: faker.word())
+    color = LazyAttribute(lambda _: ["RD", "BK"])
+    note = LazyAttribute(lambda _: faker.sentence(nb_words=3))
+
+
+class FakeConnectorConfigFactory(Factory):
+    class Meta:
+        model = ConnectorConfig
+
+    designator = Sequence(lambda n: f"J{n+1}")
+    pincount = 2
+    pins = LazyAttribute(lambda _: [FakePinConfigFactory.create(), FakePinConfigFactory.create()])
+    pinlabels = LazyAttribute(lambda obj: [pin.label for pin in obj.pins])
+    pincolors = LazyAttribute(lambda _: [["RD"], ["BK"]])
+    loops = LazyAttribute(lambda _: [{"first": "1", "second": "2"}])
+    style = "default"
+    images = LazyAttribute(lambda _: ["front.png"])
+    notes = LazyAttribute(lambda _: ["note1"])
+
+
+class FakeWireConfigFactory(Factory):
+    class Meta:
+        model = WireConfig
+
+    label = LazyAttribute(lambda _: faker.word())
+    color = LazyAttribute(lambda _: ["RD"])
+    gauge = LazyAttribute(lambda _: "20 AWG")
+    length = LazyAttribute(lambda _: "2 m")
+    shield = False
+    notes = LazyAttribute(lambda _: ["wire note"])
+
+
+class FakeCableConfigFactory(Factory):
+    class Meta:
+        model = CableConfig
+
+    designator = Sequence(lambda n: f"W{n+1}")
+    wirecount = 2
+    colors = LazyAttribute(lambda _: ["RD", "BK"])
+    shields = LazyAttribute(lambda _: [])
+    length = LazyAttribute(lambda _: "1 m")
+    wires = LazyAttribute(lambda _: [FakeWireConfigFactory.create(), FakeWireConfigFactory.create()])
+    notes = LazyAttribute(lambda _: ["cable note"])
+    style = "default"
+
+
+class FakeConnectionConfigFactory(Factory):
+    class Meta:
+        model = ConnectionConfig
+
+    endpoints = LazyAttribute(lambda _: ["J1.1", "J2.1"])
+    net = LazyAttribute(lambda _: faker.word())
+    color = LazyAttribute(lambda _: ["RD"])
+    wire = LazyAttribute(lambda _: "W1.1")
+    bundle = None
+    notes = LazyAttribute(lambda _: ["net note"])
+
+
+class FakeMetadataConfigFactory(Factory):
+    class Meta:
+        model = MetadataConfig
+
+    title = LazyAttribute(lambda _: faker.sentence(nb_words=3))
+    pn = LazyAttribute(lambda _: faker.bothify("PN-####"))
+    company = LazyAttribute(lambda _: faker.company())
+    address = LazyAttribute(lambda _: faker.address())
+    output_dir = LazyAttribute(lambda _: "outputs")
+    output_name = LazyAttribute(lambda _: faker.slug())
+    files = LazyAttribute(lambda _: ["file1", "file2"])
+    sheet_total = 1
+    sheet_current = 1
+    sheet_name = LazyAttribute(lambda _: faker.word())
+    titlepage = LazyAttribute(lambda _: "titlepage.svg")
+    output_names = LazyAttribute(lambda _: ["out.svg"])
+    authors = LazyAttribute(lambda _: {"created": {"name": faker.name()}})
+    revisions = LazyAttribute(lambda _: {"A": {"name": faker.name()}})
+    template = LazyAttribute(lambda _: {"name": "din-6771"})
+    use_qty_multipliers = False
+    multiplier_file_name = "mult.txt"
+
+
+class FakePageOptionsConfigFactory(Factory):
+    class Meta:
+        model = PageOptionsConfig
+
+    bgcolor = "WH"
+    bgcolor_connector = "WH"
+    bgcolor_overview = "WH"
+    connector_overview_style = "simple"
+    overview_inherit_styles = True
+    font = "arial"
+    dpi = 96
+    width_mm = 200.0
+    margin_mm = 10.0
+    formats = LazyAttribute(lambda _: ["svg", "pdf"])
+
+
+__all__ = [
+    "ConfigBaseModel",
+    "PinConfig",
+    "ConnectorConfig",
+    "WireConfig",
+    "CableConfig",
+    "ConnectionConfig",
+    "MetadataConfig",
+    "PageOptionsConfig",
+    "FakePinConfigFactory",
+    "FakeConnectorConfigFactory",
+    "FakeWireConfigFactory",
+    "FakeCableConfigFactory",
+    "FakeConnectionConfigFactory",
+    "FakeMetadataConfigFactory",
+    "FakePageOptionsConfigFactory",
+]
