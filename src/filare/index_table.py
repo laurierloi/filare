@@ -226,8 +226,11 @@ class IndexTable:
         from filare.flows.templates import build_index_table_model
         from filare.models.options import PageOptions
 
-        page_opts = (
-            options if isinstance(options, PageOptions) else PageOptions(**options)
-        )
+        if isinstance(options, PageOptions):
+            page_opts = options
+        elif isinstance(options, dict):
+            page_opts = PageOptions(**options)
+        else:
+            page_opts = PageOptions(**vars(options))
         model = build_index_table_model(self, page_opts)
         return model.render()

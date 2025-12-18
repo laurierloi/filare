@@ -7,7 +7,6 @@ from typing import ClassVar, Optional, cast
 from faker import Faker
 from pydantic import ConfigDict, Field
 
-from filare.flows.templates import build_bom_model, build_notes_model
 from filare.models.colors import SingleColor
 from filare.models.templates.bom_template_model import (
     BomTemplateModel,
@@ -145,12 +144,16 @@ class FakeDin6771TemplateFactory(FakePageTemplateFactory):
             )
 
         if with_notes and "notes" not in kwargs:
+            from filare.flows.templates.notes import build_notes_model
+
             notes_model = cast(NotesTemplateModel, FakeNotesTemplateFactory()())
             built_notes = build_notes_model(
                 notes_model.notes, options=notes_model.options
             )
             kwargs["notes"] = built_notes.render()
         if with_bom and "bom" not in kwargs:
+            from filare.flows.templates.bom import build_bom_model
+
             bom_model = cast(BomTemplateModel, FakeBomTemplateFactory(rows=bom_rows)())
             built_bom = build_bom_model(
                 headers=bom_model.bom.headers,

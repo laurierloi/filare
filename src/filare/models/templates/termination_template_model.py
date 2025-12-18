@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import ClassVar, Optional
 
-from filare.flows.templates import build_termination_table_model
 from filare.models.templates.page_template_model import (
     FakePageTemplateFactory,
     FakeTemplatePageMetadataFactory,
@@ -15,9 +14,7 @@ from filare.models.templates.page_template_model import (
 )
 from filare.models.templates.termination_table_template_model import (
     FakeTerminationTableTemplateFactory,
-    TerminationTableTemplateModel,
 )
-from filare.render.templates import get_template
 
 
 class TerminationTemplateModel(PageTemplateModel):
@@ -47,11 +44,11 @@ class FakeTerminationTemplateFactory(FakePageTemplateFactory):
 
     def __init__(self, row_count: int = 3, **kwargs):
         if "termination_table" not in kwargs:
-            table_model = TerminationTableTemplateModel(
-                **FakeTerminationTableTemplateFactory(
-                    row_count=row_count
-                )().to_render_dict()
+            from filare.flows.templates.termination_table import (
+                build_termination_table_model,
             )
+
+            table_model = FakeTerminationTableTemplateFactory(row_count=row_count)()
             built_table = build_termination_table_model(table_model.rows)
             kwargs["termination_table"] = built_table.render()
         if "metadata" not in kwargs:

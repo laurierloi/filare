@@ -7,7 +7,6 @@ from typing import Any, ClassVar, Dict, Optional, cast
 from faker import Faker
 from pydantic import ConfigDict, Field
 
-from filare.flows.templates import build_bom_model, build_notes_model
 from filare.models.templates.bom_template_model import (
     BomTemplateModel,
     FakeBomTemplateFactory,
@@ -136,12 +135,16 @@ class FakeTitlePageTemplateFactory(TemplateModelFactory):
                 kwargs["titleblock"] = "<div id='titleblock'>Titleblock</div>"
 
         if with_notes and "notes" not in kwargs:
+            from filare.flows.templates.notes import build_notes_model
+
             notes_model = cast(NotesTemplateModel, FakeNotesTemplateFactory().create())
             built_notes = build_notes_model(
                 notes_model.notes, options=notes_model.options
             )
             kwargs["notes"] = built_notes.render()
         if with_bom and "bom" not in kwargs:
+            from filare.flows.templates.bom import build_bom_model
+
             bom_model = cast(BomTemplateModel, FakeBomTemplateFactory(rows=2)())
             built_bom = build_bom_model(
                 headers=bom_model.bom.headers,

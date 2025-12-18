@@ -40,7 +40,7 @@ def build_bom_model(
     payload = TemplateBomPayload(
         headers=list(headers),
         columns_class=list(columns_class),
-        content=[list(row) for row in content],
+        content=[[str(cell) for cell in row] for row in content],
         options=opts,
     )
     return BomTemplateModel(bom=payload, options=opts)

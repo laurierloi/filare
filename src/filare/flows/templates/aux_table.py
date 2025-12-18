@@ -4,11 +4,9 @@ from __future__ import annotations
 
 from typing import Mapping, Optional, Sequence, Union
 
-from filare.flows.templates import (
-    build_cut_table_model,
-    build_termination_table_model,
-    build_titleblock_model,
-)
+from filare.flows.templates.cut_table import build_cut_table_model
+from filare.flows.templates.termination_table import build_termination_table_model
+from filare.flows.templates.titleblock import build_titleblock_model
 from filare.models.colors import SingleColor
 from filare.models.metadata import Metadata, PageTemplateConfig, PageTemplateTypes
 from filare.models.options import PageOptions
@@ -18,7 +16,6 @@ from filare.models.templates.page_template_model import (
     TemplatePageOptions,
 )
 from filare.models.templates.termination_template_model import TerminationTemplateModel
-from filare.render.templates import get_template
 
 
 def _bgcolor_from_options(options: PageOptions) -> SingleColor:

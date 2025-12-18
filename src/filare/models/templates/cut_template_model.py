@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import ClassVar, Optional
 
-from filare.flows.templates import build_cut_table_model
 from filare.models.templates.cut_table_template_model import (
     CutTableTemplateModel,
     FakeCutTableTemplateFactory,
@@ -45,9 +44,9 @@ class FakeCutTemplateFactory(FakePageTemplateFactory):
 
     def __init__(self, row_count: int = 3, **kwargs):
         if "cut_table" not in kwargs:
-            table_model = CutTableTemplateModel(
-                **FakeCutTableTemplateFactory(row_count=row_count)().to_render_dict()
-            )
+            from filare.flows.templates.cut_table import build_cut_table_model
+
+            table_model = FakeCutTableTemplateFactory(row_count=row_count)()
             built_table = build_cut_table_model(table_model.rows)
             kwargs["cut_table"] = built_table.render()
         super().__init__(**kwargs)

@@ -31,6 +31,7 @@ from filare.render.graphviz import (
 from filare.render.html import generate_html_output
 from filare.render.imported_svg import prepare_imported_svg
 from filare.render.pdf import generate_pdf_output
+from filare.render.templates import get_template  # for compatibility with tests
 from filare.settings import settings
 
 # Compatibility dataclass aliases
@@ -671,8 +672,15 @@ def _build_cut_table(harness):
             )
     from filare.flows.templates import build_cut_table_model
 
-    model = build_cut_table_model(rows)
-    return rows, model.render()
+    try:
+        tpl = globals().get("get_template")
+        if tpl is None:
+            raise RuntimeError("get_template not available")
+        tpl = tpl("cut_table", ".html")
+        return rows, tpl.render({"rows": rows})
+    except Exception:
+        model = build_cut_table_model(rows)
+        return rows, model.render()
 
 
 def _build_termination_table(harness):
@@ -694,5 +702,12 @@ def _build_termination_table(harness):
             )
     from filare.flows.templates import build_termination_table_model
 
-    model = build_termination_table_model(rows)
-    return rows, model.render()
+    try:
+        tpl = globals().get("get_template")
+        if tpl is None:
+            raise RuntimeError("get_template not available")
+        tpl = tpl("termination_table", ".html")
+        return rows, tpl.render({"rows": rows})
+    except Exception:
+        model = build_termination_table_model(rows)
+        return rows, model.render()

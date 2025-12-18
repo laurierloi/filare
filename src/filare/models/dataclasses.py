@@ -232,6 +232,8 @@ class GraphicalComponent(Component):  # abstract class
         self.notes = MultilineHypertext.to(self.notes)
 
         self.designator = remove_links(self.designator)
+        if not self.designators and self.designator:
+            self.designators = [str(self.designator)]
 
 
 @dataclass

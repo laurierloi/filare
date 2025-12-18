@@ -17,6 +17,10 @@ from filare.models.templates.page_template_model import (
     TemplatePageMetadata,
     TemplatePageOptions,
 )
+from filare.models.templates.simple_template_model import (
+    SimpleTemplateModel,
+    SimpleTemplateOptions,
+)
 from filare.models.templates.titlepage_template_model import (
     TemplateTitlePageOptions,
     TitlePageTemplateModel,
@@ -26,7 +30,7 @@ from filare.models.templates.titlepage_template_model import (
 def _page_opts_to_template(opts: PageOptions) -> TemplatePageOptions:
     return TemplatePageOptions(
         fontname=getattr(opts, "fontname", "Arial"),
-        bgcolor=getattr(opts, "bgcolor", SingleColor("#FFFFFF")),
+        bgcolor=SingleColor(getattr(opts, "bgcolor", SingleColor("#FFFFFF"))),
         titleblock_rows=getattr(opts, "titleblock_rows", 3),
         titleblock_row_height=getattr(opts, "titleblock_row_height", 5.0),
     )
@@ -71,7 +75,9 @@ def _titlepage_options_from_page(opts: PageOptions) -> TemplateTitlePageOptions:
     )
 
 
-PageModelType = Union[Din6771TemplateModel, TitlePageTemplateModel, PageTemplateModel]
+PageModelType = Union[
+    Din6771TemplateModel, TitlePageTemplateModel, PageTemplateModel, SimpleTemplateModel
+]
 
 
 def build_page_model(
@@ -123,11 +129,24 @@ def build_page_model(
             titleblock=titleblock_html,
         )
     if template_enum == PageTemplateTypes.simple:
-        opts = _page_opts_to_template(options)
-        return PageTemplateModel(
-            metadata=meta,
-            options=opts,
-            titleblock=titleblock_html,
+        simple_opts = SimpleTemplateOptions(
+            fontname=getattr(options, "fontname", "Arial"),
+            bgcolor=str(
+                getattr(options, "bgcolor", SingleColor("#FFFFFF")).html
+                if hasattr(getattr(options, "bgcolor", None), "html")
+                else getattr(options, "bgcolor", "#FFFFFF") or "#FFFFFF"
+            ),
+        )
+        return SimpleTemplateModel(
+            generator=generator,
+            title=title,
+            description="",
+            diagram=diagram_html or "",
+            notes=notes_html or "",
+            bom=bom_html or "",
+            options=simple_opts,
+            diagram_container_class=diagram_container_class,
+            diagram_container_style=diagram_container_style,
         )
     raise FilareFlowException(
         f"Page template '{template_enum.value}' is not handled in build_page_model"
