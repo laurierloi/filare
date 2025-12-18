@@ -1,8 +1,8 @@
 ---
-description: Delegate UI work to the UI agent.
+description: Delegate UI work to UI agent (runs /orchestrator-delegate-ui).
 ---
 
-Ask orchestrator to delegate UI work to the UI agent.
+Delegate UI work to UI agent (runs /orchestrator-delegate-ui).
 Category: project_management.
 Marked unsafe for automatic agents — confirm before running.
 

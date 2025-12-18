@@ -1,8 +1,8 @@
 ---
-description: Delegate documentation updates to the DOCUMENTATION agent.
+description: Delegate docs updates to DOCUMENTATION agent (runs /orchestrator-delegate-documentation).
 ---
 
-Ask orchestrator to delegate documentation updates to the DOCUMENTATION agent.
+Delegate docs updates to DOCUMENTATION agent (runs /orchestrator-delegate-documentation).
 Category: project_management.
 Marked unsafe for automatic agents — confirm before running.
 

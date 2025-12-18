@@ -1,8 +1,8 @@
 ---
-description: Delegate planning and backlog coordination to the PROJECT_MANAGER agent.
+description: Delegate planning/backlog to PROJECT_MANAGER agent (runs /orchestrator-delegate-project-manager).
 ---
 
-Ask orchestrator to delegate planning and backlog coordination to the PROJECT_MANAGER agent.
+Delegate planning/backlog to PROJECT_MANAGER agent (runs /orchestrator-delegate-project-manager).
 Category: project_management.
 Marked unsafe for automatic agents — confirm before running.
 

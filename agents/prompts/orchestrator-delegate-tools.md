@@ -1,8 +1,8 @@
 ---
-description: Delegate tooling or CI tasks to the TOOLS agent.
+description: Delegate tooling/CI tasks to TOOLS agent (runs /orchestrator-delegate-tools).
 ---
 
-Ask orchestrator to delegate tooling or CI tasks to the TOOLS agent.
+Delegate tooling/CI tasks to TOOLS agent (runs /orchestrator-delegate-tools).
 Category: project_management.
 Marked unsafe for automatic agents — confirm before running.
 

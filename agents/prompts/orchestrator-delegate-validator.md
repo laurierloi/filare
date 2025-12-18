@@ -1,8 +1,8 @@
 ---
-description: Delegate validation to the VALIDATOR agent.
+description: Delegate validation to VALIDATOR agent (runs /orchestrator-delegate-validator).
 ---
 
-Ask orchestrator to delegate validation to the VALIDATOR agent.
+Delegate validation to VALIDATOR agent (runs /orchestrator-delegate-validator).
 Category: project_management.
 Marked unsafe for automatic agents — confirm before running.
 

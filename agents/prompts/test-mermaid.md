@@ -1,7 +1,8 @@
 ---
-description: test-mermaid
+description: Run a specific test path with optional pytest arguments
 ---
 
+Run a specific test path with optional pytest arguments
 Category: project_management.
 
 Command to run inside the repo:

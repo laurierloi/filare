@@ -42,6 +42,15 @@ default:
   @echo "  just codex-container-build   # build codex-ready Docker image"
   @echo "  just codex-container-sh      # start shell in codex Docker image (bind-mount repo)"
   @echo "  just codex-container-run     # run codex container with workspace/env/ssh key"
+  @echo "  just orchestrator-validate   # validate orchestrator manifest (dry-run)"
+  @echo "  just orchestrator-start      # plan/start orchestrated codex sessions"
+  @echo "  just orchestrator-resume-all # show reconnection hints for sessions"
+  @echo "  just codex-container-build   # build codex-ready Docker image"
+  @echo "  just codex-container-sh      # start shell in codex Docker image (bind-mount repo)"
+  @echo "  just codex-container-run     # run codex container with workspace/env/ssh key"
+  @echo "  just orchestrator-validate   # validate orchestrator manifest (dry-run)"
+  @echo "  just orchestrator-start      # plan/start orchestrated codex sessions"
+  @echo "  just orchestrator-resume-all # show reconnection hints for sessions"
 
 # ---- Version ----
 version:
@@ -253,7 +262,46 @@ codex-container-sh:
     filare-codex bash
 
 codex-container-run:
-  SSH_KEY=${SSH_KEY:?set SSH_KEY} ENV_FILE=${ENV_FILE:?set ENV_FILE} WORKSPACE=${WORKSPACE:-$PWD} ./scripts/run_codex_container.sh --ssh-key "$SSH_KEY" --env-file "$ENV_FILE" --workspace "$WORKSPACE"
+  SSH_KEY=${SSH_KEY:?set SSH_KEY} ENV_FILE=${ENV_FILE:?set ENV_FILE} WORKSPACE=${WORKSPACE:-$PWD} IMAGE=${IMAGE:-filare-codex}; \
+  {{setup}} && export PYTHONPATH="agents/src" && \
+  uv run python -m orchestrator.run_container --workspace "$WORKSPACE" --ssh-key "$SSH_KEY" --env-file "$ENV_FILE" --image "$IMAGE"
+
+# Orchestrator CLI wrappers (PYTHONPATH scoped to agents/src)
+orchestrator-validate manifest *cli_args:
+	{{setup}} && export PYTHONPATH="agents/src" && \
+	MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; \
+	uv run python -m orchestrator.cli validate {{cli_args}} "$MANIFEST"
+
+orchestrator-start manifest *cli_args:
+	{{setup}} && export PYTHONPATH="agents/src" && \
+	MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; \
+	uv run python -m orchestrator.cli start {{cli_args}} "$MANIFEST"
+
+orchestrator-resume-all:
+	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli resume-all
+
+orchestrator-send container session text:
+	{{setup}} && export PYTHONPATH="agents/src" && \
+	uv run python -m orchestrator.cli send --container {{container}} --session {{session}} --text "{{text}}"
+
+orchestrator-snapshot container session:
+	{{setup}} && export PYTHONPATH="agents/src" && \
+	uv run python -m orchestrator.cli snapshot --container {{container}} --session {{session}}
+
+orchestrator-feedback-list:
+	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli feedback-list
+
+orchestrator-feedback-add *cli_args:
+	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli feedback-add {{cli_args}}
+
+orchestrator-feedback-resolve *cli_args:
+	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli feedback-resolve {{cli_args}}
+
+orchestrator-dashboard *cli_args:
+	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli dashboard {{cli_args}}
+
+orchestrator-test:
+	{{setup}} && export PYTHONPATH="agents/src" && uv run pytest agents/tests -m agent -q
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:

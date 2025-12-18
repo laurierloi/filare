@@ -1,8 +1,8 @@
 ---
-description: Ask orchestrator to delegate the current problem to the FIXER agent.
+description: Delegate bugfix to FIXER agent (runs /orchestrator-delegate-fixer).
 ---
 
-Ask orchestrator to delegate the current problem to the FIXER agent.
+Delegate bugfix to FIXER agent (runs /orchestrator-delegate-fixer).
 Category: project_management.
 Marked unsafe for automatic agents — confirm before running.
 

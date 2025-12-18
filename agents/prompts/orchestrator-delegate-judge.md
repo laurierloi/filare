@@ -1,8 +1,8 @@
 ---
-description: Delegate review duties to the JUDGE agent.
+description: Delegate code review to JUDGE agent (runs /orchestrator-delegate-judge).
 ---
 
-Ask orchestrator to delegate review duties to the JUDGE agent.
+Delegate code review to JUDGE agent (runs /orchestrator-delegate-judge).
 Category: project_management.
 Marked unsafe for automatic agents — confirm before running.
 

@@ -33,6 +33,17 @@ Coordinate Filare agents, create plans, and delegate work to the right role. Do 
   - `orchestrator-delegate-validator`
 - Post-review:
   - `orchestrator-apply-review-feedback` — launch FIXER to apply structured review and run `lint-and-test-fast`.
+- Agent runtime control (orchestrator just/CLI wrappers):
+  - `/orchestrator-validate manifest=<path>` — validate manifest sessions.
+  - `/orchestrator-start manifest=<path> [--execute]` — plan/start sessions.
+  - `/orchestrator-resume-all` — list reconnection hints for running sessions.
+  - `/codex-container-build|sh|run` — manage codex container image/shell/run.
+- IO & feedback (orchestrator CLI wrappers):
+  - `/orchestrator-send container=<cid> session=<tmux> text="..."` — send text to an agent tmux session.
+  - `/orchestrator-snapshot container=<cid> session=<tmux>` — capture current pane output.
+  - `/orchestrator-dashboard [-- --json]` — show session registry + pending prompts.
+  - `/orchestrator-feedback-list|add|resolve` — manage operator prompt queue.
+  - `/orchestrator-test` — run agent-marked tests (`agents/tests`, no docker).
 
 All prompts live in `agents/extra_commands.yml` with matching markdown under `agents/prompts/`.
 

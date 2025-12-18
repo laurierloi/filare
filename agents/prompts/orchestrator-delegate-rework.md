@@ -1,8 +1,8 @@
 ---
-description: Delegate refactors to the REWORK agent.
+description: Delegate refactor to REWORK agent (runs /orchestrator-delegate-rework).
 ---
 
-Ask orchestrator to delegate refactors to the REWORK agent.
+Delegate refactor to REWORK agent (runs /orchestrator-delegate-rework).
 Category: project_management.
 Marked unsafe for automatic agents — confirm before running.
 
