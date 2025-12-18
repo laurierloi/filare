@@ -1,7 +1,7 @@
 # CLI Commands: metadata domain
 
 uid: FEAT-CLI-0005
-status: BACKLOG
+status: DONE
 priority: medium
 owner_role: FEATURE
 estimate: TBD
@@ -27,9 +27,8 @@ Add `filare metadata <command>` subcommands to inspect, validate, merge, and nor
 
 ## Implementation Plan (next steps)
 
-- Audit current `metadata` commands against the listed requirements (validate/merge/describe/edit, schema override, strict failures).
-- Add/adjust CLI tests to confirm expected exit codes and option handling.
-- If behavior matches, mark feature DONE and update the status/estimate.
+- Current CLI already provides `validate`, `merge`, `describe`, and `edit` with `--schema/--strict` options; tests in `tests/cli/test_metadata_cli.py` cover exit codes and outputs.
+- No further work needed unless schema override support is expanded beyond the reserved flag.
   - Output: exit code, validation report to stdout; optional JSON report with `--json`.
 - `filare metadata merge <files...>` — merges multiple metadata files in order.
   - Input: ordered YAML metadata files.
