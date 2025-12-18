@@ -280,6 +280,14 @@ orchestrator-start manifest *cli_args:
 orchestrator-resume-all:
 	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli resume-all
 
+orchestrator-send container session text:
+	{{setup}} && export PYTHONPATH="agents/src" && \
+	uv run python -m orchestrator.cli send --container {{container}} --session {{session}} --text "{{text}}"
+
+orchestrator-snapshot container session:
+	{{setup}} && export PYTHONPATH="agents/src" && \
+	uv run python -m orchestrator.cli snapshot --container {{container}} --session {{session}}
+
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
   bash scripts/install-deps.sh

@@ -47,4 +47,5 @@ Design the read/write channels that let the ORCHESTRATOR agent send instructions
 - Added `resume-all` support in CLI/runtime to reconnect to recorded sessions and emit hints; IO piping not yet implemented.
 - Added initial IO helpers `IoTarget`, `send` and `snapshot` CLI commands, and Python-side `docker exec tmux` command builders (`agents/src/orchestrator/io.py`); `just` wrappers not yet added.
 - Tests: `agents/tests/test_io.py` covers command assembly (agent-marked).
+- Added `just` wrappers `orchestrator-send` and `orchestrator-snapshot` for convenience.
 - Next: wire tmux-based streaming/NDJSON transcripts with branch metadata, then validate via agent-marked tests.
