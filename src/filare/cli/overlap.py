@@ -25,7 +25,9 @@ def _ensure_playwright_ready() -> None:
     try:
         from playwright.sync_api import sync_playwright
     except Exception as exc:  # pragma: no cover - exercised via runtime guard
-        typer.secho(f"Playwright is not available: {exc}", fg=typer.colors.RED, err=True)
+        typer.secho(
+            f"Playwright is not available: {exc}", fg=typer.colors.RED, err=True
+        )
         raise typer.Exit(code=1)
 
     try:
