@@ -6,6 +6,13 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
+import factory  # type: ignore[reportPrivateImportUsage]
+from factory import Factory  # type: ignore[reportPrivateImportUsage]
+from factory.declarations import (  # type: ignore[reportPrivateImportUsage]
+    LazyAttribute,
+    Sequence,
+)
+from faker import Faker  # type: ignore[reportPrivateImportUsage]
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -16,6 +23,7 @@ from pydantic import (
 )
 
 USING_PYDANTIC_V1 = False
+faker = Faker()
 
 
 import filare  # for doing filare.__file__
@@ -306,3 +314,157 @@ class Metadata(
 
     else:
         model_config = ConfigDict(frozen=True, arbitrary_types_allowed=True)
+
+
+class FakeAuthorSignatureFactory(Factory):
+    """factory_boy factory for AuthorSignature."""
+
+    class Meta:
+        model = AuthorSignature
+
+    name = LazyAttribute(lambda _: faker.name())
+    date = LazyAttribute(lambda _: faker.date_object())
+
+    @staticmethod
+    def create(**kwargs) -> AuthorSignature:
+        return FakeAuthorSignatureFactory.build(**kwargs)
+
+
+class FakeRevisionSignatureFactory(FakeAuthorSignatureFactory):
+    """factory_boy factory for RevisionSignature."""
+
+    class Meta:
+        model = RevisionSignature
+
+    changelog = LazyAttribute(lambda _: faker.sentence(nb_words=6))
+
+    @staticmethod
+    def create(**kwargs) -> RevisionSignature:
+        return FakeRevisionSignatureFactory.build(**kwargs)
+
+
+class FakeRevisionInfoFactory(FakeRevisionSignatureFactory):
+    """factory_boy factory for RevisionInfo."""
+
+    class Meta:
+        model = RevisionInfo
+
+    revision = LazyAttribute(lambda _: faker.random_element(["A", "B", "C"]))
+
+    @staticmethod
+    def create(**kwargs) -> RevisionInfo:
+        return FakeRevisionInfoFactory.build(**kwargs)
+
+
+class FakeDocumentInfoFactory(Factory):
+    """factory_boy factory for DocumentInfo."""
+
+    class Meta:
+        model = DocumentInfo
+
+    title = LazyAttribute(lambda _: faker.sentence(nb_words=3))
+    pn = LazyAttribute(lambda _: faker.bothify("PN-####"))
+
+    @staticmethod
+    def create(**kwargs) -> DocumentInfo:
+        return FakeDocumentInfoFactory.build(**kwargs)
+
+
+class FakeCompanyInfoFactory(Factory):
+    """factory_boy factory for CompanyInfo."""
+
+    class Meta:
+        model = CompanyInfo
+
+    company = LazyAttribute(lambda _: faker.company())
+    address = LazyAttribute(lambda _: faker.address())
+
+    @staticmethod
+    def create(**kwargs) -> CompanyInfo:
+        return FakeCompanyInfoFactory.build(**kwargs)
+
+
+class FakePageTemplateConfigFactory(Factory):
+    """factory_boy factory for PageTemplateConfig."""
+
+    class Meta:
+        model = PageTemplateConfig
+
+    name = LazyAttribute(lambda _: faker.random_element(list(PageTemplateTypes)))
+    sheetsize = LazyAttribute(lambda _: faker.random_element(list(SheetSizes)))
+    orientation = LazyAttribute(
+        lambda _: (
+            None
+            if faker.boolean(chance_of_getting_true=30)
+            else faker.random_element(list(Orientations))
+        )
+    )
+
+    @staticmethod
+    def create(**kwargs) -> PageTemplateConfig:
+        return FakePageTemplateConfigFactory.build(**kwargs)
+
+
+class FakeMetadataFactory(Factory):
+    """factory_boy factory for Metadata."""
+
+    class Meta:
+        model = Metadata
+
+    title = LazyAttribute(lambda _: faker.sentence(nb_words=3))
+    pn = LazyAttribute(lambda _: faker.bothify("PN-####"))
+    company = LazyAttribute(lambda _: faker.company())
+    address = LazyAttribute(lambda _: faker.address())
+    output_dir = LazyAttribute(lambda _: Path("outputs"))
+    output_name = LazyAttribute(lambda _: faker.slug())
+    sheet_total = 1
+    sheet_current = 1
+    sheet_name = LazyAttribute(lambda _: faker.word())
+    sheet_suffix = ""
+    titlepage = LazyAttribute(lambda _: Path("titlepage.svg"))
+    output_names = LazyAttribute(lambda obj: [f"{obj.output_name}.svg"])
+    files = LazyAttribute(lambda obj: [str(obj.titlepage)])
+    use_qty_multipliers = LazyAttribute(lambda _: faker.boolean())
+    multiplier_file_name = "multipliers.tsv"
+    pages_notes = LazyAttribute(lambda _: {"notes": faker.sentence(nb_words=4)})
+    template = LazyAttribute(lambda _: FakePageTemplateConfigFactory.create())
+    authors = LazyAttribute(
+        lambda _: {
+            "created": FakeAuthorSignatureFactory.create(),
+            "reviewed": FakeAuthorSignatureFactory.create(),
+        }
+    )
+    revisions = LazyAttribute(
+        lambda _: {"A": FakeRevisionSignatureFactory.create(changelog="Initial")}
+    )
+    git_status = "clean"
+    logo = None
+
+    @staticmethod
+    def create(**kwargs) -> Metadata:
+        return FakeMetadataFactory.build(**kwargs)
+
+
+__all__ = [
+    "DocumentInfo",
+    "CompanyInfo",
+    "AuthorSignature",
+    "AuthorRole",
+    "RevisionSignature",
+    "RevisionInfo",
+    "OutputMetadata",
+    "SheetMetadata",
+    "PagesMetadata",
+    "PageTemplateConfig",
+    "PageTemplateTypes",
+    "SheetSizes",
+    "Orientations",
+    "Metadata",
+    "FakeAuthorSignatureFactory",
+    "FakeRevisionSignatureFactory",
+    "FakeRevisionInfoFactory",
+    "FakeDocumentInfoFactory",
+    "FakeCompanyInfoFactory",
+    "FakePageTemplateConfigFactory",
+    "FakeMetadataFactory",
+]

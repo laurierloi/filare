@@ -3,13 +3,26 @@
 from __future__ import annotations
 
 import logging
+import random
 from typing import TYPE_CHECKING, Any, Optional, Union, cast
 
+import factory  # type: ignore[reportPrivateImportUsage]
+from factory import Factory  # type: ignore[reportPrivateImportUsage]
+from factory.declarations import (  # type: ignore[reportPrivateImportUsage]
+    LazyAttribute,
+    Sequence,
+)
+from faker import Faker  # type: ignore[reportPrivateImportUsage]
 from pydantic import BaseModel, ConfigDict, field_validator
 
-from filare.models.colors import MultiColor
+from filare.models.colors import FakeMultiColorFactory, MultiColor
 from filare.models.types import Side
-from filare.models.wire import ShieldModel, WireModel
+from filare.models.wire import (
+    FakeShieldModelFactory,
+    FakeWireModelFactory,
+    ShieldModel,
+    WireModel,
+)
 
 if TYPE_CHECKING:
     from filare.models.dataclasses import Connection as ConnectionType
@@ -28,6 +41,7 @@ except Exception:  # pragma: no cover
 PinClass = cast(PinClassType, PinClassDC)
 Loop = cast(LoopType, LoopDC)
 Connection = cast(ConnectionType, ConnectionDC)
+faker = Faker()
 
 
 class PinModel(BaseModel):
@@ -215,4 +229,136 @@ class ConnectionModel(BaseModel):
         )
 
 
-__all__ = ["PinModel", "LoopModel", "ConnectionModel"]
+class FakePinModelFactory(Factory):
+    """factory_boy factory for PinModel."""
+
+    class Meta:
+        model = PinModel
+
+    class Params:
+        with_color = True
+        anonymous = False
+        simple = False
+
+    index = Sequence(lambda n: n + 1)
+    id = LazyAttribute(lambda obj: str(obj.index))
+    label = LazyAttribute(lambda obj: f"P{obj.index}")
+    color = LazyAttribute(
+        lambda obj: (
+            FakeMultiColorFactory.create(allow_unknown=False)
+            if obj.with_color
+            else None
+        )
+    )
+    parent = LazyAttribute(lambda _: f"J{faker.random_int(min=1, max=9)}")
+    anonymous_flag = LazyAttribute(lambda obj: bool(obj.anonymous))
+    _anonymous = LazyAttribute(lambda obj: bool(obj.anonymous))
+    _simple = LazyAttribute(lambda obj: bool(obj.simple))
+
+    @classmethod
+    def _build(cls, model_class, *args: Any, **kwargs: Any):
+        instance: PinModel = super()._build(model_class, *args, **kwargs)
+        privates = getattr(instance, "__pydantic_private__", None)
+        privates_map = dict(privates or {})
+        if kwargs.get("anonymous"):
+            object.__setattr__(instance, "_anonymous", True)
+            privates_map["_anonymous"] = True
+        if kwargs.get("simple"):
+            object.__setattr__(instance, "_simple", True)
+            privates_map["_simple"] = True
+        if privates is not None and privates_map:
+            object.__setattr__(instance, "__pydantic_private__", privates_map)
+        return instance
+
+    @staticmethod
+    def create(**kwargs: Any) -> PinModel:
+        return FakePinModelFactory.build(**kwargs)
+
+
+class FakeLoopModelFactory(Factory):
+    """factory_boy factory for LoopModel."""
+
+    class Meta:
+        model = LoopModel
+
+    class Params:
+        with_color = False
+
+    first = LazyAttribute(
+        lambda _: FakePinModelFactory.create(
+            parent=f"J{faker.random_int(min=1, max=9)}"
+        )
+    )
+    second = LazyAttribute(
+        lambda _: FakePinModelFactory.create(
+            parent=f"J{faker.random_int(min=1, max=9)}"
+        )
+    )
+    side = LazyAttribute(lambda _: faker.random_element(list(Side)))
+    show_label = LazyAttribute(lambda _: bool(faker.boolean()))
+    color = LazyAttribute(
+        lambda obj: (
+            FakeMultiColorFactory.create(allow_unknown=False)
+            if obj.with_color
+            else None
+        )
+    )
+
+    @staticmethod
+    def create(**kwargs: Any) -> LoopModel:
+        return FakeLoopModelFactory.build(**kwargs)
+
+
+class FakeConnectionModelFactory(Factory):
+    """factory_boy factory for ConnectionModel."""
+
+    class Meta:
+        model = ConnectionModel
+
+    class Params:
+        allow_partial = False
+        use_wire = False
+        use_shield = False
+
+    from_ = LazyAttribute(
+        lambda obj: FakeConnectionModelFactory._maybe_endpoint(obj.allow_partial)
+    )
+    via = LazyAttribute(
+        lambda obj: (
+            FakeShieldModelFactory.create(parent=f"W{faker.random_int(min=1, max=9)}")
+            if obj.use_shield
+            else (
+                FakeWireModelFactory.create(parent=f"W{faker.random_int(min=1, max=9)}")
+                if obj.use_wire
+                else FakePinModelFactory.create(
+                    parent=f"W{faker.random_int(min=1, max=9)}"
+                )
+            )
+        )
+    )
+    to = LazyAttribute(
+        lambda obj: FakeConnectionModelFactory._maybe_endpoint(obj.allow_partial)
+    )
+
+    @staticmethod
+    def _maybe_endpoint(allow_partial: bool):
+        if allow_partial and random.choice([True, False]):
+            return None
+        return FakePinModelFactory.create(parent=f"J{faker.random_int(min=1, max=9)}")
+
+    @staticmethod
+    def create(**kwargs: Any) -> ConnectionModel:
+        instance = FakeConnectionModelFactory.build(**kwargs)
+        if instance.from_ is None and instance.to is None:
+            instance.from_ = FakePinModelFactory.create(parent="J1")
+        return instance
+
+
+__all__ = [
+    "PinModel",
+    "LoopModel",
+    "ConnectionModel",
+    "FakePinModelFactory",
+    "FakeLoopModelFactory",
+    "FakeConnectionModelFactory",
+]

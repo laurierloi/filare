@@ -3,11 +3,16 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any, List, Optional, Union, cast
+import random
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
+import factory  # type: ignore[reportPrivateImportUsage]
+from factory import Factory  # type: ignore[reportPrivateImportUsage]
+from factory.declarations import LazyAttribute  # type: ignore[reportPrivateImportUsage]
+from faker import Faker
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from filare.models.colors import SingleColor
+from filare.models.colors import FakeSingleColorFactory, SingleColor
 from filare.models.hypertext import MultilineHypertext
 from filare.models.numbers import NumberAndUnit
 from filare.models.types import (  # noqa: F401
@@ -24,16 +29,16 @@ if TYPE_CHECKING:  # pragma: no cover
     from filare.models.dataclasses import GraphicalComponent as GraphicalComponentDC
 else:  # pragma: no cover
     try:
-        from filare.models.dataclasses import (
-            Component as ComponentDC,
-            GraphicalComponent as GraphicalComponentDC,
-        )
+        from filare.models.dataclasses import Component as ComponentDC
+        from filare.models.dataclasses import GraphicalComponent as GraphicalComponentDC
     except Exception:
         ComponentDC = GraphicalComponentDC = None  # type: ignore
 
 # Compatibility aliases for export
 Component = ComponentDC  # type: ignore
 GraphicalComponent = GraphicalComponentDC  # type: ignore
+
+faker = Faker()
 
 
 class ComponentModel(BaseModel):
@@ -180,3 +185,55 @@ class ComponentModel(BaseModel):
             bgcolor=self.bgcolor,
         )
         return comp
+
+
+class FakeComponentModelFactory(Factory):
+    """factory_boy factory for ComponentModel instances."""
+
+    class Meta:
+        model = ComponentModel
+
+    class Params:
+        with_additional = False
+        with_bg = False
+        qty_multiplier_choice: Optional[Union[int, float, str]] = None
+
+    category = LazyAttribute(lambda _: BomCategory.CONNECTOR)
+    type = LazyAttribute(lambda _: MultilineHypertext.to(faker.word().title()))
+    subtype = LazyAttribute(lambda _: MultilineHypertext.to(faker.word().title()))
+    pn = LazyAttribute(lambda _: faker.bothify("PN-####"))
+    manufacturer = LazyAttribute(lambda _: faker.company())
+    mpn = LazyAttribute(lambda _: faker.bothify("MPN-####"))
+    supplier = LazyAttribute(lambda _: faker.company_suffix())
+    spn = LazyAttribute(lambda _: faker.bothify("SPN-##"))
+    qty = LazyAttribute(lambda _: NumberAndUnit(faker.random_int(min=1, max=5), None))
+    amount = None
+    ignore_in_bom = LazyAttribute(lambda _: faker.boolean(chance_of_getting_true=10))
+    id = LazyAttribute(lambda _: faker.uuid4())
+    designators = LazyAttribute(lambda _: [faker.bothify("D##")])
+    parent = None
+    additional_components = LazyAttribute(
+        lambda obj: (
+            [
+                FakeComponentModelFactory.build(
+                    category=BomCategory.ADDITIONAL, with_additional=False
+                )
+            ]
+            if obj.with_additional
+            else []
+        )
+    )
+    qty_multiplier = LazyAttribute(
+        lambda obj: (
+            obj.qty_multiplier_choice
+            if obj.qty_multiplier_choice is not None
+            else random.choice([1, 2, QtyMultiplierConnector.PINCOUNT])
+        )
+    )
+    bgcolor = LazyAttribute(
+        lambda obj: FakeSingleColorFactory.create() if obj.with_bg else None
+    )
+
+    @staticmethod
+    def create(**kwargs: Any) -> ComponentModel:
+        return FakeComponentModelFactory.build(**kwargs)

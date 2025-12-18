@@ -4,9 +4,22 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, List, Optional, Type, Union, cast
 
+import factory  # type: ignore[reportPrivateImportUsage]
+from factory import Factory  # type: ignore[reportPrivateImportUsage]
+from factory.declarations import (  # type: ignore[reportPrivateImportUsage]
+    LazyAttribute,
+    Sequence,
+)
+from faker import Faker  # type: ignore[reportPrivateImportUsage]
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from filare.models.colors import MultiColor, SingleColor
+from filare.models.colors import (
+    FakeMultiColorFactory,
+    FakeSingleColorFactory,
+    MultiColor,
+    SingleColor,
+)
+from filare.models.component import FakeComponentModelFactory
 from filare.models.hypertext import MultilineHypertext
 from filare.models.image import Image
 from filare.models.numbers import NumberAndUnit
@@ -27,6 +40,7 @@ except Exception:  # pragma: no cover
 
 WireClass = cast(Type[WireClassType], WireClassDC)
 ShieldClass = cast(Type[ShieldClassType], ShieldClassDC)
+faker = Faker()
 
 
 class WireModel(BaseModel):
@@ -205,4 +219,91 @@ class ShieldModel(WireModel):
         )
 
 
-__all__ = ["WireModel", "ShieldModel", "WireClass", "ShieldClass"]
+class FakeWireModelFactory(Factory):
+    """factory_boy factory for WireModel."""
+
+    class Meta:
+        model = WireModel
+
+    class Params:
+        with_additional = False
+        with_bg = False
+        with_colors = True
+        with_gauge = True
+        with_length = True
+
+    designator = Sequence(lambda n: f"W{n+1}")
+    parent = LazyAttribute(lambda obj: obj.designator.replace("W", "C", 1))
+    index = Sequence(lambda n: n)
+    id = LazyAttribute(lambda obj: f"{obj.designator.lower()}-{obj.index}")
+    label = LazyAttribute(lambda _: faker.word())
+    color = LazyAttribute(
+        lambda obj: FakeMultiColorFactory.create() if obj.with_colors else None
+    )
+    type = LazyAttribute(lambda _: MultilineHypertext.to(faker.word()))
+    subtype = LazyAttribute(lambda _: MultilineHypertext.to(faker.word()))
+    image = None
+    notes = LazyAttribute(lambda _: MultilineHypertext.to(" ".join(faker.words(3))))
+    additional_components = LazyAttribute(
+        lambda obj: (
+            [
+                FakeComponentModelFactory.create(
+                    category=BomCategory.ADDITIONAL, parent=obj.designator
+                ).to_component()
+            ]
+            if obj.with_additional
+            else []
+        )
+    )
+    bgcolor = LazyAttribute(
+        lambda obj: FakeSingleColorFactory.create() if obj.with_bg else None
+    )
+    bgcolor_title = LazyAttribute(
+        lambda obj: FakeSingleColorFactory.create() if obj.with_bg else None
+    )
+    show_name = LazyAttribute(lambda _: bool(faker.boolean()))
+    gauge = LazyAttribute(
+        lambda obj: (
+            NumberAndUnit.to_number_and_unit(f"{faker.random_int(min=18, max=26)} AWG")
+            if obj.with_gauge
+            else None
+        )
+    )
+    length = LazyAttribute(
+        lambda obj: (
+            NumberAndUnit.to_number_and_unit(f"{faker.random_int(min=1, max=5)} m")
+            if obj.with_length
+            else None
+        )
+    )
+    ignore_in_bom = LazyAttribute(lambda _: bool(faker.boolean()))
+    show_equiv = LazyAttribute(lambda _: bool(faker.boolean()))
+    category = BomCategory.WIRE
+
+    @staticmethod
+    def create(**kwargs: Any) -> WireModel:
+        return FakeWireModelFactory.build(**kwargs)
+
+
+class FakeShieldModelFactory(FakeWireModelFactory):
+    """factory_boy factory for ShieldModel."""
+
+    class Meta:
+        model = ShieldModel
+
+    label = LazyAttribute(lambda _: "Shield")
+    category = BomCategory.WIRE
+
+    @staticmethod
+    def create(**kwargs: Any) -> ShieldModel:
+        return FakeShieldModelFactory.build(**kwargs)
+
+
+__all__ = [
+    "WireModel",
+    "ShieldModel",
+    "WireClass",
+    "ShieldClass",
+    "FakeWireModelFactory",
+    "FakeShieldModelFactory",
+]

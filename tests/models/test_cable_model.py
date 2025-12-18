@@ -1,4 +1,4 @@
-from filare.models.cable import CableModel
+from filare.models.cable import CableModel, FakeCableModelFactory
 from filare.models.colors import MultiColor
 from filare.models.numbers import NumberAndUnit
 
@@ -44,3 +44,10 @@ def test_cable_model_multicolor_repeats_for_wirecount():
 def test_cable_model_shield_string_preserved():
     model = CableModel(designator="C5", wirecount=1, shield="foil")
     assert model.shield == "foil"
+
+
+def test_fake_cable_factory_variants():
+    model = FakeCableModelFactory.create(wirecount=2, with_shield=True, with_wires=True)
+    assert model.wirecount == 2
+    assert model.shield
+    assert model.wires and len(model.wires) == 2
