@@ -295,13 +295,13 @@ orchestrator-feedback-add *cli_args:
   {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli feedback-add {{cli_args}}
 
 orchestrator-feedback-resolve *cli_args:
-  {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli feedback-resolve {{cli_args}}
+	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli feedback-resolve {{cli_args}}
 
 orchestrator-dashboard *cli_args:
-  {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli dashboard {{cli_args}}
+	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli dashboard {{cli_args}}
 
 orchestrator-test:
-  {{setup}} && export PYTHONPATH="agents/src" && uv run pytest agents/tests -m agent -q
+	{{setup}} && export PYTHONPATH="agents/src" && uv run pytest agents/tests -m agent -q
 
 orchestrator-generate-manifest base output role branch session_id goal_file="" context_file="" *issues:
 	{{setup}} && export PYTHONPATH="agents/src" && \
@@ -309,6 +309,25 @@ orchestrator-generate-manifest base output role branch session_id goal_file="" c
 	if [ -n "{{goal_file}}" ]; then cmd="$cmd --goal-file {{goal_file}}"; fi; \
 	if [ -n "{{context_file}}" ]; then cmd="$cmd --context-file {{context_file}}"; fi; \
 	for issue in {{issues}}; do cmd="$cmd --issue $issue"; done; \
+	eval "$cmd"
+
+orchestrator-stop session_id role="":
+	{{setup}} && export PYTHONPATH="agents/src" && \
+	cmd="uv run python -m orchestrator.cli stop --session-id {{session_id}}"; \
+	if [ -n "{{role}}" ]; then cmd="$cmd --role {{role}}"; fi; \
+	eval "$cmd"
+
+orchestrator-restart manifest session="":
+	{{setup}} && export PYTHONPATH="agents/src" && \
+	cmd="uv run python -m orchestrator.cli restart --manifest {{manifest}}"; \
+	if [ -n "{{session}}" ]; then cmd="$cmd --session {{session}}"; fi; \
+	eval "$cmd"
+
+orchestrator-tail session_id role="" follow="true":
+	{{setup}} && export PYTHONPATH="agents/src" && \
+	cmd="uv run python -m orchestrator.cli tail --session-id {{session_id}}"; \
+	if [ -n "{{role}}" ]; then cmd="$cmd --role {{role}}"; fi; \
+	if [ "{{follow}}" = "false" ]; then cmd="$cmd --no-follow"; fi; \
 	eval "$cmd"
 
 # Install tools - MUST NOT BE USED BY AGENTS

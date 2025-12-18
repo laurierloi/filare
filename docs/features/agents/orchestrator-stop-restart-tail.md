@@ -29,3 +29,8 @@ Add CLI/just wrappers to stop, restart, and tail logs for specific orchestrated 
 ## Dependencies
 
 - Lifecycle/state in `FEAT-TOOLS-0005`; IO routing in `FEAT-TOOLS-0006`.
+
+## Progress / Notes
+
+- Added label-based `stop`, `restart`, and `tail` commands in `orchestrator.cli` plus just wrappers. Restart reuses manifest to relaunch; stop/tail locate containers via labels.
+- Next: update registry state on stop/restart and consider tmux-pane-specific tail with NDJSON transcripts (see `FEAT-TOOLS-0013`).

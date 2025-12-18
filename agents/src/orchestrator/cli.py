@@ -9,7 +9,8 @@ from .config import ManifestError, load_manifest, select_sessions
 from .dashboard import collect_dashboard, to_json
 from .feedback import Prompt, add_prompt, list_prompts, resolve_prompt
 from .io import IoTarget, send_message, snapshot_transcript
-from .runtime import find_repo_root, launch_session, resume_plan
+from .runtime import SessionRegistry, find_repo_root, launch_session, resume_plan
+from .docker_util import docker_logs, docker_stop
 
 app = typer.Typer(help="Orchestrate codex agent containers (manifest-driven).")
 
@@ -104,6 +105,64 @@ def snapshot(
         typer.echo(" ".join(result))  # type: ignore[arg-type]
         return
     typer.echo(result.stdout)
+
+
+def _resolve_container_ids(session_id: str, role: Optional[str]) -> List[str]:
+    registry = SessionRegistry(find_repo_root())
+    return registry.find_container_ids(session_id, role=role)
+
+
+@app.command("stop")
+def stop(
+    session_id: str = typer.Option(..., "--session-id", help="Session id"),
+    role: Optional[str] = typer.Option(None, "--role", help="Role filter (optional)"),
+) -> None:
+    """Stop container(s) for a given session using labels."""
+    containers = _resolve_container_ids(session_id, role)
+    if not containers:
+        typer.echo("No containers found for session.")
+        raise typer.Exit(code=1)
+    for cid in containers:
+        typer.echo(f"Stopping container {cid}")
+        docker_stop(cid)
+
+
+@app.command("restart")
+def restart(
+    manifest: Path = typer.Option(..., "--manifest", help="Manifest to re-launch from"),
+    session: Optional[str] = typer.Option(None, "--session", help="Session id to restart"),
+) -> None:
+    """Stop containers (by labels) then relaunch via manifest."""
+    try:
+        sessions = select_sessions(load_manifest(manifest), session)
+    except ManifestError as exc:
+        typer.secho(f"Manifest error: {exc}", fg=typer.colors.RED)
+        raise typer.Exit(code=1) from exc
+
+    repo_root = find_repo_root(manifest.parent)
+    for session_cfg in sessions:
+        containers = _resolve_container_ids(session_cfg.id, session_cfg.role)
+        for cid in containers:
+            typer.echo(f"Stopping container {cid} for session {session_cfg.id}")
+            docker_stop(cid)
+        typer.echo(f"Restarting session {session_cfg.id}")
+        launch_session(session_cfg, repo_root=repo_root, execute=True)
+
+
+@app.command("tail")
+def tail(
+    session_id: str = typer.Option(..., "--session-id", help="Session id"),
+    role: Optional[str] = typer.Option(None, "--role", help="Role filter (optional)"),
+    follow: bool = typer.Option(True, "--follow/--no-follow", help="Follow logs"),
+) -> None:
+    """Tail docker logs for a given session (label-based)."""
+    containers = _resolve_container_ids(session_id, role)
+    if not containers:
+        typer.echo("No containers found for session.")
+        raise typer.Exit(code=1)
+    # Use the first match for now
+    proc = docker_logs(containers[0], follow=follow)
+    proc.wait()
 
 
 @app.command("feedback-list")
