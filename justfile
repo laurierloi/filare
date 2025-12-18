@@ -266,13 +266,22 @@ codex-container-run:
 
 # Orchestrator CLI wrappers (PYTHONPATH scoped to agents/src)
 orchestrator-validate manifest session="":
-  set -euo pipefail; MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli validate "$MANIFEST" {{ if session != "" { "--session " + session } else { "" } }}
+	{{setup}} && export PYTHONPATH="agents/src" && \
+	MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; \
+	cmd="uv run python -m orchestrator.cli validate \"$MANIFEST\""; \
+	if [ -n "{{session}}" ]; then cmd="$cmd --session {{session}}"; fi; \
+	eval "$cmd"
 
 orchestrator-start manifest session="" execute="false":
-  set -euo pipefail; MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli start "$MANIFEST" {{ if session != "" { "--session " + session } else { "" } }} {{ if execute == "true" { "--execute" } else { "" } }}
+	{{setup}} && export PYTHONPATH="agents/src" && \
+	MANIFEST="{{manifest}}"; MANIFEST="${MANIFEST#manifest=}"; \
+	cmd="uv run python -m orchestrator.cli start \"$MANIFEST\""; \
+	if [ -n "{{session}}" ]; then cmd="$cmd --session {{session}}"; fi; \
+	if [ "{{execute}}" = "true" ]; then cmd="$cmd --execute"; fi; \
+	eval "$cmd"
 
 orchestrator-resume-all:
-  {{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli resume-all
+	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli resume-all
 
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
