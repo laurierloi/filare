@@ -25,6 +25,13 @@ Introduce a unified, multi-level CLI (`filare <domain> <command>`) so users can 
 - Clarity: Target domains are enumerated; need decisions on nesting order and backward-compatible aliases.
 - Difficulty: Medium — requires reorganizing existing Typer apps and adding new stubs while keeping legacy `filare run` path functional.
 
+## Implementation Plan (next steps)
+
+- Introduce new Typer groups incrementally (start with `harness` and `document/page` as they reuse existing flows).
+- Keep `filare run` as a backward-compatible alias during transition; document deprecation path.
+- Update `cli.main` wiring and CLI help to reflect the hierarchy; add smoke tests for new entrypoints.
+- Defer interface/schema/code domains to later phases once scoped.
+
 ## Proposal
 
 - Restructure CLI into domains:

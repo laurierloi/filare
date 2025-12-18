@@ -24,6 +24,12 @@ Add `filare metadata <command>` subcommands to inspect, validate, merge, and nor
 - Current support: Typer `metadata` group implemented with validate/merge/describe/edit; schema override/strict flags exist; merge/edit paths already available.
 - Clarity: Requirements align with current behavior; confirm schema path handling and error codes match expectations.
 - Difficulty: Low — mainly verification and documentation/tests to declare this feature complete.
+
+## Implementation Plan (next steps)
+
+- Audit current `metadata` commands against the listed requirements (validate/merge/describe/edit, schema override, strict failures).
+- Add/adjust CLI tests to confirm expected exit codes and option handling.
+- If behavior matches, mark feature DONE and update the status/estimate.
   - Output: exit code, validation report to stdout; optional JSON report with `--json`.
 - `filare metadata merge <files...>` — merges multiple metadata files in order.
   - Input: ordered YAML metadata files.

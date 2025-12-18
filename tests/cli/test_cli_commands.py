@@ -138,3 +138,49 @@ def test_cli_pdf_and_shared_bom_flow(monkeypatch, tmp_path):
     assert calls["shared_bom"] is True
     assert calls["titlepages"] == [False, True]  # html + pdf titlepages
     assert calls["pdf_bundle"] and calls["pdf_bundle"][0].name.startswith("titlepage")
+
+
+def test_harness_cli_skips_titlepage(monkeypatch, tmp_path):
+    runner = CliRunner()
+    harness_path, metadata_path = _write_minimal_files(tmp_path)
+
+    calls = {}
+
+    def fake_parse(components, metadata_files, return_types, output_formats, **kwargs):
+        calls["parse_formats"] = set(output_formats)
+        shared_bom = kwargs["shared_bom"]
+        shared_bom["h"] = {"qty": 1}
+        return {"shared_bom": shared_bom}
+
+    def fake_titlepage(*_args, **_kwargs):
+        calls["titlepage_called"] = True
+
+    monkeypatch.setattr("filare.cli.render.wv.parse", fake_parse)
+    monkeypatch.setattr("filare.cli.render.build_titlepage", fake_titlepage)
+
+    result = runner.invoke(
+        cli,
+        [
+            "harness",
+            "render",
+            str(harness_path),
+            "-d",
+            str(metadata_path),
+            "-f",
+            "ht",
+            "-o",
+            str(tmp_path),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "titlepage_called" not in calls
+    harness_tsv = tmp_path / f"{harness_path.stem}.tsv"
+    assert harness_tsv.exists(), f"Missing harness output {harness_tsv}"
+
+
+def test_harness_cli_help():
+    runner = CliRunner()
+    result = runner.invoke(cli, ["harness", "render", "--help"])
+    assert result.exit_code == 0
+    assert "harness-only outputs" in result.output

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import List, Optional, Sequence
+from typing import List, Optional, Sequence, Set
 
 import typer
 
@@ -40,6 +40,16 @@ run_app = typer.Typer(
     **typer_kwargs(),
 )
 
+harness_app = typer.Typer(
+    add_completion=True,
+    no_args_is_help=True,
+    context_settings={
+        "help_option_names": ["-h", "--help"],
+        "allow_interspersed_args": True,
+    },
+    help="Render harness-only outputs without title pages or PDF bundles.",
+)
+
 
 def _render_cli(
     files: Sequence[Path],
@@ -51,6 +61,9 @@ def _render_cli(
     version: bool,
     use_qty_multipliers: bool,
     multiplier_file_name: str,
+    *,
+    create_titlepage: bool = True,
+    allowed_format_codes: Optional[set[str]] = None,
 ) -> None:
     if version:
         typer.echo(f"{APP_NAME} {__version__}")
@@ -60,7 +73,10 @@ def _render_cli(
     components_list = sorted(components)
     resolved_output_dir = files_list[0].parent if output_dir is None else output_dir
 
-    output_formats = {format_codes[f] for f in formats if f in format_codes}
+    selected_codes = set(formats)
+    if allowed_format_codes is not None:
+        selected_codes &= allowed_format_codes
+    output_formats = {format_codes[f] for f in selected_codes if f in format_codes}
     harness_output_formats = output_formats.copy()
     shared_bom = {}
     titlepage_metadata_files = tuple(metadata) if metadata else tuple(files_list)
@@ -76,11 +92,11 @@ def _render_cli(
     }
 
     # Always generate a titlepage
-    create_titlepage = True
-    extra_metadata["titlepage"] = Path("titlepage")
-    extra_metadata["output_names"].insert(0, "titlepage")
-    extra_metadata["sheet_current"] += 1
-    extra_metadata["sheet_total"] += 1
+    if create_titlepage:
+        extra_metadata["titlepage"] = Path("titlepage")
+        extra_metadata["output_names"].insert(0, "titlepage")
+        extra_metadata["sheet_current"] += 1
+        extra_metadata["sheet_total"] += 1
 
     if "pdf" in harness_output_formats:
         harness_output_formats.remove("pdf")
@@ -150,6 +166,8 @@ def render_callback(
     version: bool = False,
     use_qty_multipliers: bool = False,
     multiplier_file_name: str = "quantity_multipliers.txt",
+    create_titlepage: bool = True,
+    allowed_format_codes: Optional[set[str]] = None,
 ) -> None:
     """Direct entrypoint used by tests and internal tooling."""
     _render_cli(
@@ -162,6 +180,8 @@ def render_callback(
         version=version,
         use_qty_multipliers=use_qty_multipliers,
         multiplier_file_name=multiplier_file_name,
+        create_titlepage=create_titlepage,
+        allowed_format_codes=allowed_format_codes,
     )
 
 
@@ -247,6 +267,95 @@ def run(
         version=version,
         use_qty_multipliers=use_qty_multipliers,
         multiplier_file_name=multiplier_file_name,
+    )
+
+
+@harness_app.command("render", context_settings={"allow_interspersed_args": True})
+def harness_render(
+    files: List[Path] = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        dir_okay=False,
+        help="YAML harness files to process.",
+    ),
+    formats: str = typer.Option(
+        "hpst",
+        "-f",
+        "--formats",
+        show_default=True,
+        help="Output formats (subset of harness outputs: c,g,h,p,s,t,b).",
+    ),
+    components: List[Path] = typer.Option(
+        [],
+        "-c",
+        "--components",
+        exists=True,
+        readable=True,
+        file_okay=True,
+        dir_okay=False,
+        help="YAML file containing component templates prepended to each harness (optional).",
+    ),
+    metadata: List[Path] = typer.Option(
+        [],
+        "-d",
+        "--metadata",
+        exists=True,
+        readable=True,
+        file_okay=True,
+        dir_okay=False,
+        help="YAML file containing metadata/options merged into each harness (optional).",
+    ),
+    output_dir: Optional[Path] = typer.Option(
+        None,
+        "-o",
+        "--output-dir",
+        exists=True,
+        readable=True,
+        file_okay=False,
+        dir_okay=True,
+        help="Directory to use for output files, if different from input file directory.",
+    ),
+    output_name: Optional[str] = typer.Option(
+        None,
+        "-O",
+        "--output-name",
+        help="File name (without extension) to use for output files, if different from input file name.",
+    ),
+    use_qty_multipliers: bool = typer.Option(
+        False,
+        "-u",
+        "--use-qty-multipliers",
+        help="If set, the shared BOM counts will be scaled with the qty-multipliers.",
+    ),
+    multiplier_file_name: str = typer.Option(
+        "quantity_multipliers.txt",
+        "-m",
+        "--multiplier-file-name",
+        help="Name of file used to fetch the qty_multipliers.",
+    ),
+) -> None:
+    """Render harness-only outputs without title pages or PDF bundles."""
+    allowed = {
+        "c",
+        "g",
+        "h",
+        "p",
+        "s",
+        "t",
+        "b",
+    }  # csv, gv, html, png, svg, tsv, shared_bom
+    render_callback(
+        files=files,
+        formats=formats,
+        components=components,
+        metadata=metadata,
+        output_dir=output_dir,
+        output_name=output_name,
+        use_qty_multipliers=use_qty_multipliers,
+        multiplier_file_name=multiplier_file_name,
+        create_titlepage=False,
+        allowed_format_codes=allowed,
     )
 
 
