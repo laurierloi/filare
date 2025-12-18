@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from .config import AgentSessionConfig
+from .workspace import assign_workspace
 
 
 class RegistryError(Exception):
@@ -116,6 +117,8 @@ def launch_session(
     execute: bool = False,
 ) -> Tuple[SessionState, List[str]]:
     root = find_repo_root(repo_root)
+    # Allocate workspace if a template/prefix is provided and workspace path is empty/missing
+    session = assign_workspace(session, root)
     command = build_run_command(session, repo_root=root)
     registry = SessionRegistry(root)
     state = registry.record(session, command=command, status="planned", dry_run=not execute)

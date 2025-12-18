@@ -24,6 +24,9 @@ class AgentSessionConfig:
     tags: List[str] = field(default_factory=list)
     startup_script: Optional[str] = None
     operator_contact: Dict[str, Any] = field(default_factory=dict)
+    workspace_prefix: Optional[str] = None
+    workspace_template: Optional[str] = None
+    reuse_existing: bool = False
     manifest_path: Optional[Path] = None
 
     def to_dict(self) -> Dict[str, Any]:
@@ -112,6 +115,9 @@ def load_manifest(path: Path) -> List[AgentSessionConfig]:
             tags=_coerce_tags(merged.get("tags")),
             startup_script=merged.get("startup_script"),
             operator_contact=merged.get("operator_contact") or {},
+            workspace_prefix=str(merged.get("workspace_prefix")) if merged.get("workspace_prefix") else None,
+            workspace_template=str(merged.get("workspace_template")) if merged.get("workspace_template") else None,
+            reuse_existing=bool(merged.get("reuse_existing", False)),
             manifest_path=manifest_path,
         )
         sessions.append(session)

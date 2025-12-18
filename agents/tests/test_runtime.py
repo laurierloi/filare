@@ -26,6 +26,7 @@ def _session(repo_root: Path) -> AgentSessionConfig:
         ssh_key=repo_root / "id_rsa",
         image="filare-codex",
         manifest_path=repo_root / "manifest.yml",
+        workspace_template=str(repo_root / "work-{n}"),
     )
 
 
@@ -53,6 +54,8 @@ def test_launch_session_records_state(tmp_path):
     assert raw["dry_run"] is True
     assert command[:4] == ["uv", "run", "python", "-m"]
     assert "orchestrator.run_container" in command
+    # workspace should resolve via template if original does not exist
+    assert session.workspace.name.startswith("work-")
 
 
 def test_resume_plan_reads_recorded_states(tmp_path):
