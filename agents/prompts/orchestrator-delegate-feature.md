@@ -1,8 +1,8 @@
 ---
-description: Delegate feature delivery to the FEATURE agent.
+description: Delegate feature delivery to FEATURE agent (runs /orchestrator-delegate-feature).
 ---
 
-Ask orchestrator to delegate feature delivery to the FEATURE agent.
+Delegate feature delivery to FEATURE agent (runs /orchestrator-delegate-feature).
 Category: project_management.
 Marked unsafe for automatic agents — confirm before running.
 

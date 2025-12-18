@@ -1,8 +1,9 @@
 ---
-description: Ask orchestrator to delegate the current problem to the COVERAGE agent.
+description: Delegate current task to COVERAGE agent (runs /orchestrator-delegate-coverage
+  prompt).
 ---
 
-Ask orchestrator to delegate the current problem to the COVERAGE agent.
+Delegate current task to COVERAGE agent (runs /orchestrator-delegate-coverage prompt).
 Category: project_management.
 Marked unsafe for automatic agents — confirm before running.
 

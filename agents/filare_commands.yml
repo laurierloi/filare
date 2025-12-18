@@ -277,6 +277,93 @@ commands:
     origin: justfile
     run: just check-tools
     safe_for_agents: true
+  codex-container-build:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: misc
+    description: Build codex-ready container image
+    name: codex-container-build
+    origin: justfile
+    run: just codex-container-build
+    safe_for_agents: true
+  codex-container-run:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: misc
+    name: codex-container-run
+    origin: justfile
+    run: just codex-container-run
+    safe_for_agents: true
+  codex-container-sh:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: misc
+    description: Start a shell in the codex container with repo bind-mounted and host
+      UID/GID
+    name: codex-container-sh
+    origin: justfile
+    run: just codex-container-sh
+    safe_for_agents: true
   default:
     actions:
     - name: validate-env
@@ -572,6 +659,91 @@ commands:
     origin: justfile
     run: just mermaid-gantt-check
     safe_for_agents: true
+  orchestrator-feedback-list:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: misc
+    name: orchestrator-feedback-list
+    origin: justfile
+    run: just orchestrator-feedback-list
+    safe_for_agents: true
+  orchestrator-resume-all:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: misc
+    description: Orchestrator CLI wrappers (PYTHONPATH scoped to agents/src)
+    name: orchestrator-resume-all
+    origin: justfile
+    run: just orchestrator-resume-all
+    safe_for_agents: true
+  orchestrator-test:
+    actions:
+    - name: validate-env
+      params:
+        checks:
+        - repo-present
+      stage: before
+    - name: run-shell-command
+      params:
+        capture_output: true
+        print_live: false
+      stage: main
+    - name: summarize-output
+      params:
+        include_suggestions: false
+        show_tail_lines: 40
+      stage: on_success
+    - name: summarize-error
+      params:
+        classify_error: true
+        show_tail_lines: 80
+        suggest_next_actions: true
+      stage: on_error
+    category: misc
+    name: orchestrator-test
+    origin: justfile
+    run: just orchestrator-test
+    safe_for_agents: true
   pre-commit:
     actions:
     - name: validate-env
@@ -824,6 +996,7 @@ commands:
         suggest_next_actions: true
       stage: on_error
     category: project_management
+    description: Run a specific test path with optional pytest arguments
     name: test-mermaid
     origin: justfile
     run: just test-mermaid

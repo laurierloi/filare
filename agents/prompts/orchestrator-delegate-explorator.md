@@ -1,8 +1,8 @@
 ---
-description: Delegate research/exploration to the EXPLORATOR agent.
+description: Delegate research/exploration to EXPLORATOR agent (runs /orchestrator-delegate-explorator).
 ---
 
-Ask orchestrator to delegate research and exploration to the EXPLORATOR agent.
+Delegate research/exploration to EXPLORATOR agent (runs /orchestrator-delegate-explorator).
 Category: project_management.
 Marked unsafe for automatic agents — confirm before running.
 
