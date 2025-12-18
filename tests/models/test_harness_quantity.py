@@ -5,7 +5,7 @@ import logging
 import pytest
 
 from filare.errors import FilareToolsException
-from filare.models.harness_quantity import HarnessQuantity
+from filare.models.harness_quantity import FakeHarnessQuantityFactory, HarnessQuantity
 
 
 def test_harness_quantity_reads_existing_file(tmp_path):
@@ -103,3 +103,12 @@ def test_harness_quantity_allows_empty_when_paths_provided(tmp_path):
     )
     assert hq.folder == folder
     assert hq.qty_multipliers == qty_path
+
+
+def test_fake_harness_quantity_factory_builds_defaults(tmp_path):
+    hq = FakeHarnessQuantityFactory.create(
+        harnesses=[tmp_path / "H1.yml"], output_dir=tmp_path
+    )
+    assert hq.harnesses
+    assert hq.multipliers
+    assert hq.folder == tmp_path

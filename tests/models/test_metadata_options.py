@@ -5,12 +5,19 @@ import pytest
 from filare.errors import MetadataValidationError
 from filare.models.metadata import (
     AuthorSignature,
+    FakeMetadataFactory,
+    FakePageTemplateConfigFactory,
     Metadata,
     PageTemplateConfig,
     PageTemplateTypes,
     RevisionSignature,
+    SheetSizes,
 )
-from filare.models.options import get_page_options
+from filare.models.options import (
+    FakeImportedSVGOptionsFactory,
+    FakePageOptionsFactory,
+    get_page_options,
+)
 
 
 def test_metadata_builds_authors_and_revisions(basic_metadata):
@@ -80,3 +87,31 @@ def test_page_template_config_orientation_defaults():
     assert tpl.orientation == Orientations.portrait
     tpl2 = PageTemplateConfig(sheetsize=SheetSizes.A3)
     assert tpl2.orientation == Orientations.landscape
+
+
+def test_fake_metadata_factory_builds_nested_sections(tmp_path):
+    metadata = FakeMetadataFactory.create(output_dir=tmp_path)
+    assert metadata.title
+    assert metadata.authors
+    assert metadata.revisions
+    assert metadata.template is not None
+    assert metadata.output_dir == tmp_path
+    pages = metadata.pages_metadata
+    assert pages.output_dir == tmp_path
+    assert metadata.generator.startswith("Filare")
+
+
+def test_fake_page_options_factory_variants():
+    options = FakePageOptionsFactory.create(with_svg=True, with_bg=True)
+    assert options.bgcolor is not None
+    assert options.bgcolor_node is not None
+    assert options.diagram_svg is not None
+    assert options.diagram_svg.src.endswith(".svg")
+    assert isinstance(options.bom_row_height, float)
+
+
+def test_fake_page_template_config_factory_orientation_randomized():
+    tpl = FakePageTemplateConfigFactory.create()
+    assert tpl.name in PageTemplateTypes
+    assert tpl.sheetsize in SheetSizes
+    assert tpl.orientation is None or tpl.orientation.name in ("landscape", "portrait")

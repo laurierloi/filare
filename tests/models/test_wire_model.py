@@ -1,7 +1,12 @@
 from filare.models.colors import MultiColor
 from filare.models.dataclasses import ShieldClass, WireClass
 from filare.models.numbers import NumberAndUnit
-from filare.models.wire import ShieldModel, WireModel
+from filare.models.wire import (
+    FakeShieldModelFactory,
+    FakeWireModelFactory,
+    ShieldModel,
+    WireModel,
+)
 
 
 def test_wire_model_roundtrip():
@@ -35,3 +40,25 @@ def test_shield_model_roundtrip_defaults():
     restored = model.to_wireclass()
     assert restored.label.lower() == "shield"
     assert restored.parent == "C1"
+
+
+def test_fake_wire_factory_variants():
+    model = FakeWireModelFactory.create(
+        with_additional=True, with_bg=True, with_colors=False, with_gauge=False
+    )
+    assert model.color is None
+    assert model.bgcolor is not None and model.bgcolor_title is not None
+    assert model.additional_components
+    clone = model.to_wireclass()
+    assert clone.designator.startswith("W")
+    assert clone.category is not None
+    assert clone.additional_components == model.additional_components
+
+
+def test_fake_shield_factory_defaults_and_lengths():
+    model = FakeShieldModelFactory.create(with_length=False, with_colors=True)
+    assert model.label.lower() == "shield"
+    assert model.length is None
+    restored = model.to_wireclass()
+    assert restored.label.lower() == "shield"
+    assert restored.color is not None

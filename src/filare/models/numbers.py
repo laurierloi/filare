@@ -1,9 +1,15 @@
 from math import modf
 from typing import Any, Union
 
+import factory  # type: ignore[reportPrivateImportUsage]
+from factory import Factory  # type: ignore[reportPrivateImportUsage]
+from factory.declarations import LazyAttribute  # type: ignore[reportPrivateImportUsage]
+from faker import Faker  # type: ignore[reportPrivateImportUsage]
 from pydantic import BaseModel, ConfigDict
 
 from filare.errors import UnitMismatchError
+
+faker = Faker()
 
 
 class NumberAndUnit(BaseModel):
@@ -87,3 +93,20 @@ class NumberAndUnit(BaseModel):
             number=float(self.number) * float(other.number),
             unit=self.chose_unit(other),
         )
+
+
+class FakeNumberAndUnitFactory(Factory):
+    """factory_boy factory for NumberAndUnit."""
+
+    class Meta:
+        model = NumberAndUnit
+
+    number = LazyAttribute(lambda _: float(faker.random_int(min=1, max=10)))
+    unit = LazyAttribute(lambda _: faker.random_element(["m", "mm", "AWG", None]))
+
+    @staticmethod
+    def create(**kwargs) -> NumberAndUnit:
+        return FakeNumberAndUnitFactory.build(**kwargs)
+
+
+__all__ = ["NumberAndUnit", "FakeNumberAndUnitFactory"]

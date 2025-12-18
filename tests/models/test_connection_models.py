@@ -1,5 +1,12 @@
 from filare.models.colors import MultiColor
-from filare.models.connections import ConnectionModel, LoopModel, PinModel
+from filare.models.connections import (
+    ConnectionModel,
+    FakeConnectionModelFactory,
+    FakeLoopModelFactory,
+    FakePinModelFactory,
+    LoopModel,
+    PinModel,
+)
 from filare.models.dataclasses import Connection, Loop, PinClass
 from filare.models.types import Side
 from filare.models.wire import WireModel
@@ -48,3 +55,31 @@ def test_connection_model_accepts_wire_models():
     reconstructed = model.to_connection()
     assert reconstructed.via is not None and reconstructed.via.id == "w1"
     assert reconstructed.via is not None and reconstructed.via.parent == "W1"
+
+
+def test_fake_pin_and_loop_factories():
+    pin = FakePinModelFactory.create(with_color=True, anonymous=True)
+    assert pin.color is not None
+    assert getattr(pin, "anonymous_flag", False) is True
+    loop = FakeLoopModelFactory.create(with_color=True)
+    loop_dc = loop.to_loop()
+    assert loop_dc.first is not None and loop_dc.second is not None
+    assert loop_dc.color is None or isinstance(loop_dc.color, MultiColor)
+
+
+def test_fake_connection_factory_variants():
+    connection = FakeConnectionModelFactory.create(
+        allow_partial=True, use_wire=True, use_shield=False
+    )
+    built = connection.to_connection()
+    assert built.via is not None
+    if built.from_ is None or built.to is None:
+        # at least one endpoint should be present even when partial
+        assert bool(built.from_) or bool(built.to)
+    full_connection = FakeConnectionModelFactory.create(
+        allow_partial=False, use_shield=True
+    )
+    converted = full_connection.to_connection()
+    assert converted.from_ is not None
+    assert converted.to is not None
+    assert converted.via is not None

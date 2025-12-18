@@ -1,7 +1,7 @@
 from typing import Any, cast
 
 from filare.models.colors import SingleColor
-from filare.models.component import ComponentModel
+from filare.models.component import ComponentModel, FakeComponentModelFactory
 from filare.models.dataclasses import Component
 from filare.models.hypertext import MultilineHypertext
 from filare.models.numbers import NumberAndUnit
@@ -34,11 +34,12 @@ def test_component_model_to_from_dataclass():
 
 
 def test_component_model_validates_fields():
-    model = ComponentModel(
+    model = FakeComponentModelFactory.create(
         category=BomCategory.CONNECTOR,
         type=MultilineHypertext.to(["Line1", "Line2"]),
         bgcolor=SingleColor("0xFFFFFF"),
         qty=NumberAndUnit.to_number_and_unit("3"),
+        additional_components=[],
     )
     assert model.type is not None
     assert model.type.raw == "Line1<br>Line2"
@@ -69,3 +70,14 @@ def test_component_model_additional_coercion_and_categories():
     comp = model.to_component()
     assert comp.additional_components[0].type is not None
     assert comp.additional_components[0].type.raw == "text"
+
+
+def test_fake_component_factory_flags():
+    model = FakeComponentModelFactory.create(
+        with_additional=True, with_bg=True, qty_multiplier=2
+    )
+    assert model.additional_components
+    assert model.bgcolor is not None
+    assert model.qty_multiplier == 2
+    comp = model.to_component()
+    assert comp.additional_components

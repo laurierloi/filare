@@ -1,4 +1,4 @@
-from filare.models.image import Image
+from filare.models.image import FakeImageFactory, Image
 
 
 def test_image_defaults_and_flags(tmp_path):
@@ -38,3 +38,10 @@ def test_image_aspect_ratio_error_path(tmp_path):
 def test_image_scale_both_when_dimensions_given(tmp_path):
     img = Image(src=str(tmp_path / "x.png"), width=2, height=3, scale="")
     assert img.scale == "both"
+
+
+def test_fake_image_factory_defaults():
+    img = FakeImageFactory.create()
+    assert img.src.endswith(".png")
+    assert isinstance(img.bgcolor, object)
+    assert img.caption is None or img.caption.raw
