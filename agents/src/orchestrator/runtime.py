@@ -8,6 +8,8 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from .config import AgentSessionConfig
+from .workspace import assign_workspace
+from .docker_util import docker_ps
 
 
 class RegistryError(Exception):
@@ -89,6 +91,13 @@ class SessionRegistry:
                 raise RegistryError(f"Failed to load state from {path}: {exc}") from exc
         return states
 
+    def find_container_ids(self, session_id: str, role: Optional[str] = None) -> List[str]:
+        """Find container IDs by labels; optional role filter."""
+        filters = {"filare.session": session_id}
+        if role:
+            filters["filare.role"] = role
+        return docker_ps(filters)
+
 
 def build_run_command(session: AgentSessionConfig, repo_root: Optional[Path] = None) -> List[str]:
     root = find_repo_root(repo_root)
@@ -107,6 +116,16 @@ def build_run_command(session: AgentSessionConfig, repo_root: Optional[Path] = N
     ]
     if session.image and session.image != "filare-codex":
         cmd.extend(["--image", session.image])
+    cmd.extend(
+        [
+            "--session-id",
+            session.id,
+            "--role",
+            session.role,
+            "--branch",
+            session.branch,
+        ]
+    )
     return cmd
 
 
@@ -116,8 +135,10 @@ def launch_session(
     execute: bool = False,
 ) -> Tuple[SessionState, List[str]]:
     root = find_repo_root(repo_root)
-    command = build_run_command(session, repo_root=root)
     registry = SessionRegistry(root)
+    # Allocate workspace if a template/prefix is provided and workspace path is empty/missing
+    session = assign_workspace(session, registry.load_all)
+    command = build_run_command(session, repo_root=root)
     state = registry.record(session, command=command, status="planned", dry_run=not execute)
 
     if execute:

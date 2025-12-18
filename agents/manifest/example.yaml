@@ -1,0 +1,36 @@
+# Example orchestrator manifest with all supported fields
+# Values are placeholders; adjust to your environment.
+
+defaults:
+  workspace: /path/to/workspace-base
+  workspace_prefix: /tmp/filare-agent-
+  # workspace_template: /tmp/filare-agent-{n}  # alternative to prefix
+  env_file: /path/to/.env
+  ssh_key: /path/to/id_rsa
+  branch: beta
+  image: filare-codex
+  reuse_existing: false
+
+sessions:
+  - id: feature-demo
+    role: FEATURE
+    goal: "Implement feature X"
+    branch: feature/xyz
+    workspace_template: /tmp/filare-feature-{n}
+    tags: [feature, demo]
+    operator_contact:
+      requires_approval_for: [network]
+  - id: fix-demo
+    role: FIXER
+    goal: "Fix bug Y"
+    branch: fix/bug-y
+    workspace_prefix: /tmp/filare-fix-
+    reuse_existing: true
+    startup_script: "echo starting fixer"
+    tags: [fix, bug]
+  - id: docs-demo
+    role: DOCUMENTATION
+    goal: "Update docs"
+    branch: docs/update
+    workspace: /tmp/filare-docs
+    tags: [docs]

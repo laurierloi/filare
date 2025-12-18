@@ -38,6 +38,9 @@ def run_container(
         "--ssh-temp-dir",
         help="Directory for temporary SSH mount; defaults to <workspace>/.orchestrator/tmp to avoid /tmp pressure",
     ),
+    session_id: Optional[str] = typer.Option(None, "--session-id", help="Session id label"),
+    role: Optional[str] = typer.Option(None, "--role", help="Role label"),
+    branch: Optional[str] = typer.Option(None, "--branch", help="Branch label"),
 ) -> None:
     """
     Run the codex container with the given workspace, SSH key, and env file.
@@ -97,9 +100,18 @@ def run_container(
             "/home/agent/workspace",
             "--user",
             f"{os.getuid()}:{os.getgid()}",
-            image,
-            "bash",
         ]
+
+        labels = {
+            "filare.session": session_id,
+            "filare.role": role,
+            "filare.branch": branch,
+        }
+        for key, value in labels.items():
+            if value:
+                cmd.extend(["--label", f"{key}={value}"])
+
+        cmd.extend([image, "bash"])
 
         typer.echo("Running container:")
         typer.echo("  " + " ".join(cmd))
