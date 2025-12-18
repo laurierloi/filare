@@ -6,6 +6,7 @@ from typing import Optional
 import typer
 
 from .config import ManifestError, load_manifest, select_sessions
+from .dashboard import collect_dashboard, to_json
 from .feedback import Prompt, add_prompt, list_prompts, resolve_prompt
 from .io import IoTarget, send_message, snapshot_transcript
 from .runtime import find_repo_root, launch_session, resume_plan
@@ -158,6 +159,26 @@ def feedback_resolve(
         raise typer.BadParameter("decision must be approved|rejected")
     prompt = resolve_prompt(queue, prompt_id, decision=decision, reply=reply)  # type: ignore[arg-type]
     typer.echo(f"Updated prompt {prompt.id} decision={prompt.decision}")
+
+
+@app.command("dashboard")
+def dashboard(
+    queue: Path = typer.Option(Path("outputs/agents/prompts.json"), "--queue", help="Prompt queue path"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON instead of table"),
+) -> None:
+    """Show a snapshot of session registry + pending prompts."""
+    entries = collect_dashboard(queue=queue)
+    if json_output:
+        typer.echo(to_json(entries))
+        return
+    if not entries:
+        typer.echo("No sessions recorded.")
+        return
+    typer.echo("Sessions:")
+    for entry in entries:
+        typer.echo(
+            f"- {entry.session_id} role={entry.role} branch={entry.branch} status={entry.status} prompts_pending={entry.prompts_pending} workspace={entry.workspace}"
+        )
 
 
 if __name__ == "__main__":

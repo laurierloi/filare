@@ -297,6 +297,9 @@ orchestrator-feedback-add *cli_args:
 orchestrator-feedback-resolve *cli_args:
 	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli feedback-resolve {{cli_args}}
 
+orchestrator-dashboard *cli_args:
+	{{setup}} && export PYTHONPATH="agents/src" && uv run python -m orchestrator.cli dashboard {{cli_args}}
+
 # Install tools - MUST NOT BE USED BY AGENTS
 install-deps:
   bash scripts/install-deps.sh
