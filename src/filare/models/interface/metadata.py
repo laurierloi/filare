@@ -58,3 +58,10 @@ class MetadataInterfaceModel(FilareInterfaceModel):
         default_factory=TemplateInterfaceModel,
         description="Template configuration to drive document rendering defaults.",
     )
+
+
+class MetadataConfigurationInterfaceModel(FilareInterfaceModel):
+    """Configuration options controlling metadata parsing/normalization."""
+
+    # Placeholder for future parsing toggles; keeps a dedicated config object per metadata payload.
+    pass

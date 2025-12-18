@@ -37,3 +37,10 @@ class ConnectionInterfaceModel(FilareInterfaceModel):
     to: Optional[ConnectionEndpointInterfaceModel] = Field(
         default=None, description="Target connector endpoint."
     )
+
+
+class ConnectionConfigurationInterfaceModel(FilareInterfaceModel):
+    """Configuration options controlling connection parsing/normalization."""
+
+    # Placeholder for future parsing toggles; keeps a dedicated config object per connection.
+    pass

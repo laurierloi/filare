@@ -118,3 +118,16 @@ class FilareSettings(FilareSettingsModel):
 
 
 settings = FilareSettings()
+
+# Typer settings import convenience
+from filare.settings.typer import typer_kwargs  # noqa: E402
+
+__all__ = [
+    "FilareSettingsModel",
+    "EnvSettings",
+    "SettingsStore",
+    "resolve_settings",
+    "FilareSettings",
+    "settings",
+    "typer_kwargs",
+]

@@ -14,12 +14,12 @@ import typer
 import yaml
 
 from filare.errors import FilareToolsException
+from filare.settings import typer_kwargs
 
 drawio_app = typer.Typer(
-    add_completion=True,
-    no_args_is_help=True,
-    context_settings={"help_option_names": ["-h", "--help"]},
     help="Manage Draw.io diagrams alongside Filare harness data.",
+    context_settings={"help_option_names": ["-h", "--help"]},
+    **typer_kwargs(),
 )
 
 FormatChoice = Literal["table", "json"]

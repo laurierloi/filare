@@ -8,13 +8,17 @@ from typing import Dict, List, Literal, Mapping, Optional
 import typer
 import yaml
 
-from filare.settings import FilareSettingsModel, SettingsStore, resolve_settings
+from filare.settings import (
+    FilareSettingsModel,
+    SettingsStore,
+    resolve_settings,
+    typer_kwargs,
+)
 
 settings_app = typer.Typer(
-    add_completion=True,
-    no_args_is_help=True,
-    context_settings={"help_option_names": ["-h", "--help"]},
     help="Inspect and manage Filare settings (YAML-backed).",
+    context_settings={"help_option_names": ["-h", "--help"]},
+    **typer_kwargs(),
 )
 
 

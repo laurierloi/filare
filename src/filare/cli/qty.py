@@ -8,12 +8,12 @@ from typing import List
 import typer
 
 from filare.models.harness_quantity import HarnessQuantity
+from filare.settings import typer_kwargs
 
 qty_app = typer.Typer(
-    add_completion=True,
-    no_args_is_help=True,
-    context_settings={"help_option_names": ["-h", "--help"]},
     help="Collect or regenerate harness quantity multipliers.",
+    context_settings={"help_option_names": ["-h", "--help"]},
+    **typer_kwargs(),
 )
 
 

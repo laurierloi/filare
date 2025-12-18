@@ -43,3 +43,10 @@ class HarnessInterfaceModel(FilareInterfaceModel):
         for designator, cable in self.cables.items():
             cable.designator = cable.designator or designator
         return self
+
+
+class HarnessConfigurationInterfaceModel(FilareInterfaceModel):
+    """Configuration options controlling harness parsing/normalization."""
+
+    # Placeholder for future parsing toggles; keeps a dedicated config object per harness.
+    pass

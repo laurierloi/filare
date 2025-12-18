@@ -15,12 +15,12 @@ from pydantic import BaseModel, ValidationError, field_validator
 
 from filare.errors import MetadataValidationError
 from filare.parser.yaml_loader import merge_item, parse_merge_files
+from filare.settings import typer_kwargs
 
 metadata_app = typer.Typer(
-    add_completion=True,
-    no_args_is_help=True,
-    context_settings={"help_option_names": ["-h", "--help"]},
     help="Inspect, validate, merge, describe, and edit Filare metadata files.",
+    context_settings={"help_option_names": ["-h", "--help"]},
+    **typer_kwargs(),
 )
 
 FormatChoice = Literal["table", "json", "yaml"]
