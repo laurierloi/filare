@@ -1,3 +1,5 @@
+import pytest
+
 from orchestrator.io import IoTarget, build_send_command, build_snapshot_command
 
 pytestmark = pytest.mark.agent

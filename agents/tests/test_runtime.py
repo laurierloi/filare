@@ -13,11 +13,6 @@ def _setup_repo(tmp_path: Path) -> Path:
     repo_root = tmp_path / "repo"
     repo_root.mkdir()
     (repo_root / ".git").mkdir()
-    scripts = repo_root / "scripts"
-    scripts.mkdir()
-    script = scripts / "run_codex_container.sh"
-    script.write_text("#!/usr/bin/env bash\nexit 0\n")
-    script.chmod(0o755)
     return repo_root
 
 
@@ -38,7 +33,8 @@ def test_build_run_command(tmp_path):
     repo_root = _setup_repo(tmp_path)
     session = _session(repo_root)
     cmd = build_run_command(session, repo_root=repo_root)
-    assert str(repo_root / "scripts" / "run_codex_container.sh") in cmd[0]
+    assert cmd[:4] == ["uv", "run", "python", "-m"]
+    assert "orchestrator.run_container" in cmd
     assert "--workspace" in cmd and str(session.workspace) in cmd
     assert "--ssh-key" in cmd and str(session.ssh_key) in cmd
     assert "--env-file" in cmd and str(session.env_file) in cmd
@@ -55,7 +51,8 @@ def test_launch_session_records_state(tmp_path):
     assert raw["id"] == session.id
     assert raw["status"] == "planned"
     assert raw["dry_run"] is True
-    assert command[0].endswith("run_codex_container.sh")
+    assert command[:4] == ["uv", "run", "python", "-m"]
+    assert "orchestrator.run_container" in command
 
 
 def test_resume_plan_reads_recorded_states(tmp_path):
