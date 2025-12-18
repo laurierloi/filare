@@ -111,13 +111,13 @@ def page_callback(ctx: typer.Context) -> None:
 @document_app.callback()
 def document_callback(ctx: typer.Context) -> None:
     """Store document config for subcommands (parsed manually to allow extra args)."""
-    document_config: Optional[Path] = None
+    ctx.obj = ctx.obj or {}
+    document_config: Optional[Path] = ctx.obj.get("document_config")
     args = list(ctx.args)
     for idx, arg in enumerate(args):
         if arg in ("--document-config", "-D") and idx + 1 < len(args):
             document_config = Path(args[idx + 1])
             break
-    ctx.obj = ctx.obj or {}
     ctx.obj["document_config"] = document_config
 
 
