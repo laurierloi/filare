@@ -4,6 +4,13 @@ from enum import Enum, IntEnum
 from textwrap import dedent
 from typing import List
 
+import factory  # type: ignore[reportPrivateImportUsage]
+from factory import Factory  # type: ignore[reportPrivateImportUsage]
+from factory.declarations import LazyAttribute  # type: ignore[reportPrivateImportUsage]
+from faker import Faker  # type: ignore[reportPrivateImportUsage]
+
+faker = Faker()
+
 
 @dataclass
 class Notes:
@@ -33,3 +40,19 @@ def get_page_notes(parsed_data, page_name: str):
     page_notes_name = f"{page_name}_notes"
     notes = parsed_data.get(page_notes_name, parsed_data.get("notes", []))
     return Notes(notes=notes)
+
+
+class FakeNotesFactory(Factory):
+    """factory_boy factory for Notes dataclass."""
+
+    class Meta:
+        model = Notes
+
+    notes = LazyAttribute(lambda _: faker.sentences(nb=3))
+
+    @staticmethod
+    def create(**kwargs) -> Notes:
+        return FakeNotesFactory.build(**kwargs)
+
+
+__all__ = ["Notes", "get_page_notes", "FakeNotesFactory"]

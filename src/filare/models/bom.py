@@ -1,12 +1,19 @@
 import logging
 from typing import ClassVar, Dict, List, SupportsFloat, Union
 
+import factory  # type: ignore[reportPrivateImportUsage]
 import tabulate as tabulate_module
+from factory import Factory  # type: ignore[reportPrivateImportUsage]
+from factory.declarations import (  # type: ignore[reportPrivateImportUsage]
+    LazyAttribute,
+    Sequence,
+)
+from faker import Faker  # type: ignore[reportPrivateImportUsage]
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from filare.errors import UnsupportedModelOperation
 from filare.models.numbers import NumberAndUnit
-from filare.models.partnumber import PartNumberInfo
+from filare.models.partnumber import FakePartNumberInfoFactory, PartNumberInfo
 from filare.models.table_models import (
     TableCell,
     TablePage,
@@ -16,6 +23,8 @@ from filare.models.table_models import (
 )
 from filare.models.templates.bom_template_model import TemplateBomOptions
 from filare.models.utils import remove_links
+
+faker = Faker()
 
 
 class BomEntryBase(BaseModel):
@@ -350,3 +359,34 @@ def print_bom_table(bom):
         rows.append(entry.as_list())
 
     print(tabulate_module.tabulate(rows, header))
+
+
+class FakeBomEntryFactory(Factory):
+    """factory_boy factory for BomEntry."""
+
+    class Meta:
+        model = BomEntry
+
+    qty = LazyAttribute(lambda _: NumberAndUnit(faker.random_int(min=1, max=5), None))
+    partnumbers = LazyAttribute(lambda _: FakePartNumberInfoFactory.create())
+    id = Sequence(lambda n: f"B{n+1}")
+    amount = None
+    qty_multiplier = 1
+    description = LazyAttribute(lambda _: faker.sentence(nb_words=3))
+    category = LazyAttribute(lambda _: faker.random_element(["CONNECTOR", "WIRE"]))
+    ignore_in_bom = LazyAttribute(lambda _: faker.boolean(chance_of_getting_true=10))
+    designators = LazyAttribute(lambda _: [faker.bothify("J##")])
+    per_harness = LazyAttribute(lambda _: {"H1": {"qty": 1}})
+
+    @staticmethod
+    def create(**kwargs) -> BomEntry:
+        return FakeBomEntryFactory.build(**kwargs)
+
+
+__all__ = [
+    "BomEntryBase",
+    "BomEntry",
+    "BomRender",
+    "FakeBomEntryFactory",
+    "print_bom_table",
+]

@@ -37,6 +37,7 @@ Add faker-backed factory classes for every model in `src/filare/models/` so test
 2025-12-11: Filed issue to track faker factory coverage for all `src/filare/models/` modules and test adoption.
 2025-12-12: Added factories for core models (GraphicalComponentModel/ConnectorModel, CableModel, ComponentModel). Tests updated to consume the new factories and exercise flags (shield/wires/additional/bg) to keep coverage high. Further factories still needed for other models (metadata/options/wire/connection/etc.).
 2025-12-13: Converted the new factories to factory_boy + faker and added factories for wire/shield/pin/loop/connection plus metadata/page options. Expanded tests to cover factory variants (colors/bg/partial connections/svg options) and ensure randomized outputs still serialize correctly.
+2025-12-14: Added factories for BOM entries, page/document/notes, and harness quantity models with accompanying tests (document manifest/pages, harness quantity defaults, BOM entry variants). Remaining candidates: image/configs/document hash registry utilities and any minor dataclasses not yet covered.
 
 ## Related
 

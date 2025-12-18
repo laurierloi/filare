@@ -7,12 +7,25 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Type
 
+import factory  # type: ignore[reportPrivateImportUsage]
 import yaml
+from factory import Factory  # type: ignore[reportPrivateImportUsage]
+from factory.declarations import LazyAttribute
+from factory.declarations import (
+    List as FactoryList,  # type: ignore[reportPrivateImportUsage]
+)
+from factory.declarations import SubFactory
+from faker import Faker  # type: ignore[reportPrivateImportUsage]
 from pydantic import BaseModel, Field
 
 from filare.models.page import (
     BOMPage,
     CutPage,
+    FakeBOMPageFactory,
+    FakeCutPageFactory,
+    FakeHarnessPageFactory,
+    FakeTerminationPageFactory,
+    FakeTitlePageFactory,
     HarnessPage,
     PageBase,
     PageType,
@@ -23,6 +36,9 @@ from filare.models.page import (
 
 def _yaml_dumps(data: Any) -> str:
     return yaml.safe_dump(data, sort_keys=True)
+
+
+faker = Faker()
 
 
 @dataclass
@@ -150,3 +166,60 @@ class DocumentManifest(BaseModel):
     split_combined_bom: bool = False
     split_notes: bool = False
     split_index: bool = False
+
+
+class FakeDocumentManifestEntryFactory(Factory):
+    """factory_boy factory for DocumentManifestEntry."""
+
+    class Meta:
+        model = DocumentManifestEntry
+
+    path = LazyAttribute(lambda _: f"docs/{faker.file_name(extension='yml')}")
+    name = LazyAttribute(lambda _: faker.sentence(nb_words=2))
+
+    @staticmethod
+    def create(**kwargs) -> DocumentManifestEntry:
+        return FakeDocumentManifestEntryFactory.build(**kwargs)
+
+
+class FakeDocumentManifestFactory(Factory):
+    """factory_boy factory for DocumentManifest."""
+
+    class Meta:
+        model = DocumentManifest
+
+    documents = FactoryList([SubFactory(FakeDocumentManifestEntryFactory)])
+    title_metadata = LazyAttribute(lambda _: {"title": faker.sentence(nb_words=3)})
+    shared_bom = LazyAttribute(lambda _: faker.file_name(extension="tsv"))
+    split_combined_bom = LazyAttribute(lambda _: faker.boolean())
+    split_notes = LazyAttribute(lambda _: faker.boolean())
+    split_index = LazyAttribute(lambda _: faker.boolean())
+
+    @staticmethod
+    def create(**kwargs) -> DocumentManifest:
+        return FakeDocumentManifestFactory.build(**kwargs)
+
+
+class FakeDocumentRepresentationFactory(Factory):
+    """factory_boy factory for DocumentRepresentation."""
+
+    class Meta:
+        model = DocumentRepresentation
+
+    metadata = LazyAttribute(lambda _: {"title": faker.sentence(nb_words=3)})
+    pages = FactoryList(
+        [
+            SubFactory(FakeTitlePageFactory),
+            SubFactory(FakeHarnessPageFactory),
+            SubFactory(FakeBOMPageFactory),
+            SubFactory(FakeCutPageFactory),
+            SubFactory(FakeTerminationPageFactory),
+        ]
+    )
+    notes = LazyAttribute(lambda _: faker.paragraph(nb_sentences=2))
+    bom = LazyAttribute(lambda _: {"items": []})
+    extras = LazyAttribute(lambda _: {"custom": faker.word()})
+
+    @staticmethod
+    def create(**kwargs) -> DocumentRepresentation:
+        return FakeDocumentRepresentationFactory.build(**kwargs)

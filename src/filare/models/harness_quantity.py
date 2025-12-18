@@ -3,7 +3,13 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional
 
+import factory  # type: ignore[reportPrivateImportUsage]
+from factory import Factory  # type: ignore[reportPrivateImportUsage]
+from factory.declarations import LazyAttribute  # type: ignore[reportPrivateImportUsage]
+from faker import Faker  # type: ignore[reportPrivateImportUsage]
 from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+faker = Faker()
 
 
 class HarnessQuantity(BaseModel):
@@ -100,3 +106,26 @@ class HarnessQuantity(BaseModel):
     def retrieve_harness_qty_multiplier(self, bom_file):
         """Return the multiplier for the harness associated with a BOM file path."""
         return int(self[Path(Path(bom_file).stem).stem])
+
+
+class FakeHarnessQuantityFactory(Factory):
+    """factory_boy factory for HarnessQuantity."""
+
+    class Meta:
+        model = HarnessQuantity
+
+    harnesses = LazyAttribute(
+        lambda _: [Path(faker.file_path(depth=1, extension="yml"))]
+    )
+    multiplier_file_name = "quantity_multipliers.txt"
+    output_dir = LazyAttribute(lambda obj: obj.harnesses[0].parent)
+    multipliers = LazyAttribute(
+        lambda obj: {Path(obj.harnesses[0]).stem: 2} if obj.harnesses else {}
+    )
+
+    @staticmethod
+    def create(**kwargs) -> HarnessQuantity:
+        return FakeHarnessQuantityFactory.build(**kwargs)
+
+
+__all__ = ["HarnessQuantity", "FakeHarnessQuantityFactory"]

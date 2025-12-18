@@ -5,7 +5,13 @@ import pytest
 from pydantic import ValidationError
 
 from filare.errors import UnsupportedModelOperation
-from filare.models.bom import BomContent, BomEntry, BomRender, BomRenderOptions
+from filare.models.bom import (
+    BomContent,
+    BomEntry,
+    BomRender,
+    BomRenderOptions,
+    FakeBomEntryFactory,
+)
 from filare.models.numbers import NumberAndUnit
 from filare.models.partnumber import PartNumberInfo
 from filare.models.types import BomCategory
@@ -126,3 +132,13 @@ def test_print_bom_table_outputs(capsys):
     print_bom_table({1: entry})
     captured = capsys.readouterr().out
     assert "Description" in captured and "Designators" in captured
+
+
+def test_fake_bom_entry_factory_variants():
+    entry = FakeBomEntryFactory.create(qty_multiplier=2, per_harness={"H1": {"qty": 1}})
+    assert entry.qty.number >= 2
+    assert entry.designators
+    assert entry.partnumbers is not None
+    content = BomContent({1: entry})
+    render = content.get_bom_render(options=BomRenderOptions(filter_entries=True))
+    assert render.rows and render.headers
