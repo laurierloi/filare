@@ -6,6 +6,7 @@ from typing import Optional
 import typer
 
 from .config import ManifestError, load_manifest, select_sessions
+from .io import IoTarget, send_message, snapshot_transcript
 from .runtime import find_repo_root, launch_session, resume_plan
 
 app = typer.Typer(help="Orchestrate codex agent containers (manifest-driven).")
@@ -72,6 +73,35 @@ def resume_all() -> None:
             f"- session={plan['session_id']} role={plan['role']} branch={plan['branch']} workspace={plan['workspace']}"
         )
         typer.echo("  hint: docker ps | grep <id> && docker exec -it <cid> tmux attach -t <id>")
+
+
+@app.command()
+def send(
+    container: str = typer.Option(..., "--container", help="Docker container name or ID"),
+    session: str = typer.Option(..., "--session", help="tmux session name inside container"),
+    text: str = typer.Argument(..., help="Text to send"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Print command without executing"),
+) -> None:
+    """Send text to a running codex session (tmux) inside the container."""
+    target = IoTarget(container=container, tmux_session=session)
+    cmd = send_message(target, text, execute=not dry_run)
+    if dry_run:
+        typer.echo(" ".join(cmd))
+
+
+@app.command()
+def snapshot(
+    container: str = typer.Option(..., "--container", help="Docker container name or ID"),
+    session: str = typer.Option(..., "--session", help="tmux session name inside container"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Print command without executing"),
+) -> None:
+    """Capture current tmux pane output for a running codex session."""
+    target = IoTarget(container=container, tmux_session=session)
+    result = snapshot_transcript(target, execute=not dry_run)
+    if dry_run:
+        typer.echo(" ".join(result))  # type: ignore[arg-type]
+        return
+    typer.echo(result.stdout)
 
 
 if __name__ == "__main__":
