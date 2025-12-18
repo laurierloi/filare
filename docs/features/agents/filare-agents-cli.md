@@ -58,4 +58,5 @@ Ship a Python helper library under `src/filare/agents/` plus a Typer CLI `filare
 - Orchestrator commands now live in the root `justfile` for discoverability and to feed the command generator.
 - Container launch path now uses `python -m orchestrator.run_container` (wired into `just codex-container-run` and orchestrator runtime) instead of the shell script.
 - Added agent-marked tests for config/runtime pieces; CLI not yet covered.
-- Next: add stop/restart/send/tail/feedback commands and wire `just` shortcuts plus generator integration.
+- Added CLI commands and just wrappers for send/snapshot, feedback queue, dashboard, and test runner (`orchestrator-test`); stop/restart/tail still pending.
+- Next: add stop/restart/tail commands and wire generator integration.
