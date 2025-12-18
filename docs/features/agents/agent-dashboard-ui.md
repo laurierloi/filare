@@ -36,3 +36,9 @@ Design a minimal API/UI surface to list and inspect all running codex agent sess
 
 - Keep dependencies minimal (prefer standard library HTTP server if used); ensure no new runtime deps affect Filare core.
 - Treat this as a low-priority/optional enhancement; prioritize lifecycle/IO plumbing first.
+
+## Progress / Notes
+
+- Implemented a CLI dashboard snapshot (`python -m orchestrator.cli dashboard`, wrapped by `just orchestrator-dashboard`) that lists session registry entries with pending prompt counts; supports `--json`.
+- Data is sourced from `SessionRegistry` and the prompt queue; no HTTP endpoint yet and no tmux UI.
+- Next: decide if we want a lightweight HTTP endpoint or richer terminal UI; keep dependencies minimal.
